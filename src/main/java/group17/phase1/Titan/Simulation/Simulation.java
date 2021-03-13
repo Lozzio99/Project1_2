@@ -3,6 +3,7 @@ package group17.phase1.Titan.Simulation;
 import group17.phase1.Titan.Bodies.SolarSystem;
 import group17.phase1.Titan.Bodies.SolarSystemInterface;
 import group17.phase1.Titan.Graphics.Engine.BodyLocationUpdater;
+import group17.phase1.Titan.Graphics.Engine.GraphicsManager;
 import group17.phase1.Titan.Graphics.Renderer.VisibilityUpdater;
 
 public class Simulation implements SimulationInterface
@@ -10,8 +11,10 @@ public class Simulation implements SimulationInterface
     BodyLocationUpdater movementUpdater;
     VisibilityUpdater renderingUpdater;
     SolarSystemInterface solarSystem;
+    GraphicsManager graphicsManager;
 
     public Simulation(){
+        this.graphicsManager = new GraphicsManager();
         this.movementUpdater = new BodyLocationUpdater();
         this.renderingUpdater = new VisibilityUpdater();
         this.solarSystem = new SolarSystem();
@@ -38,5 +41,8 @@ public class Simulation implements SimulationInterface
         return this.solarSystem;
     }
 
-
+    @Override
+    public GraphicsManager graphicsManager() {
+        return this.graphicsManager;
+    }
 }

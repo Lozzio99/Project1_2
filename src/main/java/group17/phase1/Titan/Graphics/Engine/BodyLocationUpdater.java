@@ -6,13 +6,22 @@ import group17.phase1.Titan.Physics.Trajectories.FunctionInterface;
 
 public class BodyLocationUpdater
 {
-    SolarSystemInterface allBodies;
+    SolarSystemInterface solarSystem;
     SolverInterface solver;
     FunctionInterface movement;
 
+    public BodyLocationUpdater(){
+        //init variables..
+        //..
+        this.startSimulation();
+    }
+    void startSimulation(){
+
+    }
+
     void updateLocations()
     {
-        allBodies.updateLocation(allBodies.allCelestialBodies().get(0), solver);
+        solarSystem.updateLocation(solarSystem.allCelestialBodies().get(0), solver);
         //...
     }
 }
