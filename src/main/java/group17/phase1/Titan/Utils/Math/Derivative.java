@@ -14,9 +14,11 @@ public class Derivative implements FunctionInterface {
      * @param f f(x), the function to derive
      * @return f'(x), the derivative of the f(x)
      */
+
     private static DoubleFunction<Double> derive(DoubleFunction<Double> f) {
         return (x) -> (f.apply(x + DX) - f.apply(x)) / DX;
     }
+
 
     public static void main(String[] args) {
         {

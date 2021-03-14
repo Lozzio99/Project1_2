@@ -30,7 +30,6 @@ public class Simulation implements SimulationInterface
     }
 
 
-
     @Override
     public VisibilityUpdater planetsVisibilityUpdater() {
         return this.renderingUpdater;

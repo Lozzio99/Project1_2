@@ -9,9 +9,7 @@ public interface SimulationInterface
 {
     BodyLocationUpdater planetsPositionUpdater();
 
-
     VisibilityUpdater planetsVisibilityUpdater();
-
 
     SolarSystemInterface solarSystemRepository();
 

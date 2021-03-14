@@ -42,6 +42,7 @@ public class SolarSystem implements SolarSystemInterface
         this.setupAllBodies();
     }
 
+
     void setupAllBodies()
     {
         Star sun = new Star();
