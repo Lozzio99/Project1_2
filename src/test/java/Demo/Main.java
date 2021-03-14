@@ -76,7 +76,7 @@ public class Main
         private void render() {
             BufferStrategy bs = this.getBufferStrategy();
             if (bs == null) {
-                this.createBufferStrategy(5);
+                this.createBufferStrategy(3);
                 return;
             }
 
