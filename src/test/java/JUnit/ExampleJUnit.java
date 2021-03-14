@@ -121,8 +121,6 @@ class ExampleJUnit
         Shape s = new Shape();
         @Nested
         class Allowed{
-
-
             @Test
             @DisplayName("Look at the sum")
             void LookAtTheSum() {

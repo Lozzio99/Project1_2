@@ -1,9 +1,8 @@
 package Demo;
 
-import group17.phase1.titan.lib.ShapeBuilder.SphereMesh3D;
-import group17.phase1.titan.lib.geometry.Vector3D;
-import group17.phase1.titan.lib.interfaces.IShape;
-import group17.phase1.titan.lib.interfaces.Vector;
+import group17.phase1.Titan.Graphics.Renderer.RenderableShapeInterface;
+import group17.phase1.Titan.Graphics.Renderer.geometry.SphereMesh3D;
+import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,8 +102,8 @@ public class Main
         }
 
         public static class DemoShape {
-            ArrayList<IShape> shape;
-            Vector light;
+            ArrayList<RenderableShapeInterface> shape;
+            Vector3D light;
 
             DemoShape() {
                 this.shape = new ArrayList<>();
@@ -114,14 +113,14 @@ public class Main
                 this.shape.add(SphereMesh3D.createSphere(new Color(196, 20, 20), 100, 0, 0, 50));
                 this.shape.add(SphereMesh3D.createSphere(Color.BLUE, 50, 0, 300, 50));
                 this.light = new Vector3D(0, 0, 1);
-                for (IShape s : shape) {
+                for (RenderableShapeInterface s : shape) {
                     s.setLighting(light);
                     s.translate(0, 0, 300);
                 }
             }
 
             public void render(Graphics g) {
-                for (IShape s : shape)
+                for (RenderableShapeInterface s : shape)
                     s.render(g);
             }
 
