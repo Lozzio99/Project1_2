@@ -44,10 +44,20 @@ public class SolarSystem implements SolarSystemInterface
 
     void setupAllBodies()
     {
+    	// Sun
         Star sun = new Star();
-        sun.setMASS(1.222222);
-        sun.setDENSITY(0.2);
-        sun.setX_LOCATION(0.102);
+        sun.setMASS(1.988500e+30);
+        sun.setRADIUS(6.96342e+08);
+        sun.setDENSITY(1.41);
+        sun.setX_LOCATION(-6.806783239281648e+08);
+        sun.setY_LOCATION(1.080005533878725e+09);
+        sun.setX_LOCATION(6.564012751690170e+06);
+        sun.setX_VELOCITY(1.420511669610689e+01);
+        sun.setY_VELOCITY(-4.954714716629277e+00);
+        sun.setZ_VELOCITY(3.994237625449041e-01);
+        sun.setX_ROTATION(0);
+        sun.setY_ROTATION(0);
+        sun.setZ_ROTATION(0);
         //.....
         this.allBodies.add(sun);
     }
