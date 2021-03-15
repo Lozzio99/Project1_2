@@ -1,9 +1,13 @@
 package group17.phase1.Titan.Bodies.CelestialBodies;
 
+import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Physics.TimeSequence.GalacticClock;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3DInterface;
 
-abstract class CelestialBody
+import java.util.concurrent.locks.Lock;
+
+public abstract class CelestialBody
 {
     static final double G = 6.67e-11;
 
@@ -128,17 +132,13 @@ abstract class CelestialBody
     	return this.Y_VELOCITY;
     }
     
-    double getZ_ROTATION() {
-    	return this.Z_ROTATION;
-    }
-
-
+    double getZ_ROTATION() { return this.Z_ROTATION; }
 
     Vector3D getVectorPosition(){
         return new Vector3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
     }
 
-    void setVectorDirection(Vector3DInterface newDirection)
+    void move(Vector3DInterface newDirection)
     {
         this.setX_LOCATION(newDirection.getX());
         this.setY_LOCATION(newDirection.getY());
@@ -149,5 +149,38 @@ abstract class CelestialBody
         this.setX_VELOCITY(newVelocity.getX());
         this.setY_VELOCITY(newVelocity.getY());
         this.setZ_VELOCITY(newVelocity.getZ());
+    }
+
+    double getDistanceRadius(CelestialBody other){
+        return Vector3D.dist(other.getVectorPosition(),this.getVectorPosition());
+    }
+
+    public static class Slave extends Thread
+    {
+        static Lock syncLock;
+        private final CelestialBody planet;
+        public Slave(CelestialBody p){
+            this.planet = p;
+        }
+
+        public static void setSyncLock(Lock sync){ syncLock = sync;}
+
+        @Override
+        public void run(){
+
+            synchronized (syncLock){
+                for (CelestialBody p : Main.simulation.solarSystemRepository().allCelestialBodies())
+                {
+                    if (p!= this.planet){
+                        double dist = planet.getDistanceRadius(p);
+                        Vector3DInterface forceDirection = Vector3D.unitVectorDistance(planet.getVectorPosition(),p.getVectorPosition());
+                        Vector3DInterface force = forceDirection.mul(G).mul(planet.getMASS()).mul(p.getMASS()).div(dist);
+                        Vector3DInterface acceleration = force.mul(1./planet.getMASS());
+                        planet.setVectorVelocity(acceleration.mul(GalacticClock.GALACTIC_TIME_STEP));
+                    }
+                }
+            }
+        }
+
     }
 }

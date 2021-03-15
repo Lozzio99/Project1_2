@@ -1,6 +1,6 @@
 package group17.phase1.Titan.Bodies;
 
-import group17.phase1.Titan.Bodies.CelestialBodies.CelestialBodyInterface;
+import group17.phase1.Titan.Bodies.CelestialBodies.CelestialBody;
 import group17.phase1.Titan.Bodies.CelestialBodies.Star;
 import group17.phase1.Titan.Graphics.Renderer.Point3D;
 import group17.phase1.Titan.Physics.TimeSequence.SolverInterface;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SolarSystem implements SolarSystemInterface
 {
-    List<CelestialBodyInterface> allBodies;
+    List<CelestialBody> allBodies;
 
     CoordinateInterface SolarSystemBarycenter = new Point3D(0,0,0);
     //which one will be??
@@ -23,14 +23,14 @@ public class SolarSystem implements SolarSystemInterface
 
 
     @Override
-    public List<CelestialBodyInterface> allCelestialBodies() {
+    public List<CelestialBody> allCelestialBodies() {
         return this.allBodies;
     }
 
 
 
     @Override
-    public void updateLocation(CelestialBodyInterface body, SolverInterface functionSolver) {
+    public void updateLocation(CelestialBody body, SolverInterface functionSolver) {
 
         FunctionInterface f =  (e1,e2)->e2 = e2.mul(e1);
         Vector3DInterface[] v = functionSolver.solve( f, //random function

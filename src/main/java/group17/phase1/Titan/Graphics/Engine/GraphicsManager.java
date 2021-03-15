@@ -9,7 +9,7 @@ import java.awt.event.WindowEvent;
 
 public class GraphicsManager
 {
-    private String FPS_RATE = "";
+    private final String FPS_RATE = "";
     private final MainThread engine;
     private final JFrame frame;
     private MouseInput mouseInput;
@@ -78,12 +78,13 @@ public class GraphicsManager
         }
 
         @Override
-        protected void paintComponent(Graphics graphics) {
-
+        protected void paintComponent(Graphics graphics)
+        {
             graphics.setColor(Color.black);
             graphics.fillRect(0,0,GraphicsManager.WIDTH,GraphicsManager.HEIGHT);
-            visualization.paint(graphics);
 
+            visualization.paint(graphics);
+            updateUI();
         }
 
         @Override
@@ -93,17 +94,14 @@ public class GraphicsManager
             double elapsedTime = 0.0;
             double FPS = 60.;
             while (true) {
+                /*
                 long now = System.nanoTime();
                 elapsedTime += ((now - lastTime) / 1_000_000_000d) * FPS;
                 lastTime = System.nanoTime();
-
-                if (elapsedTime >= 1) {
-                    visualization.update();
-                    repaint();
-                    elapsedTime--;
-                    FPS_RATE = "FPS : "+ FPS;
-                }
-                sleep();
+                 */
+                visualization.update();
+                repaint();
+                //sleep();
 
             }
 

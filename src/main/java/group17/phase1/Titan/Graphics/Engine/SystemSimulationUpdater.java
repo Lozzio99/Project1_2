@@ -1,6 +1,6 @@
 package group17.phase1.Titan.Graphics.Engine;
 
-import group17.phase1.Titan.Bodies.CelestialBodies.CelestialBodyInterface;
+import group17.phase1.Titan.Bodies.CelestialBodies.CelestialBody;
 import group17.phase1.Titan.Bodies.CelestialBodies.Planet;
 import group17.phase1.Titan.Graphics.Renderer.Point3D;
 import group17.phase1.Titan.Graphics.Renderer.Point3DConverter;
@@ -46,29 +46,22 @@ public class SystemSimulationUpdater
 
     }
 
-
-    void startSimulation(){
-
-    }
-
-
     void paint(Graphics graphics)
     {
         Graphics2D g = (Graphics2D) graphics;
 
-
-        graphics.setColor(Color.WHITE);
+        graphics.setColor(new Color(255,255,255,113));
         graphics.drawString("x Axis",20,20);
         Line2D.Double xAxis = new Line2D.Double(Point3DConverter.convertPoint(left),Point3DConverter.convertPoint(right));
         g.draw(xAxis);
 
-        graphics.setColor(Color.RED);
+        graphics.setColor(new Color(255, 42, 42,113));
         graphics.drawString("y Axis",20,30);
         Line2D.Double yAxis = new Line2D.Double(Point3DConverter.convertPoint(top),Point3DConverter.convertPoint(bottom));
         g.draw(yAxis);
 
 
-        graphics.setColor(Color.GREEN);
+        graphics.setColor(new Color(120, 255, 108, 116));
         graphics.drawString("z Axis",20,40);
         Line2D.Double zAxis = new Line2D.Double(Point3DConverter.convertPoint(rear),Point3DConverter.convertPoint(front));
         g.draw(zAxis);
@@ -76,22 +69,23 @@ public class SystemSimulationUpdater
 
     void update()
     {
+        this.updateLocations();
         int x = this.mouse.getX();
         int y = this.mouse.getY();
 
         boolean cw = false;
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
             int xDif = x - initialX;
-            int yDif = y - initialY;
             if (xDif>0)
                 cw = true;
-            this.rotateAxisX(cw,xDif);
+            this.rotateAxisX(cw,xDif/mouseSensitivity);
         }
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
-            int xDif = x - initialX;
-            if (xDif>0)
+            int yDif = y - initialY;
+            if (yDif>0)
                 cw = true;
-            this.rotateAxisZ(cw,x);
+
+            this.rotateAxisZ(cw,yDif/mouseSensitivity);
 
         }
 
@@ -107,15 +101,17 @@ public class SystemSimulationUpdater
 
         initialX = x;
         initialY = y;
-        this.rotateAxisX(true,0.1);
+
+
+        //this.rotateAxisX(true,0.1);
 
     }
 
-    void updateLocations(float timeStep)
+    void updateLocations()
     {
-        for (CelestialBodyInterface p : Main.simulation.solarSystemRepository().allCelestialBodies())
+        for (CelestialBody p : Main.simulation.solarSystemRepository().allCelestialBodies())
         {
-            Planet.Slave calculator = new Planet.Slave((Planet) p);
+            Planet.Slave calculator = new Planet.Slave(p);
             Planet.Slave.setSyncLock(sync);
             calculator.start();
         }
@@ -146,7 +142,6 @@ public class SystemSimulationUpdater
             Point3DConverter.rotateAxisX(right,cw,z);
             Point3DConverter.rotateAxisX(rear,cw,z);
             Point3DConverter.rotateAxisX(front,cw,z);
-
     }
 
     void rotateAxisY(boolean cw, double y){
@@ -158,6 +153,5 @@ public class SystemSimulationUpdater
             Point3DConverter.rotateAxisZ(right,cw,y);
             Point3DConverter.rotateAxisZ(rear,cw,y);
             Point3DConverter.rotateAxisZ(front,cw,y);
-
     }
 }
