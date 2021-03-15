@@ -1,7 +1,5 @@
 package group17.phase1.Titan.Graphics.Renderer;
 
-import group17.phase1.Titan.Graphics.Renderer.geometry.Point3D;
-
 import java.awt.*;
 
 public class Point3DConverter {

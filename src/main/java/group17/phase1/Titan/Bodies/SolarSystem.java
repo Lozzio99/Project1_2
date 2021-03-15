@@ -2,7 +2,7 @@ package group17.phase1.Titan.Bodies;
 
 import group17.phase1.Titan.Bodies.CelestialBodies.CelestialBodyInterface;
 import group17.phase1.Titan.Bodies.CelestialBodies.Star;
-import group17.phase1.Titan.Graphics.Renderer.geometry.Point3D;
+import group17.phase1.Titan.Graphics.Renderer.Point3D;
 import group17.phase1.Titan.Physics.TimeSequence.SolverInterface;
 import group17.phase1.Titan.Physics.Trajectories.CoordinateInterface;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;

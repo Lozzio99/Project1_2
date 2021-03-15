@@ -1,5 +1,7 @@
 package group17.phase1.Titan.Bodies.CelestialBodies;
 
+import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
+
 import java.util.List;
 
 public class Star extends CelestialBody implements CelestialBodyInterface
@@ -22,6 +24,16 @@ public class Star extends CelestialBody implements CelestialBodyInterface
     @Override
     public List<CelestialBodyInterface> attractors() {
         return null;
+    }
+
+    @Override
+    public Vector3D getVectorPosition() {
+        return super.getVectorPosition();
+    }
+
+    @Override
+    public double getDistanceRadius(CelestialBodyInterface other) {
+        return Vector3D.dist(this.getVectorPosition(),other.getVectorPosition());
     }
 
     @Override

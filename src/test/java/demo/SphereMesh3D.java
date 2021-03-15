@@ -1,6 +1,6 @@
-package group17.phase1.Titan.Graphics.Renderer.geometry;
+package demo;
 
-import group17.phase1.Titan.Graphics.Renderer.RenderableShapeInterface;
+import group17.phase1.Titan.Graphics.Renderer.Point3D;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class SphereMesh3D {
         Polyhedron3D tetra = new Polyhedron3D(color,false,all);
         List<Polyhedron3D> esaSphere = new ArrayList<>();
         esaSphere.add(tetra);
-        return new Shape(esaSphere);
+        return new Shape3D(esaSphere);
     }
 
 

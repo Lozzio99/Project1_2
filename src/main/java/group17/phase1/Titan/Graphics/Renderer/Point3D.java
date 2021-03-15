@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Graphics.Renderer.geometry;
+package group17.phase1.Titan.Graphics.Renderer;
 
 import group17.phase1.Titan.Physics.Trajectories.CoordinateInterface;
 

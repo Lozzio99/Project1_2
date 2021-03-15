@@ -1,7 +1,5 @@
-package Demo;
+package demo;
 
-import group17.phase1.Titan.Graphics.Renderer.RenderableShapeInterface;
-import group17.phase1.Titan.Graphics.Renderer.geometry.SphereMesh3D;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
 
 import javax.swing.*;

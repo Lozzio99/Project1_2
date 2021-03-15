@@ -7,8 +7,12 @@
 
 package group17.phase1.Titan.Physics.Trajectories.Forces;
 
-public interface Vector3DInterface extends IVector3D {
-    
+public interface Vector3DInterface {
+
+    double getX();
+    double getY();
+    double getZ();
+
     void setX(double x);
     void setY(double y);
     void setZ(double z);
@@ -16,7 +20,9 @@ public interface Vector3DInterface extends IVector3D {
     Vector3DInterface add(Vector3DInterface other);
     Vector3DInterface sub(Vector3DInterface other);
     Vector3DInterface mul(double scalar);
-    
+    Vector3DInterface div(double scalar);
+
+
     /**
      * Scalar x vector multiplication, followed by an addition
      * 

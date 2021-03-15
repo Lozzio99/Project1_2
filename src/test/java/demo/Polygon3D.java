@@ -1,7 +1,9 @@
-package group17.phase1.Titan.Graphics.Renderer.geometry;
+package demo;
 
+import group17.phase1.Titan.Graphics.Renderer.Point3D;
 import group17.phase1.Titan.Graphics.Renderer.Point3DConverter;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
+import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3DInterface;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -118,7 +120,7 @@ public class Polygon3D {
 
         Vector3D v1 = new Vector3D(this.points[0], this.points[1]);
         Vector3D v2 = new Vector3D(this.points[1], this.points[2]);
-        Vector3D normal = Vector3D.normalize(Vector3D.cross( v2, v1));
+        Vector3DInterface normal = Vector3D.normalize(Vector3D.cross( v2, v1));
         double dot = Vector3D.dot(normal, lightVector3D);
         double sign = dot < 0 ? -1 : 1;
         dot = sign * dot * dot;

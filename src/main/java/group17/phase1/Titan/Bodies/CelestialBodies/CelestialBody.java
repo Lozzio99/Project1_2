@@ -1,7 +1,12 @@
 package group17.phase1.Titan.Bodies.CelestialBodies;
 
+import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
+import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3DInterface;
+
 abstract class CelestialBody
 {
+    static final double G = 6.67e-11;
+
     double MASS;
     double RADIUS;
     double DENSITY;
@@ -125,5 +130,24 @@ abstract class CelestialBody
     
     double getZ_ROTATION() {
     	return this.Z_ROTATION;
+    }
+
+
+
+    Vector3D getVectorPosition(){
+        return new Vector3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
+    }
+
+    void setVectorDirection(Vector3DInterface newDirection)
+    {
+        this.setX_LOCATION(newDirection.getX());
+        this.setY_LOCATION(newDirection.getY());
+        this.setZ_LOCATION(newDirection.getZ());
+    }
+
+    void setVectorVelocity(Vector3DInterface newVelocity){
+        this.setX_VELOCITY(newVelocity.getX());
+        this.setY_VELOCITY(newVelocity.getY());
+        this.setZ_VELOCITY(newVelocity.getZ());
     }
 }
