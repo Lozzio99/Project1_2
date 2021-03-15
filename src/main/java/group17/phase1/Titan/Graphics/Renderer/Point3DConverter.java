@@ -7,7 +7,7 @@ import java.awt.*;
 public class Point3DConverter {
 
     private static double scale = 1d;
-    private static final double ZoomFactor = 1.2;
+    private static final double ZoomFactor = 1.05;
     private static final int SCREEN_WIDTH = GraphicsManager.WIDTH, SCREEN_HEIGHT = GraphicsManager.HEIGHT;
 
 

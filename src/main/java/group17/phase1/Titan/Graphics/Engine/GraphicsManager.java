@@ -9,7 +9,6 @@ import java.awt.event.WindowEvent;
 
 public class GraphicsManager
 {
-    //Setup window properties, start graphics buffers
     private String FPS_RATE = "";
     private final MainThread engine;
     private final JFrame frame;
@@ -19,18 +18,20 @@ public class GraphicsManager
     static Dimension SCREEN = new Dimension(WIDTH,HEIGHT);
     private WindowEvent listen;
 
+
     public GraphicsManager()
     {
         this.frame = new JFrame(FPS_RATE);
         this.frame.setSize(SCREEN);
         setWindowProperties();
         engine = createEngine();
-
     }
 
-    private MainThread createEngine() {
+    private MainThread createEngine()
+    {
         Container cp =frame.getContentPane();
         MainThread engine = new MainThread(this.simulationUpdater = new SystemSimulationUpdater());
+        this.simulationUpdater.addMouseControl(this.mouseInput = new MouseInput());
         this.frame.addMouseListener(mouseInput);
         this.frame.addMouseWheelListener(mouseInput);
         this.frame.addMouseMotionListener(mouseInput);
@@ -78,9 +79,11 @@ public class GraphicsManager
 
         @Override
         protected void paintComponent(Graphics graphics) {
+
             graphics.setColor(Color.black);
             graphics.fillRect(0,0,GraphicsManager.WIDTH,GraphicsManager.HEIGHT);
             visualization.paint(graphics);
+
         }
 
         @Override
