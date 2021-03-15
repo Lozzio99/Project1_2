@@ -83,77 +83,78 @@ public abstract class CelestialBody
     // --- Get-Methods ---
     
     // Mass
-    double getMASS() {
+    public double getMASS() {
     	return this.MASS;
     }
     
     // Radius
-    double getRADIUS() {
+    public double getRADIUS() {
     	return this.RADIUS;
     }
     
     // Density
-    double getDensity() {
+    public double getDensity() {
     	return this.DENSITY;
     }
     
     // Location
-    double getX_LOCATION() {
+    public double getX_LOCATION() {
     	return this.X_LOCATION;
     }
-    
-    double getY_LOCATION() {
+
+    public double getY_LOCATION() {
     	return this.Y_LOCATION;
     }
-    
-    double getZ_LOCATION() {
+
+    public double getZ_LOCATION() {
     	return this.Z_LOCATION;
     }
     
     // Velocity
-    double getX_VELOCITY() {
+    public double getX_VELOCITY() {
     	return this.X_VELOCITY;
     }
-    
-    double getY_VELOCITY() {
+
+    public double getY_VELOCITY() {
     	return this.Y_VELOCITY;
     }
-    
-    double getZ_VELOCITY() {
+
+    public double getZ_VELOCITY() {
     	return this.Z_VELOCITY;
     }
     
     // Rotation
-    double getX_ROTATION() {
+    public double getX_ROTATION() {
     	return this.X_ROTATION;
     }
-    
-    double getY_ROTATION() {
+
+    public double getY_ROTATION() {
     	return this.Y_VELOCITY;
     }
-    
-    double getZ_ROTATION() { return this.Z_ROTATION; }
+
+    public double getZ_ROTATION() { return this.Z_ROTATION; }
 
     Vector3D getVectorPosition(){
         return new Vector3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
     }
 
-    void move(Vector3DInterface newDirection)
+    public void move(Vector3DInterface newDirection)
     {
         this.setX_LOCATION(newDirection.getX());
         this.setY_LOCATION(newDirection.getY());
         this.setZ_LOCATION(newDirection.getZ());
     }
 
-    void setVectorVelocity(Vector3DInterface newVelocity){
+    public void setVectorVelocity(Vector3DInterface newVelocity){
         this.setX_VELOCITY(newVelocity.getX());
         this.setY_VELOCITY(newVelocity.getY());
         this.setZ_VELOCITY(newVelocity.getZ());
     }
 
-    double getDistanceRadius(CelestialBody other){
+    public double getDistanceRadius(CelestialBody other){
         return Vector3D.dist(other.getVectorPosition(),this.getVectorPosition());
     }
+
 
     public static class Slave extends Thread
     {

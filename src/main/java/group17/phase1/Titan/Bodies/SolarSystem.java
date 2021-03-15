@@ -61,6 +61,7 @@ public class SolarSystem implements SolarSystemInterface
         sun.setZ_ROTATION(0);
         //.....
         this.allBodies.add(sun);
+
     }
 
 }

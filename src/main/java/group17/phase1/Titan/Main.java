@@ -10,7 +10,7 @@ public class Main
     {
 
         //init is been called in simulation, in solarSystem
-        System.out.println(simulation.solarSystemRepository().allCelestialBodies().get(0).getXCoordinate());
+        System.out.println(simulation.solarSystemRepository().allCelestialBodies().get(0).getX_LOCATION());
         //.102 expected
     }
 }
