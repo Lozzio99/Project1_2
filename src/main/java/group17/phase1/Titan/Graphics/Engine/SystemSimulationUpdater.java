@@ -41,6 +41,9 @@ public class SystemSimulationUpdater
     {
         //init variables..
         //..
+        this.rotateAxisZ(true,5);
+        this.rotateAxisY(true,5);
+
     }
 
 
@@ -80,15 +83,16 @@ public class SystemSimulationUpdater
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
             int xDif = x - initialX;
             int yDif = y - initialY;
-            if (xDif<0)
+            if (xDif>0)
                 cw = true;
-            this.rotate(cw,  xDif/mouseSensitivity, yDif/mouseSensitivity,0);
+            this.rotateAxisX(cw,xDif);
         }
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
             int xDif = x - initialX;
-            if (xDif<0)
+            if (xDif>0)
                 cw = true;
-            this.rotate(cw, xDif/mouseSensitivity, 0, 0);
+            this.rotateAxisZ(cw,x);
+
         }
 
         if(this.mouse.isScrollingUp()) {
@@ -103,6 +107,7 @@ public class SystemSimulationUpdater
 
         initialX = x;
         initialY = y;
+        this.rotateAxisX(true,0.1);
 
     }
 
@@ -120,30 +125,39 @@ public class SystemSimulationUpdater
         this.mouse = mouse;
     }
 
-    public void rotate(boolean cw, double x, double y, double z){
-        if (x != 0){
-            Point3DConverter.rotateAxisX(top,cw,x);
-            Point3DConverter.rotateAxisX(bottom,cw,x);
-            Point3DConverter.rotateAxisX(left,cw,x);
-            Point3DConverter.rotateAxisX(right,cw,x);
-            Point3DConverter.rotateAxisX(rear,cw,x);
-            Point3DConverter.rotateAxisX(front,cw,x);
-        }
-        if (y != 0){
-            Point3DConverter.rotateAxisY(top,cw,y);
-            Point3DConverter.rotateAxisY(bottom,cw,y);
-            Point3DConverter.rotateAxisY(left,cw,y);
-            Point3DConverter.rotateAxisY(right,cw,y);
-            Point3DConverter.rotateAxisY(rear,cw,y);
-            Point3DConverter.rotateAxisY(front,cw,y);
-        }
-        if (z != 0){
-            Point3DConverter.rotateAxisZ(top,cw,z);
-            Point3DConverter.rotateAxisZ(bottom,cw,z);
-            Point3DConverter.rotateAxisZ(left,cw,z);
-            Point3DConverter.rotateAxisZ(right,cw,z);
-            Point3DConverter.rotateAxisZ(rear,cw,z);
-            Point3DConverter.rotateAxisZ(front,cw,z);
-        }
+    public void rotateAxisX(boolean cw, double x){
+        if (cw)
+            x*=-1;
+
+        Point3DConverter.rotateAxisY(top,cw,x);
+        Point3DConverter.rotateAxisY(bottom,cw,x);
+        Point3DConverter.rotateAxisY(left,cw,x);
+        Point3DConverter.rotateAxisY(right,cw,x);
+        Point3DConverter.rotateAxisY(rear,cw,x);
+        Point3DConverter.rotateAxisY(front,cw,x);
+
+    }
+    void rotateAxisZ(boolean cw, double z){
+        if (cw)
+            z*=-1;
+            Point3DConverter.rotateAxisX(top,cw,z);
+            Point3DConverter.rotateAxisX(bottom,cw,z);
+            Point3DConverter.rotateAxisX(left,cw,z);
+            Point3DConverter.rotateAxisX(right,cw,z);
+            Point3DConverter.rotateAxisX(rear,cw,z);
+            Point3DConverter.rotateAxisX(front,cw,z);
+
+    }
+
+    void rotateAxisY(boolean cw, double y){
+        if (cw)
+            y*=-1;
+            Point3DConverter.rotateAxisZ(top,cw,y);
+            Point3DConverter.rotateAxisZ(bottom,cw,y);
+            Point3DConverter.rotateAxisZ(left,cw,y);
+            Point3DConverter.rotateAxisZ(right,cw,y);
+            Point3DConverter.rotateAxisZ(rear,cw,y);
+            Point3DConverter.rotateAxisZ(front,cw,y);
+
     }
 }
