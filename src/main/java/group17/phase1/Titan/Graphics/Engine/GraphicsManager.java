@@ -15,8 +15,8 @@ public class GraphicsManager
     private final JFrame frame;
     private MouseInput mouseInput;
     private SystemSimulationUpdater simulationUpdater;
-    static int width = 1480, height = 810;
-    static Dimension SCREEN = new Dimension(width,height);
+    public static int WIDTH = 1480, HEIGHT = 810;
+    static Dimension SCREEN = new Dimension(WIDTH,HEIGHT);
     private WindowEvent listen;
 
     public GraphicsManager()
@@ -79,7 +79,7 @@ public class GraphicsManager
         @Override
         protected void paintComponent(Graphics graphics) {
             graphics.setColor(Color.black);
-            graphics.fillRect(0,0,width,height);
+            graphics.fillRect(0,0,GraphicsManager.WIDTH,GraphicsManager.HEIGHT);
             visualization.paint(graphics);
         }
 

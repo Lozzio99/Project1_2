@@ -1,12 +1,15 @@
 package group17.phase1.Titan.Graphics.Renderer;
 
+import group17.phase1.Titan.Graphics.Engine.GraphicsManager;
+
 import java.awt.*;
 
 public class Point3DConverter {
 
     private static double scale = 1d;
     private static final double ZoomFactor = 1.2;
-    private static final int SCREEN_WIDTH = 800, SCREEN_HEIGHT = 800;
+    private static final int SCREEN_WIDTH = GraphicsManager.WIDTH, SCREEN_HEIGHT = GraphicsManager.HEIGHT;
+
 
     public static void zoomIn() {
         scale *= ZoomFactor;
