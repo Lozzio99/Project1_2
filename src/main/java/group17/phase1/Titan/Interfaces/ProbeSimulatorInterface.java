@@ -5,8 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package group17.phase1.Titan.Simulation.Probe;
-import group17.phase1.Titan.Interfaces.Vector3dInterface;
+package group17.phase1.Titan.Interfaces;
 
 public interface ProbeSimulatorInterface
 {
@@ -20,6 +19,7 @@ public interface ProbeSimulatorInterface
      *          taken relative to the Solar System barycentre.
      */
     Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts);
+
 
     /*
      * Simulate the solar system with steps of an equal size.

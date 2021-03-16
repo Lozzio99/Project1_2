@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: group17.phase1.Titan.Main
-

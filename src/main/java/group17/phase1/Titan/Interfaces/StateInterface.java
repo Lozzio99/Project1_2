@@ -22,6 +22,7 @@ public interface StateInterface
      */
     StateInterface addMul(double step, RateInterface rate);
 
+
     String toString();
 
 }

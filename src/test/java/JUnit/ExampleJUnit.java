@@ -26,8 +26,6 @@ class ExampleJUnit
         assertEquals(2,1);
     }
 
-
-
     @Test
     @DisplayName("This test has a particular descriptive name  ' $ %")
     void displayName() {
@@ -108,7 +106,7 @@ class ExampleJUnit
     }
 
 
-    private class Shape
+    private static class Shape
     {
         private final int sum = 1000;
         private final String shape = "square";
@@ -124,12 +122,12 @@ class ExampleJUnit
             @Test
             @DisplayName("Look at the sum")
             void LookAtTheSum() {
-                assertEquals(1000,new Shape().sum);
+                assertEquals(1000, new Shape().sum);
             }
             @Test
             @DisplayName("Look at the name")
             void LookAtTheName() {
-                assertEquals("square",new Shape().shape);
+                assertEquals("square", new Shape().shape);
             }
         }
 
@@ -139,7 +137,7 @@ class ExampleJUnit
             @Test
             @DisplayName("Look at the sum")
             void LookAtTheSum() {
-                assertNotEquals(s,new Shape());
+                assertNotEquals(s, new Shape());
             }
         }
     }

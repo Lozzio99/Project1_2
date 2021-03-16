@@ -1,8 +1,6 @@
 package group17.phase1.Titan.SolarSystem;
 
-import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
-import group17.phase1.Titan.Interfaces.ODESolverInterface;
-import group17.phase1.Titan.Interfaces.SolarSystemInterface;
+import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Simulation.Gravity.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.Bodies.Planet;
@@ -12,7 +10,7 @@ import group17.phase1.Titan.SolarSystem.Bodies.Star;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolarSystem implements SolarSystemInterface
+public class SolarSystem implements SolarSystemInterface, StateInterface, RateInterface
 {
     List<CelestialBody> allBodies;
     ODESolverInterface gravityCalculator;
@@ -83,6 +81,32 @@ public class SolarSystem implements SolarSystemInterface
     @Override
     public List<CelestialBody> getCelestialBodies() {
         return this.allBodies;
+    }
+
+
+    /**
+     * Update a state to a new state computed by: this + step * rate
+     *
+     * @param step   The time-step of the update
+     * @param rate   The average rate-of-change over the time-step. Has dimensions of [state]/[time].
+     * @return The new state after the update. Required to have the same class as 'this'.
+     */
+
+
+    @Override
+    public StateInterface addMul(double step, RateInterface rate)
+    {
+        return this;
+    }
+
+    @Override
+    public RateInterface getRateOfChange(){
+        return this;
+    }
+
+    @Override
+    public StateInterface getState(){
+        return this;
     }
 
 }

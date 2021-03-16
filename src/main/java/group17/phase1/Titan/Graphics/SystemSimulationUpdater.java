@@ -19,6 +19,7 @@ public class SystemSimulationUpdater
 
     private int initialX, initialY;
     private final double mouseSensitivity = 6;
+
     private final double moveSpeed = 100;
     private final int UNIT_SIZE = GraphicsManager.HEIGHT;
 
@@ -107,6 +108,7 @@ public class SystemSimulationUpdater
                 cw = true;
             this.rotateAxisY(cw,xDif/mouseSensitivity);
         }
+
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
             int yDif = y - initialY;
             if (yDif>0)
@@ -140,7 +142,6 @@ public class SystemSimulationUpdater
     Ellipse2D.Double planetShape(Point3D position, double radius)
     {
         Point p = Point3DConverter.convertPoint(position);
-
         return new Ellipse2D.Double(p.getX(),p.getY(),radius,radius);
     }
 

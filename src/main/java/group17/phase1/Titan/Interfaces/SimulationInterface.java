@@ -7,4 +7,7 @@ public interface SimulationInterface
     SolarSystemInterface getSolarSystemRepository();
 
     GraphicsManager getGraphicsManager();
+
+    double G = 6.67e-11;
+
 }

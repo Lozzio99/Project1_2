@@ -7,4 +7,8 @@ import java.util.List;
 public interface SolarSystemInterface
 {
     List<CelestialBody> getCelestialBodies();
+
+    RateInterface getRateOfChange();
+
+    StateInterface getState();
 }

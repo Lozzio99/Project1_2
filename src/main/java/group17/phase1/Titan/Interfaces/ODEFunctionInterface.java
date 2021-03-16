@@ -23,8 +23,11 @@ public interface ODEFunctionInterface
      * @param   t   the time at which to evaluate the function
      * @param   y   the state at which to evaluate the function
      * @return  The average rate-of-change over the time-step. Has dimensions of [state]/[time].
+     *
+     * f(x+h)-f(x)
+     *     h
      */
 
-    RateInterface call(double t, StateInterface y);
+    RateInterface call(double timeAt, StateInterface stateAtTime);
 
 }
