@@ -1,6 +1,6 @@
 package group17.phase1.Titan.Simulation.Probe;
 
-import group17.phase1.Titan.Simulation.Gravity.Vector3dInterface;
+import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
 public class ProbeSimulator implements ProbeSimulatorInterface
 {

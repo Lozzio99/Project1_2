@@ -1,7 +1,6 @@
-package group17.phase1.Titan.Graphics;
+package group17.phase1.Titan.Interfaces;
 
 import group17.phase1.Titan.Graphics.Geometry.Polyhedron3D;
-import group17.phase1.Titan.Simulation.Gravity.Vector3dInterface;
 
 import java.awt.*;
 import java.util.List;

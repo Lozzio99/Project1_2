@@ -2,6 +2,7 @@ package group17.phase1.Titan.Simulation.Gravity;
 
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
+import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
 public class Vector3D implements Vector3dInterface
 {

@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package group17.phase1.Titan.Simulation.Gravity;
+package group17.phase1.Titan.Interfaces;
 
 /*
  * A class for solving a general differential equation dy/dt = f(t,y)

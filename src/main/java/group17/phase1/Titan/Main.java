@@ -1,6 +1,6 @@
 package group17.phase1.Titan;
 
-import group17.phase1.Titan.Simulation.SimulationInterface;
+import group17.phase1.Titan.Interfaces.SimulationInterface;
 import group17.phase1.Titan.Simulation.SimulationRepository;
 
 public class Main

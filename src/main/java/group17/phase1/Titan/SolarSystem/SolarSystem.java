@@ -1,7 +1,8 @@
 package group17.phase1.Titan.SolarSystem;
 
-import group17.phase1.Titan.Simulation.Gravity.ODEFunctionInterface;
-import group17.phase1.Titan.Simulation.Gravity.ODESolverInterface;
+import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
+import group17.phase1.Titan.Interfaces.ODESolverInterface;
+import group17.phase1.Titan.Interfaces.SolarSystemInterface;
 import group17.phase1.Titan.Simulation.Gravity.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.Bodies.Planet;

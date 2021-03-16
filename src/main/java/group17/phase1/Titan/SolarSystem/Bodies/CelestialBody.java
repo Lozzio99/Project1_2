@@ -1,7 +1,8 @@
 package group17.phase1.Titan.SolarSystem.Bodies;
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
-import group17.phase1.Titan.Simulation.Gravity.*;
+import group17.phase1.Titan.Interfaces.*;
+import group17.phase1.Titan.Simulation.Gravity.Vector3D;
 
 public abstract class CelestialBody implements ODESolverInterface, StateInterface, RateInterface
 {

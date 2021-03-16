@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package group17.phase1.Titan.Simulation.Gravity;
+package group17.phase1.Titan.Interfaces;
 
 public interface Vector3dInterface
 {
