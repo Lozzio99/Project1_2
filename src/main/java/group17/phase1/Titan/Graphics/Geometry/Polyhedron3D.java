@@ -1,13 +1,11 @@
-package demo;
+package group17.phase1.Titan.Graphics.Geometry;
 
 import group17.phase1.Titan.Simulation.Gravity.Vector3dInterface;
 
 import java.awt.*;
 
-
-
-public class Polyhedron3D {
-
+public class Polyhedron3D
+{
     private final Polygon3D[] Polygon3DS;
     private Color color;
 
@@ -79,5 +77,4 @@ public class Polyhedron3D {
             this.color = new Color(r, g, b);
         }
     }
-
 }

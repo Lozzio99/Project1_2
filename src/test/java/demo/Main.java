@@ -1,6 +1,8 @@
 package demo;
 
-import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
+
+import group17.phase1.Titan.Simulation.Gravity.Vector3D;
+import group17.phase1.Titan.Simulation.Gravity.Vector3dInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,7 +103,7 @@ public class Main
 
         public static class DemoShape {
             ArrayList<RenderableShapeInterface> shape;
-            Vector3D light;
+            Vector3dInterface light;
 
             DemoShape() {
                 this.shape = new ArrayList<>();
@@ -113,7 +115,7 @@ public class Main
                 this.light = new Vector3D(0, 0, 1);
                 for (RenderableShapeInterface s : shape) {
                     s.setLighting(light);
-                    s.translate(0, 0, 300);
+                    s.translate(400, -200, 100);
                 }
             }
 

@@ -1,16 +1,15 @@
-package demo;
+package group17.phase1.Titan.Graphics.Geometry;
 
-import group17.phase1.Titan.Graphics.Geometry.Point3D;
-import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
-import group17.phase1.Titan.Simulation.Gravity.*;
+import group17.phase1.Titan.Simulation.Gravity.Vector3D;
+import group17.phase1.Titan.Simulation.Gravity.Vector3dInterface;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Polygon3D {
-
+public class Polygon3D
+{
     private static final double AmbientLight = 0.13;
 
     private Color baseColor, lightingColor;
@@ -117,8 +116,8 @@ public class Polygon3D {
             return;
         }
 
-        Vector3D v1 = new Vector3D(this.points[0], this.points[1]);
-        Vector3D v2 = new Vector3D(this.points[1], this.points[2]);
+        Vector3dInterface v1 = new Vector3D(this.points[0], this.points[1]);
+        Vector3dInterface v2 = new Vector3D(this.points[1], this.points[2]);
         Vector3dInterface normal = Vector3D.normalize(Vector3D.cross( v2, v1));
         double dot = Vector3D.dot(normal, lightVector3D);
         double sign = dot < 0 ? -1 : 1;
@@ -134,8 +133,8 @@ public class Polygon3D {
     }
 
     private void updateVisibility() {
-        //this.visible = true;
-        this.visible = this.getAverageX() < 400;
+        this.visible = true;
+        //this.visible = this.getAverageX() < 800;
     }
 
     private void updateLightingColor(double lightRatio) {
@@ -146,9 +145,9 @@ public class Polygon3D {
     }
 
     private Point3D getAveragePoint() {
-        float x = 0;
-        float y = 0;
-        float z = 0;
+        double x = 0;
+        double y = 0;
+        double z = 0;
         for(Point3D p : this.points) {
             x += p.x + p.xOffset;
             y += p.y + p.yOffset;

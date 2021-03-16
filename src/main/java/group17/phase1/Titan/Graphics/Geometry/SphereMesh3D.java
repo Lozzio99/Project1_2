@@ -1,14 +1,13 @@
-package demo;
-
-import group17.phase1.Titan.Graphics.Geometry.Point3D;
+package group17.phase1.Titan.Graphics.Geometry;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SphereMesh3D {
-    public static RenderableShapeInterface createSphere(Color color, float radius, double xpos, double ypos, double zpos) {
-        java.util.List<Polygon3D> tetras = new ArrayList<>();
+public class SphereMesh3D
+{
+    public static Shape3D createSphere(Color color, float radius, double xpos, double ypos, double zpos) {
+        List<Polygon3D> tetras = new ArrayList<>();
         Point3D[] points = new Point3D[3];
         Sphere sphere = new Sphere(radius);
         int t = 0;
@@ -139,41 +138,4 @@ public class SphereMesh3D {
             }
         }
     }
-/*
-    public static void main(String[] args)
-    {
-        Sphere sphere = new Sphere();
-
-
-        for (Short i : sphere.getIndices().list)
-        {
-            Float x = sphere.getPositions().list.get(i*3);
-            Float y = sphere.getPositions().list.get(i*3+1);
-            Float z = sphere.getPositions().list.get(i*3+2);
-            System.out.println(" point at : "+ x + " > "+ y + " > "+ z);
-        }
-
-
-        System.out.println("\nRaw vertex and positions: (x,y,z) (r,g,b,a)");
-        int vertexCount = sphere.positions.list.size() / 3;
-        for (int index = 0; index < vertexCount; index++) {
-            String line = String.format(
-                    "(%f > %f > %f)\t(%f > %f > %f > %f)\t",
-                    sphere.positions.list.get(index*3),
-                    sphere.positions.list.get(index*3+1),
-                    sphere.positions.list.get(index*3+2),
-                    sphere.colors.list.get(index*4),
-                    sphere.colors.list.get(index*4+1),
-                    sphere.colors.list.get(index*4+2),
-                    sphere.colors.list.get(index*4+3));
-
-            System.out.println(line);
-        }
-
-        System.out.println("\nMesh zipped up into indices:");
-        System.out.println(sphere.indices.list.toString());
-
-
-    }
- */
 }

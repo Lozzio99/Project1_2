@@ -1,5 +1,6 @@
-package demo;
+package group17.phase1.Titan.Graphics.Geometry;
 
+import group17.phase1.Titan.Graphics.ShapeInterface;
 import group17.phase1.Titan.Simulation.Gravity.Vector3dInterface;
 
 import java.awt.*;
@@ -7,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Shape3D implements RenderableShapeInterface {
-
+public class Shape3D implements ShapeInterface
+{
     private final List<Polyhedron3D> polyhedra;
     private Polygon3D[] polygons;
 
@@ -23,7 +24,7 @@ public class Shape3D implements RenderableShapeInterface {
         this.sortPolygons();
     }
 
-    public void addEntity(Shape3D e) {
+    public void addEntity(ShapeInterface e) {
         this.polyhedra.addAll(e.getPolyhedrons());
         List<Polygon3D> tempList = new ArrayList<>();
         for (Polyhedron3D poly : this.polyhedra) {
@@ -34,9 +35,12 @@ public class Shape3D implements RenderableShapeInterface {
         this.sortPolygons();
     }
 
+
+    @Override
     public List<Polyhedron3D> getPolyhedrons() {
         return polyhedra;
     }
+
 
     @Override
     public void render(Graphics g) {

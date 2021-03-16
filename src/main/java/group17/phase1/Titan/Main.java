@@ -1,16 +1,14 @@
 package group17.phase1.Titan;
-import group17.phase1.Titan.Simulation.Simulation;
+
 import group17.phase1.Titan.Simulation.SimulationInterface;
+import group17.phase1.Titan.Simulation.SimulationRepository;
 
 public class Main
 {
-    public static SimulationInterface simulation = new Simulation();
 
-    public static void main(String[] args)
-    {
+    public static SimulationInterface simulation = new SimulationRepository();
 
-        //init is been called in simulation, in solarSystem
-        System.out.println(simulation.solarSystemRepository().allCelestialBodies().get(0).getX_LOCATION());
-        //.102 expected
+    public static void main(String[] args) {
+        System.out.println(simulation.getSolarSystemRepository());
     }
 }

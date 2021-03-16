@@ -1,6 +1,6 @@
 package demo;
 
-import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
+import group17.phase1.Titan.Simulation.Gravity.Vector3dInterface;
 
 import java.awt.*;
 
@@ -11,8 +11,8 @@ public interface RenderableShapeInterface
     //translate with result of the time step function
     void translate(double x, double y, double z);
 
-    void rotate(boolean clockwise, double xDeg, double yDeg, double zDeg, Vector3D lightingVector3D);
+    void rotate(boolean clockwise, double xDeg, double yDeg, double zDeg, Vector3dInterface lightingVector3D);
 
-    void setLighting(Vector3D lighting);
+    void setLighting(Vector3dInterface lighting);
 
 }
