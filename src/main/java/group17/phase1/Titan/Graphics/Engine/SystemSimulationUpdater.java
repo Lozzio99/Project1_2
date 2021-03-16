@@ -8,25 +8,28 @@ import group17.phase1.Titan.Graphics.UserInput.MouseInput;
 import group17.phase1.Titan.Main;
 
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SystemSimulationUpdater
 {
 
-    private final Lock sync = new ReentrantLock();
+    private final Lock syncMovement = new ReentrantLock();
 
     private MouseInput mouse;
 
     private int initialX, initialY;
     private final double mouseSensitivity = 6;
     private final double moveSpeed = 100;
-
-
-
-
     private final int UNIT_SIZE = GraphicsManager.HEIGHT;
+
+
+    Point3D [] planetsPositions;
+    double[] radius;
+    Color[] colors;
 
     Point3D left = new Point3D(-UNIT_SIZE,0,0),
     right = new Point3D(UNIT_SIZE,0,0),
@@ -36,14 +39,32 @@ public class SystemSimulationUpdater
     rear = new Point3D(0,0,-UNIT_SIZE);
 
 
-
-    public SystemSimulationUpdater()
+    void startSimulation()
     {
-        //init variables..
-        //..
+
+        this.planetsPositions = new Point3D[Main.simulation.solarSystemRepository().allCelestialBodies().size()];
+        double scale = 5e8;
+        for (int i = 0; i< this.planetsPositions.length; i++)
+        {
+            this.planetsPositions[i] = Main.simulation.solarSystemRepository().allCelestialBodies().get(i).getPointLocation();
+            this.planetsPositions[i].x/= scale;
+            this.planetsPositions[i].y/= scale;
+            this.planetsPositions[i].z/= scale;
+        }
+        scale /= 1e4;
+
+        radius = new double[Main.simulation.solarSystemRepository().allCelestialBodies().size()];
+        this.colors = new Color[this.radius.length];
+
+        for (int i =0; i<radius.length; i++)
+        {
+            radius[i] = Main.simulation.solarSystemRepository().allCelestialBodies().get(i).getRADIUS()/scale;
+            this.colors[i] = new Color(new Random().nextInt(255),new Random().nextInt(255),255,180);
+        }
+
+
         this.rotateAxisZ(true,5);
         this.rotateAxisY(true,5);
-
     }
 
     void paint(Graphics graphics)
@@ -65,27 +86,38 @@ public class SystemSimulationUpdater
         graphics.drawString("z Axis",20,40);
         Line2D.Double zAxis = new Line2D.Double(Point3DConverter.convertPoint(rear),Point3DConverter.convertPoint(front));
         g.draw(zAxis);
+
+
+
+        for (int i = 0; i< this.planetsPositions.length; i++)
+        {
+            g.setColor(this.colors[i]);
+            g.fill(planetShape(this.planetsPositions[i],this.radius[i]));
+        }
     }
 
     void update()
     {
         this.updateLocations();
+
         int x = this.mouse.getX();
         int y = this.mouse.getY();
 
         boolean cw = false;
+
+
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
             int xDif = x - initialX;
             if (xDif>0)
                 cw = true;
-            this.rotateAxisX(cw,xDif/mouseSensitivity);
+            this.rotateAxisY(cw,xDif/mouseSensitivity);
         }
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
             int yDif = y - initialY;
             if (yDif>0)
                 cw = true;
 
-            this.rotateAxisZ(cw,yDif/mouseSensitivity);
+            this.rotateAxisX(cw,yDif/mouseSensitivity);
 
         }
 
@@ -102,26 +134,32 @@ public class SystemSimulationUpdater
         initialX = x;
         initialY = y;
 
-
-        //this.rotateAxisX(true,0.1);
-
+        this.rotateAxisY(true,0.01);
     }
 
     void updateLocations()
     {
-        for (CelestialBody p : Main.simulation.solarSystemRepository().allCelestialBodies())
-        {
-            Planet.Slave calculator = new Planet.Slave(p);
-            Planet.Slave.setSyncLock(sync);
-            calculator.start();
+        synchronized (syncMovement){
+            for (CelestialBody p : Main.simulation.solarSystemRepository().allCelestialBodies())
+            {
+                Planet.Slave calculator = new Planet.Slave(p);
+                calculator.start();
+            }
         }
+    }
+
+    Ellipse2D.Double planetShape(Point3D position, double radius)
+    {
+        Point p = Point3DConverter.convertPoint(position);
+
+        return new Ellipse2D.Double(p.getX(),p.getY(),radius,radius);
     }
 
     public void addMouseControl(MouseInput mouse){
         this.mouse = mouse;
     }
 
-    public void rotateAxisX(boolean cw, double x){
+    public void rotateAxisY(boolean cw, double x){
         if (cw)
             x*=-1;
 
@@ -131,20 +169,22 @@ public class SystemSimulationUpdater
         Point3DConverter.rotateAxisY(right,cw,x);
         Point3DConverter.rotateAxisY(rear,cw,x);
         Point3DConverter.rotateAxisY(front,cw,x);
+        for (Point3D p : this.planetsPositions)
+            Point3DConverter.rotateAxisY(p,cw,x);
 
     }
-    void rotateAxisZ(boolean cw, double z){
-        if (cw)
-            z*=-1;
+    void rotateAxisX(boolean cw, double z){
             Point3DConverter.rotateAxisX(top,cw,z);
             Point3DConverter.rotateAxisX(bottom,cw,z);
             Point3DConverter.rotateAxisX(left,cw,z);
             Point3DConverter.rotateAxisX(right,cw,z);
             Point3DConverter.rotateAxisX(rear,cw,z);
             Point3DConverter.rotateAxisX(front,cw,z);
+        for (Point3D p : this.planetsPositions)
+            Point3DConverter.rotateAxisX(p,cw,z);
     }
 
-    void rotateAxisY(boolean cw, double y){
+    void rotateAxisZ(boolean cw, double y){
         if (cw)
             y*=-1;
             Point3DConverter.rotateAxisZ(top,cw,y);
@@ -153,5 +193,7 @@ public class SystemSimulationUpdater
             Point3DConverter.rotateAxisZ(right,cw,y);
             Point3DConverter.rotateAxisZ(rear,cw,y);
             Point3DConverter.rotateAxisZ(front,cw,y);
+        for (Point3D p : this.planetsPositions)
+            Point3DConverter.rotateAxisZ(p,cw,y);
     }
 }

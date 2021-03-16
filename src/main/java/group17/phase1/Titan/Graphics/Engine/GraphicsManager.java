@@ -93,6 +93,8 @@ public class GraphicsManager
             long lastTime = System.nanoTime();
             double elapsedTime = 0.0;
             double FPS = 60.;
+            this.visualization.startSimulation();
+
             while (true) {
                 /*
                 long now = System.nanoTime();

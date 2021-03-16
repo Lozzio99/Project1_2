@@ -1,13 +1,13 @@
 package group17.phase1.Titan.Bodies;
 
 import group17.phase1.Titan.Bodies.CelestialBodies.CelestialBody;
+import group17.phase1.Titan.Bodies.CelestialBodies.Planet;
+import group17.phase1.Titan.Bodies.CelestialBodies.Satellite;
 import group17.phase1.Titan.Bodies.CelestialBodies.Star;
 import group17.phase1.Titan.Graphics.Renderer.Point3D;
-import group17.phase1.Titan.Physics.TimeSequence.SolverInterface;
 import group17.phase1.Titan.Physics.Trajectories.CoordinateInterface;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3DInterface;
-import group17.phase1.Titan.Physics.Trajectories.FunctionInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,16 +25,6 @@ public class SolarSystem implements SolarSystemInterface
     @Override
     public List<CelestialBody> allCelestialBodies() {
         return this.allBodies;
-    }
-
-
-
-    @Override
-    public void updateLocation(CelestialBody body, SolverInterface functionSolver) {
-
-        FunctionInterface f =  (e1,e2)->e2 = e2.mul(e1);
-        Vector3DInterface[] v = functionSolver.solve( f, //random function
-                                SSB,0,0);  //random vector
     }
 
     public SolarSystem(){
@@ -62,6 +52,41 @@ public class SolarSystem implements SolarSystemInterface
         //.....
         this.allBodies.add(sun);
 
+        Planet mercury = new Planet(Planet.PlanetsEnum.MERCURY);
+        mercury.setMASS(3.302e+23);
+        mercury.setRADIUS(2.4397e6);
+        mercury.setVectorLocation(new Vector3D(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09));
+        mercury.setVectorVelocity(new Vector3D(3.892585189044652e+04, 2.978342247012996e+03, 3.327964151414740e+03));
+        //mercury.setColour(Color.magenta);
+        this.allBodies.add(mercury);
+
+        // Venus
+        Planet venus = new Planet(Planet.PlanetsEnum.VENUS);
+        venus.setMASS(4.8685e24);
+        venus.setRADIUS(6.0518e6);
+        venus.setVectorLocation(new Vector3D(-9.435345478592035e+10, 5.350359551033670e+10, 6.131453014410347e+09));
+        venus.setVectorVelocity(new Vector3D(-1.726404287724406e+04, -3.073432518238123e+04, 5.741783385280979e-04));
+        //venus.setColour(Color.orange);
+        this.allBodies.add(venus);
+
+        // Earth
+        Planet earth = new Planet(Planet.PlanetsEnum.EARTH);
+        earth.setMASS(5.97219e24);
+        earth.setRADIUS(6.371e6);
+        earth.setVectorLocation(new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06));
+        earth.setVectorVelocity(new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
+        //earth.setColour(Color.blue);
+        this.allBodies.add(earth);
+
+        // Luna
+        Satellite luna = new Satellite(Satellite.SatellitesEnum.MOON);
+        luna.setMASS(7.349e22);
+        luna.setRADIUS(1.7371e6);
+        luna.setVectorLocation(new Vector3D(-1.472343904597218e+11, -2.822578361503422e+10, 1.052790970065631e+07));
+        luna.setVectorVelocity(new Vector3D(4.433121605215677e+03, -2.948453614110320e+04, 8.896598225322805e+01));
+        //luna.setColour(Color.gray);
+        this.allBodies.add(luna);
     }
+
 
 }

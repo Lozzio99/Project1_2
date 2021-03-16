@@ -1,11 +1,11 @@
 package group17.phase1.Titan.Bodies.CelestialBodies;
 
+import group17.phase1.Titan.Graphics.Renderer.Point3D;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.TimeSequence.GalacticClock;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3D;
 import group17.phase1.Titan.Physics.Trajectories.Forces.Vector3DInterface;
-
-import java.util.concurrent.locks.Lock;
+import group17.phase1.Titan.Physics.Trajectories.FunctionInterface;
 
 public abstract class CelestialBody
 {
@@ -134,11 +134,15 @@ public abstract class CelestialBody
 
     public double getZ_ROTATION() { return this.Z_ROTATION; }
 
-    Vector3D getVectorPosition(){
+    public Point3D getPointLocation(){
+        return new Point3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
+    }
+
+    public Vector3DInterface getVectorLocation(){
         return new Vector3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
     }
 
-    public void move(Vector3DInterface newDirection)
+    public void setVectorLocation(Vector3DInterface newDirection)
     {
         this.setX_LOCATION(newDirection.getX());
         this.setY_LOCATION(newDirection.getY());
@@ -152,36 +156,39 @@ public abstract class CelestialBody
     }
 
     public double getDistanceRadius(CelestialBody other){
-        return Vector3D.dist(other.getVectorPosition(),this.getVectorPosition());
+        return Vector3D.dist(other.getVectorLocation(),this.getVectorLocation());
     }
 
 
-    public static class Slave extends Thread
+    public static class Slave extends Thread implements FunctionInterface
     {
-        static Lock syncLock;
         private final CelestialBody planet;
         public Slave(CelestialBody p){
             this.planet = p;
         }
 
-        public static void setSyncLock(Lock sync){ syncLock = sync;}
-
         @Override
-        public void run(){
-
-            synchronized (syncLock){
-                for (CelestialBody p : Main.simulation.solarSystemRepository().allCelestialBodies())
-                {
-                    if (p!= this.planet){
-                        double dist = planet.getDistanceRadius(p);
-                        Vector3DInterface forceDirection = Vector3D.unitVectorDistance(planet.getVectorPosition(),p.getVectorPosition());
-                        Vector3DInterface force = forceDirection.mul(G).mul(planet.getMASS()).mul(p.getMASS()).div(dist);
-                        Vector3DInterface acceleration = force.mul(1./planet.getMASS());
-                        planet.setVectorVelocity(acceleration.mul(GalacticClock.GALACTIC_TIME_STEP));
-                    }
-                }
-            }
+        public synchronized void run()
+        {
+            this.planet.setVectorVelocity(this.call(GalacticClock.GALACTIC_TIME_STEP,this.planet.getVectorLocation()));
         }
 
+        @Override
+        public Vector3DInterface call(double t, Vector3DInterface s)
+        {
+            Vector3DInterface orbitalMovement = s;
+            for (CelestialBody p : Main.simulation.solarSystemRepository().allCelestialBodies())
+            {
+                if (p!= this.planet)
+                {
+                    double dist = planet.getDistanceRadius(p);
+                    Vector3DInterface forceDirection = Vector3D.unitVectorDistance(orbitalMovement,p.getVectorLocation());
+                    Vector3DInterface force = forceDirection.mul(G).mul(planet.getMASS()).mul(p.getMASS()).div(dist);
+                    Vector3DInterface acceleration = force.mul(1./planet.getMASS());
+                    orbitalMovement = acceleration.mul(t);
+                }
+            }
+            return orbitalMovement;
+        }
     }
 }

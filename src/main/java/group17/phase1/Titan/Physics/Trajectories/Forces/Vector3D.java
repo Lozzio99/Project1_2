@@ -64,7 +64,7 @@ public class Vector3D implements Vector3DInterface
         return Math.sqrt(v1+v2+v3);
     }
 
-    public static Vector3DInterface unitVectorDistance(Vector3D from,Vector3D to){
+    public static Vector3DInterface unitVectorDistance(Vector3DInterface from,Vector3DInterface to){
         return normalize(new Vector3D(from.getX()-to.getX(),
                 from.getY()-to.getY(),
                 from.getZ()-to.getZ()));

@@ -10,7 +10,6 @@ public class Point3DConverter {
     private static final double ZoomFactor = 1.05;
     private static final int SCREEN_WIDTH = GraphicsManager.WIDTH, SCREEN_HEIGHT = GraphicsManager.HEIGHT;
 
-
     public static void zoomIn() {
         scale *= ZoomFactor;
     }
@@ -46,24 +45,24 @@ public class Point3DConverter {
         double radius = Math.sqrt(p.y*p.y + p.z*p.z);
         double theta = Math.atan2(p.z, p.y);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
-        p.y = (float) (radius * Math.cos(theta));
-        p.z = (float)(radius * Math.sin(theta));
+        p.y =  (radius * Math.cos(theta));
+        p.z = (radius * Math.sin(theta));
     }
 
     public static void rotateAxisY(Point3D p, boolean CW, double degrees) {
         double radius = Math.sqrt(p.x*p.x + p.z*p.z);
         double theta = Math.atan2(p.x, p.z);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
-        p.x = (float) (radius * Math.sin(theta));
-        p.z = (float) (radius * Math.cos(theta));
+        p.x =  (radius * Math.sin(theta));
+        p.z =  (radius * Math.cos(theta));
     }
 
     public static void rotateAxisZ(Point3D p, boolean CW, double degrees) {
         double radius = Math.sqrt(p.y*p.y + p.x*p.x);
         double theta = Math.atan2(p.y, p.x);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
-        p.y =(float) (radius * Math.sin(theta));
-        p.x =(float) (radius * Math.cos(theta));
+        p.y = (radius * Math.sin(theta));
+        p.x = (radius * Math.cos(theta));
     }
 
 }
