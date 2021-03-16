@@ -5,10 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class GraphicsManager
 {
     private final String FPS_RATE = "";
+    private final AtomicReference <DialogFrame> assist = new AtomicReference<>(new DialogFrame());
     private final MainThread engine;
     private final JFrame frame;
     private MouseInput mouseInput;
@@ -20,6 +22,8 @@ public class GraphicsManager
 
     public GraphicsManager()
     {
+        Thread t = new Thread(()-> this.assist.get().init());
+        t.start();
         this.frame = new JFrame(FPS_RATE);
         this.frame.setSize(SCREEN);
         setWindowProperties();

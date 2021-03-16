@@ -2,7 +2,7 @@ package group17.phase1.Titan.SolarSystem.Bodies;
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Simulation.Gravity.Vector3D;
+import group17.phase1.Titan.Simulation.Vector3D;
 
 public abstract class CelestialBody
 {
@@ -156,6 +156,8 @@ public abstract class CelestialBody
 
     public double getZ_ROTATION() { return this.Z_ROTATION; }
 
+
+
     public Point3D getPointLocation(){
         return new Point3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
     }
@@ -164,28 +166,23 @@ public abstract class CelestialBody
 
     public Vector3dInterface getVectorLocation()
     {
-        return new Vector3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
+        return this.LocationVector;
     }
 
     public void setVectorLocation(Vector3dInterface newDirection)
     {
-        this.setX_LOCATION(newDirection.getX());
-        this.setY_LOCATION(newDirection.getY());
-        this.setZ_LOCATION(newDirection.getZ());
+        LocationVector = newDirection;
     }
 
 
 
     public void setVectorVelocity(Vector3dInterface newVelocity){
-        this.setX_VELOCITY(newVelocity.getX());
-        this.setY_VELOCITY(newVelocity.getY());
-        this.setZ_VELOCITY(newVelocity.getZ());
+        VelocityVector = newVelocity;
     }
 
     public double getDistanceRadius(CelestialBody other){
         return Vector3D.dist(other.getVectorLocation(),this.getVectorLocation());
     }
-
 
 
     public void setShiftVector(Vector3dInterface dxyz){
@@ -198,6 +195,7 @@ public abstract class CelestialBody
 
     public void applyAttractionVector()
     {
+
         this.VelocityVector.add(this.ShiftVector);
         this.LocationVector.add(this.VelocityVector);
     }

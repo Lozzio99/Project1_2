@@ -94,8 +94,6 @@ public class SystemSimulationUpdater
 
     void update()
     {
-        this.updateLocations();
-
         int x = this.mouse.getX();
         int y = this.mouse.getY();
 
@@ -132,11 +130,6 @@ public class SystemSimulationUpdater
         initialY = y;
 
         this.rotateAxisY(true,0.01);
-    }
-
-    void updateLocations()
-    {
-
     }
 
     Ellipse2D.Double planetShape(Point3D position, double radius)

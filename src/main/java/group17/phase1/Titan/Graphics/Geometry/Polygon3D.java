@@ -1,7 +1,7 @@
 package group17.phase1.Titan.Graphics.Geometry;
 
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Simulation.Gravity.Vector3D;
+import group17.phase1.Titan.Simulation.Vector3D;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -3,21 +3,29 @@ package group17.phase1.Titan.Simulation;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Main;
-import group17.phase1.Titan.Simulation.Gravity.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class SimulationRepository implements SimulationInterface, ODESolverInterface , ODEFunctionInterface
+
+public class SimulationRepository implements SimulationInterface, ODESolverInterface , ODEFunctionInterface, StateInterface, RateInterface
 {
     SolarSystemInterface repository;
     GraphicsManager graphicsManager;
+    List<Vector3dInterface> nextState;
+    ODESolverInterface solver;
+    ODEFunctionInterface gravity;
 
     public SimulationRepository()
     {
         this.repository = new SolarSystem();
         this.graphicsManager = new GraphicsManager();
         this.graphicsManager.startMainThread();
+        this.nextState = new ArrayList<>();
+        for (CelestialBody c : this.repository.getCelestialBodies())
+            this.nextState.add(c.getVectorLocation());
     }
 
     @Override
@@ -25,12 +33,21 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         return this.repository;
     }
 
+
     @Override
     public GraphicsManager getGraphicsManager() {
         return this.graphicsManager;
     }
 
-    void loopSimulation(){  }
+    @Override
+    public ODESolverInterface getSolver() {
+        return this;
+    }
+
+    @Override
+    public ODEFunctionInterface getFunction() {
+        return this;
+    }
 
 
     /*
@@ -74,11 +91,12 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     public StateInterface[] solve(ODEFunctionInterface gravity, StateInterface stateAt0, double endTime, double timeSize)
     {
         StateInterface[] path = new StateInterface[(int)(Math.round(endTime/timeSize))+1];
-        double time0 = 0, timeSeq = endTime/timeSize;
-        for (int i = 0; i< path.length;i++){
+        double time0 = 0;
+        for (int i = 0; i< path.length-1;i++){
             path[i] = this.step(gravity,time0,stateAt0,timeSize);
-            time0+= timeSeq;
+            time0+= timeSize;
         }
+        path[path.length-1] = this.step(gravity,endTime,stateAt0,timeSize);
         return path;
     }
 
@@ -116,39 +134,67 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
      *
      * ++++++++++++++ CALCULATE ATTRACTION ++++++++++++++++++++++*/
 
-
     @Override
     public RateInterface call(double timeAt, StateInterface stateAtTime)
     {
-        double dx = 0, dy = 0, dz = 0,
-                distance,diffX,diffY,diffZ,distance3;
-        for (CelestialBody from : Main.simulation.getSolarSystemRepository().getCelestialBodies())
+
+        for (int i = 0; i< this.getSolarSystemRepository().getCelestialBodies().size(); i++)
         {
+            Vector3dInterface from = this.getSolarSystemRepository().getCelestialBodies().get(i).getVectorLocation();
+
             for (CelestialBody to : Main.simulation.getSolarSystemRepository().getCelestialBodies())
             {
-                if (to == from) continue;
-                //also, if distance is higher than some value we will keep skipping i guess
-                //or better, if mass/distance is higher or who knows
-
-                diffX  = to.getX_LOCATION()-from.getX_LOCATION();
-                diffY  = to.getY_LOCATION()-from.getY_LOCATION();
-                diffZ  = to.getZ_LOCATION()-from.getZ_LOCATION();
-                distance = Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
-                distance3 = distance * distance * distance;
-                dx += (to.getMASS() * diffX)/ distance3;
-                dy += (to.getMASS() * diffY)/ distance3;
-                dz += (to.getMASS() * diffZ)/ distance3;
+                if (to.getVectorLocation() == from) continue;
+                double sqrtDist  = from.dist(to.getVectorLocation());
+                Vector3dInterface forceDir = Vector3D.unitVectorDistance(from,to.getVectorLocation());
+                forceDir.mul(G);
+                forceDir.mul(this.getSolarSystemRepository().getCelestialBodies().get(i).getMASS());
+                forceDir.mul(to.getMASS());
+                forceDir.div(sqrtDist);
+                forceDir.div(this.getSolarSystemRepository().getCelestialBodies().get(i).getMASS());
+                from.addMul(timeAt,forceDir);
             }
-            dx *= G * timeAt;
-            dy *= G * timeAt;
-            dz *= G * timeAt;
-            from.setShiftVector(new Vector3D(dx,dy,dz));
-
+            this.nextState.set(i,from);
             //the state of the system now tends to somewhere else that is given in the shift vector
             //this applies to the whole simulation and it's applied to each body with respect to all
             //other bodies
         }
-        return Main.simulation.getSolarSystemRepository().getRateOfChange();
+        this.setShiftVectors(nextState);
+        return this;
+    }
+
+
+    /**
+     * Update a state to a new state computed by: this + step * rate
+     *
+     * @param step   The time-step of the update
+     * @param rate   The average rate-of-change over the time-step. Has dimensions of [state]/[time].
+     * @return The new state after the update. Required to have the same class as 'this'.
+     */
+
+    @Override
+    public StateInterface addMul(double step, RateInterface rate) {
+        for (int i = 0; i< this.repository.getCelestialBodies().size(); i++)
+        {
+            this.getSolarSystemRepository().getCelestialBodies().get(i).setShiftVector(rate.getShiftVectors().get(i));
+            this.getSolarSystemRepository().getCelestialBodies().get(i).applyAttractionVector();
+        }
+        return this;
+    }
+
+    @Override
+    public List<Vector3dInterface> getShiftVectors() {
+        return this.nextState;
+    }
+
+    @Override
+    public void setShiftVectors(List<Vector3dInterface> nextState) {
+        this.nextState = nextState;
+    }
+
+    @Override
+    public String toString(){
+        return this.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation().toString();
     }
 
 

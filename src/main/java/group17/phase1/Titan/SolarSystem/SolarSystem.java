@@ -1,7 +1,7 @@
 package group17.phase1.Titan.SolarSystem;
 
-import group17.phase1.Titan.Interfaces.*;
-import group17.phase1.Titan.Simulation.Gravity.Vector3D;
+import group17.phase1.Titan.Interfaces.SolarSystemInterface;
+import group17.phase1.Titan.Simulation.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.Bodies.Planet;
 import group17.phase1.Titan.SolarSystem.Bodies.Satellite;
@@ -10,12 +10,9 @@ import group17.phase1.Titan.SolarSystem.Bodies.Star;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SolarSystem implements SolarSystemInterface, StateInterface, RateInterface
+public class SolarSystem implements SolarSystemInterface
 {
     List<CelestialBody> allBodies;
-    ODESolverInterface gravityCalculator;
-    ODEFunctionInterface gravity;
-
 
 
     public SolarSystem()
@@ -29,15 +26,18 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         sun.setMASS(1.988500e+30);
         sun.setRADIUS(6.96342e+08);
         sun.setDENSITY(1.41);
+        sun.setVectorLocation(new Vector3D(-6.806783239281648e+08,1.080005533878725e+09,6.564012751690170e+06));
+        sun.setVectorVelocity(new Vector3D(1.420511669610689e+01,-4.954714716629277e+00,3.994237625449041e-01));
         sun.setX_LOCATION(-6.806783239281648e+08);
         sun.setY_LOCATION(1.080005533878725e+09);
-        sun.setX_LOCATION(6.564012751690170e+06);
+        sun.setZ_LOCATION(6.564012751690170e+06);
         sun.setX_VELOCITY(1.420511669610689e+01);
         sun.setY_VELOCITY(-4.954714716629277e+00);
         sun.setZ_VELOCITY(3.994237625449041e-01);
         sun.setX_ROTATION(0);
         sun.setY_ROTATION(0);
         sun.setZ_ROTATION(0);
+
         //.....
         this.allBodies.add(sun);
 
@@ -84,29 +84,5 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
     }
 
 
-    /**
-     * Update a state to a new state computed by: this + step * rate
-     *
-     * @param step   The time-step of the update
-     * @param rate   The average rate-of-change over the time-step. Has dimensions of [state]/[time].
-     * @return The new state after the update. Required to have the same class as 'this'.
-     */
-
-
-    @Override
-    public StateInterface addMul(double step, RateInterface rate)
-    {
-        return this;
-    }
-
-    @Override
-    public RateInterface getRateOfChange(){
-        return this;
-    }
-
-    @Override
-    public StateInterface getState(){
-        return this;
-    }
 
 }

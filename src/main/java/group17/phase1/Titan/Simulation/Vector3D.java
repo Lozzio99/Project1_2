@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Simulation.Gravity;
+package group17.phase1.Titan.Simulation;
 
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
@@ -12,30 +12,37 @@ public class Vector3D implements Vector3dInterface
     @Override
     public Vector3dInterface add(Vector3dInterface other)
     {
-        return new Vector3D(this.getX()+other.getX(),
-                            this.getY()+other.getY(),
-                            this.getZ()+other.getZ());
+        this.setX(this.getX()+ other.getX());
+        this.setY(this.getY()+other.getY());
+        this.setZ(this.getZ()+other.getZ());
+        return this;
     }
 
     @Override
-    public Vector3dInterface sub(Vector3dInterface other) {
-        return new Vector3D(this.getX()-other.getX(),
-                            this.getY()-other.getY(),
-                            this.getZ()-other.getZ());
+    public Vector3dInterface sub(Vector3dInterface other)
+    {
+        this.x = this.x-other.getX();
+        this.y = this.y-other.getY();
+        this.z = this.z-other.getZ();
+        return this;
     }
 
     @Override
-    public Vector3dInterface mul(double scalar) {
-        return new Vector3D(this.getX()*scalar,
-                            this.getY()*scalar,
-                            this.getZ()*scalar);
+    public Vector3dInterface mul(double scalar)
+    {
+        this.x = this.x*scalar;
+        this.y = this.y * scalar;
+        this.z = this.z * scalar;
+        return this;
     }
 
     @Override
-    public Vector3dInterface div(double scalar) {
-        return new Vector3D(this.getX()/scalar,
-                this.getY()/scalar,
-                this.getZ()/scalar);
+    public Vector3dInterface div(double scalar)
+    {
+        this.x = this.x/scalar;
+        this.y = this.y/scalar;
+        this.z = this.z/scalar;
+        return this;
     }
 
     @Override
@@ -99,16 +106,21 @@ public class Vector3D implements Vector3dInterface
         return v1.getX()*v2.getX()+ v1.getY()*v2.getY() + v1.getZ()*v2.getZ();
     }
 
-    public static Vector3dInterface cross(Vector3dInterface v1, Vector3dInterface v2) {
+    public static Vector3dInterface cross(Vector3dInterface v1, Vector3dInterface v2)
+    {
         return new Vector3D(
                 v1.getY()*v2.getZ() - v1.getZ()*v2.getY(),
                 v1.getZ()*v2.getX() - v1.getX()*v2.getZ(),
                 v1.getX()*v2.getY() - v1.getY()*v2.getX());
     }
 
-    public static Vector3dInterface normalize(Vector3dInterface v) {
+    public static Vector3dInterface normalize(Vector3dInterface v)
+    {
         double magnitude = Math.sqrt(v.getX()*v.getX() + v.getY()*v.getY() + v.getZ()*v.getZ());
-        return new Vector3D(v.getX()/magnitude, v.getY()/magnitude, v.getZ()/magnitude);
+        v.setX(v.getX()/magnitude);
+        v.setY(v.getY()/magnitude);
+        v.setZ(v.getZ()/magnitude);
+        return v;
     }
 
     @Override

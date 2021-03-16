@@ -10,4 +10,7 @@ public interface SimulationInterface
 
     double G = 6.67e-11;
 
+    ODESolverInterface getSolver();
+
+    ODEFunctionInterface getFunction();
 }

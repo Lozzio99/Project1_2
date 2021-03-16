@@ -13,6 +13,7 @@ package group17.phase1.Titan.Interfaces;
 
 public interface StateInterface
 {
+
     /**
      * Update a state to a new state computed by: this + step * rate
      *
@@ -21,7 +22,6 @@ public interface StateInterface
      * @return The new state after the update. Required to have the same class as 'this'.
      */
     StateInterface addMul(double step, RateInterface rate);
-
 
     String toString();
 
