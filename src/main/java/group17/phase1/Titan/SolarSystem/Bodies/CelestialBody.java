@@ -114,6 +114,10 @@ public abstract class CelestialBody
     public Vector3dInterface getVectorLocation() {
         return this.LocationVector;
     }
+    
+    public Vector3dInterface getVectorVelocity() {
+    	return this.VelocityVector;
+    }
 
     public void setVectorLocation(Vector3dInterface newDirection) {
         LocationVector = newDirection;
