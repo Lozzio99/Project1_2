@@ -14,6 +14,7 @@ package group17.phase1.Titan.Interfaces;
  */
 public interface ODESolverInterface {
 
+
     /*
      * Solve the differential equation by taking multiple steps.
      *
@@ -22,6 +23,7 @@ public interface ODESolverInterface {
      * @param   ts      the times at which the states should be output, with ts[0] being the initial time
      * @return  an array of size ts.length with all intermediate states along the path
      */
+
     StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts);
 
     /*
@@ -34,7 +36,9 @@ public interface ODESolverInterface {
      * @param   h       the size of step to be taken
      * @return  an array of size round(tf/h)+1 including all intermediate states along the path
      */
+
     StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h);
+
 
     /*
      * Update rule for one step.
@@ -45,5 +49,6 @@ public interface ODESolverInterface {
      * @param   h   the step size
      * @return  the new state after taking one step
      */
+
     StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h);
 }

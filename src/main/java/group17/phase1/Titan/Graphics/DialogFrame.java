@@ -1,5 +1,7 @@
 package group17.phase1.Titan.Graphics;
 
+import group17.phase1.Titan.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,12 +13,19 @@ import java.awt.event.ActionListener;
 public class DialogFrame extends JFrame {
 
     private JTextArea textArea;
-    private JTextField stSizeField;
-    private JTextField lXCoordField;
-    private JTextField lYCoordField;
-    private JTextField lZCoordField;
+    private JTextField stSizeField = new JTextField(2);
+    ;
+    private JTextField lXCoordField = new JTextField(2);
+    ;
+    private JTextField lYCoordField = new JTextField(2);
+    ;
+    private JTextField lZCoordField = new JTextField(2);
+    ;
+    private double X_LAUNCH,Y_LAUNCH,Z_LAUNCH;
+    private boolean started = false;
 
-    public void init(){
+    public void init()
+    {
         setSize(800, 300);
         setTitle("Dialog window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,13 +34,12 @@ public class DialogFrame extends JFrame {
         wrapperPanel.setLayout(new GridLayout(1, 2, 1, 1));
 
         wrapperPanel.add(createSetUpPanel());
+        this.textArea = new JTextArea(10, 30);
 
-        textArea = new JTextArea(10, 30);
-        JScrollPane scrollPane = new JScrollPane(textArea);
+        JScrollPane scrollPane = new JScrollPane(this.textArea);
         wrapperPanel.add(scrollPane);
 
         add(wrapperPanel);
-
         setVisible(true);
     }
 
@@ -43,19 +51,15 @@ public class DialogFrame extends JFrame {
         
         // Here add all the input parameter fields
         inputPanel.add(new JLabel("Time step size (sec.) "));
-        stSizeField = new JTextField(2);
         inputPanel.add(stSizeField);
 
         inputPanel.add(new JLabel("Launch X "));
-        lXCoordField = new JTextField(2);
         inputPanel.add(lXCoordField);
 
         inputPanel.add(new JLabel("Launch Y "));
-        lYCoordField = new JTextField(2);
         inputPanel.add(lYCoordField);
 
         inputPanel.add(new JLabel("Launch Z "));
-        lZCoordField = new JTextField(2);
         inputPanel.add(lZCoordField);
 
         JButton startButton = new JButton("Start simulation");
@@ -70,14 +74,19 @@ public class DialogFrame extends JFrame {
         return rootPanel;
     }
 
-    class startBtnListener implements ActionListener {
-
+    class startBtnListener implements ActionListener
+    {
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
+
+            started = true;
             System.out.println("Commence simulation...");
         }
 
+    }
+
+    public boolean isStarted() {
+        return started;
     }
 
     class clearBtnListener implements ActionListener {
@@ -98,27 +107,31 @@ public class DialogFrame extends JFrame {
         textArea.append(message + "\n");
     }
 
+    public void setOutput(String message) {
+        textArea.setText(message + "\n");
+    }
+
     public double getTimeStepSize() {
         return Double.parseDouble(stSizeField.getText());
     }
 
-    public double getLaunchX() {
+    public double getLaunchX()
+    {
+        if (lXCoordField.getText().equals(""))
+            return 0;
         return Double.parseDouble(lXCoordField.getText());
     }
 
     public double getLaunchY() {
+        if (lYCoordField.getText().equals(""))
+            return 0;
         return Double.parseDouble(lYCoordField.getText());
     }
 
     public double getLaunchZ() {
+        if (lZCoordField.getText().equals(""))
+            return 0;
         return Double.parseDouble(lZCoordField.getText());
     }
 
-
-
-    public static void main(String[] args) {
-        
-        new DialogFrame();
-
-    }
 }

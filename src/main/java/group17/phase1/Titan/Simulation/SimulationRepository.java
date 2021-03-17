@@ -21,7 +21,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     {
         this.repository = new SolarSystem();
         this.graphicsManager = new GraphicsManager();
-        this.graphicsManager.startMainThread();
+
         this.nextState = new ArrayList<>();
         for (CelestialBody c : this.repository.getCelestialBodies())
             this.nextState.add(c.getVectorLocation());

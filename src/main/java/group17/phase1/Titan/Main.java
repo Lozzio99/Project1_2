@@ -24,10 +24,11 @@ public class Main
         System.out.println("\n\n\n\n\n\n"+11313113e301+ "\n\n\n\n\n\n");
         int i = 0;
         int hour = 360,year = hour*24*365;//one hour
-        while(i<year){ // one year
+        while(i<year)
+        { // one year
             Main.simulation.getSolver().step(Main.simulation.getFunction(),hour,(StateInterface) Main.simulation,hour);
             i+=360;
-            //System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation());
+            System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation());
         }
     }
 }

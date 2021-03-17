@@ -6,13 +6,16 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class GraphicsManager
 {
     private final String FPS_RATE = "";
+    private final Lock syncAssist = new ReentrantLock();
     private final AtomicReference <DialogFrame> assist = new AtomicReference<>(new DialogFrame());
-    private  MainThread engine;
-    private  JFrame frame;
+    private MainThread engine;
+    private JFrame frame;
     private MouseInput mouseInput;
     private SystemSimulationUpdater simulationUpdater;
     public static int WIDTH = 1480, HEIGHT = 810;
@@ -22,16 +25,35 @@ public class GraphicsManager
 
     public GraphicsManager()
     {
-       this.init();
-    }
-    void init(){
-        Thread t = new Thread(()-> this.assist.get().init());
+        Thread t = new Thread(()->
+        {
+            synchronized (syncAssist)
+            {
+                this.assist.get().init();
+                this.assist.get().setOutput("Please insert Coordinates");
+            }
+        });
         t.start();
+        this.init();
+        //wait for the assist frame to give the start
+        while (!assist.get().isStarted()){
+            /*take coordinates or whatever*/
+            assist.get().getLaunchX();
+
+        }
+
+        this.startMainThread();
+    }
+
+
+    void init()
+    {
         this.frame = new JFrame(FPS_RATE);
         this.frame.setSize(SCREEN);
         setWindowProperties();
         engine = createEngine();
     }
+
 
     private MainThread createEngine()
     {
@@ -43,7 +65,9 @@ public class GraphicsManager
         this.frame.addMouseMotionListener(mouseInput);
         cp.add(engine);
         return engine;
+
     }
+
 
     public void startMainThread()
     {
@@ -55,9 +79,15 @@ public class GraphicsManager
         return this.simulationUpdater;
     }
 
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
     private void setWindowProperties() {
         WindowAdapter closed = new WindowAdapter()
         {
+            @Override
             public void windowClosing(WindowEvent e)
             {
                 listen = new WindowEvent(frame, 201);
@@ -88,7 +118,6 @@ public class GraphicsManager
         {
             graphics.setColor(Color.black);
             graphics.fillRect(0,0,GraphicsManager.WIDTH,GraphicsManager.HEIGHT);
-
             visualization.paint(graphics);
             updateUI();
         }
@@ -110,7 +139,7 @@ public class GraphicsManager
                     repaint();
                     elapsedTime--;
                 }
-                sleep();
+                //sleep();
             }
 
         }
