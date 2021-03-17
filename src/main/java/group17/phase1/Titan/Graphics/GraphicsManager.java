@@ -11,8 +11,8 @@ public class GraphicsManager
 {
     private final String FPS_RATE = "";
     private final AtomicReference <DialogFrame> assist = new AtomicReference<>(new DialogFrame());
-    private final MainThread engine;
-    private final JFrame frame;
+    private  MainThread engine;
+    private  JFrame frame;
     private MouseInput mouseInput;
     private SystemSimulationUpdater simulationUpdater;
     public static int WIDTH = 1480, HEIGHT = 810;
@@ -22,6 +22,9 @@ public class GraphicsManager
 
     public GraphicsManager()
     {
+       this.init();
+    }
+    void init(){
         Thread t = new Thread(()-> this.assist.get().init());
         t.start();
         this.frame = new JFrame(FPS_RATE);

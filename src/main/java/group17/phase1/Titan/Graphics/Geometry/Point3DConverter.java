@@ -18,6 +18,10 @@ public class Point3DConverter
         scale /= ZoomFactor;
     }
 
+    public static double getScale() {
+        return scale;
+    }
+
     public static Point convertPoint(Point3D point3D) {
         double x3d = point3D.getXCoordinate() * scale;
         double y3d = point3D.getYCoordinate() * scale;

@@ -7,8 +7,6 @@ import group17.phase1.Titan.Interfaces.Vector3dInterface;
 public class Vector3D implements Vector3dInterface
 {
 
-    /* TODO : think if we need to create new objects or if we can just modify the current vector */
-
     @Override
     public Vector3dInterface add(Vector3dInterface other)
     {
@@ -121,6 +119,11 @@ public class Vector3D implements Vector3dInterface
         v.setY(v.getY()/magnitude);
         v.setZ(v.getZ()/magnitude);
         return v;
+    }
+
+    @Override
+    public Point3D fromVector(){
+        return new Point3D(this.getX(),this.getY(),this.getZ());
     }
 
     @Override

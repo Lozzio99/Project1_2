@@ -4,31 +4,17 @@ import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
 import group17.phase1.Titan.Simulation.Vector3D;
 
+import java.awt.*;
+
 public abstract class CelestialBody
 {
+
+    Color color;
 
 
     double MASS;
     double RADIUS;
     double DENSITY;
-
-
-
-    double X_LOCATION;
-    double Y_LOCATION;
-    double Z_LOCATION;
-
-
-
-    double X_VELOCITY;
-    double Y_VELOCITY;
-    double Z_VELOCITY;
-
-
-
-    double DX;
-    double DY;
-    double DZ;
 
 
     double X_ROTATION;
@@ -43,6 +29,10 @@ public abstract class CelestialBody
 
 
 
+
+    CelestialBody(){
+
+    }
 
 
     // --- Set-Methods ---
@@ -62,32 +52,6 @@ public abstract class CelestialBody
         this.DENSITY = DENSITY;
     }
 
-    // Location
-    public void setX_LOCATION(double x_LOCATION) {
-        this.X_LOCATION = x_LOCATION;
-    }
-
-    public void setY_LOCATION(double y_LOCATION) {
-        this.Y_LOCATION = y_LOCATION;
-    }
-
-    public void setZ_LOCATION(double z_LOCATION) {
-        this.Z_LOCATION = z_LOCATION;
-    }
-
-
-    // Velocity
-    public void setX_VELOCITY(double x_VELOCITY) {
-        this.X_VELOCITY = x_VELOCITY;
-    }
-
-    public void setY_VELOCITY(double y_VELOCITY) {
-        this.Y_VELOCITY = y_VELOCITY;
-    }
-
-    public void setZ_VELOCITY(double z_VELOCITY) {
-        this.Z_VELOCITY = z_VELOCITY;
-    }
 
     // Rotation
     public void setX_ROTATION(double x_ROTATION) {
@@ -119,31 +83,7 @@ public abstract class CelestialBody
         return this.DENSITY;
     }
 
-    // Location
-    public double getX_LOCATION() {
-        return this.X_LOCATION;
-    }
 
-    public double getY_LOCATION() {
-        return this.Y_LOCATION;
-    }
-
-    public double getZ_LOCATION() {
-        return this.Z_LOCATION;
-    }
-
-    // Velocity
-    public double getX_VELOCITY() {
-        return this.X_VELOCITY;
-    }
-
-    public double getY_VELOCITY() {
-        return this.Y_VELOCITY;
-    }
-
-    public double getZ_VELOCITY() {
-        return this.Z_VELOCITY;
-    }
 
     // Rotation
     public double getX_ROTATION() {
@@ -151,17 +91,10 @@ public abstract class CelestialBody
     }
 
     public double getY_ROTATION() {
-        return this.Y_VELOCITY;
+        return this.Y_ROTATION;
     }
 
     public double getZ_ROTATION() { return this.Z_ROTATION; }
-
-
-
-    public Point3D getPointLocation(){
-        return new Point3D(this.X_LOCATION,this.Y_LOCATION,this.Z_LOCATION);
-    }
-
 
 
     public Vector3dInterface getVectorLocation()
@@ -172,20 +105,23 @@ public abstract class CelestialBody
     public void setVectorLocation(Vector3dInterface newDirection)
     {
         LocationVector = newDirection;
-    }
 
+    }
 
 
     public void setVectorVelocity(Vector3dInterface newVelocity){
         VelocityVector = newVelocity;
     }
 
-    public double getDistanceRadius(CelestialBody other){
+
+    public double getDistanceRadius(CelestialBody other)
+    {
         return Vector3D.dist(other.getVectorLocation(),this.getVectorLocation());
     }
 
 
-    public void setShiftVector(Vector3dInterface dxyz){
+    public void setShiftVector(Vector3dInterface dxyz)
+    {
         this.ShiftVector = dxyz;
     }
 
@@ -195,8 +131,15 @@ public abstract class CelestialBody
 
     public void applyAttractionVector()
     {
-
         this.VelocityVector.add(this.ShiftVector);
         this.LocationVector.add(this.VelocityVector);
+    }
+
+    public void setColour(Color col){
+        this.color = col;
+    }
+
+    public Color getColour() {
+        return color;
     }
 }

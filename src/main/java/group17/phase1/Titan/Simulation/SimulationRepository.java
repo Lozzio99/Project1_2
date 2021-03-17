@@ -15,8 +15,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     SolarSystemInterface repository;
     GraphicsManager graphicsManager;
     List<Vector3dInterface> nextState;
-    ODESolverInterface solver;
-    ODEFunctionInterface gravity;
+
 
     public SimulationRepository()
     {
@@ -27,6 +26,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         for (CelestialBody c : this.repository.getCelestialBodies())
             this.nextState.add(c.getVectorLocation());
     }
+
 
     @Override
     public SolarSystemInterface getSolarSystemRepository() {
@@ -90,6 +90,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     @Override
     public StateInterface[] solve(ODEFunctionInterface gravity, StateInterface stateAt0, double endTime, double timeSize)
     {
+
+        //[4,4,4,4,4,4,4,2];
+        //[time0,time4,time8,.....]
         StateInterface[] path = new StateInterface[(int)(Math.round(endTime/timeSize))+1];
         double time0 = 0;
         for (int i = 0; i< path.length-1;i++){
@@ -155,6 +158,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
                 from.addMul(timeAt,forceDir);
             }
             this.nextState.set(i,from);
+
             //the state of the system now tends to somewhere else that is given in the shift vector
             //this applies to the whole simulation and it's applied to each body with respect to all
             //other bodies
@@ -173,7 +177,8 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
      */
 
     @Override
-    public StateInterface addMul(double step, RateInterface rate) {
+    public StateInterface addMul(double step, RateInterface rate)
+    {
         for (int i = 0; i< this.repository.getCelestialBodies().size(); i++)
         {
             this.getSolarSystemRepository().getCelestialBodies().get(i).setShiftVector(rate.getShiftVectors().get(i));

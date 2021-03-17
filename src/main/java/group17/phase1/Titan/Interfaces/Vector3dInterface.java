@@ -7,6 +7,8 @@
 
 package group17.phase1.Titan.Interfaces;
 
+import group17.phase1.Titan.Graphics.Geometry.Point3D;
+
 public interface Vector3dInterface
 {
 
@@ -57,5 +59,8 @@ public interface Vector3dInterface
     * Vector3d(-1.0, 2, -3.0) should print out (-1.0,2.0,-3.0)
     */
     String toString();
+
+
+    Point3D fromVector();
     
 }

@@ -3,6 +3,7 @@ package group17.phase1.Titan.Graphics;
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
 import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Utils.Configuration;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -27,6 +28,9 @@ public class SystemSimulationUpdater
     Point3D [] planetsPositions;
     double[] radius;
     Color[] colors;
+    double scale = 5e9;
+    double radiusMag = 1e3;
+
 
     Point3D left = new Point3D(-UNIT_SIZE,0,0),
             right = new Point3D(UNIT_SIZE,0,0),
@@ -40,28 +44,38 @@ public class SystemSimulationUpdater
     {
 
         this.planetsPositions = new Point3D[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
-        double scale = 5e8;
+
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
-            this.planetsPositions[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getPointLocation();
+            this.planetsPositions[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getVectorLocation().fromVector();
             this.planetsPositions[i].x/= scale;
             this.planetsPositions[i].y/= scale;
             this.planetsPositions[i].z/= scale;
         }
-        scale /= 1e4;
+        // scale /= 1e4;
 
         radius = new double[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
         this.colors = new Color[this.radius.length];
 
         for (int i =0; i<radius.length; i++)
         {
-            radius[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale;
-            this.colors[i] = new Color(new Random().nextInt(255),new Random().nextInt(255),255,180);
+            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * radiusMag;
+            this.colors[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getColour();
         }
-
 
         this.rotateAxisZ(true,5);
         this.rotateAxisY(true,5);
+
+        if (Configuration.DEBUG) { // Print initial location and size of the bodies
+            System.out.println("Positions:");
+            for (int i = 0; i < this.planetsPositions.length; i++) {
+                System.out.println(i + "\t : \tX: " + planetsPositions[i].x + "\tY: " + planetsPositions[i].y + "\tZ: " + planetsPositions[i].z);
+            }
+            System.out.println("Radius:");
+            for (int i = 0; i < this.radius.length; i++) {
+                System.out.println(i + "\t : \t " + radius[i]);
+            }
+        }
     }
 
     void paint(Graphics graphics)
@@ -87,8 +101,10 @@ public class SystemSimulationUpdater
 
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
+            double totalRadius = this.radius[i];
+           // Point3D translatedPos = new Point3D(this.planetsPositions[i].getXCoordinate() - totalRadius, this.planetsPositions[i].getYCoordinate() - totalRadius, this.planetsPositions[i].getZCoordinate() - totalRadius);
             g.setColor(this.colors[i]);
-            g.fill(planetShape(this.planetsPositions[i],this.radius[i]));
+            g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
         }
     }
 
@@ -130,12 +146,18 @@ public class SystemSimulationUpdater
         initialY = y;
 
         this.rotateAxisY(true,0.01);
+
+        // Update size
+        for (int i =0; i<radius.length; i++)
+        {
+            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale() * radiusMag;
+        }
     }
 
     Ellipse2D.Double planetShape(Point3D position, double radius)
     {
         Point p = Point3DConverter.convertPoint(position);
-        return new Ellipse2D.Double(p.getX(),p.getY(),radius,radius);
+        return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
     }
 
     public void addMouseControl(MouseInput mouse){
