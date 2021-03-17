@@ -8,7 +8,6 @@ import group17.phase1.Titan.Utils.Configuration;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
-import java.util.Random;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -28,8 +27,8 @@ public class SystemSimulationUpdater
     Point3D [] planetsPositions;
     double[] radius;
     Color[] colors;
-    double scale = 5e9;
-    double radiusMag = 1e3;
+    double scale = 5e8;
+    double radiusMag = 1e2;
 
 
     Point3D left = new Point3D(-UNIT_SIZE,0,0),
@@ -59,12 +58,12 @@ public class SystemSimulationUpdater
 
         for (int i =0; i<radius.length; i++)
         {
-            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * radiusMag;
+            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale)* radiusMag;
             this.colors[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getColour();
         }
 
-        this.rotateAxisZ(true,5);
-        this.rotateAxisY(true,5);
+        //this.rotateAxisZ(true,5);
+        //this.rotateAxisY(true,5);
 
         if (Configuration.DEBUG) { // Print initial location and size of the bodies
             System.out.println("Positions:");
@@ -113,23 +112,15 @@ public class SystemSimulationUpdater
         int x = this.mouse.getX();
         int y = this.mouse.getY();
 
-        boolean cw = false;
-
 
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
             int xDif = x - initialX;
-            if (xDif>0)
-                cw = true;
-            this.rotateAxisY(cw,xDif/mouseSensitivity);
+            this.rotateOnAxisY(false,xDif/mouseSensitivity);
         }
 
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
             int yDif = y - initialY;
-            if (yDif>0)
-                cw = true;
-
-            this.rotateAxisX(cw,yDif/mouseSensitivity);
-
+            this.rotateOnAxisX(false,yDif/mouseSensitivity);
         }
 
         if(this.mouse.isScrollingUp()) {
@@ -145,12 +136,12 @@ public class SystemSimulationUpdater
         initialX = x;
         initialY = y;
 
-        this.rotateAxisY(true,0.01);
+        //this.rotateOnAxisY(true,0.01);
 
         // Update size
         for (int i =0; i<radius.length; i++)
         {
-            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale() * radiusMag;
+            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale()* radiusMag;
         }
     }
 
@@ -164,40 +155,37 @@ public class SystemSimulationUpdater
         this.mouse = mouse;
     }
 
-    public void rotateAxisY(boolean cw, double x){
-        if (cw)
-            x*=-1;
-        Point3DConverter.rotateAxisY(top,cw,x);
-        Point3DConverter.rotateAxisY(bottom,cw,x);
-        Point3DConverter.rotateAxisY(left,cw,x);
-        Point3DConverter.rotateAxisY(right,cw,x);
-        Point3DConverter.rotateAxisY(rear,cw,x);
-        Point3DConverter.rotateAxisY(front,cw,x);
+    public void rotateOnAxisY(boolean cw, double y){
+        Point3DConverter.rotateAxisY(top,cw,y);
+        Point3DConverter.rotateAxisY(bottom,cw,y);
+        Point3DConverter.rotateAxisY(left,cw,y);
+        Point3DConverter.rotateAxisY(right,cw,y);
+        Point3DConverter.rotateAxisY(rear,cw,y);
+        Point3DConverter.rotateAxisY(front,cw,y);
         for (Point3D p : this.planetsPositions)
-            Point3DConverter.rotateAxisY(p,cw,x);
+            Point3DConverter.rotateAxisY(p,cw,y);
 
     }
-    void rotateAxisX(boolean cw, double z){
-        Point3DConverter.rotateAxisX(top,cw,z);
-        Point3DConverter.rotateAxisX(bottom,cw,z);
-        Point3DConverter.rotateAxisX(left,cw,z);
-        Point3DConverter.rotateAxisX(right,cw,z);
-        Point3DConverter.rotateAxisX(rear,cw,z);
-        Point3DConverter.rotateAxisX(front,cw,z);
+    void rotateOnAxisX(boolean cw, double x)
+    {
+        Point3DConverter.rotateAxisX(top,cw,x);
+        Point3DConverter.rotateAxisX(bottom,cw,x);
+        Point3DConverter.rotateAxisX(left,cw,x);
+        Point3DConverter.rotateAxisX(right,cw,x);
+        Point3DConverter.rotateAxisX(rear,cw,x);
+        Point3DConverter.rotateAxisX(front,cw,x);
         for (Point3D p : this.planetsPositions)
-            Point3DConverter.rotateAxisX(p,cw,z);
+            Point3DConverter.rotateAxisX(p,cw,x);
     }
 
-    void rotateAxisZ(boolean cw, double y){
-        if (cw)
-            y*=-1;
-        Point3DConverter.rotateAxisZ(top,cw,y);
-        Point3DConverter.rotateAxisZ(bottom,cw,y);
-        Point3DConverter.rotateAxisZ(left,cw,y);
-        Point3DConverter.rotateAxisZ(right,cw,y);
-        Point3DConverter.rotateAxisZ(rear,cw,y);
-        Point3DConverter.rotateAxisZ(front,cw,y);
+    void rotateOnAxisZ(boolean cw, double z){
+        Point3DConverter.rotateAxisZ(top,cw,z);
+        Point3DConverter.rotateAxisZ(bottom,cw,z);
+        Point3DConverter.rotateAxisZ(left,cw,z);
+        Point3DConverter.rotateAxisZ(right,cw,z);
+        Point3DConverter.rotateAxisZ(rear,cw,z);
+        Point3DConverter.rotateAxisZ(front,cw,z);
         for (Point3D p : this.planetsPositions)
-            Point3DConverter.rotateAxisZ(p,cw,y);
+            Point3DConverter.rotateAxisZ(p,cw,z);
     }
 }

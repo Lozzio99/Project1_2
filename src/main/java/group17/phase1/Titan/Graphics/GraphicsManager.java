@@ -38,10 +38,9 @@ public class GraphicsManager
         //wait for the assist frame to give the start
         while (!assist.get().isStarted()){
             /*take coordinates or whatever*/
-            assist.get().getLaunchX();
+             assist.get().getLaunchX();
 
         }
-
         this.startMainThread();
     }
 
@@ -126,18 +125,28 @@ public class GraphicsManager
         public void run()
         {
             long lastTime = System.nanoTime();
+            long timerTitle = System.currentTimeMillis();
             double elapsedTime = 0.0;
-            double FPS = 120.0;
+            double nanosecond = 1_000_000_000d / 60;
+            double frames = 0;
             this.visualization.startSimulation();
             while (true) {
                 long now = System.nanoTime();
-                elapsedTime += ((now - lastTime) / 1_000_000_000d) * FPS;
-                lastTime = System.nanoTime();
+                elapsedTime += ((now - lastTime) / nanosecond);
+                lastTime = now;
 
-                if (elapsedTime >= 1) {
+                if (elapsedTime >= 1)
+                {
                     visualization.update();
                     repaint();
                     elapsedTime--;
+                    frames++;
+                }
+
+                if (System.currentTimeMillis()-timerTitle >1000){
+                    timerTitle+=1000;
+                    frame.setTitle(frames + " FPS ");
+                    frames = 0;
                 }
                 //sleep();
             }

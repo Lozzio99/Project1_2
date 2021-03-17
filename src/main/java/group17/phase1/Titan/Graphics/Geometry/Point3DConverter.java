@@ -45,20 +45,22 @@ public class Point3DConverter
         return newVal;
     }
 
+
+
     public static void rotateAxisX(Point3D p, boolean CW, double degrees) {
         double radius = Math.sqrt(p.y*p.y + p.z*p.z);
         double theta = Math.atan2(p.z, p.y);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
-        p.y =  (radius * Math.cos(theta));
-        p.z = (radius * Math.sin(theta));
+        p.y =  (radius* Math.cos(theta)) ;
+        p.z = (radius* Math.sin(theta));
     }
 
     public static void rotateAxisY(Point3D p, boolean CW, double degrees) {
-        double radius = Math.sqrt(p.x*p.x + p.z*p.z);
-        double theta = Math.atan2(p.x, p.z);
+        double radius = Math.sqrt(p.z*p.z + p.x*p.x);
+        double theta = Math.atan2(p.z, p.x);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
-        p.x =  (radius * Math.sin(theta));
-        p.z =  (radius * Math.cos(theta));
+        p.z =  (radius * Math.sin(theta));
+        p.x =  (radius * Math.cos(theta));
     }
 
     public static void rotateAxisZ(Point3D p, boolean CW, double degrees) {

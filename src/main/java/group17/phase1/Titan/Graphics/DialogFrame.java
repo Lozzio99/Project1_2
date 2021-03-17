@@ -14,13 +14,13 @@ public class DialogFrame extends JFrame {
 
     private JTextArea textArea;
     private JTextField stSizeField = new JTextField(2);
-    ;
+
     private JTextField lXCoordField = new JTextField(2);
-    ;
+
     private JTextField lYCoordField = new JTextField(2);
-    ;
+
     private JTextField lZCoordField = new JTextField(2);
-    ;
+
     private double X_LAUNCH,Y_LAUNCH,Z_LAUNCH;
     private boolean started = false;
 
