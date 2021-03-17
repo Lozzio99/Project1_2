@@ -7,9 +7,5 @@ public interface SimulationInterface
 
     GraphicsManager getGraphicsManager();
 
-    double G = 6.67e-11;
-
-    ODESolverInterface getSolver();
-
-    ODEFunctionInterface getFunction();
+    void runSimulation();
 }

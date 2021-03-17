@@ -34,18 +34,20 @@ public class GraphicsManager
             }
         });
         t.start();
-        this.init();
-        //wait for the assist frame to give the start
+    }
+
+    //wait for the assist frame to give the start
+    public void waitForStart(){
         while (!assist.get().isStarted()){
             /*take coordinates or whatever*/
-             assist.get().getLaunchX();
+            assist.get().getLaunchX();
 
         }
         this.startMainThread();
     }
 
 
-    void init()
+    public void init()
     {
         this.frame = new JFrame(FPS_RATE);
         this.frame.setSize(SCREEN);
@@ -118,7 +120,6 @@ public class GraphicsManager
             graphics.setColor(Color.black);
             graphics.fillRect(0,0,GraphicsManager.WIDTH,GraphicsManager.HEIGHT);
             visualization.paint(graphics);
-            updateUI();
         }
 
         @Override

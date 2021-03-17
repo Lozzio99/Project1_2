@@ -20,14 +20,13 @@ public class SystemSimulationUpdater
     private int initialX, initialY;
     private final double mouseSensitivity = 6;
 
-    private final double moveSpeed = 100;
     private final int UNIT_SIZE = GraphicsManager.HEIGHT;
 
 
     Point3D [] planetsPositions;
     double[] radius;
     Color[] colors;
-    double scale = 5e8;
+    double scale = 5e9;
     double radiusMag = 1e2;
 
 
@@ -44,13 +43,8 @@ public class SystemSimulationUpdater
 
         this.planetsPositions = new Point3D[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
 
-        for (int i = 0; i< this.planetsPositions.length; i++)
-        {
-            this.planetsPositions[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getVectorLocation().fromVector();
-            this.planetsPositions[i].x/= scale;
-            this.planetsPositions[i].y/= scale;
-            this.planetsPositions[i].z/= scale;
-        }
+        this.updatePlanetPositions();
+
         // scale /= 1e4;
 
         radius = new double[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
@@ -62,8 +56,8 @@ public class SystemSimulationUpdater
             this.colors[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getColour();
         }
 
-        //this.rotateAxisZ(true,5);
-        //this.rotateAxisY(true,5);
+        this.rotateOnAxisZ(true,5);
+        this.rotateOnAxisY(true,5);
 
         if (Configuration.DEBUG) { // Print initial location and size of the bodies
             System.out.println("Positions:");
@@ -74,6 +68,17 @@ public class SystemSimulationUpdater
             for (int i = 0; i < this.radius.length; i++) {
                 System.out.println(i + "\t : \t " + radius[i]);
             }
+        }
+    }
+
+    private void updatePlanetPositions()
+    {
+        for (int i = 0; i< this.planetsPositions.length; i++)
+        {
+            this.planetsPositions[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getVectorLocation().fromVector();
+            this.planetsPositions[i].x/= scale;
+            this.planetsPositions[i].y/= scale;
+            this.planetsPositions[i].z/= scale;
         }
     }
 
@@ -100,8 +105,6 @@ public class SystemSimulationUpdater
 
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
-            double totalRadius = this.radius[i];
-           // Point3D translatedPos = new Point3D(this.planetsPositions[i].getXCoordinate() - totalRadius, this.planetsPositions[i].getYCoordinate() - totalRadius, this.planetsPositions[i].getZCoordinate() - totalRadius);
             g.setColor(this.colors[i]);
             g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
         }
@@ -111,6 +114,7 @@ public class SystemSimulationUpdater
     {
         int x = this.mouse.getX();
         int y = this.mouse.getY();
+
 
 
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
@@ -135,6 +139,8 @@ public class SystemSimulationUpdater
 
         initialX = x;
         initialY = y;
+
+        this.updatePlanetPositions();
 
         //this.rotateOnAxisY(true,0.01);
 

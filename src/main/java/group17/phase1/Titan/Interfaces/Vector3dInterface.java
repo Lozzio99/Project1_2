@@ -62,5 +62,8 @@ public interface Vector3dInterface
 
 
     Point3D fromVector();
+
+
+    Vector3dInterface clone();
     
 }

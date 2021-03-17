@@ -2,35 +2,40 @@ package group17.phase1.Titan.Simulation;
 
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
-import group17.phase1.Titan.Main;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
+import static group17.phase1.Titan.Utils.Configuration.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static group17.phase1.Titan.Interfaces.RateInterface.G;
 
-public class SimulationRepository implements SimulationInterface, ODESolverInterface , ODEFunctionInterface, StateInterface, RateInterface
+
+public class SimulationRepository implements SimulationInterface, ODESolverInterface, ODEFunctionInterface
 {
-    SolarSystemInterface repository;
+    SolarSystemInterface solarSystem;
     GraphicsManager graphicsManager;
-    List<Vector3dInterface> nextState;
 
+    static int stepSize = 1000;
+    double currTime = 0;
+    double endTime = Double.MAX_VALUE;
+    RateInterface rateOfChange;
+    StateInterface solarSystemState;
 
     public SimulationRepository()
     {
-        this.repository = new SolarSystem();
+        this.solarSystem = new SolarSystem();
         this.graphicsManager = new GraphicsManager();
-
-        this.nextState = new ArrayList<>();
-        for (CelestialBody c : this.repository.getCelestialBodies())
-            this.nextState.add(c.getVectorLocation());
+        solarSystemState = (StateInterface) solarSystem;
+        rateOfChange = (RateInterface) solarSystem;
+        this.graphicsManager.init();
+        this.graphicsManager.waitForStart();
     }
-
 
     @Override
     public SolarSystemInterface getSolarSystemRepository() {
-        return this.repository;
+        return this.solarSystem;
     }
 
 
@@ -40,14 +45,26 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     }
 
     @Override
-    public ODESolverInterface getSolver() {
-        return this;
+    public void runSimulation() {
+        for (int i = 0; i < endTime; i++) {
+            if (DEBUG)System.out.println("Earth Pos: " + solarSystem.getCelestialBodies().get(3).getVectorLocation().toString());
+            if (DEBUG)System.out.println("Earth Vel: " + solarSystem.getCelestialBodies().get(3).getVelocityVector().toString());
+
+            this.step(this, currTime, this.solarSystemState, stepSize); // The calculation
+
+            try {
+                Thread.sleep(1);
+            }
+            catch(InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            if (DEBUG) System.out.println("Time: " + currTime);
+            currTime += stepSize;
+        }
+
     }
 
-    @Override
-    public ODEFunctionInterface getFunction() {
-        return this;
-    }
+
 
 
     /*
@@ -103,104 +120,48 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         return path;
     }
 
-    /*
+
+    /**
      * Update rule for one step.
-     *
-     * @param   f   the function defining the differential equation dy/dt=f(t,y)
-     * @param   t   the time
-     * @param   y   the state
-     * @param   h   the step size
+     * @param   gravity   the function defining the differential equation dy/dt=f(t,y)
+     * @param   timeAt   the time
+     * @param   stateAt   the state
+     * @param   timeSize   the step size
      * @return  the new state after taking one step
      */
-
     @Override
     public StateInterface step(ODEFunctionInterface gravity, double timeAt, StateInterface stateAt, double timeSize)
     {
-        return stateAt.addMul(timeSize,gravity.call(timeAt,stateAt));
+        return stateAt.addMul(timeAt,gravity.call(timeSize,stateAt));
     }
 
 
-    /*
-     * This is an interface for the function f that represents the
-     * differential equation dy/dt = f(t,y).
-     * You need to implement this function to represent to the laws of physics.
-     *
-     * For example, consider the differential equation
-     *   dy[0]/dt = y[1];  dy[1]/dt=cos(t)-sin(y[0])
-     * Then this function would be
-     *   f(t,y) = (y[1],cos(t)-sin(y[0])).
-     *
-     * @param   t   the time at which to evaluate the function
-     * @param   y   the state at which to evaluate the function
-     * @return  The average rate-of-change over the time-step. Has dimensions of [state]/[time].
-     *
-     *
-     * ++++++++++++++ CALCULATE ATTRACTION ++++++++++++++++++++++*/
-
     @Override
-    public RateInterface call(double timeAt, StateInterface stateAtTime)
+    public String toString()
     {
-
-        for (int i = 0; i< this.getSolarSystemRepository().getCelestialBodies().size(); i++)
-        {
-            Vector3dInterface from = this.getSolarSystemRepository().getCelestialBodies().get(i).getVectorLocation();
-
-            for (CelestialBody to : Main.simulation.getSolarSystemRepository().getCelestialBodies())
-            {
-                if (to.getVectorLocation() == from) continue;
-                double sqrtDist  = from.dist(to.getVectorLocation());
-                Vector3dInterface forceDir = Vector3D.unitVectorDistance(from,to.getVectorLocation());
-                forceDir.mul(G);
-                forceDir.mul(this.getSolarSystemRepository().getCelestialBodies().get(i).getMASS());
-                forceDir.mul(to.getMASS());
-                forceDir.div(sqrtDist);
-                forceDir.div(this.getSolarSystemRepository().getCelestialBodies().get(i).getMASS());
-                from.addMul(timeAt,forceDir);
-            }
-            this.nextState.set(i,from);
-
-            //the state of the system now tends to somewhere else that is given in the shift vector
-            //this applies to the whole simulation and it's applied to each body with respect to all
-            //other bodies
-        }
-        this.setShiftVectors(nextState);
-        return this;
-    }
-
-
-    /**
-     * Update a state to a new state computed by: this + step * rate
-     *
-     * @param step   The time-step of the update
-     * @param rate   The average rate-of-change over the time-step. Has dimensions of [state]/[time].
-     * @return The new state after the update. Required to have the same class as 'this'.
-     */
-
-    @Override
-    public StateInterface addMul(double step, RateInterface rate)
-    {
-        for (int i = 0; i< this.repository.getCelestialBodies().size(); i++)
-        {
-            this.getSolarSystemRepository().getCelestialBodies().get(i).setShiftVector(rate.getShiftVectors().get(i));
-            this.getSolarSystemRepository().getCelestialBodies().get(i).applyAttractionVector();
-        }
-        return this;
-    }
-
-    @Override
-    public List<Vector3dInterface> getShiftVectors() {
-        return this.nextState;
-    }
-
-    @Override
-    public void setShiftVectors(List<Vector3dInterface> nextState) {
-        this.nextState = nextState;
-    }
-
-    @Override
-    public String toString(){
         return this.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation().toString();
     }
 
 
+    @Override
+    public RateInterface call(double timeAt, StateInterface stateAtTime)
+    {
+        for (CelestialBody thisBody : this.solarSystem.getCelestialBodies())
+        {
+
+            Vector3dInterface totalAcceleration = new Vector3D(0,0,0);
+            for (CelestialBody otherBody : this.solarSystem.getCelestialBodies()){
+                if (thisBody!= otherBody){
+                    Vector3dInterface acc = new Vector3D(thisBody.getVectorLocation().getX(), thisBody.getVectorLocation().getY(), thisBody.getVectorLocation().getZ());
+                    double squareDist = Math.pow(thisBody.getVectorLocation().dist(otherBody.getVectorLocation()), 2);
+                    acc.sub(otherBody.getVectorLocation()); // Get the force vector
+                    acc.mul(1 / Math.sqrt(squareDist)); // Normalize to 1
+                    acc.mul((G * otherBody.getMASS()) / squareDist); // Convert force to acceleration
+                    totalAcceleration.addMul(timeAt, acc);
+                }
+            }
+            thisBody.getVelocityVector().add(totalAcceleration);
+        }
+        return this.rateOfChange;
+    }
 }

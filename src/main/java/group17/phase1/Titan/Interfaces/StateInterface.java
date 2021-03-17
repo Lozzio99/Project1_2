@@ -21,9 +21,11 @@ public interface StateInterface
      * @param rate   The average rate-of-change over the time-step. Has dimensions of [state]/[time].
      * @return The new state after the update. Required to have the same class as 'this'.
      */
+
     StateInterface addMul(double step, RateInterface rate);
 
     String toString();
+
 
 }
 

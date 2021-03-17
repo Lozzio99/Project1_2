@@ -1,10 +1,11 @@
 package group17.phase1.Titan.SolarSystem.Bodies;
 
-import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Simulation.Vector3D;
+
 
 import java.awt.*;
+
+
 
 public abstract class CelestialBody
 {
@@ -17,18 +18,19 @@ public abstract class CelestialBody
     double DENSITY;
 
 
+    double X_VELOCITY;
+    double Y_VELOCITY;
+    double Z_VELOCITY;
+
+
+
     double X_ROTATION;
     double Y_ROTATION;
     double Z_ROTATION;
 
 
-
     Vector3dInterface LocationVector;
     Vector3dInterface VelocityVector;
-    Vector3dInterface ShiftVector;
-
-
-
 
     CelestialBody(){
 
@@ -97,43 +99,34 @@ public abstract class CelestialBody
     public double getZ_ROTATION() { return this.Z_ROTATION; }
 
 
-    public Vector3dInterface getVectorLocation()
-    {
+    // Rotation
+    public double getX_VELOCITY() {
+        return this.X_VELOCITY;
+    }
+
+    public double getY_VELOCITY() {
+        return this.Y_VELOCITY;
+    }
+
+    public double getZ_VELOCITY() { return this.Z_VELOCITY; }
+
+
+    public Vector3dInterface getVectorLocation() {
         return this.LocationVector;
     }
 
-    public void setVectorLocation(Vector3dInterface newDirection)
-    {
+    public void setVectorLocation(Vector3dInterface newDirection) {
         LocationVector = newDirection;
-
     }
 
+    public Vector3dInterface getVelocityVector(){
+        return this.VelocityVector;
+    }
 
     public void setVectorVelocity(Vector3dInterface newVelocity){
         VelocityVector = newVelocity;
     }
 
-
-    public double getDistanceRadius(CelestialBody other)
-    {
-        return Vector3D.dist(other.getVectorLocation(),this.getVectorLocation());
-    }
-
-
-    public void setShiftVector(Vector3dInterface dxyz)
-    {
-        this.ShiftVector = dxyz;
-    }
-
-
-
-    //TODO: check if this actually effects the vector
-
-    public void applyAttractionVector()
-    {
-        this.VelocityVector.add(this.ShiftVector);
-        this.LocationVector.add(this.VelocityVector);
-    }
 
     public void setColour(Color col){
         this.color = col;
@@ -142,4 +135,5 @@ public abstract class CelestialBody
     public Color getColour() {
         return color;
     }
+
 }

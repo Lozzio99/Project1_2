@@ -19,16 +19,16 @@ public class Vector3D implements Vector3dInterface
     @Override
     public Vector3dInterface sub(Vector3dInterface other)
     {
-        this.x = this.x-other.getX();
-        this.y = this.y-other.getY();
-        this.z = this.z-other.getZ();
+        this.x = other.getX() - this.x;
+        this.y = other.getY() - this.y;
+        this.z = other.getZ() - this.z;
         return this;
     }
 
     @Override
     public Vector3dInterface mul(double scalar)
     {
-        this.x = this.x*scalar;
+        this.x = this.x * scalar;
         this.y = this.y * scalar;
         this.z = this.z * scalar;
         return this;
@@ -45,7 +45,8 @@ public class Vector3D implements Vector3dInterface
 
     @Override
     public Vector3dInterface addMul(double scalar, Vector3dInterface other) {
-        return this.add(other.mul(scalar));
+        Vector3dInterface newV = new Vector3D(other.getX() * scalar, other.getY() * scalar, other.getZ() * scalar);
+        return this.add(newV);
     }
 
     @Override
@@ -72,7 +73,8 @@ public class Vector3D implements Vector3dInterface
     }
 
     public static Vector3dInterface unitVectorDistance(Vector3dInterface from, Vector3dInterface to){
-        return normalize(new Vector3D(from.getX()-to.getX(),
+        return normalize(new Vector3D(
+                from.getX()-to.getX(),
                 from.getY()-to.getY(),
                 from.getZ()-to.getZ()));
     }
@@ -124,6 +126,11 @@ public class Vector3D implements Vector3dInterface
     @Override
     public Point3D fromVector(){
         return new Point3D(this.getX(),this.getY(),this.getZ());
+    }
+
+    @Override
+    public Vector3dInterface clone() {
+        return new Vector3D(this.getX(),this.getY(),this.getZ());
     }
 
     @Override

@@ -10,7 +10,7 @@ package group17.phase1.Titan.Interfaces;
 public interface ODEFunctionInterface
 {
 
-    /*
+    /**
      * This is an interface for the function f that represents the
      * differential equation dy/dt = f(t,y).
      * You need to implement this function to represent to the laws of physics.
@@ -20,12 +20,11 @@ public interface ODEFunctionInterface
      * Then this function would be
      *   f(t,y) = (y[1],cos(t)-sin(y[0])).
      *
-     * @param   t   the time at which to evaluate the function
-     * @param   y   the state at which to evaluate the function
+     * @param   timeAt   the time at which to evaluate the function
+     * @param   stateAtTime   the state at which to evaluate the function
      * @return  The average rate-of-change over the time-step. Has dimensions of [state]/[time].
      *
-     * f(x+h)-f(x)
-     *     h
+     *
      */
 
     RateInterface call(double timeAt, StateInterface stateAtTime);
