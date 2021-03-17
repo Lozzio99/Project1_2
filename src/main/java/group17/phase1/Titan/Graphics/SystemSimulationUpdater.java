@@ -18,6 +18,7 @@ public class SystemSimulationUpdater
     private MouseInput mouse;
 
     private int initialX, initialY;
+    double totalxDif, totalyDif, totalzDif = 0;
     private final double mouseSensitivity = 6;
 
     private final int UNIT_SIZE = GraphicsManager.HEIGHT;
@@ -27,7 +28,7 @@ public class SystemSimulationUpdater
     double[] radius;
     Color[] colors;
     double scale = 5e9;
-    double radiusMag = 1e2;
+    double radiusMag = 100;
 
 
     Point3D left = new Point3D(-UNIT_SIZE,0,0),
@@ -44,6 +45,9 @@ public class SystemSimulationUpdater
         this.planetsPositions = new Point3D[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
 
         this.updatePlanetPositions();
+        for (int i = 0; i< this.planetsPositions.length; i++) {
+        	
+        }
 
         // scale /= 1e4;
 
@@ -77,9 +81,15 @@ public class SystemSimulationUpdater
         {
             this.planetsPositions[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getVectorLocation().fromVector();
             this.planetsPositions[i].x/= scale;
-            this.planetsPositions[i].y/= scale;
-            this.planetsPositions[i].z/= scale;
+        	this.planetsPositions[i].y/= scale;
+        	this.planetsPositions[i].z/= scale;
         }
+        
+        for (Point3D p : this.planetsPositions) {
+            Point3DConverter.rotateAxisX(p, false, totalyDif / mouseSensitivity);
+        	Point3DConverter.rotateAxisY(p, false, totalxDif / mouseSensitivity);
+        }
+        
     }
 
     void paint(Graphics graphics)
@@ -112,6 +122,9 @@ public class SystemSimulationUpdater
 
     void update()
     {
+    	
+    	this.updatePlanetPositions();
+    	
         int x = this.mouse.getX();
         int y = this.mouse.getY();
 
@@ -120,11 +133,13 @@ public class SystemSimulationUpdater
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
             int xDif = x - initialX;
             this.rotateOnAxisY(false,xDif/mouseSensitivity);
+            totalxDif += xDif;
         }
 
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
             int yDif = y - initialY;
             this.rotateOnAxisX(false,yDif/mouseSensitivity);
+            totalyDif += yDif;
         }
 
         if(this.mouse.isScrollingUp()) {
@@ -140,9 +155,7 @@ public class SystemSimulationUpdater
         initialX = x;
         initialY = y;
 
-        this.updatePlanetPositions();
-
-        //this.rotateOnAxisY(true,0.01);
+        // this.rotateOnAxisY(true,0.1);
 
         // Update size
         for (int i =0; i<radius.length; i++)
@@ -170,6 +183,8 @@ public class SystemSimulationUpdater
         Point3DConverter.rotateAxisY(front,cw,y);
         for (Point3D p : this.planetsPositions)
             Point3DConverter.rotateAxisY(p,cw,y);
+        
+        // System.out.println(front.getXCoordinate() + " " + front.getYCoordinate() + " " + front.getZCoordinate() + top.getXCoordinate() + " " + top.getYCoordinate() + " " + top.getZCoordinate());
 
     }
     void rotateOnAxisX(boolean cw, double x)
