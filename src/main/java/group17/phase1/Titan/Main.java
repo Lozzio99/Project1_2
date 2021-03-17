@@ -10,16 +10,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(0).getVectorLocation().getX());
-        System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(0).getVectorLocation().getY());
-        System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(0).getVectorLocation().getZ());
-
-        System.out.println("earth 0");
-        System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation());
-        System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation().getX());
-        System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation().getY());
-        System.out.println(simulation.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation().getZ());
-
-        simulation.runSimulation();
+        simulation.calculateTrajectories();
+        //simulation.runSimulation();
     }
 }

@@ -2,6 +2,7 @@ package group17.phase1.Titan.Graphics;
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
+import group17.phase1.Titan.Graphics.user.MouseInput;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Utils.Configuration;
 
@@ -18,16 +19,19 @@ public class SystemSimulationUpdater
     private MouseInput mouse;
 
     private int initialX, initialY;
-    private final double mouseSensitivity = 6;
+    private final static double mouseSensitivity = 6;
+    private final static double moveSpeed = 1e8;
 
-    private final int UNIT_SIZE = GraphicsManager.HEIGHT;
+
 
 
     Point3D [] planetsPositions = new Point3D[0];
     double[] radius;
     Color[] colors;
-    double scale = 5e9;
+    double scale = 5e7;
     double radiusMag = 1e2;
+    private final int UNIT_SIZE = GraphicsManager.HEIGHT *(int) scale;
+
 
 
     Point3D left = new Point3D(-UNIT_SIZE,0,0),
@@ -42,22 +46,10 @@ public class SystemSimulationUpdater
     {
 
         this.planetsPositions = new Point3D[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
-
-        this.updatePlanetPositions();
-
-        // scale /= 1e4;
-
-        radius = new double[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
+        this.radius = new double[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
         this.colors = new Color[this.radius.length];
+        this.updateBodies();
 
-        for (int i =0; i<radius.length; i++)
-        {
-            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale)* radiusMag;
-            this.colors[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getColour();
-        }
-
-        //this.rotateOnAxisZ(true,5);
-        //this.rotateOnAxisY(true,5);
 
         if (Configuration.DEBUG) { // Print initial location and size of the bodies
             System.out.println("Positions:");
@@ -71,7 +63,7 @@ public class SystemSimulationUpdater
         }
     }
 
-    private void updatePlanetPositions()
+    private void updateBodies()
     {
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
@@ -79,6 +71,8 @@ public class SystemSimulationUpdater
             this.planetsPositions[i].x/= scale;
             this.planetsPositions[i].y/= scale;
             this.planetsPositions[i].z/= scale;
+            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale()* radiusMag;
+            this.colors[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getColour();
         }
     }
 
@@ -102,7 +96,6 @@ public class SystemSimulationUpdater
         Line2D.Double zAxis = new Line2D.Double(Point3DConverter.convertPoint(rear),Point3DConverter.convertPoint(front));
         g.draw(zAxis);
 
-
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
             g.setColor(this.colors[i]);
@@ -118,12 +111,12 @@ public class SystemSimulationUpdater
 
 
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
-            int xDif = x - initialX;
+            int xDif = x - this.initialX;
             this.rotateOnAxisY(false,xDif/mouseSensitivity);
         }
 
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
-            int yDif = y - initialY;
+            int yDif = y - this.initialY;
             this.rotateOnAxisX(false,yDif/mouseSensitivity);
         }
 
@@ -137,18 +130,11 @@ public class SystemSimulationUpdater
 
         this.mouse.resetScroll();
 
-        initialX = x;
-        initialY = y;
-
-        this.updatePlanetPositions();
-
+        this.initialX = x;
+        this.initialY = y;
         //this.rotateOnAxisY(true,0.01);
+        this.updateBodies();
 
-        // Update size
-        for (int i =0; i<radius.length; i++)
-        {
-            radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale()* radiusMag;
-        }
     }
 
     Ellipse2D.Double planetShape(Point3D position, double radius)
@@ -157,9 +143,16 @@ public class SystemSimulationUpdater
         return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
     }
 
+    public void translateBodies(double x, double y, double z){
+        for (Point3D p : this.planetsPositions)
+            p.translate(x,y,z);
+    }
+
     public void addMouseControl(MouseInput mouse){
         this.mouse = mouse;
     }
+
+
 
     public void rotateOnAxisY(boolean cw, double y){
         Point3DConverter.rotateAxisY(top,cw,y);

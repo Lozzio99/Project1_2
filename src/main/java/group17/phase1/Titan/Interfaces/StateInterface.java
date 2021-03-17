@@ -7,6 +7,10 @@ package group17.phase1.Titan.Interfaces;
  */
 
 
+import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
+
+import java.util.List;
+
 /**
  * An interface representing the state of a system described by a differential equation.
  */
@@ -26,6 +30,8 @@ public interface StateInterface
 
     String toString();
 
+    void currentState(List<CelestialBody> bodies);
 
+    List<CelestialBody> getState();
 }
 

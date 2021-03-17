@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Graphics;
+package group17.phase1.Titan.Graphics.user;
 
 import java.awt.event.*;
 

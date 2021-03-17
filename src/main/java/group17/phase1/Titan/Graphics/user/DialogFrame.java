@@ -1,10 +1,8 @@
-package group17.phase1.Titan.Graphics;
+package group17.phase1.Titan.Graphics.user;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import org.lwjgl.system.CallbackI.J;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -37,11 +35,11 @@ public class DialogFrame extends JFrame {
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setLayout(new GridLayout(1, 2, 1, 1));
         wrapperPanel.add(createSetUpPanel());
-
         JScrollPane scrollPane = new JScrollPane(textArea);
         wrapperPanel.add(scrollPane);
         add(wrapperPanel);
         setVisible(true);
+        pack();
     }
 
     private JPanel createSetUpPanel() {
@@ -159,6 +157,12 @@ public class DialogFrame extends JFrame {
     public void appendToOutput(String message) {
         textArea.append(message + "\n");
     }
+
+
+    public void setOutput(String message) {
+        textArea.setText(message);
+    }
+
 
     public double getTimeStepSize() {
         if (stSizeField.getText().equals(""))

@@ -29,6 +29,13 @@ public class Point3D
         return this.z + this.zOffset;
     }
 
+
+    public void translate(double x, double y, double z){
+        this.xOffset += x;
+        this.yOffset += y;
+        this.zOffset += z;
+    }
+
     public static double euclidDist(Point3D p1, Point3D p2) {
         double x2 = Math.pow(p1.x - p2.x, 2);
         double y2 = Math.pow(p1.y - p2.y, 2);

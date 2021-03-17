@@ -1,36 +1,70 @@
 package group17.phase1.Titan.Simulation;
 
+import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
-import static group17.phase1.Titan.Utils.Configuration.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import static group17.phase1.Titan.Utils.Configuration.*;
 
 import static group17.phase1.Titan.Interfaces.RateInterface.G;
 
 
 public class SimulationRepository implements SimulationInterface, ODESolverInterface, ODEFunctionInterface
 {
-    SolarSystemInterface solarSystem;
-    GraphicsManager graphicsManager;
+    private SolarSystemInterface solarSystem;
+    private GraphicsManager graphicsManager;
 
-    static int stepSize = 1000;
-    double currTime = 0;
-    double endTime = Double.MAX_VALUE;
-    RateInterface rateOfChange;
-    StateInterface solarSystemState;
+    private static double stepSize = 1000;
+    private static double currTime = 0;
+    private static double endTime = Double.MAX_VALUE;
+    private int trajectoryLength = 10000;
+
+
+    private RateInterface rateOfChange;
+    protected StateInterface solarSystemState;
+    private Point3D [] positions;
 
     public SimulationRepository()
     {
+
+    }
+
+    public void initSimulation()
+    {
         this.solarSystem = new SolarSystem();
         this.graphicsManager = new GraphicsManager();
-        solarSystemState = (StateInterface) solarSystem;
-        rateOfChange = (RateInterface) solarSystem;
-        this.graphicsManager.init();
+        this.solarSystemState = (StateInterface) solarSystem;
+        this.rateOfChange = (RateInterface) solarSystem;
+        this.graphicsManager.init(positions,trajectoryLength);
         this.graphicsManager.waitForStart();
+    }
+
+
+    public void calculateTrajectories()
+    {
+        this.solarSystem = new SolarSystem();
+        this.solarSystemState = (StateInterface) solarSystem;
+        this.rateOfChange = (RateInterface) solarSystem;
+        double [] ts = new double[trajectoryLength];
+        double start = 0;
+        for (int i = 0; i< trajectoryLength; i++ )
+        {
+            ts[i] = start;
+            start+= 1000;
+        }
+        StateInterface[] enough = this.solve(this,this.solarSystemState,ts);
+        positions = new Point3D[trajectoryLength * this.solarSystem.getCelestialBodies().size()];
+        for (int i = 0; i< trajectoryLength; i++)
+        {
+            for (int p = 0; p< this.solarSystem.getCelestialBodies().size(); p++)
+            {
+                positions[i+p] = this.solarSystem.getCelestialBodies().get(p).getVectorLocation().fromVector();
+                System.out.println(positions[i+p]);
+            }
+        }
+
     }
 
     @Override
@@ -45,7 +79,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     }
 
     @Override
-    public void runSimulation() {
+    public void runSimulation()
+    {
+        this.initSimulation();
         for (int i = 0; i < endTime; i++) {
             if (DEBUG)System.out.println("Earth Pos: " + solarSystem.getCelestialBodies().get(3).getVectorLocation().toString());
             if (DEBUG)System.out.println("Earth Vel: " + solarSystem.getCelestialBodies().get(3).getVelocityVector().toString());
@@ -86,8 +122,16 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     public StateInterface[] solve(ODEFunctionInterface gravity, StateInterface stateAt0, double[] timeSteps)
     {
         StateInterface[] positions = new StateInterface[timeSteps.length];
-        for (int i = 0; i< positions.length; i++){
-            positions[i] = this.step(gravity,timeSteps[i],stateAt0,timeSteps.length/timeSteps[i]);
+        endTime = timeSteps[timeSteps.length-1];
+        currTime = timeSteps[0];
+
+        //we assume that ts[0] is a positive time step starting from time 0
+        positions[0] = this.step(gravity,currTime,stateAt0,timeSteps[0]);
+
+        for (int i = 1; i< positions.length; i++)
+        {
+            currTime = timeSteps[i];
+            positions[i] = this.step(gravity,currTime,stateAt0,currTime-timeSteps[i-1]);
         }
         return positions;
     }
@@ -105,41 +149,48 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
      */
 
     @Override
-    public StateInterface[] solve(ODEFunctionInterface gravity, StateInterface stateAt0, double endTime, double timeSize)
+    public StateInterface[] solve(ODEFunctionInterface gravity, StateInterface system, double endTime, double timeSize)
     {
+        SimulationRepository.endTime = endTime;
+        SimulationRepository.stepSize = timeSize;
 
-        //[4,4,4,4,4,4,4,2];
-        //[time0,time4,time8,.....]
         StateInterface[] path = new StateInterface[(int)(Math.round(endTime/timeSize))+1];
-        double time0 = 0;
-        for (int i = 0; i< path.length-1;i++){
-            path[i] = this.step(gravity,time0,stateAt0,timeSize);
-            time0+= timeSize;
+        SimulationRepository.currTime = 0;
+        for (int i = 0; i< path.length-1;i++)
+        {
+            path[i] = this.step(gravity,currTime,system,timeSize);
+            currTime+= timeSize;
         }
-        path[path.length-1] = this.step(gravity,endTime,stateAt0,timeSize);
+        path[path.length-1] = this.step(gravity,endTime,system,endTime-currTime);
         return path;
     }
 
 
     /**
      * Update rule for one step.
-     * @param   gravity   the function defining the differential equation dy/dt=f(t,y)
-     * @param   timeAt   the time
-     * @param   stateAt   the state
-     * @param   timeSize   the step size
+     * @param   f   the function defining the differential equation dy/dt=f(t,y)
+     * @param   t   the time
+     * @param   h   the state
+     * @param   dt   the step size
      * @return  the new state after taking one step
      */
+
     @Override
-    public StateInterface step(ODEFunctionInterface gravity, double timeAt, StateInterface stateAt, double timeSize)
+    public StateInterface step(ODEFunctionInterface f, double t, StateInterface h, double dt)
     {
-        return stateAt.addMul(timeSize, gravity.call(timeAt, stateAt));
+        return h.addMul(dt, f.call(t, h));
     }
 
 
     @Override
     public String toString()
     {
-        return this.getSolarSystemRepository().getCelestialBodies().get(3).getVectorLocation().toString();
+        StringBuilder s = new StringBuilder();
+        s.append("Running at ").append(stepSize).append("\n");
+        s.append("Current time : ").append(currTime).append("\n");
+        s.append("End of Simulation : ").append(endTime).append("\n");
+        s.append(this.solarSystem.toString());
+        return s.toString().trim();
     }
 
 

@@ -136,4 +136,6 @@ public abstract class CelestialBody
     public int hashCode() {
         return Objects.hash(MASS, RADIUS);
     }
+
+    public abstract String toString();
 }

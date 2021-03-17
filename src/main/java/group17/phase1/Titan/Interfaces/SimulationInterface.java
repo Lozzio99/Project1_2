@@ -8,4 +8,6 @@ public interface SimulationInterface
     GraphicsManager getGraphicsManager();
 
     void runSimulation();
+
+    void calculateTrajectories();
 }

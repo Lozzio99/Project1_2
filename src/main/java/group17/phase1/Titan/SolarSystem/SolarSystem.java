@@ -6,6 +6,7 @@ import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.Bodies.Planet;
 import group17.phase1.Titan.SolarSystem.Bodies.Satellite;
 import group17.phase1.Titan.SolarSystem.Bodies.Star;
+import org.lwjgl.system.CallbackI;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -135,6 +136,28 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         for (int i = 0; i< this.allBodies.size(); i++)
         this.allBodies.get(i).getVectorLocation().addMul(step,rate.getRateVector().get(i));
         return this;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder();
+        for (CelestialBody p : this.allBodies)
+        {
+            s.append(p.toString()).append(" : \n");
+            s.append("velocity : ").append(p.getVelocityVector().toString()).append("\n");
+            s.append("position : ").append(p.getVectorLocation().toString()).append("\n");
+        }
+        return s.toString().trim();
+    }
+
+    @Override
+    public void currentState(List<CelestialBody> bodies) {
+        this.allBodies = bodies;
+    }
+
+    @Override
+    public List<CelestialBody> getState() {
+        return this.allBodies;
     }
 
 

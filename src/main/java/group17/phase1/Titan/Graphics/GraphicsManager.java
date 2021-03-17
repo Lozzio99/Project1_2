@@ -1,10 +1,21 @@
 package group17.phase1.Titan.Graphics;
 
 
+import group17.phase1.Titan.Graphics.Geometry.Point3D;
+import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
+import group17.phase1.Titan.Graphics.Geometry.Polygon3D;
+import group17.phase1.Titan.Graphics.user.DialogFrame;
+import group17.phase1.Titan.Graphics.user.MouseInput;
+import group17.phase1.Titan.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -21,6 +32,8 @@ public class GraphicsManager
     public static int WIDTH = 1480, HEIGHT = 810;
     static Dimension SCREEN = new Dimension(WIDTH,HEIGHT);
     private WindowEvent listen;
+    private Point3D[] trajectories;
+    private List<Polygon3D> ellipses;
 
 
     public GraphicsManager()
@@ -36,6 +49,8 @@ public class GraphicsManager
         t.start();
     }
 
+
+
     //wait for the assist frame to give the start
     public void waitForStart(){
         while (!assist.get().isStarted()){
@@ -47,23 +62,44 @@ public class GraphicsManager
     }
 
 
-    public void init()
+    public void init(Point3D[] trajectories, int size)
     {
+        this.trajectories = trajectories;
+        this.createShapes(size);
         this.frame = new JFrame(FPS_RATE);
         this.frame.setSize(SCREEN);
         setWindowProperties();
-        engine = createEngine();
+        this.engine = createEngine();
+    }
+
+    private void createShapes(int size)
+    {
+
+        int allPlanets = Main.simulation.getSolarSystemRepository().getCelestialBodies().size();
+        this.ellipses = new ArrayList<>();
+        for (int i = 0;i < allPlanets; i++)
+        {
+            //each planet has an orbit defined by some points
+            Point3D[] traj = new Point3D[size];
+            //each planet has been recorded for a given num. of steps
+            for (int step = 0; step<size; step++)
+            {
+                traj[step] = this.trajectories[allPlanets*i+step];
+            }
+            Polygon3D ellipse = new Polygon3D(traj);
+            this.ellipses.add(ellipse);
+        }
     }
 
 
     private MainThread createEngine()
     {
-        Container cp =frame.getContentPane();
+        Container cp =this.frame.getContentPane();
         MainThread engine = new MainThread(this.simulationUpdater = new SystemSimulationUpdater());
         this.simulationUpdater.addMouseControl(this.mouseInput = new MouseInput());
-        this.frame.addMouseListener(mouseInput);
-        this.frame.addMouseWheelListener(mouseInput);
-        this.frame.addMouseMotionListener(mouseInput);
+        this.frame.addMouseListener(this.mouseInput);
+        this.frame.addMouseWheelListener(this.mouseInput);
+        this.frame.addMouseMotionListener(this.mouseInput);
         cp.add(engine);
         return engine;
 
@@ -80,9 +116,8 @@ public class GraphicsManager
         return this.simulationUpdater;
     }
 
-
     public JFrame getFrame() {
-        return frame;
+        return this.frame;
     }
 
     private void setWindowProperties() {
@@ -139,6 +174,7 @@ public class GraphicsManager
                 if (elapsedTime >= 1)
                 {
                     visualization.update();
+                    assist.get().setOutput(Main.simulation.toString());
                     repaint();
                     elapsedTime--;
                     frames++;
