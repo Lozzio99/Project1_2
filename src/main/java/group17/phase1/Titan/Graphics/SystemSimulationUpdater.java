@@ -23,7 +23,7 @@ public class SystemSimulationUpdater
     private final int UNIT_SIZE = GraphicsManager.HEIGHT;
 
 
-    Point3D [] planetsPositions;
+    Point3D [] planetsPositions = new Point3D[0];
     double[] radius;
     Color[] colors;
     double scale = 5e9;
@@ -56,8 +56,8 @@ public class SystemSimulationUpdater
             this.colors[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getColour();
         }
 
-        this.rotateOnAxisZ(true,5);
-        this.rotateOnAxisY(true,5);
+        //this.rotateOnAxisZ(true,5);
+        //this.rotateOnAxisY(true,5);
 
         if (Configuration.DEBUG) { // Print initial location and size of the bodies
             System.out.println("Positions:");

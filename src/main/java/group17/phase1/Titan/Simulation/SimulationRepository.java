@@ -146,20 +146,20 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     @Override
     public RateInterface call(double timeAt, StateInterface stateAtTime)
     {
-    	for (int i = 0; i< this.getSolarSystemRepository().getCelestialBodies().size(); i++)
+        for (int i = 0; i< this.getSolarSystemRepository().getCelestialBodies().size(); i++)
         {
-        	CelestialBody thisBody = this.getSolarSystemRepository().getCelestialBodies().get(i);
-        	Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
+            CelestialBody thisBody = this.getSolarSystemRepository().getCelestialBodies().get(i);
+            Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
             for (CelestialBody otherBody : this.getSolarSystemRepository().getCelestialBodies())
             {
-            	if (thisBody != otherBody) {
-            		Vector3dInterface acc = new Vector3D(thisBody.getVectorLocation().getX(), thisBody.getVectorLocation().getY(), thisBody.getVectorLocation().getZ());
-            		double squareDist = Math.pow(thisBody.getVectorLocation().dist(otherBody.getVectorLocation()), 2);
-            		acc.sub(otherBody.getVectorLocation()); // Get the force vector
-            		acc.mul(1 / Math.sqrt(squareDist)); // Normalise to length 1
-            		acc.mul((G * otherBody.getMASS()) / squareDist); // Convert force to acceleration
-            		totalAcc.addMul(stepSize, acc);
-            	}
+                if (thisBody != otherBody) {
+                    Vector3dInterface acc = new Vector3D(thisBody.getVectorLocation().getX(), thisBody.getVectorLocation().getY(), thisBody.getVectorLocation().getZ());
+                    double squareDist = Math.pow(thisBody.getVectorLocation().dist(otherBody.getVectorLocation()), 2);
+                    acc.sub(otherBody.getVectorLocation()); // Get the force vector
+                    acc.mul(1 / Math.sqrt(squareDist)); // Normalise to length 1
+                    acc.mul((G * otherBody.getMASS()) / squareDist); // Convert force to acceleration
+                    totalAcc.addMul(stepSize, acc);
+                }
             }
             thisBody.getVectorVelocity().add(totalAcc);
         }

@@ -4,7 +4,7 @@ import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
 
 import java.awt.*;
-
+import java.util.Objects;
 
 
 public abstract class CelestialBody
@@ -16,12 +16,6 @@ public abstract class CelestialBody
     double MASS;
     double RADIUS;
     double DENSITY;
-
-
-    double X_VELOCITY;
-    double Y_VELOCITY;
-    double Z_VELOCITY;
-
 
 
     double X_ROTATION;
@@ -99,18 +93,6 @@ public abstract class CelestialBody
     public double getZ_ROTATION() { return this.Z_ROTATION; }
 
 
-    // Rotation
-    public double getX_VELOCITY() {
-        return this.X_VELOCITY;
-    }
-
-    public double getY_VELOCITY() {
-        return this.Y_VELOCITY;
-    }
-
-    public double getZ_VELOCITY() { return this.Z_VELOCITY; }
-
-
     public Vector3dInterface getVectorLocation() {
         return this.LocationVector;
     }
@@ -140,4 +122,18 @@ public abstract class CelestialBody
         return color;
     }
 
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CelestialBody that = (CelestialBody) o;
+        return Double.compare(that.MASS, MASS) == 0 && Double.compare(that.RADIUS, RADIUS) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(MASS, RADIUS);
+    }
 }
