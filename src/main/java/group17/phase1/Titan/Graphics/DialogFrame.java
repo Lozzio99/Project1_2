@@ -1,8 +1,11 @@
 package group17.phase1.Titan.Graphics;
 
-import group17.phase1.Titan.Main;
-
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import org.lwjgl.system.CallbackI.J;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,33 +15,31 @@ import java.awt.event.ActionListener;
  */
 public class DialogFrame extends JFrame {
 
-    private JTextArea textArea;
+    private JTextArea textArea = new JTextArea(10, 30);
     private JTextField stSizeField = new JTextField(2);
+    private JTextField massSizeField = new JTextField(2);
+    private JTextField lXCoordField = new JTextField( 1);
+    private JTextField lYCoordField = new JTextField( 1);
+    private JTextField lZCoordField = new JTextField( 1);
 
-    private JTextField lXCoordField = new JTextField(2);
+    private JSlider xVelSlider = new JSlider(-100, 100);
+    private JSlider yVelSlider = new JSlider(-100, 100);
+    private JSlider zVelSlider = new JSlider(-100, 100);
 
-    private JTextField lYCoordField = new JTextField(2);
+    private static boolean started = false;
+    // TODO: weight for the velocity slider to be changed if needed
+    private double velocitySliderW = 1.0;
 
-    private JTextField lZCoordField = new JTextField(2);
-
-    private double X_LAUNCH,Y_LAUNCH,Z_LAUNCH;
-    private boolean started = false;
-
-    public void init()
-    {
-        setSize(800, 300);
+    public void init(){
+        setSize(1276, 500);
         setTitle("Dialog window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setLayout(new GridLayout(1, 2, 1, 1));
-
         wrapperPanel.add(createSetUpPanel());
-        this.textArea = new JTextArea(10, 30);
 
-        JScrollPane scrollPane = new JScrollPane(this.textArea);
+        JScrollPane scrollPane = new JScrollPane(textArea);
         wrapperPanel.add(scrollPane);
-
         add(wrapperPanel);
         setVisible(true);
     }
@@ -47,46 +48,98 @@ public class DialogFrame extends JFrame {
         JPanel rootPanel = new JPanel();
 
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(5, 2, 5, 5));
+        inputPanel.setLayout(new GridLayout(6, 1, 0, 0));
+        inputPanel.add(new JLabel(" "));
         
         // Here add all the input parameter fields
-        inputPanel.add(new JLabel("Time step size (sec.) "));
-        inputPanel.add(stSizeField);
+        JPanel inputVarPanel1 = new JPanel();
+        inputVarPanel1.setLayout(new GridLayout(1, 2, 0, 0));
+        inputVarPanel1.add(new JLabel("Time step size "));
+        inputVarPanel1.add(stSizeField);
+        inputPanel.add(inputVarPanel1);
 
-        inputPanel.add(new JLabel("Launch X "));
-        inputPanel.add(lXCoordField);
+        JPanel inputVarPanel3 = new JPanel();
+        inputVarPanel3.setLayout(new GridLayout(1, 2, 0, 0));
 
-        inputPanel.add(new JLabel("Launch Y "));
-        inputPanel.add(lYCoordField);
+        inputVarPanel3.add(new JLabel("Mass "));
+        inputVarPanel3.add(massSizeField);
+        inputPanel.add(inputVarPanel3);
 
-        inputPanel.add(new JLabel("Launch Z "));
-        inputPanel.add(lZCoordField);
+        JPanel inputVarPanel2 = new JPanel();
+        inputVarPanel2.setLayout(new GridLayout(3, 3, 0, 0));
 
+
+
+        JLabel xVelLabel = new JLabel("X");
+        JLabel yVelLabel = new JLabel("Y");
+        JLabel zVelLabel = new JLabel("Z");
+        xVelSlider.addChangeListener(new updateLabel(xVelSlider, xVelLabel));
+        yVelSlider.addChangeListener(new updateLabel(yVelSlider, yVelLabel));
+        zVelSlider.addChangeListener(new updateLabel(zVelSlider, zVelLabel));
+
+        inputVarPanel2.add(new JLabel(" "));
+        inputVarPanel2.add(xVelSlider);
+        inputVarPanel2.add(xVelLabel);
+        inputVarPanel2.add(new JLabel("Launch velocity "));
+        inputVarPanel2.add(yVelSlider);
+        inputVarPanel2.add(yVelLabel);
+        inputVarPanel2.add(new JLabel(" "));
+        inputVarPanel2.add(zVelSlider);
+        inputVarPanel2.add(zVelLabel);
+        inputPanel.add(inputVarPanel2);
+        
+        JPanel inputVectorPanel = new JPanel();
+        inputVectorPanel.setLayout(new GridLayout(1, 4, 0, 0));
+        inputVectorPanel.add(new JLabel("Launch position "));
+
+        inputVectorPanel.add(lXCoordField);
+
+        inputVectorPanel.add(lYCoordField);
+
+        inputVectorPanel.add(lZCoordField);
+        inputPanel.add(inputVectorPanel);
+
+        JPanel btnPanel = new JPanel();
         JButton startButton = new JButton("Start simulation");
         startButton.addActionListener(new startBtnListener());
-        inputPanel.add(startButton);
-
+        btnPanel.add(startButton);
         JButton clearButton = new JButton("Clear text area");
         clearButton.addActionListener(new clearBtnListener());
-        inputPanel.add(clearButton);
+        btnPanel.add(clearButton);
+        inputPanel.add(btnPanel);
 
         rootPanel.add(inputPanel);
         return rootPanel;
     }
 
-    class startBtnListener implements ActionListener
-    {
+    public boolean isStarted() {
+        return started;
+    }
+
+    class startBtnListener implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            // TODO Auto-generated method stub
             started = true;
             System.out.println("Commence simulation...");
         }
 
     }
 
-    public boolean isStarted() {
-        return started;
+    class updateLabel implements ChangeListener {
+        private JLabel jLabel = new JLabel();
+        private JSlider jSlider = new JSlider();
+        public updateLabel(JSlider jSlider, JLabel jLabel) {
+            this.jLabel = jLabel;
+            this.jSlider = jSlider;
+        }
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            jLabel.setText(String.valueOf(velocitySliderW*jSlider.getValue()));
+        }
+
     }
 
     class clearBtnListener implements ActionListener {
@@ -107,16 +160,19 @@ public class DialogFrame extends JFrame {
         textArea.append(message + "\n");
     }
 
-    public void setOutput(String message) {
-        textArea.setText(message + "\n");
-    }
-
     public double getTimeStepSize() {
+        if (stSizeField.getText().equals(""))
+            return 0;
         return Double.parseDouble(stSizeField.getText());
     }
 
-    public double getLaunchX()
-    {
+    public double getProbeMass() {
+        if (massSizeField.getText().equals(""))
+            return 0;
+        return Double.parseDouble(massSizeField.getText());
+    }
+
+    public double getLaunchX() {
         if (lXCoordField.getText().equals(""))
             return 0;
         return Double.parseDouble(lXCoordField.getText());
@@ -134,4 +190,23 @@ public class DialogFrame extends JFrame {
         return Double.parseDouble(lZCoordField.getText());
     }
 
+    public double getLaunchVelocityX() {
+        return velocitySliderW*xVelSlider.getValue();
+    }
+
+    public double getLaunchVelocityY() {
+        return velocitySliderW*yVelSlider.getValue();
+    }
+
+    public double getLaunchVelocityZ() {
+        return velocitySliderW*zVelSlider.getValue();
+    }
+
+
+
+    public static void main(String[] args) {
+        
+        new DialogFrame().init();
+
+    }
 }

@@ -30,7 +30,7 @@ public class GraphicsManager
             synchronized (syncAssist)
             {
                 this.assist.get().init();
-                this.assist.get().setOutput("Please insert Coordinates");
+                this.assist.get().appendToOutput("Please insert Coordinates");
             }
         });
         t.start();
