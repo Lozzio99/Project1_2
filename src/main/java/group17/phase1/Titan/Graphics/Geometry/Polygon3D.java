@@ -98,7 +98,9 @@ public class Polygon3D
         this.baseColor = color;
     }
 
-    public void render(Graphics g) {
+    public void render(Graphics g2)
+    {
+        Graphics2D g = (Graphics2D) g2;
         if (!this.visible) return;
 
         Polygon poly = new Polygon();
@@ -107,8 +109,9 @@ public class Polygon3D
             poly.addPoint(p.x, p.y);
         }
 
+        g.setStroke(new BasicStroke(4e6f));
         g.setColor(this.lightingColor);
-        g.fillPolygon(poly);
+        g.fill(poly);
     }
 
     public void setLighting(Vector3dInterface lightVector3D) {

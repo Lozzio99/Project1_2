@@ -7,6 +7,7 @@ import group17.phase1.Titan.Graphics.Geometry.Polygon3D;
 import group17.phase1.Titan.Graphics.user.DialogFrame;
 import group17.phase1.Titan.Graphics.user.MouseInput;
 import group17.phase1.Titan.Main;
+import org.lwjgl.system.CallbackI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
@@ -33,7 +36,7 @@ public class GraphicsManager
     static Dimension SCREEN = new Dimension(WIDTH,HEIGHT);
     private WindowEvent listen;
     private Point3D[] trajectories;
-    private List<Polygon3D> ellipses;
+    private List<List<Point3D>> ellipses;
 
 
     public GraphicsManager()
@@ -80,14 +83,13 @@ public class GraphicsManager
         for (int i = 0;i < allPlanets; i++)
         {
             //each planet has an orbit defined by some points
-            Point3D[] traj = new Point3D[size];
+            List<Point3D> traj = new ArrayList<>();
             //each planet has been recorded for a given num. of steps
             for (int step = 0; step<size; step++)
             {
-                traj[step] = this.trajectories[allPlanets*i+step];
+                traj.add(this.trajectories[allPlanets*i+step]);
             }
-            Polygon3D ellipse = new Polygon3D(traj);
-            this.ellipses.add(ellipse);
+            this.ellipses.add(traj);
         }
     }
 
@@ -144,6 +146,7 @@ public class GraphicsManager
 
         public MainThread(SystemSimulationUpdater visualization) {
             this.visualization = visualization;
+            this.visualization.setTraj(ellipses);
             this.setSize(SCREEN);
             this.setEnabled(true);
             this.setFocusable(true);

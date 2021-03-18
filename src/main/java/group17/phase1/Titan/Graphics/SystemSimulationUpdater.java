@@ -2,6 +2,7 @@ package group17.phase1.Titan.Graphics;
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
+import group17.phase1.Titan.Graphics.Geometry.Polygon3D;
 import group17.phase1.Titan.Graphics.user.MouseInput;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Utils.Configuration;
@@ -9,6 +10,7 @@ import group17.phase1.Titan.Utils.Configuration;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -42,6 +44,10 @@ public class SystemSimulationUpdater
             rear = new Point3D(0,0,-UNIT_SIZE);
 
 
+    private List<List<Point3D>> ellipses;
+
+
+
     void startSimulation()
     {
 
@@ -61,6 +67,9 @@ public class SystemSimulationUpdater
                 System.out.println(i + "\t : \t " + radius[i]);
             }
         }
+    }
+    public void setTraj(List<List<Point3D>> ellipses){
+        this.ellipses = ellipses;
     }
 
     private void updateBodies()

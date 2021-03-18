@@ -56,12 +56,11 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         }
         StateInterface[] enough = this.solve(this,this.solarSystemState,ts);
         positions = new Point3D[trajectoryLength * this.solarSystem.getCelestialBodies().size()];
-        for (int i = 0; i< trajectoryLength; i++)
-        {
-            for (int p = 0; p< this.solarSystem.getCelestialBodies().size(); p++)
-            {
-                positions[i+p] = this.solarSystem.getCelestialBodies().get(p).getVectorLocation().fromVector();
-                System.out.println(positions[i+p]);
+
+        int allPlanets = this.solarSystem.getCelestialBodies().size();
+        for (int i = 0; i<allPlanets; i++){
+            for (int step = 0; step<trajectoryLength; step++){
+                positions[i*allPlanets+step] = enough[step].getState().get(i).getVectorLocation().fromVector();
             }
         }
 
