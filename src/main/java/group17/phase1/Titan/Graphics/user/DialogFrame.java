@@ -14,11 +14,11 @@ import java.awt.event.ActionListener;
 public class DialogFrame extends JFrame {
 
     private JTextArea textArea = new JTextArea(10, 30);
-    private JTextField stSizeField = new JTextField(2);
-    private JTextField massSizeField = new JTextField(2);
-    private JTextField lXCoordField = new JTextField( 1);
-    private JTextField lYCoordField = new JTextField( 1);
-    private JTextField lZCoordField = new JTextField( 1);
+    private JTextField stSizeField = new JTextField();
+    private JTextField massSizeField = new JTextField();
+    private JTextField lXCoordField = new JTextField();
+    private JTextField lYCoordField = new JTextField();
+    private JTextField lZCoordField = new JTextField();
 
     private JSlider xVelSlider = new JSlider(-100, 100);
     private JSlider yVelSlider = new JSlider(-100, 100);
@@ -29,11 +29,11 @@ public class DialogFrame extends JFrame {
     private double velocitySliderW = 1.0;
 
     public void init(){
-        setSize(1276, 500);
+        setSize(700, 300);
         setTitle("Dialog window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel wrapperPanel = new JPanel();
-        wrapperPanel.setLayout(new GridLayout(1, 2, 1, 1));
+        wrapperPanel.setLayout(new GridLayout(1, 2));
         wrapperPanel.add(createSetUpPanel());
         JScrollPane scrollPane = new JScrollPane(textArea);
         wrapperPanel.add(scrollPane);
@@ -43,30 +43,25 @@ public class DialogFrame extends JFrame {
     }
 
     private JPanel createSetUpPanel() {
-        JPanel rootPanel = new JPanel();
-
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(6, 1, 0, 0));
-        inputPanel.add(new JLabel(" "));
+        inputPanel.setLayout(new GridLayout(5, 1));
         
         // Here add all the input parameter fields
         JPanel inputVarPanel1 = new JPanel();
-        inputVarPanel1.setLayout(new GridLayout(1, 2, 0, 0));
+        inputVarPanel1.setLayout(new GridLayout(1, 2));
         inputVarPanel1.add(new JLabel("Time step size "));
         inputVarPanel1.add(stSizeField);
         inputPanel.add(inputVarPanel1);
 
         JPanel inputVarPanel3 = new JPanel();
-        inputVarPanel3.setLayout(new GridLayout(1, 2, 0, 0));
+        inputVarPanel3.setLayout(new GridLayout(1, 2));
 
         inputVarPanel3.add(new JLabel("Mass "));
         inputVarPanel3.add(massSizeField);
         inputPanel.add(inputVarPanel3);
 
         JPanel inputVarPanel2 = new JPanel();
-        inputVarPanel2.setLayout(new GridLayout(3, 3, 0, 0));
-
-
+        inputVarPanel2.setLayout(new GridLayout(3, 3));
 
         JLabel xVelLabel = new JLabel("X");
         JLabel yVelLabel = new JLabel("Y");
@@ -87,7 +82,7 @@ public class DialogFrame extends JFrame {
         inputPanel.add(inputVarPanel2);
         
         JPanel inputVectorPanel = new JPanel();
-        inputVectorPanel.setLayout(new GridLayout(1, 4, 0, 0));
+        inputVectorPanel.setLayout(new GridLayout(1, 4));
         inputVectorPanel.add(new JLabel("Launch position "));
 
         inputVectorPanel.add(lXCoordField);
@@ -106,8 +101,7 @@ public class DialogFrame extends JFrame {
         btnPanel.add(clearButton);
         inputPanel.add(btnPanel);
 
-        rootPanel.add(inputPanel);
-        return rootPanel;
+        return inputPanel;
     }
 
     public boolean isStarted() {
