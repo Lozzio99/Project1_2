@@ -42,8 +42,14 @@ public class GraphicsManager
     {
         while (!assist.get().isStarted()){
             /*take coordinates or whatever*/
-            assist.get().getLaunchX();
+            if (assist.get().getLaunchVelocityX()!= 0)
+                Main.simulation.getBody("PROBE").getVectorVelocity().setX(assist.get().getLaunchVelocityX());
 
+            if (assist.get().getLaunchVelocityY()!= 0)
+            Main.simulation.getBody("PROBE").getVectorVelocity().setY(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityY());
+
+            if (assist.get().getLaunchVelocityZ()!= 0)
+                Main.simulation.getBody("PROBE").getVectorVelocity().setZ(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityZ());
         }
         Thread th = new Thread(this.engine);
         th.start();
@@ -57,12 +63,15 @@ public class GraphicsManager
             synchronized (syncAssist)
             {
                 this.assist.get().init();
-                this.assist.get().appendToOutput("Please insert Coordinates");
-                this.assist.get().appendToOutput("insert those coordinates:");
-                this.assist.get().appendToOutput("location");
+                this.assist.get().appendToOutput("Those are the starting coordinates : ");
                 this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorLocation().toString());
-                this.assist.get().appendToOutput("velocity");
+                this.assist.get().appendToOutput("This is the starting velocity:");
                 this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVelocityVector().toString());
+                this.assist.get().appendToOutput("If you want to change the starting velocity\n" +
+                        " you can increase / decrease the sliders");
+                this.assist.get().appendToOutput("If you want to change the starting position\n" +
+                        " you can plug in the desired values");
+                this.assist.get().appendToOutput("If you trust our shoot then just START SIMULATION :=)");
             }
         });
         t.start();

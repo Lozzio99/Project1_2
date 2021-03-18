@@ -54,15 +54,15 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
         Main.simulation.getGraphicsManager().getAssist().get().setProbeField(""+Main.simulation.getBody("PROBE").getMASS());
 
+        Main.simulation.getGraphicsManager().getAssist().get().setDdField(""+ 1);
+        Main.simulation.getGraphicsManager().getAssist().get().setMmField(""+4);
+        Main.simulation.getGraphicsManager().getAssist().get().setYyField(""+2020);
+        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
+        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
         //TODO: sync this
         this.graphicsManager.waitForStart();
 
-        Main.simulation.getBody("PROBE").getVectorVelocity().setX(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityX());
-        Main.simulation.getBody("PROBE").getVectorVelocity().setY(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityY());
-        Main.simulation.getBody("PROBE").getVectorVelocity().setZ(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityZ());
 
-        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
-        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
 
         this.runStepSimulation();
 

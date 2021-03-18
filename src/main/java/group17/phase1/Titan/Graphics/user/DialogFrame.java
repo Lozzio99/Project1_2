@@ -41,6 +41,8 @@ public class DialogFrame extends JFrame
     // TODO: weight for the velocity slider to be changed if needed
     private double velocitySliderW = 1.0;
 
+    public static int second = 0;
+
     public DialogFrame() {
 
     }
@@ -291,5 +293,7 @@ public class DialogFrame extends JFrame
     public void setProbeField(String ssField) {
         this.massSizeField.setText(ssField);
     }
+
+
 
 }
