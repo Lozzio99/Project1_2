@@ -3,11 +3,8 @@ package group17.phase1.Titan.Simulation;
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
-import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
-import group17.phase1.Titan.SolarSystem.Bodies.Planet;
-import group17.phase1.Titan.SolarSystem.Bodies.Star;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
 
 import static group17.phase1.Titan.Utils.Configuration.*;
@@ -20,7 +17,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     private SolarSystemInterface solarSystem;
     private GraphicsManager graphicsManager;
 
-    public static double stepSize = 10;
+    public static double stepSize = 1;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
     private int trajectoryLength = 1000;

@@ -2,11 +2,8 @@ package group17.phase1.Titan.Simulation.Probe;
 
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Main;
-import group17.phase1.Titan.Simulation.SimulationRepository;
 import group17.phase1.Titan.Simulation.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
-import group17.phase1.Titan.SolarSystem.SolarSystem;
-
 import java.awt.*;
 
 import static group17.phase1.Titan.Simulation.SimulationRepository.*;
@@ -23,10 +20,10 @@ public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInter
         this.setMASS(15000);
         this.setRADIUS(1e8);
         this.setColour(Color.GREEN);
-        this.setVectorLocation(Main.simulation.getBody("EARTH").getVectorLocation());
-        this.setVectorLocation(this.getVectorLocation().add(new Vector3D(2.131313,223.232,3444)));
-        this.setVectorVelocity(Main.simulation.getBody("EARTH").getVectorVelocity());
-        this.setVectorVelocity(this.getVelocityVector().add(new Vector3D(313.131,32.323,323.23)));
+        this.setVectorLocation(Main.simulation.getBody("EARTH").getVectorLocation().clone());
+        this.setVectorLocation(this.getVectorLocation().add(new Vector3D(-7485730.186,6281273.438,-8172135.798)));
+        this.setVectorVelocity(Main.simulation.getBody("EARTH").getVectorVelocity().clone());
+        this.setVectorVelocity(this.getVelocityVector().add(new Vector3D(17614.806943044582,-83146.44838398469,-0089.20608999642003)));
 
     }
 

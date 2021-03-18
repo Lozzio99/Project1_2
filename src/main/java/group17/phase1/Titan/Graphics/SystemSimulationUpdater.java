@@ -122,8 +122,13 @@ public class SystemSimulationUpdater
 
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+            Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);
+            g.drawString(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).toString(),p.x,p.y);
             g.setColor(this.colors[i]);
             g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
+
             if (TRAJECTORIES)
                 for (Line2D.Double l : this.paths.get(i))
                     g.draw(l);
