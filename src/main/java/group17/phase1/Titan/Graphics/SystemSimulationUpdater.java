@@ -25,7 +25,7 @@ public class SystemSimulationUpdater
     private int initialX, initialY;
     private final static double mouseSensitivity = 6;
     private final static double moveSpeed = 1e8;
-
+    double totalxDif, totalyDif, totalzDif = 0;
 
 
 
@@ -87,6 +87,10 @@ public class SystemSimulationUpdater
             radius[i] = (Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale()* radiusMag;
             this.colors[i] = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).getColour();
         }
+        for (Point3D p : this.planetsPositions) {
+            Point3DConverter.rotateAxisX(p, false, totalyDif / mouseSensitivity);
+            Point3DConverter.rotateAxisY(p, false, totalxDif / mouseSensitivity);
+        }
     }
 
     void paint(Graphics graphics)
@@ -127,14 +131,17 @@ public class SystemSimulationUpdater
 
 
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
-            int xDif = x - this.initialX;
+            int xDif = x - initialX;
             this.rotateOnAxisY(false,xDif/mouseSensitivity);
+            totalxDif += xDif;
         }
 
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
-            int yDif = y - this.initialY;
+            int yDif = y - initialY;
             this.rotateOnAxisX(false,yDif/mouseSensitivity);
+            totalyDif += yDif;
         }
+
 
         if(this.mouse.isScrollingUp()) {
             Point3DConverter.zoomIn();
