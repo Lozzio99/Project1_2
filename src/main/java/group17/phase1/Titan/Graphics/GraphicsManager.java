@@ -53,13 +53,15 @@ public class GraphicsManager
 
 
     //wait for the assist frame to give the start
-    public void waitForStart(){
+    public void waitForStart()
+    {
         while (!assist.get().isStarted()){
             /*take coordinates or whatever*/
             assist.get().getLaunchX();
 
         }
-        this.startMainThread();
+        Thread th = new Thread(this.engine);
+        th.start();
     }
 
 
@@ -85,12 +87,6 @@ public class GraphicsManager
 
     }
 
-
-    public void startMainThread()
-    {
-        Thread th = new Thread(this.engine);
-        th.start();
-    }
 
     public SystemSimulationUpdater getSimulationUpdater() {
         return this.simulationUpdater;

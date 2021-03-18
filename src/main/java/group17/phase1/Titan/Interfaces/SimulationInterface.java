@@ -17,4 +17,5 @@ public interface SimulationInterface
 
     void initProbe();
 
+    void initSimulation();
 }

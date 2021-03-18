@@ -9,10 +9,14 @@ public class Main
 {
     public static SimulationInterface simulation = new SimulationRepository();
 
+    public Main(){
+
+    }
+
     public static void main(String[] args)
     {
         simulation.initProbe();
-        //simulation.calculateTrajectories();
-        simulation.runSimulation();
+        simulation.calculateTrajectories();
+        simulation.initSimulation();
     }
 }

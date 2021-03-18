@@ -20,7 +20,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     private SolarSystemInterface solarSystem;
     private GraphicsManager graphicsManager;
 
-    public static double stepSize = 1000;
+    public static double stepSize = 10000;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
     private int trajectoryLength = 1000;
@@ -33,7 +33,6 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         this.solarSystem = new SolarSystem();
         this.solarSystemState = (StateInterface) solarSystem;
         this.rateOfChange = (RateInterface) solarSystem;
-
     }
 
     public void initProbe()
@@ -50,7 +49,11 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     {
         this.graphicsManager = new GraphicsManager();
         this.graphicsManager.init();
+
+        //TODO: is this really sync?
         this.graphicsManager.waitForStart();
+        this.runSimulation();
+
     }
 
 
@@ -96,7 +99,6 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     @Override
     public void runSimulation()
     {
-        this.initSimulation();
         for (int i = 0; i < endTime; i++) {
             if (DEBUG)System.out.println("Earth Pos: " + solarSystem.getCelestialBodies().get(3).getVectorLocation().toString());
             if (DEBUG)System.out.println("Earth Vel: " + solarSystem.getCelestialBodies().get(3).getVelocityVector().toString());
@@ -221,8 +223,16 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
                     double squareDist = Math.pow(thisBody.getVectorLocation().dist(otherBody.getVectorLocation()), 2);
                     acc.sub(otherBody.getVectorLocation()); // Get the force vector
                     double den = Math.sqrt(squareDist);
-                    acc.mul(1 / (den == 0? 1 : den)); // Normalise to length 1
-                    acc.mul((G * otherBody.getMASS()) / (squareDist == 0 ? 1 : squareDist) ); // Convert force to acceleration
+                    /*
+                        ! Important !
+
+                        if two bodies collapses into the same point
+                        that would crash to NaN and consequently
+                        the same in all the system
+
+                     */
+                    acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
+                    acc.mul((G * otherBody.getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist) ); // Convert force to acceleration
                     totalAcc.addMul(stepSize, acc);
                 }
             }

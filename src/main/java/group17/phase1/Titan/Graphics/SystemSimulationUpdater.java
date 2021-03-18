@@ -2,11 +2,9 @@ package group17.phase1.Titan.Graphics;
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
-import group17.phase1.Titan.Graphics.Geometry.Polygon3D;
 import group17.phase1.Titan.Graphics.user.MouseInput;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
-import group17.phase1.Titan.Utils.Configuration;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -15,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import static group17.phase1.Titan.Utils.Configuration.*;
 
 public class SystemSimulationUpdater
 {
@@ -52,14 +52,15 @@ public class SystemSimulationUpdater
 
     void startSimulation()
     {
-
-        paths = new ArrayList<>();
-        for (CelestialBody c : Main.simulation.getSolarSystemRepository().getCelestialBodies())
+        if (TRAJECTORIES)
         {
-            if (c.getPath() == null)
-                continue;
-            paths.add(trajectory(c.getPath()));
+            paths = new ArrayList<>();
+            for (CelestialBody c : Main.simulation.getSolarSystemRepository().getCelestialBodies())
+            {
+                paths.add(trajectory(c.getPath()));
+            }
         }
+
 
 
         this.planetsPositions = new Point3D[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
@@ -68,7 +69,8 @@ public class SystemSimulationUpdater
         this.updateBodies();
 
 
-        if (Configuration.DEBUG) { // Print initial location and size of the bodies
+
+        if (DEBUG) { // Print initial location and size of the bodies
             System.out.println("Positions:");
             for (int i = 0; i < this.planetsPositions.length; i++) {
                 System.out.println(i + "\t : \tX: " + planetsPositions[i].x + "\tY: " + planetsPositions[i].y + "\tZ: " + planetsPositions[i].z);
@@ -78,6 +80,7 @@ public class SystemSimulationUpdater
                 System.out.println(i + "\t : \t " + radius[i]);
             }
         }
+
     }
 
     private void updateBodies()
@@ -121,10 +124,9 @@ public class SystemSimulationUpdater
         {
             g.setColor(this.colors[i]);
             g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
-            if (this.paths.size()== 0)
-                continue;
-            for (Line2D.Double l : this.paths.get(i))
-                g.draw(l);
+            if (TRAJECTORIES)
+                for (Line2D.Double l : this.paths.get(i))
+                    g.draw(l);
         }
 
     }
