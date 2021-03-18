@@ -17,15 +17,11 @@ public class UnitConverter
             case UA -> {return convertUA(needsToBeConverted,to_type);}
             case LightYear -> {return convertLightYears(needsToBeConverted,to_type);}
 
-            default -> {assert false : "wtf?";}
+            default -> {assert false : "Unexpected value for conversion";}
         }
         throw new IllegalArgumentException("Unexpected value for conversion");
     }
 
-    /*
-    TODO: copy this method and change it to be convertMeters(double meters, to_type) - done
-    TODO: copy this method and change it to be convertUA(double UA, to_type) - done
-     */
 
     //umbrella method to convert from kilometres to another measure of distance
     public static double convertKm(double km,unit to_type){
@@ -75,27 +71,22 @@ public class UnitConverter
     }
 
 
-
-    /*
-    TODO: implement this 3 methods for each UA and meters changing the conversion type - done
-     */
-
     //methods to convert from kilometres to other distance measurements
     public static double convertKmToMeters(double km){
         return km*1000;
     }
-    public static double convertKmToUA(double km){ return km*(float)0.00000000668458712; }
-    public static double convertKmToLightYear(double km){ return km*(float)0.0000000000001057; }
+    public static double convertKmToUA(double km){ return km*0.00000000668458712; }
+    public static double convertKmToLightYear(double km){ return km*0.0000000000001057; }
 
     //methods to convert from metres to other distance measurements
     public static double convertMetresToKm(double met) { return met/1000; }
 
     //methods to convert from AU to other distance measures
     public static double convertAUToKM(double au) {return au*149597871; }
-    public static double convertAUToLY(double au) {return au*(float)0.0000158125; }
+    public static double convertAUToLY(double au) {return au*0.0000158125; }
 
     //methods to convert from LY to other distance measures
-    public static double convertLYToKM(double ly) {return ly*(float)94605284e4; }
+    public static double convertLYToKM(double ly) {return ly*94605284e4; }
     public static double convertLYToAu(double ly) {return ly*63239.7263; }
 
     //+++++++++++++++ END LENGTH MEASURES ++++++++++++++++//
@@ -125,10 +116,11 @@ public class UnitConverter
     public static double convertSecToHour(double sec){
         return sec/3600;
     }
-    public static double convertSecToDay(double sec){ return sec/(3600*24); }
+    public static double convertSecToDay(double sec){ return sec/(86400); }
     public static double convertSecToYear(double sec){
-        return sec/(3600*24*365);
+        return sec/(31536000);
     }
+
 
 
 
@@ -151,13 +143,13 @@ public class UnitConverter
         return msec/1000;
     }
     public static double convertMillisToHour(double msec){
-        return msec/(1e3*60*60);
+        return msec/(3600000);
     }
     public static double convertMillisToYear(double msec){
-        return msec/(1e3*60*60*24*365);
+        return msec/(31536e6);
     }
     public static double convertMillisToDay(double msec){
-        return msec/(1e3*60*60*24);
+        return msec/(86400000);
     }
 
 
@@ -183,9 +175,11 @@ public class UnitConverter
         return sec*3600000;
     }
     public static double convertHoursToYear(double sec){
-        return sec/(24*365);
+        return sec/(8760);
     }
     public static double convertHoursToDay(double sec){ return sec/24; }
+
+
 
 
 
@@ -206,8 +200,8 @@ public class UnitConverter
     }
 
     //methods to convert from day to desired measure of time
-    public static double convertDayToMS(double d) {return d*(24*60*60*1000);}
-    public static double convertDayToSec(double d) {return d*(24*60*60);}
+    public static double convertDayToMS(double d) {return d*(86400000);}
+    public static double convertDayToSec(double d) {return d*(86400);}
     public static double convertDayToHour(double d) {return d*24;}
     public static double convertDayToYear(double d) {return d/365;}
 

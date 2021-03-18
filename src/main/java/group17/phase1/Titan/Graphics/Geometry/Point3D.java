@@ -55,4 +55,9 @@ public class Point3D
         double z2 = Math.pow(this.z - p2.z, 2);
         return  Math.sqrt(x2 + y2 + z2);
     }
+
+    @Override
+    public String toString(){
+        return "("+this.x+","+this.y+ ","+this.z+")";
+    }
 }

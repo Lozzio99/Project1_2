@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -98,6 +99,7 @@ public class SystemSimulationUpdater
             Point3DConverter.rotateAxisX(p, false, totalyDif / mouseSensitivity);
             Point3DConverter.rotateAxisY(p, false, totalxDif / mouseSensitivity);
         }
+
     }
 
     void paint(Graphics graphics)
@@ -122,9 +124,9 @@ public class SystemSimulationUpdater
 
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
+
             g.setColor(Color.WHITE);
             g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-
             Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);
             g.drawString(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).toString(),p.x,p.y);
             g.setColor(this.colors[i]);
@@ -174,6 +176,7 @@ public class SystemSimulationUpdater
 
     }
 
+
     Ellipse2D.Double planetShape(Point3D position, double radius)
     {
         Point p = Point3DConverter.convertPoint(position);
@@ -183,11 +186,17 @@ public class SystemSimulationUpdater
     List<Line2D.Double> trajectory(List<Point3D> path)
     {
 
+        for (Point3D p : path)
+            System.out.println(p);
+
         List<Line2D.Double> list = new ArrayList<>();
-        for (int step = 1; step< path.size(); step++){
+        for (int step = 1; step< path.size(); step++)
+        {
             path.get(step).scale(scale);
+            Point x = Point3DConverter.convertPoint(path.get(step));
             path.get(step-1).scale(scale);
-            list.add(new Line2D.Double(Point3DConverter.convertPoint(path.get(step)),Point3DConverter.convertPoint(path.get(step-1))));
+            Point x2 = Point3DConverter.convertPoint(path.get(step-1));
+            list.add(new Line2D.Double(x,x2));
         }
         return list;
     }

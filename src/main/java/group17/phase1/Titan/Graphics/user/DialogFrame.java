@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,14 +12,24 @@ import java.awt.event.ActionListener;
 /**
  * DialogFrame
  */
-public class DialogFrame extends JFrame {
+public class DialogFrame extends JFrame
+{
 
     private JTextArea textArea = new JTextArea(10, 30);
     private JTextField stSizeField = new JTextField();
     private JTextField massSizeField = new JTextField();
+
     private JTextField lXCoordField = new JTextField();
     private JTextField lYCoordField = new JTextField();
     private JTextField lZCoordField = new JTextField();
+
+    private JTextField ddField = new JTextField();
+    private JTextField mmField = new JTextField();
+    private JTextField yyField = new JTextField();
+
+    private JTextField hhField = new JTextField();
+    private JTextField mField = new JTextField();
+    private JTextField ssField = new JTextField();
 
     private JSlider xVelSlider = new JSlider(-100, 100);
     private JSlider yVelSlider = new JSlider(-100, 100);
@@ -28,24 +39,28 @@ public class DialogFrame extends JFrame {
     // TODO: weight for the velocity slider to be changed if needed
     private double velocitySliderW = 1.0;
 
-    public void init(){
+    public DialogFrame() {
+
+    }
+    public void init()
+    {
         setSize(700, 300);
         setTitle("Dialog window");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.setLayout(new GridLayout(1, 2));
         wrapperPanel.add(createSetUpPanel());
+
         JScrollPane scrollPane = new JScrollPane(textArea);
         wrapperPanel.add(scrollPane);
         add(wrapperPanel);
         setVisible(true);
-        pack();
     }
 
     private JPanel createSetUpPanel() {
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(5, 1));
-        
+        inputPanel.setLayout(new GridLayout(7, 1));
+
         // Here add all the input parameter fields
         JPanel inputVarPanel1 = new JPanel();
         inputVarPanel1.setLayout(new GridLayout(1, 2));
@@ -80,17 +95,30 @@ public class DialogFrame extends JFrame {
         inputVarPanel2.add(zVelSlider);
         inputVarPanel2.add(zVelLabel);
         inputPanel.add(inputVarPanel2);
-        
+
         JPanel inputVectorPanel = new JPanel();
         inputVectorPanel.setLayout(new GridLayout(1, 4));
         inputVectorPanel.add(new JLabel("Launch position "));
-
         inputVectorPanel.add(lXCoordField);
-
         inputVectorPanel.add(lYCoordField);
-
         inputVectorPanel.add(lZCoordField);
         inputPanel.add(inputVectorPanel);
+
+        JPanel inputDatePanel = new JPanel();
+        inputDatePanel.setLayout(new GridLayout(1, 4));
+        inputDatePanel.add(new JLabel("Date (dd/mm/yyyy) "));
+        inputDatePanel.add(ddField);
+        inputDatePanel.add(mmField);
+        inputDatePanel.add(yyField);
+        inputPanel.add(inputDatePanel);
+
+        JPanel inputTimePanel = new JPanel();
+        inputTimePanel.setLayout(new GridLayout(1, 4));
+        inputTimePanel.add(new JLabel("Time (hh/mm/ss) "));
+        inputTimePanel.add(hhField);
+        inputTimePanel.add(mField);
+        inputTimePanel.add(ssField);
+        inputPanel.add(inputTimePanel);
 
         JPanel btnPanel = new JPanel();
         JButton startButton = new JButton("Start simulation");
@@ -107,6 +135,8 @@ public class DialogFrame extends JFrame {
     public boolean isStarted() {
         return started;
     }
+
+
 
     class startBtnListener implements ActionListener {
 
@@ -152,11 +182,11 @@ public class DialogFrame extends JFrame {
         textArea.append(message + "\n");
     }
 
+    public void setOutput(String toString)
+    {
+        textArea.setText(toString + "\n");
 
-    public void setOutput(String message) {
-        textArea.setText(message);
     }
-
 
     public double getTimeStepSize() {
         if (stSizeField.getText().equals(""))
@@ -200,11 +230,29 @@ public class DialogFrame extends JFrame {
         return velocitySliderW*zVelSlider.getValue();
     }
 
-
-
-    public static void main(String[] args) {
-        
-        new DialogFrame().init();
-
+    public double getDateDD() {
+        return Double.parseDouble(ddField.getText());
     }
+
+    public double getDateMM() {
+        return Double.parseDouble(mmField.getText());
+    }
+
+    public double getDateYYYY() {
+        return Double.parseDouble(yyField.getText());
+    }
+
+    public double getTimeHH() {
+        return Double.parseDouble(hhField.getText());
+    }
+
+    public double getTimeMin() {
+        return Double.parseDouble(mField.getText());
+    }
+
+    public double getTimeSS() {
+        return Double.parseDouble(ssField.getText());
+    }
+
+
 }

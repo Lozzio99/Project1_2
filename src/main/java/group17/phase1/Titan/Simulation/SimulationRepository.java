@@ -19,7 +19,10 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     public static double stepSize = 1;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
-    private int trajectoryLength = 1000;
+    private int trajectoryLength = 10;
+
+    private static double closestApproachToTitan;
+
 
     private RateInterface rateOfChange;
     protected StateInterface solarSystemState;
@@ -36,6 +39,8 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         ProbeSimulator p = new ProbeSimulator();
         p.init(this,this,this.solarSystemState);
         this.solarSystem.getCelestialBodies().add(p);
+        closestApproachToTitan = this.solarSystem.getCelestialBodies().get(11).getVectorLocation().clone().dist(this.solarSystem.getCelestialBodies().get(8).getVectorLocation().clone());
+
     }
 
 
@@ -46,7 +51,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         this.graphicsManager = new GraphicsManager();
         this.graphicsManager.init();
 
-        //TODO: is this really sync?
+        //TODO: sync this
         this.graphicsManager.waitForStart();
         this.runStepSimulation();
 
@@ -106,6 +111,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
             {
                 this.step(this,currTime,step,stepSize);
                 currTime += stepSize;
+                double dist = this.getBody("TITAN").getVectorLocation().clone().dist(this.getBody("PROBE").getVectorLocation().clone());
+                if (dist<closestApproachToTitan)
+                    closestApproachToTitan = dist;
             }
             currTime = 0;
         }
@@ -150,13 +158,10 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         StateInterface[] states = new StateInterface[timeSteps.length];
         endTime = timeSteps[timeSteps.length-1];
         currTime = 0;
-        double lastTime = 0 ;
 
         for (int i = 0; i< timeSteps.length; i++)
         {
-            states[i]  = this.step(gravity,currTime,stateAt0,timeSteps[i]-lastTime);
-            currTime += timeSteps[i];
-            lastTime = timeSteps[i];
+            states [i] = stateAt0.addMul(timeSteps[i],gravity.call(timeSteps[i],stateAt0));
         }
         return states;
     }
@@ -213,8 +218,11 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         s.append("Running at ").append(stepSize).append("\n");
         s.append("Current time : ").append(currTime).append("\n");
         s.append("End of Simulation : ").append(endTime).append("\n");
-        s.append("Distance (m) Probe to Saturn :").append(this.getBody("TITAN").getVectorLocation().clone().dist(this.getBody("EARTH").getVectorLocation().clone())).append("\n");
-        s.append("Distance (vec) Probe to Saturn :").append(this.getBody("TITAN").getVectorLocation().clone().sub(this.getBody("EARTH").getVectorLocation().clone())).append("\n");
+        double dist = this.getBody("TITAN").getVectorLocation().clone().dist(this.getBody("PROBE").getVectorLocation().clone());
+        s.append("Distance (m) Probe to Titan :").append(dist).append("\n");
+        s.append("Distance (vec) Probe to Titan :").append(this.getBody("TITAN").getVectorLocation().clone().sub(this.getBody("PROBE").getVectorLocation().clone())).append("\n");
+        s.append("Closest (m) Probe to Titan :").append(closestApproachToTitan).append("\n\n");
+
         s.append(this.solarSystem.toString());
         return s.toString().trim();
     }

@@ -1,24 +1,14 @@
 package group17.phase1.Titan.Graphics;
 
 
-import group17.phase1.Titan.Graphics.Geometry.Point3D;
-import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
-import group17.phase1.Titan.Graphics.Geometry.Polygon3D;
 import group17.phase1.Titan.Graphics.user.DialogFrame;
 import group17.phase1.Titan.Graphics.user.MouseInput;
 import group17.phase1.Titan.Main;
-import org.lwjgl.system.CallbackI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -39,16 +29,9 @@ public class GraphicsManager
 
     public GraphicsManager()
     {
-        Thread t = new Thread(()->
-        {
-            synchronized (syncAssist)
-            {
-                this.assist.get().init();
-                this.assist.get().appendToOutput("Please insert Coordinates");
-            }
-        });
-        t.start();
+
     }
+
 
 
 
@@ -67,6 +50,20 @@ public class GraphicsManager
 
     public void init()
     {
+        Thread t = new Thread(()->
+        {
+            synchronized (syncAssist)
+            {
+                this.assist.get().init();
+                this.assist.get().appendToOutput("Please insert Coordinates");
+                this.assist.get().appendToOutput("insert those coordinates:");
+                this.assist.get().appendToOutput("location");
+                this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorLocation().toString());
+                this.assist.get().appendToOutput("velocity");
+                this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVelocityVector().toString());
+            }
+        });
+        t.start();
         this.frame = new JFrame(FPS_RATE);
         this.frame.setSize(SCREEN);
         setWindowProperties();

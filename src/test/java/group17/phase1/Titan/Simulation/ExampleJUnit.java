@@ -1,4 +1,4 @@
-package JUnit;
+package group17.phase1.Titan.Simulation;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;

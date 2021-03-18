@@ -18,5 +18,6 @@ public class Main
         simulation.initProbe();
         simulation.calculateTrajectories();
         simulation.initSimulation();
+
     }
 }

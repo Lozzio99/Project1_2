@@ -1,13 +1,11 @@
 package group17.phase1.Titan.SolarSystem;
 
 import group17.phase1.Titan.Interfaces.*;
-import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.Simulation.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.Bodies.Planet;
 import group17.phase1.Titan.SolarSystem.Bodies.Satellite;
 import group17.phase1.Titan.SolarSystem.Bodies.Star;
-import org.lwjgl.system.CallbackI;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -40,7 +38,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         mercury.setVectorLocation(new Vector3D(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09));
         mercury.setVectorVelocity(new Vector3D(3.892585189044652e+04, 2.978342247012996e+03, 3.327964151414740e+03));
         mercury.setColour(Color.magenta);
-        //this.allBodies.add(mercury);
+        this.allBodies.add(mercury);
 
         // Venus
         Planet venus = new Planet(Planet.PlanetsEnum.VENUS);
@@ -49,7 +47,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         venus.setVectorLocation(new Vector3D(-9.435345478592035e+10, 5.350359551033670e+10, 6.131453014410347e+09));
         venus.setVectorVelocity(new Vector3D(-1.726404287724406e+04, -3.073432518238123e+04, 5.741783385280979e-04));
         venus.setColour(Color.orange);
-        //this.allBodies.add(venus);
+        this.allBodies.add(venus);
 
         // Earth
         Planet earth = new Planet(Planet.PlanetsEnum.EARTH);
@@ -67,7 +65,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         luna.setVectorLocation(new Vector3D(-1.472343904597218e+11, -2.822578361503422e+10, 1.052790970065631e+07));
         luna.setVectorVelocity(new Vector3D(4.433121605215677e+03, -2.948453614110320e+04, 8.896598225322805e+01));
         luna.setColour(Color.gray);
-        //this.allBodies.add(luna);
+        this.allBodies.add(luna);
 
         // Mars
         Planet mars = new Planet(Planet.PlanetsEnum.MARS);
@@ -76,7 +74,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         mars.setVectorLocation(new Vector3D(-3.615638921529161e+10, -2.167633037046744e+11, -3.687670305939779e+09));
         mars.setVectorVelocity(new Vector3D(2.481551975121696e+04, -1.816368005464070e+03, -6.467321619018108e+02));
         mars.setColour(Color.red);
-        //this.allBodies.add(mars);
+        this.allBodies.add(mars);
 
         // Jupiter
         Planet jupiter = new Planet(Planet.PlanetsEnum.JUPITER);
@@ -85,7 +83,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         jupiter.setVectorLocation(new Vector3D(1.781303138592153e+11, -7.551118436250277e+11, -8.532838524802327e+08));
         jupiter.setVectorVelocity(new Vector3D(1.255852555185220e+04, 3.622680192790968e+03, -2.958620380112444e+02));
         jupiter.setColour(Color.WHITE);
-        //this.allBodies.add(jupiter);
+        this.allBodies.add(jupiter);
 
         // Saturn
         Planet saturn = new Planet(Planet.PlanetsEnum.SATURN);
@@ -94,7 +92,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         saturn.setVectorLocation(new Vector3D(6.328646641500651e+11, -1.358172804527507e+12, -1.578520137930810e+09));
         saturn.setVectorVelocity(new Vector3D(8.220842186554890e+03, 4.052137378979608e+03, -3.976224719266916e+02));
         saturn.setColour(Color.orange);
-        //this.allBodies.add(saturn);
+        this.allBodies.add(saturn);
 
         // Titan
         Satellite titan = new Satellite(Satellite.SatellitesEnum.TITAN);
@@ -112,7 +110,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         uranus.setVectorLocation(new Vector3D(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10));
         uranus.setVectorVelocity(new Vector3D(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01));
         uranus.setColour(Color.white);
-        //this.allBodies.add(uranus);
+        this.allBodies.add(uranus);
 
         // Neptune
         Planet neptune = new Planet(Planet.PlanetsEnum.NEPTUNE);
@@ -121,7 +119,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         neptune.setVectorLocation(new Vector3D(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10));
         neptune.setVectorVelocity(new Vector3D(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02));
         neptune.setColour(Color.blue);
-        //this.allBodies.add(neptune);
+        this.allBodies.add(neptune);
 
 
     }

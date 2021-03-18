@@ -6,5 +6,5 @@ public class Configuration
     public static final boolean GRAPHICS = true;
     public static final boolean VERBOSE = true;
     public static final boolean TEST = false;
-    public static final boolean TRAJECTORIES = true;
+    public static final boolean TRAJECTORIES = false;
 }
