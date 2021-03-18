@@ -24,8 +24,10 @@ public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInter
         this.setRADIUS(1e8);
         this.setColour(Color.GREEN);
         this.setVectorLocation(Main.simulation.getBody("EARTH").getVectorLocation());
-        this.setVectorLocation(this.getVectorLocation().add(new Vector3D(0,0,0)));
-        this.setVectorVelocity(new Vector3D(100,1000,100));
+        this.setVectorLocation(this.getVectorLocation().add(new Vector3D(2.131313,223.232,3444)));
+        this.setVectorVelocity(Main.simulation.getBody("EARTH").getVectorVelocity());
+        this.setVectorVelocity(this.getVelocityVector().add(new Vector3D(313.131,32.323,323.23)));
+
     }
 
     public void init(ODEFunctionInterface f, ODESolverInterface s, StateInterface state)

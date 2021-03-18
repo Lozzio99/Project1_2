@@ -20,7 +20,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     private SolarSystemInterface solarSystem;
     private GraphicsManager graphicsManager;
 
-    public static double stepSize = 10000;
+    public static double stepSize = 10;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
     private int trajectoryLength = 1000;
@@ -52,7 +52,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
         //TODO: is this really sync?
         this.graphicsManager.waitForStart();
-        this.runSimulation();
+        this.runStepSimulation();
 
     }
 
@@ -61,14 +61,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     public void calculateTrajectories()
     {
 
-        double [] ts = new double[trajectoryLength];
-        double start = 0;
-        for (int i = 0; i< trajectoryLength; i++ )
-        {
-            ts[i] = start;
-            start+= stepSize;
-        }
-        StateInterface[] allSteps = this.solve(this,this.solarSystemState,ts);
+        StateInterface[] allSteps = generateTimeSequences();
 
         int allPlanets = this.solarSystem.getCelestialBodies().size();
         for (int planet = 0; planet <allPlanets; planet++)
@@ -83,38 +76,58 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
     }
 
-
-
     @Override
     public SolarSystemInterface getSolarSystemRepository() {
         return this.solarSystem;
     }
 
-
-    @Override
-    public GraphicsManager getGraphicsManager() {
-        return this.graphicsManager;
-    }
-
     @Override
     public void runSimulation()
     {
-        for (int i = 0; i < endTime; i++) {
+        for (int i = 0; i < endTime; i++)
+        {
             if (DEBUG)System.out.println("Earth Pos: " + solarSystem.getCelestialBodies().get(3).getVectorLocation().toString());
             if (DEBUG)System.out.println("Earth Vel: " + solarSystem.getCelestialBodies().get(3).getVelocityVector().toString());
 
             this.step(this, currTime, this.solarSystemState, stepSize); // The calculation
 
-            try {
-                Thread.sleep(1);
-            }
-            catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
             if (DEBUG) System.out.println("Time: " + currTime);
             currTime += stepSize;
         }
 
+        currTime = 0;
+        this.runSimulation();
+
+    }
+
+    @Override
+    public void runStepSimulation() {
+
+        StateInterface[] allSteps = generateTimeSequences();
+
+        currTime = 0;
+        for(;;){
+            for (StateInterface step : allSteps)
+            {
+                this.step(this,currTime,step,stepSize);
+                currTime += stepSize;
+            }
+            currTime = 0;
+        }
+
+
+
+    }
+
+    private StateInterface[] generateTimeSequences() {
+        double [] ts = new double[trajectoryLength];
+        double start = 0;
+        for (int i = 0; i< trajectoryLength; i++ )
+        {
+            ts[i] = start;
+            start+= stepSize;
+        }
+        return this.solve(this,this.solarSystemState,ts);
     }
 
 

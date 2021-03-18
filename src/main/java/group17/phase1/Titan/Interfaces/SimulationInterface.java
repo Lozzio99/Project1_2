@@ -6,14 +6,14 @@ public interface SimulationInterface
 {
     SolarSystemInterface getSolarSystemRepository();
 
-    GraphicsManager getGraphicsManager();
+
+    CelestialBody getBody(String name);
 
     void runSimulation();
 
+    void runStepSimulation();
+
     void calculateTrajectories();
-
-
-    CelestialBody getBody(String name);
 
     void initProbe();
 

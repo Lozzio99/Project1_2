@@ -3,7 +3,8 @@ package group17.phase1.Titan.Utils;
 public class UnitConverter
 {
     public static double convert(double needsToBeConverted, unit from_type, unit to_type){
-        switch (from_type){
+        switch (from_type)
+        {
             case year -> {return convertYear(needsToBeConverted,to_type);}
             case day -> {return convertDay(needsToBeConverted,to_type);}
             case hour -> {return convertHour(needsToBeConverted,to_type);}
@@ -150,13 +151,13 @@ public class UnitConverter
         return msec/1000;
     }
     public static double convertMillisToHour(double msec){
-        return msec/(1000*60*60);
+        return msec/(1e3*60*60);
     }
     public static double convertMillisToYear(double msec){
-        return msec/(1000*60*60*24*365);
+        return msec/(1e3*60*60*24*365);
     }
     public static double convertMillisToDay(double msec){
-        return msec/(1000*60*60*24);
+        return msec/(1e3*60*60*24);
     }
 
 
