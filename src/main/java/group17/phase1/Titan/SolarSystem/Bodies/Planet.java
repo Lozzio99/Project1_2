@@ -12,6 +12,7 @@ public class Planet extends CelestialBody
     public String toString() {
         return this.planet.toString();
     }
+
     public enum PlanetsEnum {
         MERCURY,
         VENUS,

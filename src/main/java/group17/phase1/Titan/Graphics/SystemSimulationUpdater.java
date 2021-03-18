@@ -55,7 +55,11 @@ public class SystemSimulationUpdater
 
         paths = new ArrayList<>();
         for (CelestialBody c : Main.simulation.getSolarSystemRepository().getCelestialBodies())
+        {
+            if (c.getPath() == null)
+                continue;
             paths.add(trajectory(c.getPath()));
+        }
 
 
         this.planetsPositions = new Point3D[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
@@ -117,6 +121,8 @@ public class SystemSimulationUpdater
         {
             g.setColor(this.colors[i]);
             g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
+            if (this.paths.size()== 0)
+                continue;
             for (Line2D.Double l : this.paths.get(i))
                 g.draw(l);
         }
@@ -168,6 +174,7 @@ public class SystemSimulationUpdater
 
     List<Line2D.Double> trajectory(Point3D[] path)
     {
+
         List<Line2D.Double> list = new ArrayList<>();
         for (int step = 1; step< path.length; step++){
             path[step].scale(scale);

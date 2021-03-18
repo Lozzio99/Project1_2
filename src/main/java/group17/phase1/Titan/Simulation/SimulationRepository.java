@@ -3,6 +3,8 @@ package group17.phase1.Titan.Simulation;
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
+import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.Bodies.Planet;
 import group17.phase1.Titan.SolarSystem.Bodies.Star;
@@ -18,9 +20,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     private SolarSystemInterface solarSystem;
     private GraphicsManager graphicsManager;
 
-    private static double stepSize = 1000;
-    private static double currTime = 0;
-    private static double endTime = Double.MAX_VALUE;
+    public static double stepSize = 1000;
+    public static double currTime = 0;
+    public static double endTime = Double.MAX_VALUE;
     private int trajectoryLength = 1000;
 
     private RateInterface rateOfChange;
@@ -31,7 +33,18 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         this.solarSystem = new SolarSystem();
         this.solarSystemState = (StateInterface) solarSystem;
         this.rateOfChange = (RateInterface) solarSystem;
+
     }
+
+    public void initProbe()
+    {
+        ProbeSimulator p = new ProbeSimulator();
+        p.init(this,this,this.solarSystemState);
+        this.solarSystem.getCelestialBodies().add(p);
+    }
+
+
+
 
     public void initSimulation()
     {
@@ -50,7 +63,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         for (int i = 0; i< trajectoryLength; i++ )
         {
             ts[i] = start;
-            start+= 1000;
+            start+= stepSize;
         }
         StateInterface[] allSteps = this.solve(this,this.solarSystemState,ts);
 
@@ -123,19 +136,16 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     @Override
     public StateInterface[] solve(ODEFunctionInterface gravity, StateInterface stateAt0, double[] timeSteps)
     {
-        StateInterface[] positions = new StateInterface[timeSteps.length];
+        StateInterface[] states = new StateInterface[timeSteps.length];
         endTime = timeSteps[timeSteps.length-1];
-        currTime = timeSteps[0];
+        currTime = 0;
 
-        //we assume that ts[0] is a positive time step starting from time 0
-        positions[0] = this.step(gravity,currTime,stateAt0,timeSteps[0]);
 
-        for (int i = 1; i< positions.length; i++)
-        {
+        for (int i = 0; i< timeSteps.length; i++){
+            states[i] = this.step(this,timeSteps[i],this.solarSystemState,timeSteps[i]-currTime);
             currTime = timeSteps[i];
-            positions[i] = this.step(gravity,currTime,stateAt0,currTime-timeSteps[i-1]);
         }
-        return positions;
+        return states;
     }
 
 
@@ -155,7 +165,6 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     {
         SimulationRepository.endTime = endTime;
         SimulationRepository.stepSize = timeSize;
-
         StateInterface[] path = new StateInterface[(int)(Math.round(endTime/timeSize))+1];
         SimulationRepository.currTime = 0;
         for (int i = 0; i< path.length-1;i++)
@@ -199,18 +208,21 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     @Override
     public RateInterface call(double timeAt, StateInterface stateAtTime)
     {
+
         for (int i = 0; i< this.getSolarSystemRepository().getCelestialBodies().size(); i++)
         {
             CelestialBody thisBody = this.getSolarSystemRepository().getCelestialBodies().get(i);
             Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
             for (CelestialBody otherBody : this.getSolarSystemRepository().getCelestialBodies())
             {
-                if (thisBody != otherBody) {
+                if (thisBody != otherBody)
+                {
                     Vector3dInterface acc = new Vector3D(thisBody.getVectorLocation().getX(), thisBody.getVectorLocation().getY(), thisBody.getVectorLocation().getZ());
                     double squareDist = Math.pow(thisBody.getVectorLocation().dist(otherBody.getVectorLocation()), 2);
                     acc.sub(otherBody.getVectorLocation()); // Get the force vector
-                    acc.mul(1 / Math.sqrt(squareDist)); // Normalise to length 1
-                    acc.mul((G * otherBody.getMASS()) / squareDist); // Convert force to acceleration
+                    double den = Math.sqrt(squareDist);
+                    acc.mul(1 / (den == 0? 1 : den)); // Normalise to length 1
+                    acc.mul((G * otherBody.getMASS()) / (squareDist == 0 ? 1 : squareDist) ); // Convert force to acceleration
                     totalAcc.addMul(stepSize, acc);
                 }
             }

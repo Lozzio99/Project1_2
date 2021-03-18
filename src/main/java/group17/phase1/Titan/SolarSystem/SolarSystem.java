@@ -1,6 +1,7 @@
 package group17.phase1.Titan.SolarSystem;
 
 import group17.phase1.Titan.Interfaces.*;
+import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.Simulation.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.Bodies.Planet;
@@ -110,7 +111,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         uranus.setRADIUS(2.5362e7);
         uranus.setVectorLocation(new Vector3D(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10));
         uranus.setVectorVelocity(new Vector3D(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01));
-        //uranus.setColour(Color.white);
+        uranus.setColour(Color.white);
         this.allBodies.add(uranus);
 
         // Neptune
@@ -121,6 +122,8 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         neptune.setVectorVelocity(new Vector3D(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02));
         neptune.setColour(Color.blue);
         this.allBodies.add(neptune);
+
+
     }
 
 

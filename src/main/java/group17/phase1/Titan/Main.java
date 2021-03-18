@@ -2,6 +2,7 @@ package group17.phase1.Titan;
 
 import group17.phase1.Titan.Interfaces.SimulationInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
+import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.Simulation.SimulationRepository;
 
 public class Main
@@ -10,7 +11,8 @@ public class Main
 
     public static void main(String[] args)
     {
-        simulation.calculateTrajectories();
+        simulation.initProbe();
+        //simulation.calculateTrajectories();
         simulation.runSimulation();
     }
 }

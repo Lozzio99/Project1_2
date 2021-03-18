@@ -30,10 +30,7 @@ public abstract class CelestialBody
 
     Point3D[] path;
 
-    public CelestialBody(){
-
-    }
-
+    public CelestialBody(){ }
 
     // --- Set-Methods ---
 
@@ -127,8 +124,10 @@ public abstract class CelestialBody
     }
 
 
-    public void acquirePath(Point3D[] path){
-        this.path = path;
+    public void acquirePath(Point3D[] path){ this.path = path; }
+
+    public Point3D[] getPath(){
+        return this.path;
     }
 
     @Override
@@ -147,7 +146,5 @@ public abstract class CelestialBody
 
     public abstract String toString();
 
-    public Point3D[] getPath(){
-        return this.path;
-    }
+
 }

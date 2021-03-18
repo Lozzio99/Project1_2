@@ -14,4 +14,7 @@ public interface SimulationInterface
 
 
     CelestialBody getBody(String name);
+
+    void initProbe();
+
 }
