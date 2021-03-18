@@ -33,7 +33,9 @@ public class GraphicsManager
     }
 
 
-
+    public AtomicReference<DialogFrame> getAssist() {
+        return this.assist;
+    }
 
     //wait for the assist frame to give the start
     public void waitForStart()

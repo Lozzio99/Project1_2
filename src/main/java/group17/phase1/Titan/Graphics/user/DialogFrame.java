@@ -1,5 +1,7 @@
 package group17.phase1.Titan.Graphics.user;
 
+import group17.phase1.Titan.Main;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -31,9 +33,9 @@ public class DialogFrame extends JFrame
     private JTextField mField = new JTextField();
     private JTextField ssField = new JTextField();
 
-    private JSlider xVelSlider = new JSlider(-100, 100);
-    private JSlider yVelSlider = new JSlider(-100, 100);
-    private JSlider zVelSlider = new JSlider(-100, 100);
+    private JSlider xVelSlider = new JSlider(-30000, 30000);
+    private JSlider yVelSlider = new JSlider(-30000, 30000);
+    private JSlider zVelSlider = new JSlider(-30000, 30000);
 
     private static boolean started = false;
     // TODO: weight for the velocity slider to be changed if needed
@@ -42,6 +44,8 @@ public class DialogFrame extends JFrame
     public DialogFrame() {
 
     }
+
+
     public void init()
     {
         setSize(700, 300);
@@ -100,8 +104,11 @@ public class DialogFrame extends JFrame
         inputVectorPanel.setLayout(new GridLayout(1, 4));
         inputVectorPanel.add(new JLabel("Launch position "));
         inputVectorPanel.add(lXCoordField);
+        lXCoordField.setText(""+Main.simulation.getBody("PROBE").getVectorLocation().getX());
         inputVectorPanel.add(lYCoordField);
+        lYCoordField.setText(""+Main.simulation.getBody("PROBE").getVectorLocation().getY());
         inputVectorPanel.add(lZCoordField);
+        lZCoordField.setText(""+Main.simulation.getBody("PROBE").getVectorLocation().getZ());
         inputPanel.add(inputVectorPanel);
 
         JPanel inputDatePanel = new JPanel();
@@ -254,5 +261,35 @@ public class DialogFrame extends JFrame
         return Double.parseDouble(ssField.getText());
     }
 
+    public void setDdField(String ddField) {
+        this.ddField.setText(ddField);
+    }
+
+    public void setMmField(String mmField) {
+        this.mmField.setText(mmField);
+    }
+
+    public void setYyField(String yyField) {
+        this.yyField.setText(yyField);
+    }
+
+    public void setHhField(String hhField) {
+        this.hhField.setText(hhField);
+    }
+
+    public void setmField(String mField) {
+        this.mField.setText(mField);
+    }
+
+    public void setSsField(String ssField) {
+        this.ssField.setText(ssField);
+    }
+    public void setStepField(String ssField) {
+        this.stSizeField.setText(ssField);
+    }
+
+    public void setProbeField(String ssField) {
+        this.massSizeField.setText(ssField);
+    }
 
 }

@@ -2,6 +2,7 @@ package group17.phase1.Titan.Simulation;
 
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
+import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
@@ -16,7 +17,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     private SolarSystemInterface solarSystem;
     private GraphicsManager graphicsManager;
 
-    public static double stepSize = 1;
+    public static double stepSize = 10;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
     private int trajectoryLength = 10;
@@ -50,9 +51,19 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     {
         this.graphicsManager = new GraphicsManager();
         this.graphicsManager.init();
+        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
+        Main.simulation.getGraphicsManager().getAssist().get().setProbeField(""+Main.simulation.getBody("PROBE").getMASS());
 
         //TODO: sync this
         this.graphicsManager.waitForStart();
+
+        Main.simulation.getBody("PROBE").getVectorVelocity().setX(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityX());
+        Main.simulation.getBody("PROBE").getVectorVelocity().setY(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityY());
+        Main.simulation.getBody("PROBE").getVectorVelocity().setZ(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityZ());
+
+        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
+        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
+
         this.runStepSimulation();
 
     }
@@ -83,6 +94,11 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     }
 
     @Override
+    public GraphicsManager getGraphicsManager() {
+        return this.graphicsManager;
+    }
+
+    @Override
     public void runSimulation()
     {
         for (int i = 0; i < endTime; i++)
@@ -98,14 +114,13 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
         currTime = 0;
         this.runSimulation();
-
     }
 
     @Override
     public void runStepSimulation() {
 
         StateInterface[] allSteps = generateTimeSequences();
-        currTime = 0;
+                currTime = 0;
         for(;;){
             for (StateInterface step : allSteps)
             {

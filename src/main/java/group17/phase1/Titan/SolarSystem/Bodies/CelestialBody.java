@@ -2,6 +2,7 @@ package group17.phase1.Titan.SolarSystem.Bodies;
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
+import group17.phase1.Titan.Simulation.Vector3D;
 
 
 import java.awt.*;
@@ -27,7 +28,7 @@ public abstract class CelestialBody
 
 
     Vector3dInterface LocationVector;
-    Vector3dInterface VelocityVector;
+    Vector3dInterface VelocityVector = new Vector3D(0,0,0);
 
 
     List<Point3D> path;

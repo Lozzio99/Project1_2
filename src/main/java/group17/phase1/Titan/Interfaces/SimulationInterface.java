@@ -6,6 +6,7 @@ public interface SimulationInterface
 {
     SolarSystemInterface getSolarSystemRepository();
 
+    GraphicsManager getGraphicsManager();
 
     CelestialBody getBody(String name);
 
