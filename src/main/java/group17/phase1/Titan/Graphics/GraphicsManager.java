@@ -88,14 +88,6 @@ public class GraphicsManager
     }
 
 
-    public SystemSimulationUpdater getSimulationUpdater() {
-        return this.simulationUpdater;
-    }
-
-    public JFrame getFrame() {
-        return this.frame;
-    }
-
     private void setWindowProperties() {
         WindowAdapter closed = new WindowAdapter()
         {
@@ -149,19 +141,17 @@ public class GraphicsManager
 
                 if (elapsedTime >= 1)
                 {
-                    synchronized (syncAssist){
+                    synchronized (syncAssist)
+                    {
                         visualization.update();
                         repaint();
-                        assist.get().setOutput(Main.simulation.toString());
+                        if (System.currentTimeMillis() - timerTitle > 1000) {
+                            assist.get().setOutput(Main.simulation.toString());
+                            timerTitle += 1000;
+                        }
                     }
                     elapsedTime--;
                     frames++;
-                }
-
-                if (System.currentTimeMillis()-timerTitle >1000){
-                    timerTitle+=1000;
-                    frame.setTitle(frames + " FPS ");
-                    frames = 0;
                 }
                 //sleep();
             }

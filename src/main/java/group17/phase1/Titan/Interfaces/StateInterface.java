@@ -30,7 +30,7 @@ public interface StateInterface
 
     String toString();
 
-    void currentState(List<CelestialBody> bodies);
+    void setState(List<CelestialBody> bodies);
 
     List<CelestialBody> getState();
 }

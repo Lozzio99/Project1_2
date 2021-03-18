@@ -124,6 +124,7 @@ public class SystemSimulationUpdater
         {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+
             Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);
             g.drawString(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).toString(),p.x,p.y);
             g.setColor(this.colors[i]);
@@ -179,14 +180,14 @@ public class SystemSimulationUpdater
         return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
     }
 
-    List<Line2D.Double> trajectory(Point3D[] path)
+    List<Line2D.Double> trajectory(List<Point3D> path)
     {
 
         List<Line2D.Double> list = new ArrayList<>();
-        for (int step = 1; step< path.length; step++){
-            path[step].scale(scale);
-            path[step-1].scale(scale);
-            list.add(new Line2D.Double(Point3DConverter.convertPoint(path[step]),Point3DConverter.convertPoint(path[step-1])));
+        for (int step = 1; step< path.size(); step++){
+            path.get(step).scale(scale);
+            path.get(step-1).scale(scale);
+            list.add(new Line2D.Double(Point3DConverter.convertPoint(path.get(step)),Point3DConverter.convertPoint(path.get(step-1))));
         }
         return list;
     }

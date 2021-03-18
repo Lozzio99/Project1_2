@@ -1,6 +1,5 @@
 package group17.phase1.Titan.Simulation;
 
-import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
@@ -60,15 +59,15 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
         StateInterface[] allSteps = generateTimeSequences();
 
-        int allPlanets = this.solarSystem.getCelestialBodies().size();
-        for (int planet = 0; planet <allPlanets; planet++)
+        currTime = 0;
+
+        for (StateInterface step : allSteps)
         {
-            Point3D[] path = new Point3D[this.trajectoryLength];
-            for (int step = 0; step<trajectoryLength; step++)
+            for (int i = 0; i< this.solarSystem.getCelestialBodies().size(); i++)
             {
-                path[step] = allSteps[step].getState().get(planet).getVectorLocation().fromVector();
+                this.solarSystem.getCelestialBodies().get(i).addToPath(step.getState().get(i).getVectorLocation().fromVector());
             }
-            this.solarSystem.getCelestialBodies().get(planet).acquirePath(path);
+            currTime += stepSize;
         }
 
     }
@@ -101,7 +100,6 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     public void runStepSimulation() {
 
         StateInterface[] allSteps = generateTimeSequences();
-
         currTime = 0;
         for(;;){
             for (StateInterface step : allSteps)
@@ -116,7 +114,8 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
     }
 
-    private StateInterface[] generateTimeSequences() {
+    private StateInterface[] generateTimeSequences()
+    {
         double [] ts = new double[trajectoryLength];
         double start = 0;
         for (int i = 0; i< trajectoryLength; i++ )
@@ -151,11 +150,13 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         StateInterface[] states = new StateInterface[timeSteps.length];
         endTime = timeSteps[timeSteps.length-1];
         currTime = 0;
+        double lastTime = 0 ;
 
-
-        for (int i = 0; i< timeSteps.length; i++){
-            states[i] = this.step(this,timeSteps[i],this.solarSystemState,timeSteps[i]-currTime);
-            currTime = timeSteps[i];
+        for (int i = 0; i< timeSteps.length; i++)
+        {
+            states[i]  = this.step(gravity,currTime,stateAt0,timeSteps[i]-lastTime);
+            currTime += timeSteps[i];
+            lastTime = timeSteps[i];
         }
         return states;
     }
@@ -212,6 +213,8 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         s.append("Running at ").append(stepSize).append("\n");
         s.append("Current time : ").append(currTime).append("\n");
         s.append("End of Simulation : ").append(endTime).append("\n");
+        s.append("Distance (m) Probe to Saturn :").append(this.getBody("TITAN").getVectorLocation().clone().dist(this.getBody("EARTH").getVectorLocation().clone())).append("\n");
+        s.append("Distance (vec) Probe to Saturn :").append(this.getBody("TITAN").getVectorLocation().clone().sub(this.getBody("EARTH").getVectorLocation().clone())).append("\n");
         s.append(this.solarSystem.toString());
         return s.toString().trim();
     }

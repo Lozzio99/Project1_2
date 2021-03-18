@@ -5,6 +5,8 @@ import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -28,9 +30,9 @@ public abstract class CelestialBody
     Vector3dInterface VelocityVector;
 
 
-    Point3D[] path;
+    List<Point3D> path;
 
-    public CelestialBody(){ }
+    public CelestialBody(){ this.path = new ArrayList<>();  }
 
     // --- Set-Methods ---
 
@@ -124,9 +126,9 @@ public abstract class CelestialBody
     }
 
 
-    public void acquirePath(Point3D[] path){ this.path = path; }
+    public void addToPath(Point3D path){ this.path.add(path); }
 
-    public Point3D[] getPath(){
+    public List<Point3D> getPath(){
         return this.path;
     }
 
