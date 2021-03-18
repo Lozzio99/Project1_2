@@ -5,11 +5,13 @@ import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
 import group17.phase1.Titan.Graphics.Geometry.Polygon3D;
 import group17.phase1.Titan.Graphics.user.MouseInput;
 import group17.phase1.Titan.Main;
+import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.Utils.Configuration;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -30,7 +32,7 @@ public class SystemSimulationUpdater
     Point3D [] planetsPositions = new Point3D[0];
     double[] radius;
     Color[] colors;
-    double scale = 5e7;
+    double scale = 3e8;
     double radiusMag = 1e2;
     private final int UNIT_SIZE = GraphicsManager.HEIGHT *(int) scale;
 
@@ -43,13 +45,18 @@ public class SystemSimulationUpdater
             front = new Point3D(0,0,UNIT_SIZE),
             rear = new Point3D(0,0,-UNIT_SIZE);
 
+    List<List<Line2D.Double>> paths;
 
-    private List<List<Point3D>> ellipses;
 
 
 
     void startSimulation()
     {
+
+        paths = new ArrayList<>();
+        for (CelestialBody c : Main.simulation.getSolarSystemRepository().getCelestialBodies())
+            paths.add(trajectory(c.getPath()));
+
 
         this.planetsPositions = new Point3D[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
         this.radius = new double[Main.simulation.getSolarSystemRepository().getCelestialBodies().size()];
@@ -67,9 +74,6 @@ public class SystemSimulationUpdater
                 System.out.println(i + "\t : \t " + radius[i]);
             }
         }
-    }
-    public void setTraj(List<List<Point3D>> ellipses){
-        this.ellipses = ellipses;
     }
 
     private void updateBodies()
@@ -109,7 +113,10 @@ public class SystemSimulationUpdater
         {
             g.setColor(this.colors[i]);
             g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
+            for (Line2D.Double l : this.paths.get(i))
+                g.draw(l);
         }
+
     }
 
     void update()
@@ -150,6 +157,17 @@ public class SystemSimulationUpdater
     {
         Point p = Point3DConverter.convertPoint(position);
         return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
+    }
+
+    List<Line2D.Double> trajectory(Point3D[] path)
+    {
+        List<Line2D.Double> list = new ArrayList<>();
+        for (int step = 1; step< path.length; step++){
+            path[step].scale(scale);
+            path[step-1].scale(scale);
+            list.add(new Line2D.Double(Point3DConverter.convertPoint(path[step]),Point3DConverter.convertPoint(path[step-1])));
+        }
+        return list;
     }
 
     public void translateBodies(double x, double y, double z){

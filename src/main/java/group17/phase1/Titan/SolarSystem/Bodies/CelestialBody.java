@@ -1,5 +1,6 @@
 package group17.phase1.Titan.SolarSystem.Bodies;
 
+import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
 
@@ -26,7 +27,10 @@ public abstract class CelestialBody
     Vector3dInterface LocationVector;
     Vector3dInterface VelocityVector;
 
-    CelestialBody(){
+
+    Point3D[] path;
+
+    public CelestialBody(){
 
     }
 
@@ -123,6 +127,10 @@ public abstract class CelestialBody
     }
 
 
+    public void acquirePath(Point3D[] path){
+        this.path = path;
+    }
+
     @Override
     public boolean equals(Object o)
     {
@@ -138,4 +146,8 @@ public abstract class CelestialBody
     }
 
     public abstract String toString();
+
+    public Point3D[] getPath(){
+        return this.path;
+    }
 }

@@ -26,7 +26,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
     public void initBodies(){
         Star sun = new Star();
         sun.setMASS(1.988500e+30);
-        sun.setRADIUS(6.96342e+08);
+        sun.setRADIUS(6.96342e08);
         sun.setVectorLocation(new Vector3D(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06));
         sun.setVectorVelocity(new Vector3D(1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01));
         sun.setColour(Color.yellow);

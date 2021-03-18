@@ -35,8 +35,6 @@ public class GraphicsManager
     public static int WIDTH = 1480, HEIGHT = 810;
     static Dimension SCREEN = new Dimension(WIDTH,HEIGHT);
     private WindowEvent listen;
-    private Point3D[] trajectories;
-    private List<List<Point3D>> ellipses;
 
 
     public GraphicsManager()
@@ -65,32 +63,12 @@ public class GraphicsManager
     }
 
 
-    public void init(Point3D[] trajectories, int size)
+    public void init()
     {
-        this.trajectories = trajectories;
-        this.createShapes(size);
         this.frame = new JFrame(FPS_RATE);
         this.frame.setSize(SCREEN);
         setWindowProperties();
         this.engine = createEngine();
-    }
-
-    private void createShapes(int size)
-    {
-
-        int allPlanets = Main.simulation.getSolarSystemRepository().getCelestialBodies().size();
-        this.ellipses = new ArrayList<>();
-        for (int i = 0;i < allPlanets; i++)
-        {
-            //each planet has an orbit defined by some points
-            List<Point3D> traj = new ArrayList<>();
-            //each planet has been recorded for a given num. of steps
-            for (int step = 0; step<size; step++)
-            {
-                traj.add(this.trajectories[allPlanets*i+step]);
-            }
-            this.ellipses.add(traj);
-        }
     }
 
 
@@ -146,7 +124,6 @@ public class GraphicsManager
 
         public MainThread(SystemSimulationUpdater visualization) {
             this.visualization = visualization;
-            this.visualization.setTraj(ellipses);
             this.setSize(SCREEN);
             this.setEnabled(true);
             this.setFocusable(true);
@@ -176,9 +153,11 @@ public class GraphicsManager
 
                 if (elapsedTime >= 1)
                 {
-                    visualization.update();
-                    assist.get().setOutput(Main.simulation.toString());
-                    repaint();
+                    synchronized (syncAssist){
+                        visualization.update();
+                        repaint();
+                        assist.get().setOutput(Main.simulation.toString());
+                    }
                     elapsedTime--;
                     frames++;
                 }

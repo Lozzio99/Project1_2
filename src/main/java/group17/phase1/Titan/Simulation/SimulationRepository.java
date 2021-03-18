@@ -4,6 +4,8 @@ import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
+import group17.phase1.Titan.SolarSystem.Bodies.Planet;
+import group17.phase1.Titan.SolarSystem.Bodies.Star;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
 
 import static group17.phase1.Titan.Utils.Configuration.*;
@@ -19,34 +21,30 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     private static double stepSize = 1000;
     private static double currTime = 0;
     private static double endTime = Double.MAX_VALUE;
-    private int trajectoryLength = 10000;
-
+    private int trajectoryLength = 1000;
 
     private RateInterface rateOfChange;
     protected StateInterface solarSystemState;
-    private Point3D [] positions;
 
     public SimulationRepository()
     {
-
+        this.solarSystem = new SolarSystem();
+        this.solarSystemState = (StateInterface) solarSystem;
+        this.rateOfChange = (RateInterface) solarSystem;
     }
 
     public void initSimulation()
     {
-        this.solarSystem = new SolarSystem();
         this.graphicsManager = new GraphicsManager();
-        this.solarSystemState = (StateInterface) solarSystem;
-        this.rateOfChange = (RateInterface) solarSystem;
-        this.graphicsManager.init(positions,trajectoryLength);
+        this.graphicsManager.init();
         this.graphicsManager.waitForStart();
     }
 
 
+
     public void calculateTrajectories()
     {
-        this.solarSystem = new SolarSystem();
-        this.solarSystemState = (StateInterface) solarSystem;
-        this.rateOfChange = (RateInterface) solarSystem;
+
         double [] ts = new double[trajectoryLength];
         double start = 0;
         for (int i = 0; i< trajectoryLength; i++ )
@@ -54,17 +52,22 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
             ts[i] = start;
             start+= 1000;
         }
-        StateInterface[] enough = this.solve(this,this.solarSystemState,ts);
-        positions = new Point3D[trajectoryLength * this.solarSystem.getCelestialBodies().size()];
+        StateInterface[] allSteps = this.solve(this,this.solarSystemState,ts);
 
         int allPlanets = this.solarSystem.getCelestialBodies().size();
-        for (int i = 0; i<allPlanets; i++){
-            for (int step = 0; step<trajectoryLength; step++){
-                positions[i*allPlanets+step] = enough[step].getState().get(i).getVectorLocation().fromVector();
+        for (int planet = 0; planet <allPlanets; planet++)
+        {
+            Point3D[] path = new Point3D[this.trajectoryLength];
+            for (int step = 0; step<trajectoryLength; step++)
+            {
+                path[step] = allSteps[step].getState().get(planet).getVectorLocation().fromVector();
             }
+            this.solarSystem.getCelestialBodies().get(planet).acquirePath(path);
         }
 
     }
+
+
 
     @Override
     public SolarSystemInterface getSolarSystemRepository() {
@@ -215,4 +218,15 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         }
         return this.rateOfChange;
     }
+
+    @Override
+    public CelestialBody getBody(String name){
+        for (CelestialBody p : this.solarSystem.getCelestialBodies())
+        {
+             if (p.toString().equals(name))
+                return p;
+        }
+        return null;
+    }
+
 }

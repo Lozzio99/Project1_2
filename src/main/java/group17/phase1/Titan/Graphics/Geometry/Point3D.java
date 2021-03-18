@@ -36,6 +36,12 @@ public class Point3D
         this.zOffset += z;
     }
 
+    public void scale(double scale){
+        this.x /= scale;
+        this.y /= scale;
+        this.z /= scale;
+    }
+
     public static double euclidDist(Point3D p1, Point3D p2) {
         double x2 = Math.pow(p1.x - p2.x, 2);
         double y2 = Math.pow(p1.y - p2.y, 2);
