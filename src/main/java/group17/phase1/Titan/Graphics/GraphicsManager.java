@@ -25,6 +25,7 @@ public class GraphicsManager
     public static int WIDTH = 1480, HEIGHT = 810;
     static Dimension SCREEN = new Dimension(WIDTH,HEIGHT);
     private WindowEvent listen;
+    Thread t;
 
 
     public GraphicsManager()
@@ -50,6 +51,9 @@ public class GraphicsManager
 
             if (assist.get().getLaunchVelocityZ()!= 0)
                 Main.simulation.getBody("PROBE").getVectorVelocity().setZ(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityZ());
+
+
+            Main.simulation.getBody("PROBE").setMASS(this.assist.get().getProbeMass());
         }
         Thread th = new Thread(this.engine);
         th.start();
@@ -58,7 +62,7 @@ public class GraphicsManager
 
     public void init()
     {
-        Thread t = new Thread(()->
+         t = new Thread(()->
         {
             synchronized (syncAssist)
             {
@@ -68,9 +72,11 @@ public class GraphicsManager
                 this.assist.get().appendToOutput("This is the starting velocity:");
                 this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVelocityVector().toString());
                 this.assist.get().appendToOutput("If you want to change the starting velocity\n" +
-                        " you can increase / decrease the sliders");
+                        "   > you can increase / decrease the sliders");
                 this.assist.get().appendToOutput("If you want to change the starting position\n" +
-                        " you can plug in the desired values");
+                        "   > you can plug in the desired values");
+                this.assist.get().appendToOutput("If you want to change step size or probe mass\n" +
+                        "   > you can plug in the desired value");
                 this.assist.get().appendToOutput("If you trust our shoot then just START SIMULATION :=)");
             }
         });

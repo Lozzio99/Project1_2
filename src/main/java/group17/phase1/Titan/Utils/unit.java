@@ -10,7 +10,9 @@ public enum unit
 
     millisecond,
     second,
+    minute,
     hour,
     day,
+    month,
     year,
 }

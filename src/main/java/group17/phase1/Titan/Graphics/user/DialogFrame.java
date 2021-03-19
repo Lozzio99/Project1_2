@@ -41,7 +41,6 @@ public class DialogFrame extends JFrame
     // TODO: weight for the velocity slider to be changed if needed
     private double velocitySliderW = 1.0;
 
-    public static int second = 0;
 
     public DialogFrame() {
 
@@ -145,6 +144,15 @@ public class DialogFrame extends JFrame
         return started;
     }
 
+    public void setDate(int sec, int min, int hour, int dd, int mm, int yy)
+    {
+        this.setSsField(""+sec);
+        this.setmField(""+min);
+        this.setHhField(""+hour);
+        this.setDdField(""+dd);
+        this.setMmField(""+mm);
+        this.setYyField(""+yy);
+    }
 
 
     class startBtnListener implements ActionListener {

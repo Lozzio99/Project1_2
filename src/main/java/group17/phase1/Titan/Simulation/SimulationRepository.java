@@ -6,6 +6,7 @@ import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
+import group17.phase1.Titan.Utils.UnitConverter;
 
 import static group17.phase1.Titan.Utils.Configuration.*;
 
@@ -17,7 +18,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     private SolarSystemInterface solarSystem;
     private GraphicsManager graphicsManager;
 
-    public static double stepSize = 10;
+    public static double stepSize = 60;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
     private int trajectoryLength = 10;
@@ -27,6 +28,8 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
     private RateInterface rateOfChange;
     protected StateInterface solarSystemState;
+    public static int sec = 0,min = 0, hour = 0,dd = 1,mm = 4, yy = 2020 ;
+
 
     public SimulationRepository()
     {
@@ -53,17 +56,14 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         this.graphicsManager.init();
         Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
         Main.simulation.getGraphicsManager().getAssist().get().setProbeField(""+Main.simulation.getBody("PROBE").getMASS());
-
-        Main.simulation.getGraphicsManager().getAssist().get().setDdField(""+ 1);
-        Main.simulation.getGraphicsManager().getAssist().get().setMmField(""+4);
-        Main.simulation.getGraphicsManager().getAssist().get().setYyField(""+2020);
-        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
-        Main.simulation.getGraphicsManager().getAssist().get().setStepField(""+stepSize);
+        Main.simulation.getGraphicsManager().getAssist().get().setDdField(""+ dd);
+        Main.simulation.getGraphicsManager().getAssist().get().setMmField(""+mm);
+        Main.simulation.getGraphicsManager().getAssist().get().setYyField(""+yy);
+        Main.simulation.getGraphicsManager().getAssist().get().setHhField(""+hour);
+        Main.simulation.getGraphicsManager().getAssist().get().setmField(""+min);
+        Main.simulation.getGraphicsManager().getAssist().get().setSsField(""+sec);
         //TODO: sync this
         this.graphicsManager.waitForStart();
-
-
-
         this.runStepSimulation();
 
     }
@@ -116,19 +116,62 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         this.runSimulation();
     }
 
+    int closeM,closeH,closeDD,closeMM,closeYY;
+    Vector3dInterface best,titan;
     @Override
     public void runStepSimulation() {
 
         StateInterface[] allSteps = generateTimeSequences();
                 currTime = 0;
+                stepSize = Main.simulation.getGraphicsManager().getAssist().get().getTimeStepSize();
         for(;;){
             for (StateInterface step : allSteps)
             {
                 this.step(this,currTime,step,stepSize);
                 currTime += stepSize;
                 double dist = this.getBody("TITAN").getVectorLocation().clone().dist(this.getBody("PROBE").getVectorLocation().clone());
+                sec+= stepSize;
+                if (sec == 60)
+                {
+                    sec = 0;
+                    min++;
+                }
+                if (min == 60)
+                {
+                    min = 0;
+                    hour++;
+                }
+                if (hour == 24)
+                {
+                    hour = 0;
+                    dd++;
+                }
+                if (dd == 30)
+                {
+                    dd = 1;
+                    mm++;
+                }
+                if (mm == 12)
+                {
+                    mm = 1;
+                    yy++;
+                }
+                Main.simulation.getGraphicsManager().getAssist().get().setDate(sec,min,hour,dd,mm,yy);
                 if (dist<closestApproachToTitan)
+                {
                     closestApproachToTitan = dist;
+                    closeDD = dd;
+                    closeMM = mm;
+                    closeYY = yy;
+                    closeH = hour;
+                    closeM = min;
+                    best = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorLocation().clone();
+                    titan = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(8).getVectorLocation().clone();
+                }
+                else{
+                    Main.simulation.getGraphicsManager().getAssist().get().setOutput("CLOSEST POINT : "+ closestApproachToTitan+"\nREACHED ON   ("+closeDD + "/"+closeMM+"/"+closeYY+")\n hh  "+ closeH + " :"+ closeM
+                    + "\n" + best.toString() + "\n titan : \n "+ titan.toString());
+                }
             }
             currTime = 0;
         }
@@ -237,7 +280,6 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         s.append("Distance (m) Probe to Titan :").append(dist).append("\n");
         s.append("Distance (vec) Probe to Titan :").append(this.getBody("TITAN").getVectorLocation().clone().sub(this.getBody("PROBE").getVectorLocation().clone())).append("\n");
         s.append("Closest (m) Probe to Titan :").append(closestApproachToTitan).append("\n\n");
-
         s.append(this.solarSystem.toString());
         return s.toString().trim();
     }

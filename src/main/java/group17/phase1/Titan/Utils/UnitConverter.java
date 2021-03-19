@@ -101,6 +101,7 @@ public class UnitConverter
     public static double convertSeconds(double seconds, unit to_type){
         switch (to_type){
             case millisecond ->{ return convertSecToMillis(seconds);}
+            case minute -> {return convertSecToMinutes(seconds);}
             case hour -> {return convertSecToHour(seconds);}
             case day -> {return convertSecToDay(seconds);}
             case year -> {return convertSecToYear(seconds);}
@@ -109,10 +110,15 @@ public class UnitConverter
         throw new IllegalArgumentException("Unexpected value for conversion");
     }
 
+    public static double convertSecToMinutes(double seconds) {
+        return seconds/60;
+    }
+
     //methods to convert from second to desired measure of time
     public static double convertSecToMillis(double sec){
         return sec*1000;
     }
+
     public static double convertSecToHour(double sec){
         return sec/3600;
     }
@@ -212,10 +218,15 @@ public class UnitConverter
             case millisecond->{return convertDayToMS(day);}
             case second->{return convertDayToSec(day);}
             case hour->{return convertDayToHour(day);}
+            case month -> {return convertDayToMonth(day);}
             case year->{return convertDayToYear(day);}
             default -> {assert false : "not valid unit type or unuseful conversion"+ to_type.name();}
         }
         throw new IllegalArgumentException("Unexpected value for conversion");
+    }
+
+    public static double convertDayToMonth(double day) {
+        return day/30;
     }
 
 }
