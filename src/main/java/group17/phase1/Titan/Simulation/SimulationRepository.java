@@ -13,7 +13,6 @@ import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
-import group17.phase1.Titan.Utils.UnitConverter;
 
 import static group17.phase1.Titan.Utils.Configuration.*;
 
@@ -22,7 +21,7 @@ import static group17.phase1.Titan.Interfaces.RateInterface.G;
 
 public class SimulationRepository implements SimulationInterface, ODESolverInterface, ODEFunctionInterface
 {
-    private SolarSystemInterface solarSystem;
+    private final SolarSystemInterface solarSystem;
     private GraphicsManager graphicsManager;
 
     public static double stepSize = 60;
