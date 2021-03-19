@@ -10,6 +10,7 @@ import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Simulation.Vector3D;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
+
 import java.awt.*;
 
 import static group17.phase1.Titan.Simulation.SimulationRepository.*;
@@ -33,7 +34,11 @@ public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInter
         //this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(16780,-27960,  -1850)));
         //this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36936,-50000, -1242.5)));
         //this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36936,-50000, -1243.8)));
-        this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36936,-50000, -1243.7)));
+        //this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36936,-50000, -1243.7)));
+        //this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36932,-50000, -1243.5)));
+        //this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36932,-50000, -1243.5)));
+        //this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36931.3,-50000, -1244.7)));
+        this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36931.18,-50000, -1244.7)));
     }
 
     public void init(ODEFunctionInterface f, ODESolverInterface s, StateInterface state)

@@ -14,9 +14,8 @@ import group17.phase1.Titan.Simulation.Probe.ProbeSimulator;
 import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
 import group17.phase1.Titan.SolarSystem.SolarSystem;
 
-import static group17.phase1.Titan.Utils.Configuration.*;
-
 import static group17.phase1.Titan.Interfaces.RateInterface.G;
+import static group17.phase1.Titan.Utils.Configuration.DEBUG;
 
 
 public class SimulationRepository implements SimulationInterface, ODESolverInterface, ODEFunctionInterface
@@ -27,12 +26,12 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     public static double stepSize = 60;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
-    private int trajectoryLength = 10;
+    private final int trajectoryLength = 10;
 
     private static double closestApproachToTitan;
 
 
-    private RateInterface rateOfChange;
+    private final RateInterface rateOfChange;
     protected StateInterface solarSystemState;
     public static int sec = 0,min = 0, hour = 0,dd = 1,mm = 4, yy = 2020 ;
 
@@ -195,9 +194,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
                     //if (best== null)continue;
                     if (!got){       //this is very heavy to show here otherwise
                         bestCatch = ("CLOSEST POINT : "+ closestApproachToTitan)+"\n"+
-                                (" REACHED ON ("+closeDD + "/"+closeMM+"/"+closeYY+")")+"\n"+
-                                ("hh  "+ closeH + " :"+ closeM )+"\n"+
-                                (best.toString() + "\n titan : \n "+ titan.toString());
+                                ("REACHED ON ("+closeDD + "/"+closeMM+"/"+closeYY+")")+"\n"+
+                                ("(hh  "+ closeH + " :"+ closeM+")" )+"\nEarth  -> "+
+                                (best.toString() + "\nTitan -> "+ titan.toString());
                         got = true;
                     }
                 }
