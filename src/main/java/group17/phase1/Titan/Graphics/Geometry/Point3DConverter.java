@@ -3,25 +3,46 @@ package group17.phase1.Titan.Graphics.Geometry;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 
 import java.awt.*;
-
+/**
+ * This class represents a converter of a 3D-point.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
 public class Point3DConverter
 {
+    // Variables
     private static double scale = 1d;
     private static final double ZoomFactor = 1.05;
     private static final int SCREEN_WIDTH = GraphicsManager.WIDTH, SCREEN_HEIGHT = GraphicsManager.HEIGHT;
 
+    /**
+     * Zooms in by a factor.
+     */
     public static void zoomIn() {
         scale *= ZoomFactor;
     }
 
+    /**
+     * Zooms out by a factor.
+     */
     public static void zoomOut() {
         scale /= ZoomFactor;
     }
 
+    /**
+     * Returns the scale.
+     * @return
+     */
     public static double getScale() {
         return scale;
     }
 
+    /**
+     * Converts a point with respect to the scale.
+     * @param point3D
+     * @return
+     */
     public static Point convertPoint(Point3D point3D) {
         double x3d = point3D.getXCoordinate() * scale;
         double y3d = point3D.getYCoordinate() * scale;
@@ -33,6 +54,13 @@ public class Point3DConverter
         return point2D;
     }
 
+    /**
+     * Returns an array of double variables which represent a scale.
+     * @param x3d
+     * @param y3d
+     * @param depth
+     * @return
+     */
     private static double[] scale(double x3d, double y3d, double depth) {
         double dist = Math.sqrt(x3d*x3d + y3d*y3d);
         double theta = Math.atan2(y3d, x3d);
@@ -45,8 +73,12 @@ public class Point3DConverter
         return newVal;
     }
 
-
-
+    /**
+     * Rotates a point around the X axis.
+     * @param p
+     * @param CW
+     * @param degrees
+     */
     public static void rotateAxisX(Point3D p, boolean CW, double degrees) {
         double radius = Math.sqrt(p.y*p.y + p.z*p.z);
         double theta = Math.atan2(p.z, p.y);
@@ -55,6 +87,12 @@ public class Point3DConverter
         p.z = (radius* Math.sin(theta));
     }
 
+    /**
+     * Rotates a point around the Y axis.
+     * @param p
+     * @param CW
+     * @param degrees
+     */
     public static void rotateAxisY(Point3D p, boolean CW, double degrees) {
         double radius = Math.sqrt(p.z*p.z + p.x*p.x);
         double theta = Math.atan2(p.z, p.x);
@@ -63,6 +101,12 @@ public class Point3DConverter
         p.x =  (radius * Math.cos(theta));
     }
 
+    /**
+     * Rotates a point around the Z axis.
+     * @param p
+     * @param CW
+     * @param degrees
+     */
     public static void rotateAxisZ(Point3D p, boolean CW, double degrees) {
         double radius = Math.sqrt(p.y*p.y + p.x*p.x);
         double theta = Math.atan2(p.y, p.x);
@@ -70,5 +114,4 @@ public class Point3DConverter
         p.y = (radius * Math.sin(theta));
         p.x = (radius * Math.cos(theta));
     }
-
 }

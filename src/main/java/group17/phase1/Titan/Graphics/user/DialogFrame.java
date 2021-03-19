@@ -1,3 +1,10 @@
+/**
+ * This class represents the dialog frame, which is opened upon start.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
+
 package group17.phase1.Titan.Graphics.user;
 
 import group17.phase1.Titan.Main;
@@ -17,36 +24,38 @@ import java.awt.event.ActionListener;
 public class DialogFrame extends JFrame
 {
 
-    private JTextArea textArea = new JTextArea(10, 30);
-    private JTextField stSizeField = new JTextField();
-    private JTextField massSizeField = new JTextField();
+    private final JTextArea textArea = new JTextArea(10, 30);
+    private final JTextField stSizeField = new JTextField();
+    private final JTextField massSizeField = new JTextField();
 
-    private JTextField lXCoordField = new JTextField();
-    private JTextField lYCoordField = new JTextField();
-    private JTextField lZCoordField = new JTextField();
+    private final JTextField lXCoordField = new JTextField();
+    private final JTextField lYCoordField = new JTextField();
+    private final JTextField lZCoordField = new JTextField();
 
-    private JTextField ddField = new JTextField();
-    private JTextField mmField = new JTextField();
-    private JTextField yyField = new JTextField();
+    private final JTextField ddField = new JTextField();
+    private final JTextField mmField = new JTextField();
+    private final JTextField yyField = new JTextField();
 
-    private JTextField hhField = new JTextField();
-    private JTextField mField = new JTextField();
-    private JTextField ssField = new JTextField();
+    private final JTextField hhField = new JTextField();
+    private final JTextField mField = new JTextField();
+    private final JTextField ssField = new JTextField();
 
-    private JSlider xVelSlider = new JSlider(-30000, 30000);
-    private JSlider yVelSlider = new JSlider(-30000, 30000);
-    private JSlider zVelSlider = new JSlider(-30000, 30000);
+    private final JSlider xVelSlider = new JSlider(-30000, 30000);
+    private final JSlider yVelSlider = new JSlider(-30000, 30000);
+    private final JSlider zVelSlider = new JSlider(-30000, 30000);
 
     private static boolean started = false;
     // TODO: weight for the velocity slider to be changed if needed
-    private double velocitySliderW = 1.0;
+    private final double velocitySliderW = 1.0;
 
 
     public DialogFrame() {
 
     }
 
-
+    /**
+     * Initialises the frame.
+     */
     public void init()
     {
         setSize(700, 300);
@@ -62,6 +71,10 @@ public class DialogFrame extends JFrame
         setVisible(true);
     }
 
+    /**
+     * Creates the setup panel.
+     * @return
+     */
     private JPanel createSetUpPanel() {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(7, 1));
@@ -132,7 +145,8 @@ public class DialogFrame extends JFrame
         JButton startButton = new JButton("Start simulation");
         startButton.addActionListener(new startBtnListener());
         btnPanel.add(startButton);
-        JButton clearButton = new JButton("Clear text area");
+        JButton clearButton = new JButton("Reset Simulation");
+        //to be implemented
         clearButton.addActionListener(new clearBtnListener());
         btnPanel.add(clearButton);
         inputPanel.add(btnPanel);
@@ -155,7 +169,13 @@ public class DialogFrame extends JFrame
     }
 
 
-    class startBtnListener implements ActionListener {
+    /**
+     * Nested class for the ActionListener.
+     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since	19/02/2021
+     */
+    static class startBtnListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -166,6 +186,12 @@ public class DialogFrame extends JFrame
 
     }
 
+    /**
+     * Nested class representing the update label on the right side of the dialog frame.
+     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since	19/02/2021
+     */
     class updateLabel implements ChangeListener {
         private JLabel jLabel = new JLabel();
         private JSlider jSlider = new JSlider();
@@ -181,6 +207,12 @@ public class DialogFrame extends JFrame
 
     }
 
+    /**
+     * Nested class representing the ActionListener, when the clear button is clicked.
+     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since	19/02/2021
+     */
     class clearBtnListener implements ActionListener {
 
         @Override
@@ -191,85 +223,160 @@ public class DialogFrame extends JFrame
     }
 
     /**
-     * Method to append text to output
+     * Method to append text to output.
      * @param message
      */
-
-    public void appendToOutput(String message) {
+    public void appendToOutput(String message)
+    {
         textArea.append(message + "\n");
     }
 
+    /**
+     * Sets the output.
+     * @param toString
+     */
     public void setOutput(String toString)
     {
         textArea.setText(toString + "\n");
 
     }
 
-    public double getTimeStepSize() {
+    /**
+     * Get the step size.
+     * @return
+     */
+    public double getTimeStepSize()
+    {
         if (stSizeField.getText().equals(""))
             return 0;
         return Double.parseDouble(stSizeField.getText());
     }
 
-    public double getProbeMass() {
+    /**
+     * Get the mass of a probe.
+     * @return
+     */
+    public double getProbeMass()
+    {
         if (massSizeField.getText().equals(""))
             return 0;
         return Double.parseDouble(massSizeField.getText());
     }
 
-    public double getLaunchX() {
+    /**
+     * Get the X coordinate of the launch.
+     * @return
+     */
+    public double getLaunchX()
+    {
         if (lXCoordField.getText().equals(""))
             return 0;
         return Double.parseDouble(lXCoordField.getText());
     }
 
-    public double getLaunchY() {
+    /**
+     * Get the Y coordinate of the launch.
+     * @return
+     */
+    public double getLaunchY()
+    {
         if (lYCoordField.getText().equals(""))
             return 0;
         return Double.parseDouble(lYCoordField.getText());
     }
 
-    public double getLaunchZ() {
+    /**
+     * Get the Z coordinate of the launch.
+     * @return
+     */
+    public double getLaunchZ()
+    {
         if (lZCoordField.getText().equals(""))
             return 0;
         return Double.parseDouble(lZCoordField.getText());
     }
 
-    public double getLaunchVelocityX() {
+    /**
+     * Returns the amount of velocity on the X axis of a probe upon launch.
+     * @return
+     */
+    public double getLaunchVelocityX()
+    {
         return velocitySliderW*xVelSlider.getValue();
     }
 
-    public double getLaunchVelocityY() {
+    /**
+     * Returns the amount of velocity on the Y axis of a probe upon launch.
+     * @return
+     */
+    public double getLaunchVelocityY()
+    {
         return velocitySliderW*yVelSlider.getValue();
     }
 
-    public double getLaunchVelocityZ() {
+    /**
+     * Returns the amount of velocity on the Z axis of a probe upon launch.
+     * @return
+     */
+    public double getLaunchVelocityZ()
+    {
         return velocitySliderW*zVelSlider.getValue();
     }
 
-    public double getDateDD() {
+    /**
+     * Returns the day of the current date.
+     * @return
+     */
+    public double getDateDD()
+    {
         return Double.parseDouble(ddField.getText());
     }
 
-    public double getDateMM() {
+    /**
+     * Returns the month of the current date.
+     * @return
+     */
+    public double getDateMM()
+    {
         return Double.parseDouble(mmField.getText());
     }
 
-    public double getDateYYYY() {
+    /**
+     * Returns the year of the current date.
+     * @return
+     */
+    public double getDateYYYY()
+    {
         return Double.parseDouble(yyField.getText());
     }
 
-    public double getTimeHH() {
+    /**
+     * Returns the time in hours.
+     * @return
+     */
+    public double getTimeHH()
+    {
         return Double.parseDouble(hhField.getText());
     }
 
-    public double getTimeMin() {
+    /**
+     * Returns the time in minutes.
+     * @return
+     */
+    public double getTimeMin()
+    {
         return Double.parseDouble(mField.getText());
     }
 
-    public double getTimeSS() {
+    /**
+     * Returns the time in seconds.
+     * @return
+     */
+    public double getTimeSS()
+    {
         return Double.parseDouble(ssField.getText());
     }
+
 
     public void setDdField(String ddField) {
         this.ddField.setText(ddField);
@@ -294,6 +401,7 @@ public class DialogFrame extends JFrame
     public void setSsField(String ssField) {
         this.ssField.setText(ssField);
     }
+
     public void setStepField(String ssField) {
         this.stSizeField.setText(ssField);
     }

@@ -1,7 +1,19 @@
 package group17.phase1.Titan.Utils;
-
+/**
+ * This class is a tool to convert several units.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
 public class UnitConverter
 {
+    /**
+     * Converts a unit into a different type.
+     * @param needsToBeConverted
+     * @param from_type
+     * @param to_type
+     * @return
+     */
     public static double convert(double needsToBeConverted, unit from_type, unit to_type){
         switch (from_type)
         {

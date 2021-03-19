@@ -1,3 +1,10 @@
+
+/**
+ * This class handles the mouse input for the GUI.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
 package group17.phase1.Titan.Graphics.user;
 
 import java.awt.event.*;
@@ -5,33 +12,64 @@ import java.awt.event.*;
 public class MouseInput extends MouseMotionAdapter implements MouseListener, MouseWheelListener
 {
 
+    // Variables
     private int mouseX = -1;
     private int mouseY = -1;
     private int mouseB = -1;
     private int scroll = 0;
 
-    public int getX() {
+    /**
+     * Returns the X position of the mouse.
+     * @return
+     */
+    public int getX()
+    {
         return this.mouseX;
     }
 
-    public int getY() {
+    /**
+     * Returns the Y position of the mouse.
+     * @return
+     */
+    public int getY()
+    {
         return this.mouseY;
     }
 
-    public boolean isScrollingUp() {
+    /**
+     * Returns the state, whether the user is currently scrolling up or not.
+     * @return
+     */
+    public boolean isScrollingUp()
+    {
         return this.scroll == -1;
     }
 
-    public boolean isScrollingDown() {
+    /**
+     * Returns the state, whether the user is currently scrolling down or not.
+     * @return
+     */
+    public boolean isScrollingDown()
+    {
         return this.scroll == 1;
     }
 
-    public void resetScroll() {
+    /**
+     * Resets the scroll of the mouse.
+     */
+    public void resetScroll()
+    {
         this.scroll = 0;
     }
 
-    public ClickType getButton() {
-        switch(this.mouseB) {
+    /**
+     * Returns the type of the button, which is pressed.
+     * @return
+     */
+    public ClickType getButton()
+    {
+        switch(this.mouseB)
+        {
             case 1:
                 return ClickType.LeftClick;
             case 2:
@@ -47,57 +85,93 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
         }
     }
 
-    public void resetButton() {
+    /**
+     * Resets the mouse button.
+     */
+    public void resetButton()
+    {
         this.mouseB = -1;
     }
 
     @Override
-    public void mouseWheelMoved(MouseWheelEvent event) {
+    /**
+     * Handles movement of the mouse wheel.
+     */
+    public void mouseWheelMoved(MouseWheelEvent event)
+    {
         scroll = event.getWheelRotation();
     }
 
     @Override
-    public void mouseDragged(MouseEvent event) {
+    /**
+     * Handles dragged movement of the mouse.
+     */
+    public void mouseDragged(MouseEvent event)
+    {
         this.mouseX = event.getX();
         this.mouseY = event.getY();
     }
 
     @Override
-    public void mouseMoved(MouseEvent event) {
+    /**
+     * Handles the general movement of the mouse.
+     */
+    public void mouseMoved(MouseEvent event)
+    {
         this.mouseX = event.getX();
         this.mouseY = event.getY();
     }
 
     @Override
-    public void mouseClicked(MouseEvent arg0) {
+    /**
+     * Handles a mouse click.
+     */
+    public void mouseClicked(MouseEvent arg0)
+    {
         // TODO Auto-generated method stub
-
     }
 
     @Override
-    public void mouseEntered(MouseEvent arg0) {
+    /**
+     * Handles the cursor entering the frame.
+     */
+    public void mouseEntered(MouseEvent arg0)
+    {
         // TODO Auto-generated method stub
-
     }
 
     @Override
-    public void mouseExited(MouseEvent arg0) {
+    /**
+     * Handles the cursor exiting the frame.
+     */
+    public void mouseExited(MouseEvent arg0)
+    {
         // TODO Auto-generated method stub
-
     }
 
     @Override
-    public void mousePressed(MouseEvent event) {
+    /**
+     * Handles a pressed mouse button.
+     */
+    public void mousePressed(MouseEvent event)
+    {
         this.mouseB = event.getButton();
     }
 
     @Override
-    public void mouseReleased(MouseEvent arg0) {
+    /**
+     * Handles a released mouse button.
+     */
+    public void mouseReleased(MouseEvent arg0)
+    {
         this.mouseB = -1;
     }
 
-
-    public enum ClickType {
+    /**
+     * Enumerates the click type of the mouse.
+     */
+    public enum ClickType
+    {
         Unknown,
         LeftClick,
         ScrollClick,

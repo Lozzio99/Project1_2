@@ -1,3 +1,9 @@
+/**
+ * This class controls all the graphics for the visualisation of a simulation.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
 package group17.phase1.Titan.Graphics;
 
 
@@ -38,7 +44,9 @@ public class GraphicsManager
         return this.assist;
     }
 
-    //wait for the assist frame to give the start
+    /**
+     * Wait for the assist frame to give the start
+     */
     public void waitForStart()
     {
         while (!assist.get().isStarted()){
@@ -60,6 +68,9 @@ public class GraphicsManager
     }
 
 
+    /**
+     * Initialises the assist thread for the graphics
+     */
     public void init()
     {
          t = new Thread(()->
@@ -70,7 +81,7 @@ public class GraphicsManager
                 this.assist.get().appendToOutput("Those are the starting coordinates : ");
                 this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorLocation().toString());
                 this.assist.get().appendToOutput("This is the starting velocity:");
-                this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVelocityVector().toString());
+                this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorVelocity().toString());
                 this.assist.get().appendToOutput("If you want to change the starting velocity\n" +
                         "   > you can increase / decrease the sliders");
                 this.assist.get().appendToOutput("If you want to change the starting position\n" +
@@ -88,6 +99,10 @@ public class GraphicsManager
     }
 
 
+    /**
+     * Creates an engine for the main graphics-thread.
+     * @return
+     */
     private MainThread createEngine()
     {
         Container cp =this.frame.getContentPane();
@@ -120,6 +135,12 @@ public class GraphicsManager
         this.frame.setLocationRelativeTo(null);// Center window
     }
 
+    /**
+     * Nested class, which represents the main thread for the graphics.
+     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since	19/02/2021
+     */
     private class MainThread extends JPanel implements Runnable {
 
         private final SystemSimulationUpdater visualization;
@@ -139,6 +160,9 @@ public class GraphicsManager
             visualization.paint(graphics);
         }
 
+        /**
+         * Starts the main loop process.
+         */
         @Override
         public void run()
         {
@@ -153,10 +177,8 @@ public class GraphicsManager
                 elapsedTime += ((now - lastTime) / nanosecond);
                 lastTime = now;
 
-                if (elapsedTime >= 1)
-                {
-                    synchronized (syncAssist)
-                    {
+                if (elapsedTime >= 1) {
+                    synchronized (syncAssist) {
                         visualization.update();
                         repaint();
                         if (System.currentTimeMillis() - timerTitle > 1000) {
@@ -167,16 +189,6 @@ public class GraphicsManager
                     elapsedTime--;
                     frames++;
                 }
-                //sleep();
-            }
-
-        }
-
-        private void sleep() {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
             }
         }
     }

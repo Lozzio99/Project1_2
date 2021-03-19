@@ -1,3 +1,10 @@
+/**
+ * This class represents a vector in a 3-dimensional space.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
+
 package group17.phase1.Titan.Simulation;
 
 
@@ -6,7 +13,9 @@ import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
 public class Vector3D implements Vector3dInterface
 {
-
+    /**
+     * Adds another vector onto this vector.
+     */
     @Override
     public Vector3dInterface add(Vector3dInterface other)
     {
@@ -16,6 +25,9 @@ public class Vector3D implements Vector3dInterface
         return this;
     }
 
+    /**
+     * Subtracts this vector from another vector.
+     */
     @Override
     public Vector3dInterface sub(Vector3dInterface other)
     {
@@ -25,6 +37,10 @@ public class Vector3D implements Vector3dInterface
         return this;
     }
 
+
+    /**
+     * Multiplies this vector by a scalar.
+     */
     @Override
     public Vector3dInterface mul(double scalar)
     {
@@ -34,6 +50,10 @@ public class Vector3D implements Vector3dInterface
         return this;
     }
 
+
+    /**
+     * Divides this vector by a scalar.
+     */
     @Override
     public Vector3dInterface div(double scalar)
     {
@@ -43,12 +63,18 @@ public class Vector3D implements Vector3dInterface
         return this;
     }
 
+    /**
+     * Adds another vector onto this one after it is multiplied by a scalar.
+     */
     @Override
     public Vector3dInterface addMul(double scalar, Vector3dInterface other) {
         Vector3dInterface newV = new Vector3D(other.getX() * scalar, other.getY() * scalar, other.getZ() * scalar);
         return this.add(newV);
     }
 
+    /**
+     * Gets the norm of a vector.
+     */
     @Override
     public double norm() {
         double x = Math.pow(this.getX(),2);
@@ -57,6 +83,9 @@ public class Vector3D implements Vector3dInterface
         return Math.sqrt(x+y+z);
     }
 
+    /**
+     * Gets the distance between this and another vector.
+     */
     @Override
     public double dist(Vector3dInterface other) {
         double v1 =Math.pow(other.getX()-this.getX(),2);
@@ -65,6 +94,12 @@ public class Vector3D implements Vector3dInterface
         return Math.sqrt(v1+v2+v3);
     }
 
+    /**
+     * Gets the distance between two vectors.
+     * @param first
+     * @param other
+     * @return
+     */
     public static double dist(Vector3dInterface first, Vector3dInterface other) {
         double v1 =Math.pow(other.getX()-first.getX(),2);
         double v2 =Math.pow(other.getY()-first.getY(),2);
@@ -72,6 +107,13 @@ public class Vector3D implements Vector3dInterface
         return Math.sqrt(v1+v2+v3);
     }
 
+
+    /**
+     * Gets the unit vector between two vectors.
+     * @param from
+     * @param to
+     * @return
+     */
     public static Vector3dInterface unitVectorDistance(Vector3dInterface from, Vector3dInterface to){
         return normalize(new Vector3D(
                 from.getX()-to.getX(),
@@ -79,6 +121,9 @@ public class Vector3D implements Vector3dInterface
                 from.getZ()-to.getZ()));
     }
 
+    /**
+     * Converts a vector to a string.
+     */
     @Override
     public String toString(){
         return "(" + this.getX() + "," + this.getY() + "," + this.getZ() + ")";
@@ -102,10 +147,23 @@ public class Vector3D implements Vector3dInterface
         this.z = p2.z - p1.z;
     }
 
+    /**
+     * Returns the dot product of two vectors.
+     * @param v1
+     * @param v2
+     * @return
+     */
     public static double dot(Vector3dInterface v1, Vector3dInterface v2) {
         return v1.getX()*v2.getX()+ v1.getY()*v2.getY() + v1.getZ()*v2.getZ();
     }
 
+
+    /**
+     * Returns the cross of two vectors.
+     * @param v1
+     * @param v2
+     * @return
+     */
     public static Vector3dInterface cross(Vector3dInterface v1, Vector3dInterface v2)
     {
         return new Vector3D(
@@ -114,6 +172,11 @@ public class Vector3D implements Vector3dInterface
                 v1.getX()*v2.getY() - v1.getY()*v2.getX());
     }
 
+    /**
+     * Normalises the vector.
+     * @param v
+     * @return
+     */
     public static Vector3dInterface normalize(Vector3dInterface v)
     {
         double magnitude = Math.sqrt(v.getX()*v.getX() + v.getY()*v.getY() + v.getZ()*v.getZ());
@@ -123,11 +186,18 @@ public class Vector3D implements Vector3dInterface
         return v;
     }
 
+    /**
+     * Return a point3D from a Vector
+     * @return
+     */
     @Override
     public Point3D fromVector(){
         return new Point3D(this.getX(),this.getY(),this.getZ());
     }
 
+    /**
+     * Clones a Vector3dInterface.
+     */
     @Override
     public Vector3dInterface clone() {
         return new Vector3D(this.getX(),this.getY(),this.getZ());

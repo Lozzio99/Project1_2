@@ -1,3 +1,9 @@
+/**
+ * This class updates the graphical interface according to the current state of the solar system.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
 package group17.phase1.Titan.Graphics;
 
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
@@ -19,14 +25,12 @@ import static group17.phase1.Titan.Utils.Configuration.*;
 
 public class SystemSimulationUpdater
 {
-    private final Lock syncMovement = new ReentrantLock();
 
     private MouseInput mouse;
 
     private int initialX, initialY;
     private final static double mouseSensitivity = 6;
-    private final static double moveSpeed = 1e8;
-    double totalxDif, totalyDif, totalzDif = 0;
+    double totalxDif, totalyDif = 0;
 
 
 
@@ -50,9 +54,13 @@ public class SystemSimulationUpdater
 
 
 
+    /**
+     * Starts the visualisation of the simulation.
+     */
 
     void startSimulation()
     {
+        //sadly this doesn't work
         if (TRAJECTORIES)
         {
             paths = new ArrayList<>();
@@ -84,6 +92,9 @@ public class SystemSimulationUpdater
 
     }
 
+    /**
+     * Updates the position of each body in the solar system.
+     */
     private void updateBodies()
     {
         for (int i = 0; i< this.planetsPositions.length; i++)
@@ -102,35 +113,41 @@ public class SystemSimulationUpdater
 
     }
 
+    /**
+     * Paints the objects and each axis on canvas.
+     * @param graphics
+     */
     void paint(Graphics graphics)
     {
         Graphics2D g = (Graphics2D) graphics;
 
+        g.setFont(new Font("Monospaced", Font.PLAIN, 15));
         graphics.setColor(new Color(255,255,255,113));
         graphics.drawString("x Axis",20,20);
         Line2D.Double xAxis = new Line2D.Double(Point3DConverter.convertPoint(left),Point3DConverter.convertPoint(right));
         g.draw(xAxis);
-
+        g.drawString("- Left click drag to rotate along the Y axis ",1000,20);
+        g.drawString("- Right click drag to rotate along the X axis ",1000,35);
+        g.drawString("- Pinch in-out or wheel scroll to zoom in-out ",1000,50);
         graphics.setColor(new Color(255, 42, 42,113));
         graphics.drawString("y Axis",20,30);
         Line2D.Double yAxis = new Line2D.Double(Point3DConverter.convertPoint(top),Point3DConverter.convertPoint(bottom));
         g.draw(yAxis);
-
-
         graphics.setColor(new Color(120, 255, 108, 116));
         graphics.drawString("z Axis",20,40);
         Line2D.Double zAxis = new Line2D.Double(Point3DConverter.convertPoint(rear),Point3DConverter.convertPoint(front));
         g.draw(zAxis);
 
+
+
         for (int i = 0; i< this.planetsPositions.length; i++)
         {
-
-            g.setColor(Color.WHITE);
-            g.setFont(new Font("Monospaced", Font.PLAIN, 10));
             Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);
-            g.drawString(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).toString(),p.x,p.y);
             g.setColor(this.colors[i]);
             g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+            g.drawString(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(i).toString(),p.x,p.y);
 
             if (TRAJECTORIES)
                 for (Line2D.Double l : this.paths.get(i))
@@ -139,6 +156,10 @@ public class SystemSimulationUpdater
 
     }
 
+
+    /**
+     * Updates the screen for each frame.
+     */
     void update()
     {
         int x = this.mouse.getX();
@@ -183,6 +204,12 @@ public class SystemSimulationUpdater
         return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
     }
 
+
+    /**
+     * Represents a line in the solar system from one state of an object to the previous to visualise the trajectory.
+     * @param path
+     * @return
+     */
     List<Line2D.Double> trajectory(List<Point3D> path)
     {
 

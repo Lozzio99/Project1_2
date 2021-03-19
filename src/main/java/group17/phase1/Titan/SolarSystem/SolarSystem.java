@@ -10,18 +10,27 @@ import group17.phase1.Titan.SolarSystem.Bodies.Star;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class representing a solar system with all its bodies.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
 public class SolarSystem implements SolarSystemInterface, StateInterface, RateInterface
 {
     List<CelestialBody> allBodies;
 
-
+    /**
+     * Constructor
+     */
     public SolarSystem()
     {
         this.allBodies = new ArrayList<>();
         this.initBodies();
     }
-
+    /**
+     * Initialise all bodies.
+     */
     public void initBodies(){
         Star sun = new Star();
         sun.setMASS(1.988500e+30);
@@ -124,13 +133,17 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
 
     }
 
-
+    /**
+     * Returns all bodies of the solar system.
+     */
     @Override
     public List<CelestialBody> getCelestialBodies() {
         return this.allBodies;
     }
 
-
+    /**
+     * Updates the state of the system on an increment determined by a rate of change due to a change in time.
+     */
     @Override
     public StateInterface addMul(double step, RateInterface rate)
     {
@@ -138,7 +151,9 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         this.allBodies.get(i).getVectorLocation().addMul(step,rate.getRateVector().get(i));
         return this;
     }
-
+    /**
+     * Converts the state of the solar system to a string.
+     */
     @Override
     public String toString()
     {
@@ -146,29 +161,38 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         for (CelestialBody p : this.allBodies)
         {
             s.append(p.toString()).append(" : \n");
-            s.append("velocity : ").append(p.getVelocityVector().toString()).append("\n");
+            s.append("velocity : ").append(p.getVectorVelocity().toString()).append("\n");
             s.append("position : ").append(p.getVectorLocation().toString()).append("\n");
         }
         return s.toString().trim();
     }
 
+    /**
+     * Sets the state of all bodies.
+     */
     @Override
     public void setState(List<CelestialBody> bodies) {
         this.allBodies = bodies;
     }
 
+    /**
+     * Gets the state of all bodies.
+     */
     @Override
     public List<CelestialBody> getState() {
         return this.allBodies;
     }
 
 
+    /**
+     * Get the RateVector (Velocity) of all bodies.
+     */
     @Override
     public List<Vector3dInterface> getRateVector()
     {
         List<Vector3dInterface> shiftVectors = new ArrayList<>();
         for (CelestialBody p : this.allBodies){
-            shiftVectors.add(p.getVelocityVector());
+            shiftVectors.add(p.getVectorVelocity());
         }
         return shiftVectors;
     }

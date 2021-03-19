@@ -1,3 +1,10 @@
+/**
+ * This class represents a simulation of our solar system.
+ * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since	19/02/2021
+ */
+
 package group17.phase1.Titan.Simulation;
 
 import group17.phase1.Titan.Graphics.GraphicsManager;
@@ -38,6 +45,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         this.rateOfChange = (RateInterface) solarSystem;
     }
 
+    /**
+     * Initialises a probe.
+     */
     public void initProbe()
     {
         ProbeSimulator p = new ProbeSimulator();
@@ -49,7 +59,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
 
 
-
+    /**
+     * Initialises the simulation.
+     */
     public void initSimulation()
     {
         this.graphicsManager = new GraphicsManager();
@@ -69,14 +81,15 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     }
 
 
-
+    /**
+     * Calculates the trajectory of a body.
+     */
     public void calculateTrajectories()
     {
 
         StateInterface[] allSteps = generateTimeSequences();
 
         currTime = 0;
-
         for (StateInterface step : allSteps)
         {
             for (int i = 0; i< this.solarSystem.getCelestialBodies().size(); i++)
@@ -98,13 +111,16 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         return this.graphicsManager;
     }
 
+
+    /**
+     * Starts the simulation.
+     */
     @Override
     public void runSimulation()
     {
-        for (int i = 0; i < endTime; i++)
-        {
+        for (int i = 0; i< endTime; i++) {
             if (DEBUG)System.out.println("Earth Pos: " + solarSystem.getCelestialBodies().get(3).getVectorLocation().toString());
-            if (DEBUG)System.out.println("Earth Vel: " + solarSystem.getCelestialBodies().get(3).getVelocityVector().toString());
+            if (DEBUG)System.out.println("Earth Vel: " + solarSystem.getCelestialBodies().get(3).getVectorVelocity().toString());
 
             this.step(this, currTime, this.solarSystemState, stepSize); // The calculation
 
@@ -118,13 +134,20 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
 
     int closeM,closeH,closeDD,closeMM,closeYY;
     Vector3dInterface best,titan;
+    String bestCatch = "";
+
+    /**
+     * Starts the simulation in several steps.
+     */
     @Override
     public void runStepSimulation() {
 
+        boolean got = false;
         StateInterface[] allSteps = generateTimeSequences();
                 currTime = 0;
                 stepSize = Main.simulation.getGraphicsManager().getAssist().get().getTimeStepSize();
         for(;;){
+            currTime = 0;
             for (StateInterface step : allSteps)
             {
                 this.step(this,currTime,step,stepSize);
@@ -168,12 +191,18 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
                     best = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorLocation().clone();
                     titan = Main.simulation.getSolarSystemRepository().getCelestialBodies().get(8).getVectorLocation().clone();
                 }
-                else{
-                    Main.simulation.getGraphicsManager().getAssist().get().setOutput("CLOSEST POINT : "+ closestApproachToTitan+"\nREACHED ON   ("+closeDD + "/"+closeMM+"/"+closeYY+")\n hh  "+ closeH + " :"+ closeM
-                    + "\n" + best.toString() + "\n titan : \n "+ titan.toString());
+                else
+                {
+                    //if (best== null)continue;
+                    if (!got){       //this is very heavy to show here otherwise
+                        bestCatch = ("CLOSEST POINT : "+ closestApproachToTitan)+"\n"+
+                                (" REACHED ON ("+closeDD + "/"+closeMM+"/"+closeYY+")")+"\n"+
+                                ("hh  "+ closeH + " :"+ closeM )+"\n"+
+                                (best.toString() + "\n titan : \n "+ titan.toString());
+                        got = true;
+                    }
                 }
             }
-            currTime = 0;
         }
 
 
@@ -273,6 +302,7 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
     public String toString()
     {
         StringBuilder s = new StringBuilder();
+        s.append(bestCatch).append("\n");
         s.append("Running at ").append(stepSize).append("\n");
         s.append("Current time : ").append(currTime).append("\n");
         s.append("End of Simulation : ").append(endTime).append("\n");
@@ -284,6 +314,21 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         return s.toString().trim();
     }
 
+
+    /**
+     * This is an interface for the function f that represents the
+     * differential equation dy/dt = f(t,y).
+     * You need to implement this function to represent to the laws of physics.
+     *
+     * For example, consider the differential equation
+     *   dy[0]/dt = y[1];  dy[1]/dt=cos(t)-sin(y[0])
+     * Then this function would be
+     *   f(t,y) = (y[1],cos(t)-sin(y[0])).
+     *
+     * @param   timeAt   the time at which to evaluate the function
+     * @param   stateAtTime   the state at which to evaluate the function
+     * @return  The average rate-of-change over the time-step. Has dimensions of [state]/[time].
+     */
 
     @Override
     public RateInterface call(double timeAt, StateInterface stateAtTime)
@@ -319,6 +364,9 @@ public class SimulationRepository implements SimulationInterface, ODESolverInter
         return this.rateOfChange;
     }
 
+    /**
+     * Returns a body which is identified by its name.
+     */
     @Override
     public CelestialBody getBody(String name){
         for (CelestialBody p : this.solarSystem.getCelestialBodies())
