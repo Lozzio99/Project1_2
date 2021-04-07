@@ -1,124 +1,117 @@
-/**
- * This class controls all the graphics for the visualisation of a simulation.
- * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
- * @version 1.0
- * @since	19/02/2021
- */
 package group17.phase1.Titan.Graphics;
 
-
-import group17.phase1.Titan.Graphics.user.DialogFrame;
-import group17.phase1.Titan.Graphics.user.MouseInput;
-import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Graphics.Scenes.Scene;
+import group17.phase1.Titan.Graphics.Scenes.SimulationScene;
+import group17.phase1.Titan.Graphics.Scenes.StartingScene;
+import group17.phase1.Titan.Graphics.Scenes.Trajectories;
+import group17.phase1.Titan.interfaces.GraphicsInterface;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
-public class GraphicsManager
+import static group17.phase1.Titan.Main.simulation;
+
+
+public class GraphicsManager extends Canvas implements GraphicsInterface
 {
-    private final String FPS_RATE = "";
-    private final Lock syncAssist = new ReentrantLock();
-    private final AtomicReference <DialogFrame> assist = new AtomicReference<>(new DialogFrame());
-    private MainThread engine;
-    private JFrame frame;
-    private MouseInput mouseInput;
-    private SystemSimulationUpdater simulationUpdater;
-    public static int WIDTH = 1480, HEIGHT = 810;
-    static Dimension SCREEN = new Dimension(WIDTH,HEIGHT);
+    private final JFrame frame;
+    public final static Dimension screen = new Dimension(1480,810);
     private WindowEvent listen;
-    Thread t;
-
-
+    private MouseInput mouse;
+    private Scene currentScene;
+    private boolean running;
+    private final AtomicReference<Thread> main = new AtomicReference<>();
+    private final AtomicReference<Thread> assist = new AtomicReference<>();
+    private final AtomicReference<DialogFrame> assistFrame;
     public GraphicsManager()
     {
-
+        this.frame = new JFrame("Solar System ");
+        this.frame.setSize(screen);
+        this.assistFrame = new AtomicReference<>(new DialogFrame());
+        this.currentScene = new StartingScene();
+        this.currentScene.init();
+        this.frame.add(this);
+        this.frame.add(this.currentScene);
+        this.setWindowProperties();
     }
 
 
-    public AtomicReference<DialogFrame> getAssist() {
-        return this.assist;
+    public AtomicReference<DialogFrame> getAssistFrame(){
+        return this.assistFrame;
     }
 
-    /**
-     * Wait for the assist frame to give the start
-     */
-    public void waitForStart()
-    {
-        while (!assist.get().isStarted()){
-            /*take coordinates or whatever*/
-            if (assist.get().getLaunchVelocityX()!= 0)
-                Main.simulation.getBody("PROBE").getVectorVelocity().setX(assist.get().getLaunchVelocityX());
+    @Override
+    public synchronized void launch()  {
+        final double fps = 80;
+        this.main.set(new Thread(() -> {
+            long lastTime = System.nanoTime();
+            long timer = System.currentTimeMillis();
+            final double ns = 1000000000.0 / fps;
+            double delta = 0;
+            int frames = 0;
 
-            if (assist.get().getLaunchVelocityY()!= 0)
-            Main.simulation.getBody("PROBE").getVectorVelocity().setY(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityY());
-
-            if (assist.get().getLaunchVelocityZ()!= 0)
-                Main.simulation.getBody("PROBE").getVectorVelocity().setZ(Main.simulation.getGraphicsManager().getAssist().get().getLaunchVelocityZ());
-
-
-            Main.simulation.getBody("PROBE").setMASS(this.assist.get().getProbeMass());
-        }
-        Thread th = new Thread(this.engine);
-        th.start();
-    }
-
-
-    /**
-     * Initialises the assist thread for the graphics
-     */
-    public void init()
-    {
-         t = new Thread(()->
-        {
-            synchronized (syncAssist)
-            {
-                this.assist.get().init();
-                this.assist.get().appendToOutput("Those are the starting coordinates : ");
-                this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorLocation().toString());
-                this.assist.get().appendToOutput("This is the starting velocity:");
-                this.assist.get().appendToOutput(Main.simulation.getSolarSystemRepository().getCelestialBodies().get(11).getVectorVelocity().toString());
-                this.assist.get().appendToOutput("If you want to change the starting velocity\n" +
-                        "   > you can increase / decrease the sliders");
-                this.assist.get().appendToOutput("If you want to change the starting position\n" +
-                        "   > you can plug in the desired values");
-                this.assist.get().appendToOutput("If you want to change step size or probe mass\n" +
-                        "   > you can plug in the desired value");
-                this.assist.get().appendToOutput("If you trust our shoot then just START SIMULATION :=)");
+            while (this.running) {
+                long now = System.nanoTime();
+                delta += (now - lastTime) / ns;
+                lastTime = now;
+                while (delta >= 1) {
+                    this.update();
+                    this.currentScene.repaint();
+                    delta--;
+                    frames++;
+                }
+                if (System.currentTimeMillis() - timer > 1000) {
+                    this.frame.setTitle("Solar System " + " | " + frames + " fps");
+                    frames = 0;
+                    timer += 1000;
+                }
             }
-        });
-        t.start();
-        this.frame = new JFrame(FPS_RATE);
-        this.frame.setSize(SCREEN);
-        setWindowProperties();
-        this.engine = createEngine();
+        }, "Main Graphics"));
+
+        this.assist.set(new Thread(() -> {
+            long lastTime = System.nanoTime();
+            long timer = System.currentTimeMillis();
+            final double ns = 1000000000.0 / fps;
+            double delta = 0;
+
+            out : while (this.running) {
+                long now = System.nanoTime();
+                delta += (now - lastTime) / ns;
+                lastTime = now;
+                while (delta >= 1) {
+                    if (this.assistFrame.get().isStopped()) {
+                        this.assistFrame.get().showAssistParameters();
+                        while (this.assistFrame.get().isStopped()) {
+
+                        }
+                        this.assistFrame.get().acquireData();
+                        continue out;
+                    } else {
+                        simulation.step();
+                    }
+                    delta--;
+                }
+                if (System.currentTimeMillis() - timer > 1000) {
+                    if (!this.assistFrame.get().isStopped()) {
+                        this.assistFrame.get().setOutput(simulation.toString());
+                        timer += 1000;
+                    }
+                }
+            }
+        }, "Dialog Frame"));
+
+        this.main.get().setDaemon(true);
+        this.assist.get().setDaemon(true);
+        this.running = true;
+        this.main.get().start();
+        this.assist.get().start();
     }
-
-
-    /**
-     * Creates an engine for the main graphics-thread.
-     * @return
-     */
-    private MainThread createEngine()
-    {
-        Container cp =this.frame.getContentPane();
-        MainThread engine = new MainThread(this.simulationUpdater = new SystemSimulationUpdater());
-        this.simulationUpdater.addMouseControl(this.mouseInput = new MouseInput());
-        this.frame.addMouseListener(this.mouseInput);
-        this.frame.addMouseWheelListener(this.mouseInput);
-        this.frame.addMouseMotionListener(this.mouseInput);
-        cp.add(engine);
-        return engine;
-
-    }
-
 
     private void setWindowProperties() {
-        WindowAdapter closed = new WindowAdapter()
+        final var closed = new WindowAdapter()
         {
             @Override
             public void windowClosing(WindowEvent e)
@@ -133,65 +126,31 @@ public class GraphicsManager
         this.frame.setResizable(true);
         this.frame.setVisible(true);
         this.frame.setLocationRelativeTo(null);// Center window
+        this.mouse = new MouseInput();
+        this.currentScene.addMouseControl(this.mouse);
+        this.currentScene.addMouseListener(this.mouse);
+        this.currentScene.addMouseWheelListener(this.mouse);
+        this.currentScene.addMouseMotionListener(this.mouse);
     }
 
-    /**
-     * Nested class, which represents the main thread for the graphics.
-     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
-     * @version 1.0
-     * @since	19/02/2021
-     */
-    private class MainThread extends JPanel implements Runnable {
-
-        private final SystemSimulationUpdater visualization;
-
-        public MainThread(SystemSimulationUpdater visualization) {
-            this.visualization = visualization;
-            this.setSize(SCREEN);
-            this.setEnabled(true);
-            this.setFocusable(true);
-        }
-
-        @Override
-        protected void paintComponent(Graphics graphics)
-        {
-            graphics.setColor(Color.black);
-            graphics.fillRect(0,0,GraphicsManager.WIDTH,GraphicsManager.HEIGHT);
-            visualization.paint(graphics);
-        }
-
-        /**
-         * Starts the main loop process.
-         */
-        @Override
-        public void run()
-        {
-            long lastTime = System.nanoTime();
-            long timerTitle = System.currentTimeMillis();
-            double elapsedTime = 0.0;
-            double nanosecond = 1_000_000_000d / 60;
-            double frames = 0;
-            this.visualization.startSimulation();
-            while (true) {
-                long now = System.nanoTime();
-                elapsedTime += ((now - lastTime) / nanosecond);
-                lastTime = now;
-
-                if (elapsedTime >= 1) {
-                    synchronized (syncAssist) {
-                        visualization.update();
-                        repaint();
-                        if (System.currentTimeMillis() - timerTitle > 1000) {
-                            assist.get().setOutput(Main.simulation.toString());
-                            timerTitle += 1000;
-                        }
-                    }
-                    elapsedTime--;
-                    frames++;
-                }
-            }
-        }
+    private void update()
+    {
+        this.currentScene.update();
     }
+
+
+    public void changeScene(Scene.SceneType scene)
+    {
+        switch (scene){
+            case STARTING_SCENE -> this.currentScene = new StartingScene();
+            case SIMULATION_SCENE -> this.currentScene = new SimulationScene();
+            case TRAJECTORIES -> this.currentScene = new Trajectories();
+        }
+        this.currentScene.addMouseControl(this.mouse);
+        this.frame.add(this.currentScene);
+        this.currentScene.revalidate();
+        this.frame.repaint();
+        this.currentScene.init();
+    }
+
 }
-
-
