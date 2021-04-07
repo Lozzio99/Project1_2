@@ -64,7 +64,7 @@ public abstract class Scene extends JPanel
 
     void create(){
         try {
-            image = ImageIO.read(new File("C:\\JAVA\\LWJGl\\redo\\src\\TITAN2\\milkyway.png"));
+            image = ImageIO.read(new File("src/main/java/group17/phase1/Titan/milkyway.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
