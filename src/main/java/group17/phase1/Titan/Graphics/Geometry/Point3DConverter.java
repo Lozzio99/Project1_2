@@ -1,20 +1,13 @@
 package group17.phase1.Titan.Graphics.Geometry;
-
 import group17.phase1.Titan.Graphics.GraphicsManager;
 
 import java.awt.*;
-/**
- * This class represents a converter of a 3D-point.
- * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
- * @version 1.0
- * @since	19/02/2021
- */
+
 public class Point3DConverter
 {
-    // Variables
-    private static double scale = 1d;
+    private static double scale = 1.5d;
     private static final double ZoomFactor = 1.05;
-    private static final int SCREEN_WIDTH = GraphicsManager.WIDTH, SCREEN_HEIGHT = GraphicsManager.HEIGHT;
+    private static final int SCREEN_WIDTH = GraphicsManager.screen.width, SCREEN_HEIGHT = GraphicsManager.screen.height;
 
     /**
      * Zooms in by a factor.
@@ -43,7 +36,8 @@ public class Point3DConverter
      * @param point3D
      * @return
      */
-    public static Point convertPoint(Point3D point3D) {
+    public static Point convertPoint(Point3D point3D)
+    {
         double x3d = point3D.getXCoordinate() * scale;
         double y3d = point3D.getYCoordinate() * scale;
         double depth = point3D.getZCoordinate() * scale;
@@ -79,7 +73,9 @@ public class Point3DConverter
      * @param CW
      * @param degrees
      */
-    public static void rotateAxisX(Point3D p, boolean CW, double degrees) {
+    public static void rotateAxisX(Point3D p, boolean CW, double degrees)
+    {
+        if (degrees==0) return;
         double radius = Math.sqrt(p.y*p.y + p.z*p.z);
         double theta = Math.atan2(p.z, p.y);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
@@ -94,6 +90,7 @@ public class Point3DConverter
      * @param degrees
      */
     public static void rotateAxisY(Point3D p, boolean CW, double degrees) {
+        if (degrees==0) return;
         double radius = Math.sqrt(p.z*p.z + p.x*p.x);
         double theta = Math.atan2(p.z, p.x);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
@@ -108,6 +105,7 @@ public class Point3DConverter
      * @param degrees
      */
     public static void rotateAxisZ(Point3D p, boolean CW, double degrees) {
+        if (degrees==0) return;
         double radius = Math.sqrt(p.y*p.y + p.x*p.x);
         double theta = Math.atan2(p.y, p.x);
         theta += 2*Math.PI/360*degrees*(CW?-1:1);
