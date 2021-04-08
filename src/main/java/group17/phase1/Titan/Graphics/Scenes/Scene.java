@@ -17,6 +17,7 @@ public abstract class Scene extends JPanel
 
     private int initialX, initialY;
     protected final static double mouseSensitivity = 16;
+    static double deltaX, deltaY = 0;
     static double totalxDif, totalyDif = 0;
     static double scale = 3e8;
     double radiusMag = 1e2;
@@ -77,14 +78,19 @@ public abstract class Scene extends JPanel
         int x = this.mouse.getX();
         int y = this.mouse.getY();
 
+        deltaX = 0;
+        deltaY = 0;
+
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
             int xDif = x - initialX;
+            deltaX = xDif;
             this.rotateOnAxisY(false,xDif/mouseSensitivity);
             totalxDif += xDif;
         }
 
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
             int yDif = y - initialY;
+            deltaY = yDif;
             this.rotateOnAxisX(false,yDif/mouseSensitivity);
             totalyDif += yDif;
         }
@@ -96,7 +102,6 @@ public abstract class Scene extends JPanel
         else if(this.mouse.isScrollingDown()) {
             Point3DConverter.zoomOut();
         }
-
 
         this.mouse.resetScroll();
 

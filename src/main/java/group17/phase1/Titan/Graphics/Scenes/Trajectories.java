@@ -56,8 +56,8 @@ public class Trajectories extends SimulationScene
                     break;
 
                 //most pleasant "bug" of my life
-                //Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, totalxDif / mouseSensitivity);
-                //Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, totalyDif / mouseSensitivity);
+                Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, deltaY / mouseSensitivity);
+                Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, deltaX / mouseSensitivity);
             }
         }
 
