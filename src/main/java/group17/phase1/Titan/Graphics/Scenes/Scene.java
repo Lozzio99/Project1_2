@@ -1,4 +1,5 @@
 package group17.phase1.Titan.Graphics.Scenes;
+
 import group17.phase1.Titan.Graphics.Geometry.Point3D;
 import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
 import group17.phase1.Titan.Graphics.GraphicsManager;
@@ -10,18 +11,19 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public abstract class Scene extends JPanel
 {
     public MouseInput mouse;
 
-    private int initialX, initialY;
+    protected static int initialX, initialY,x,y,xDif,yDif,deltaX,deltaY,totalXDif,totalYDif;
     protected final static double mouseSensitivity = 16;
-    static double totalxDif, totalyDif = 0;
     static double scale = 3e8;
     double radiusMag = 1e2;
     private final static int UNIT_SIZE = GraphicsManager.screen.width ;//*(int) scale;
     private BufferedImage image;
+    private Graphics2D g;
 
 
     protected Point3D left = new Point3D(-UNIT_SIZE,0,0),
@@ -35,7 +37,7 @@ public abstract class Scene extends JPanel
 
     public void paintComponent(Graphics graphics){
         super.paintComponent(graphics);
-        Graphics2D g = (Graphics2D) graphics;
+        g = (Graphics2D) graphics;
         if (image == null) {
             create();
             setHints(g);
@@ -51,20 +53,22 @@ public abstract class Scene extends JPanel
 
     public void setHints(Graphics2D g)
     {
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,RenderingHints.VALUE_COLOR_RENDER_SPEED);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_SPEED);
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+        this.doLayout();
+        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     }
 
-    void create(){
+    void create()
+    {
         try {
-            image = ImageIO.read(new File("src/main/java/group17/phase1/Titan/milkyway.png"));
+            File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("milky-way4k.jpg")).getFile());
+            image = ImageIO.read(f);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,19 +78,20 @@ public abstract class Scene extends JPanel
 
     public void update()
     {
-        int x = this.mouse.getX();
-        int y = this.mouse.getY();
+        x = this.mouse.getX();
+        y = this.mouse.getY();
+        deltaX = deltaY = 0;
 
         if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
-            int xDif = x - initialX;
+            deltaX = xDif = x - initialX;
             this.rotateOnAxisY(false,xDif/mouseSensitivity);
-            totalxDif += xDif;
+            totalXDif += xDif;
         }
 
         else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
-            int yDif = y - initialY;
+            deltaY = yDif = y - initialY;
             this.rotateOnAxisX(false,yDif/mouseSensitivity);
-            totalyDif += yDif;
+            totalYDif += yDif;
         }
 
 
@@ -97,15 +102,19 @@ public abstract class Scene extends JPanel
             Point3DConverter.zoomOut();
         }
 
+        //call this from the subclass
+        //this.resetMouse();
 
-        this.mouse.resetScroll();
-
-        this.initialX = x;
-        this.initialY = y;
     }
 
     public void addMouseControl(MouseInput mouse){
         this.mouse = mouse;
+    }
+
+    public void resetMouse(){
+        this.mouse.resetScroll();
+        initialX = x;
+        initialY = y;
     }
 
     public void rotateOnAxisY(boolean cw, double y){

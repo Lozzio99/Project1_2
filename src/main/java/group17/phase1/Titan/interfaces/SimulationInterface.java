@@ -9,7 +9,6 @@ public interface SimulationInterface
 
     void initGraphics();
 
-
     void reset();
 
     void step();

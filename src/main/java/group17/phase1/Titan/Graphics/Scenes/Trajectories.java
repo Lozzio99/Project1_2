@@ -51,16 +51,14 @@ public class Trajectories extends SimulationScene
         super.update();
         for (int i = 0; i < super.getPlanetPositions().length; i++) {
             this.trajectories[i].add(super.getPlanetPositions()[i]);
+            //most pleasant "bug" of my life
             for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
                 if (this.trajectories[i].getTrajectories()[k] == null)
                     break;
-
-                //most pleasant "bug" of my life
-                //Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, totalxDif / mouseSensitivity);
-                //Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, totalyDif / mouseSensitivity);
+                Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, deltaX / mouseSensitivity);
+                Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, deltaY / mouseSensitivity);
             }
         }
-
     }
 
     class Bag

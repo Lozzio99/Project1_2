@@ -20,8 +20,6 @@ public interface StateInterface
     List<Vector3dInterface> getPositions();
 
 
-    void setVectorPosition(List<Vector3dInterface> vectorPosition);
-
     /**
      * Update a state to a new state computed by: this + step * rate
      *

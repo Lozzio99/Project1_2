@@ -145,10 +145,6 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
         return this.positions;
     }
 
-    @Override
-    public void setVectorPosition(List<Vector3dInterface> vectorPosition) {
-        this.positions = vectorPosition;
-    }
 
     @Override
     public StateInterface addMul(double step, RateInterface rate)

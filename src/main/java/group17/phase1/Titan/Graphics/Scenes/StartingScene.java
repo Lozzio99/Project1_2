@@ -46,6 +46,7 @@ public class StartingScene extends Scene
         xAxis.setLine(Point3DConverter.convertPoint(left),Point3DConverter.convertPoint(right));
         yAxis.setLine(Point3DConverter.convertPoint(top),Point3DConverter.convertPoint(bottom));
         zAxis.setLine(Point3DConverter.convertPoint(rear),Point3DConverter.convertPoint(front));
+        super.resetMouse();
     }
 
 

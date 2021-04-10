@@ -53,7 +53,6 @@ public class SimulationScene extends Scene
     {
         super.update();
         this.updateBodies();
-        //Main.simulation.step();
     }
 
     public void updateBodies()
@@ -63,8 +62,8 @@ public class SimulationScene extends Scene
             this.planetsPositions[i] = Main.simulation.systemState().getPositions().get(i).fromVector();
             this.planetsPositions[i].scale(scale);
             radius[i] = (Main.simulation.solarSystem().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale()* radiusMag;
-            Point3DConverter.rotateAxisX(this.planetsPositions[i], false, totalyDif / mouseSensitivity);
-            Point3DConverter.rotateAxisY(this.planetsPositions[i], false, totalxDif / mouseSensitivity);
+            Point3DConverter.rotateAxisY(this.planetsPositions[i], false, totalXDif / mouseSensitivity);
+            Point3DConverter.rotateAxisX(this.planetsPositions[i], false, totalYDif / mouseSensitivity);
         }
 
     }

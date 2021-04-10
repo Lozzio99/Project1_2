@@ -136,6 +136,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
     private void update()
     {
         this.currentScene.update();
+        this.currentScene.resetMouse();
     }
 
 
