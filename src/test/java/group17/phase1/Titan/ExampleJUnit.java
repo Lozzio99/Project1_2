@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Simulation;
+package group17.phase1.Titan;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -22,7 +22,7 @@ class ExampleJUnit
     }
 
     @Test
-    @Disabled("Not implemented yet")
+    @Disabled("Not implemented yet (note @disabled)")
     void demoWrong(){
         assertEquals(2,1);
     }
@@ -36,13 +36,15 @@ class ExampleJUnit
     @Test
     @Disabled("Not implemented yet")
     void failMethod(){
-        fail("Not implemented yet");
+        fail("Not implemented yet (note fail)");
     }
 
 
     @Test
     @DisplayName("Should check all the items in the list")
     void multipleAssertions(){
+
+
         var integers = List.of(2, 3, 5, 7);
 
         //imagine one of them is wrong
@@ -58,12 +60,40 @@ class ExampleJUnit
     void groupAssertions(){
         var integers = List.of(2, 3, 5, 7);
         Assertions.assertAll(
-                () -> assertEquals(2, integers.get(0)),
+                () -> Assertions.assertEquals(2, integers.get(0)),
                 () -> assertEquals(3, integers.get(1)),
                 () -> assertEquals(5, integers.get(2)),
-                () -> assertEquals(7, integers.get(3))  );
+                () -> assertEquals(7, integers.get(3)));
 
-        //like this all of them get anyway executed
+
+        /*
+
+        assertEquals is an executable parameter ,
+        note : assertAll accepts an array of any size of executables
+        to reference the method as an executable we can say
+        to create an anonymous object which extends Executable Interface
+        like :
+
+        var x = new Executable() {
+                    @Override
+                    public void execute() throws Throwable {
+                        assertEquals(1,1);
+                    }
+                };
+
+        since this interface has only one method is "annotated as" functional
+        interface, which allows lambda functions to take their place
+        therefore we can replace it this with :
+
+        Executable x = () -> assertEquals(1,1);
+
+
+        we can pass more than one parameter with just a comma it will be
+         an implicit call to :
+         assertAll(new Executable[]{  ()-> staticExecutable1(),...})
+        like this all of them will get anyway executed
+
+        */
     }
 
     boolean field = true;
@@ -112,7 +142,10 @@ class ExampleJUnit
         private final int sum = 1000;
         private final String shape = "square";
     }
+
+
     //GROUPING TESTS
+    //run class == run all the tests inside
     @Nested
     class NestedClass
     {

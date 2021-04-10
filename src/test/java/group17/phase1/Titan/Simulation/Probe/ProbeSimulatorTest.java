@@ -1,7 +1,8 @@
 package group17.phase1.Titan.Simulation.Probe;
-import group17.phase1.Titan.Interfaces.ProbeSimulatorInterface;
-import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.SolarSystem.Bodies.CelestialBody;
+
+import group17.phase1.Titan.Physics.SolarSystem.CelestialBody;
+import group17.phase1.Titan.interfaces.ProbeSimulatorInterface;
+import group17.phase1.Titan.interfaces.Vector3dInterface;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,11 @@ class ProbeSimulatorTest extends CelestialBody implements ProbeSimulatorInterfac
     @Override
     public String toString() {
         return "PROBE";
+    }
+
+    @Override
+    public void initPosition() {
+
     }
 
 
@@ -165,13 +171,10 @@ class ProbeSimulatorTest extends CelestialBody implements ProbeSimulatorInterfac
     }
 
 
-
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
         return new Vector3dInterface[0];
     }
-
-
 
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
