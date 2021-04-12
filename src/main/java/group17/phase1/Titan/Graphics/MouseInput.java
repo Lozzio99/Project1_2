@@ -128,7 +128,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
      */
     public void mouseClicked(MouseEvent arg0)
     {
-        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -166,6 +166,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     {
         this.mouseB = -1;
     }
+
 
     /**
      * Enumerates the click type of the mouse.

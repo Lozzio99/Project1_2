@@ -8,11 +8,13 @@ class DialogFrameTest {
     @Test
     @DisplayName("Init")
     void Init() {
+
     }
 
     @Test
     @DisplayName("IsStopped")
     void IsStopped() {
+
     }
 
     @Test

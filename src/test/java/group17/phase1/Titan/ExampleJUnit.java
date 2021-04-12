@@ -7,14 +7,12 @@ import org.junit.jupiter.params.provider.ValueSource;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 //idea : IntellijUltra -> Settings->Editor->Inlay Hints
 // or right-click (disable/ settings)
 
 // can be run from whatever idea using gradle
 class ExampleJUnit
 {
-
 
     @Test
     void demoTest() {
@@ -60,7 +58,7 @@ class ExampleJUnit
     void groupAssertions(){
         var integers = List.of(2, 3, 5, 7);
         Assertions.assertAll(
-                () -> Assertions.assertEquals(2, integers.get(0)),
+                () -> assertEquals(2, integers.get(0)),
                 () -> assertEquals(3, integers.get(1)),
                 () -> assertEquals(5, integers.get(2)),
                 () -> assertEquals(7, integers.get(3)));

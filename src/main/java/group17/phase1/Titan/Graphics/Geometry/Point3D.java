@@ -17,6 +17,8 @@ public class Point3D
         this.zOffset = 0;
     }
 
+
+
     public double getXCoordinate() {
         return this.x+this.xOffset;
     }

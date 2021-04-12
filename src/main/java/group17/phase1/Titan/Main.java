@@ -10,7 +10,7 @@ public class Main
 
     public static void main(String[] args)
     {
-        if (1>2)
+        if (Config.META_SIMULATION)
             simulation = new MetaSimulation();
         else
             simulation = new Simulation();

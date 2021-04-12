@@ -1,21 +1,20 @@
 package group17.phase1.Titan.Simulation.Probe;
 
 import group17.phase1.Titan.Physics.SolarSystem.CelestialBody;
+import group17.phase1.Titan.Physics.SolarSystem.ProbeSimulator;
 import group17.phase1.Titan.interfaces.ProbeSimulatorInterface;
 import group17.phase1.Titan.interfaces.Vector3dInterface;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.awt.*;
 
 
 class ProbeSimulatorTest extends CelestialBody implements ProbeSimulatorInterface
 {
 
-    ProbeSimulatorTest test;
+    ProbeSimulator test;
     ProbeSimulatorTest(){
-        test = new ProbeSimulatorTest();
-        test.setColour(Color.WHITE);
+        test = new ProbeSimulator();
     }
 
 
@@ -41,7 +40,8 @@ class ProbeSimulatorTest extends CelestialBody implements ProbeSimulatorInterfac
     @Test
     @DisplayName("TestGetMASS")
     void TestGetMASS() {
-        assert test.getMASS()== 0;
+        test.setMASS(0);
+        Assertions.assertEquals(0,test.getMASS());
     }
 
 
@@ -172,11 +172,13 @@ class ProbeSimulatorTest extends CelestialBody implements ProbeSimulatorInterfac
 
 
     @Override
+    @Test
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
         return new Vector3dInterface[0];
     }
 
     @Override
+    @Test
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
         return new Vector3dInterface[0];
     }

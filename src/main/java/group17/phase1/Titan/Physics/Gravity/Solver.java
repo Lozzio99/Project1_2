@@ -2,15 +2,15 @@ package group17.phase1.Titan.Physics.Gravity;
 
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Vector3D;
-import group17.phase1.Titan.Simulation.Simulation;
 import group17.phase1.Titan.interfaces.*;
 
 
 public class Solver implements ODEFunctionInterface, ODESolverInterface
 {
     private static final double G =  6.67408e-11;
-    public static double currTime = 0, timeSteps = 60;
+    public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
+
 
     @Override
     public RateInterface call(double t, StateInterface y)
@@ -28,11 +28,9 @@ public class Solver implements ODEFunctionInterface, ODESolverInterface
                     double den = Math.sqrt(squareDist);
                     /*
                         ! Important !
-
                         if two bodies collapses into the same point
                         that would crash to NaN and consequently
                         the same in all the system
-
                      */
                     acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
                     acc.mul((G * Main.simulation.solarSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist) ); // Convert force to acceleration
@@ -62,6 +60,7 @@ public class Solver implements ODEFunctionInterface, ODESolverInterface
         states[states.length-1] = y0.addMul(currTime,f.call(ts[ts.length-1]-currTime,y0));
         return states;
     }
+
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h)
@@ -94,16 +93,4 @@ public class Solver implements ODEFunctionInterface, ODESolverInterface
         return y.addMul(stepSize, f.call(currentTime, y));
     }
 
-    public static void main(String[] args) {
-        Main.simulation = new Simulation();
-        Main.simulation.init();
-        StateInterface[] timeSequence = new Solver().solve(new Solver(),Main.simulation.systemState(),new double[]{0,1,2});
-        for (StateInterface stateAtTime : timeSequence){
-            for (Vector3dInterface position : stateAtTime.getPositions()){
-                System.out.println(position);
-            }
-        }
-
-
-    }
 }

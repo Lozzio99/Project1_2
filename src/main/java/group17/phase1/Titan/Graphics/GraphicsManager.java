@@ -91,6 +91,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
                         continue out;
                     } else {
                         simulation.step();
+
                     }
                     delta--;
                 }

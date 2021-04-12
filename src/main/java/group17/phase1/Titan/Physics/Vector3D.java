@@ -7,6 +7,7 @@ import group17.phase1.Titan.interfaces.Vector3dInterface;
 public class Vector3D implements Vector3dInterface
 {
 
+
     /* TODO : think if we need to create new objects or if we can just modify the current vector */
     /**
      * Adds another vector onto this vector.
@@ -103,6 +104,8 @@ public class Vector3D implements Vector3dInterface
     }
 
 
+
+
     /**
      * Gets the unit vector between two vectors.
      * @param from
@@ -134,6 +137,12 @@ public class Vector3D implements Vector3dInterface
         this.x = x;
         this.y = y;
         this.z = z;
+    }
+
+    public Vector3D(Point3D p){
+        this.x = p.x;
+        this.y = p.y;
+        this.z = p.z;
     }
 
     public Vector3D(Point3D p1, Point3D p2) {
