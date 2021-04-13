@@ -34,7 +34,8 @@ public class MetaSolarSystem implements SolarSystemInterface, StateInterface, Ra
     }
 
     @Override
-    public void initPlanetPositions() {
+    public void initPlanetPositions()
+    {
         Star s = new Star();
         s.setMASS(10e8);
         s.setRADIUS(300);
@@ -43,7 +44,7 @@ public class MetaSolarSystem implements SolarSystemInterface, StateInterface, Ra
         this.allBodies.add(s);
         this.positions.add(s.getVectorLocation());
         this.rateOfChange.add(s.getVectorVelocity());
-        for (int i = 1; i< 2000; i++)
+        for (int i = 1; i< (Main.simulation.CPU()*500); i++)
         {
             Satellite particle = new Satellite(Satellite.SatellitesEnum.ASTEROID);
             particle.setMASS(1e8);

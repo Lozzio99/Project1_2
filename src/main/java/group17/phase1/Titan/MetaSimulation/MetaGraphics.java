@@ -72,8 +72,6 @@ public class MetaGraphics extends Canvas implements GraphicsInterface, Runnable
     public void changeScene(Scene.SceneType scene) {
         switch (scene){
             case SIMULATION_SCENE -> {
-                Main.simulation.init();
-                Main.simulation.start();
                 this.scene.setMouse(this.mouse);
                 this.scene.started = true;
             }

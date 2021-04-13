@@ -1,5 +1,6 @@
 package group17.phase1.Titan.MetaSimulation;
 
+import group17.phase1.Titan.Physics.Gravity.MetaSolver;
 import group17.phase1.Titan.Physics.Gravity.Solver;
 import group17.phase1.Titan.Physics.SolarSystem.CelestialBody;
 import group17.phase1.Titan.interfaces.*;
@@ -14,15 +15,27 @@ public class MetaSimulation implements SimulationInterface {
     private static double stepSize,currTime ;
     private ODESolverInterface solver;
 
+    private static int CPU;
+
 
     @Override
-    public void init()
+    public int CPU() {
+        return CPU;
+    }
+
+    @Override
+    public void init(int cpu)
     {
+        CPU = cpu;
         this.solarSystem = new MetaSolarSystem();
         this.stateInterface = (StateInterface) this.solarSystem;
         this.rateInterface  =  (RateInterface) this.solarSystem;
-        this.solver = new Solver();
-        stepSize = .8;
+        switch (cpu)
+        {
+            case 1 -> this.solver = new Solver();
+            case 5 -> this.solver = new MetaSolver();
+        }
+        stepSize = .4;
     }
 
     @Override

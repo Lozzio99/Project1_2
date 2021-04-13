@@ -1,6 +1,7 @@
 package group17.phase1.Titan.Simulation;
 
 import group17.phase1.Titan.Graphics.GraphicsManager;
+import group17.phase1.Titan.Physics.Gravity.MetaSolver;
 import group17.phase1.Titan.Physics.Gravity.Solver;
 import group17.phase1.Titan.Physics.SolarSystem.CelestialBody;
 import group17.phase1.Titan.Physics.SolarSystem.ProbeSimulator;
@@ -19,10 +20,23 @@ public class Simulation implements SimulationInterface
     static double t = 0;
     public static double stepSize = 5e4;
 
+    private static int CPU;
+
+
     @Override
-    public void init() {
+    public int CPU() {
+        return CPU;
+    }
+
+    @Override
+    public void init(int cpu) {
+        CPU = cpu;
         this.solarSystem = new SolarSystem();
-        this.solverInterface = new Solver();
+        switch (cpu)
+        {
+            case 1 -> this.solverInterface = new Solver();
+            case 5 -> this.solverInterface = new MetaSolver();
+        }
         this.probe = new ProbeSimulator();
         this.solarSystem.getCelestialBodies().add(probe);
         this.reset();

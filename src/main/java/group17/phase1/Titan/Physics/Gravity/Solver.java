@@ -7,7 +7,7 @@ import group17.phase1.Titan.interfaces.*;
 
 public class Solver implements ODEFunctionInterface, ODESolverInterface
 {
-    private static final double G =  6.67408e-11;
+    static final double G =  6.67408e-11;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
 
@@ -92,5 +92,6 @@ public class Solver implements ODEFunctionInterface, ODESolverInterface
 
         return y.addMul(stepSize, f.call(currentTime, y));
     }
+
 
 }

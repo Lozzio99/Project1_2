@@ -5,7 +5,9 @@ import group17.phase1.Titan.Physics.SolarSystem.CelestialBody;
 public interface SimulationInterface
 {
 
-    void init();
+    int CPU();
+
+    void init(int cpu);
 
     void initGraphics();
 
