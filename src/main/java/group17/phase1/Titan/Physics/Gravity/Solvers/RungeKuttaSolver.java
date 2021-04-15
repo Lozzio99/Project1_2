@@ -1,6 +1,7 @@
 package group17.phase1.Titan.Physics.Gravity.Solvers;
 
-public class RungeKuttaSolver {
+public class RungeKuttaSolver
+{
     double step_size;
     Function f;
     public RungeKuttaSolver(double step_size, Function f){

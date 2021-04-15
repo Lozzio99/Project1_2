@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.phase1.Titan.Main.simulation;
@@ -26,9 +27,14 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
     private final AtomicReference<Thread> main = new AtomicReference<>();
     private final AtomicReference<Thread> assist = new AtomicReference<>();
     private final AtomicReference<DialogFrame> assistFrame;
+    final double FPS = 60;
+
+    private final Semaphore semaphore;
+
     public GraphicsManager()
     {
         this.frame = new JFrame("Solar System ");
+        this.semaphore = new Semaphore(0);
         this.frame.setSize(screen);
         this.assistFrame = new AtomicReference<>(new DialogFrame());
         this.currentScene = new StartingScene();
@@ -45,11 +51,10 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
 
     @Override
     public synchronized void launch()  {
-        final double fps = 80;
         this.main.set(new Thread(() -> {
             long lastTime = System.nanoTime();
             long timer = System.currentTimeMillis();
-            final double ns = 1000000000.0 / fps;
+            final double ns = 1000000000.0 / FPS;
             double delta = 0;
             int frames = 0;
 
@@ -60,11 +65,12 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
                 while (delta >= 1) {
                     this.update();
                     this.currentScene.repaint();
+                    this.semaphore.release();
                     delta--;
                     frames++;
                 }
                 if (System.currentTimeMillis() - timer > 1000) {
-                    this.frame.setTitle("Solar System " + " | " + frames + " fps");
+                    this.frame.setTitle("Solar System " + " | " + frames + " FPS");
                     frames = 0;
                     timer += 1000;
                 }
@@ -74,10 +80,10 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
         this.assist.set(new Thread(() -> {
             long lastTime = System.nanoTime();
             long timer = System.currentTimeMillis();
-            final double ns = 1000000000.0 / fps;
+            final double ns = 1000000000.0 / FPS;
             double delta = 0;
 
-            out : while (this.running) {
+            while (this.running) {
                 long now = System.nanoTime();
                 delta += (now - lastTime) / ns;
                 lastTime = now;
@@ -88,10 +94,11 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
 
                         }
                         this.assistFrame.get().acquireData();
-                        continue out;
                     } else {
+                        this.semaphore.acquireUninterruptibly();
+                        System.out.println("step");
                         simulation.step();
-
+                        this.semaphore.drainPermits();
                     }
                     delta--;
                 }
@@ -153,6 +160,11 @@ public class GraphicsManager extends Canvas implements GraphicsInterface
         this.currentScene.revalidate();
         this.frame.repaint();
         this.currentScene.init();
+    }
+
+    @Override
+    public Semaphore getSemaphore() {
+        return this.semaphore;
     }
 
 }

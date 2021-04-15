@@ -153,4 +153,7 @@ public class SolarSystem implements SolarSystemInterface, StateInterface, RateIn
             this.positions.get(i).addMul(step,rate.getRateOfChange().get(i));
         return this;
     }
+
+
+
 }

@@ -14,16 +14,15 @@ public class MetaSolver extends Solver
     static StateInterface y;
 
 
-
     @Override
     public RateInterface call(double t, StateInterface yGiven)
     {
 
         y = yGiven;
-        for (int i = 0; i< y.getPositions().size(); i++){
+        for (int i = 0; i < y.getPositions().size(); i++) {
             final var finalI = i;
             CompletableFuture.supplyAsync(() -> evaluate(finalI))
-                    .thenAccept(e -> set(finalI,e));
+                    .thenApply(e -> set(finalI, e));
         }
         return Main.simulation.rateOfChange();
     }
@@ -58,5 +57,10 @@ public class MetaSolver extends Solver
             }
         }
         return totalAcc;
+    }
+
+
+    public class Task extends CompletableFuture<Vector3dInterface>{
+
     }
 }

@@ -34,9 +34,9 @@ public abstract class Scene extends JPanel
             rear = new Point3D(0,0,-UNIT_SIZE);
 
 
-
     public void paintComponent(Graphics graphics){
-        super.paintComponent(graphics);
+
+        //super.paintComponent(graphics);
         g = (Graphics2D) graphics;
         if (image == null) {
             create();
@@ -143,6 +143,7 @@ public abstract class Scene extends JPanel
         Point3DConverter.rotateAxisZ(rear,cw,z);
         Point3DConverter.rotateAxisZ(front,cw,z);
     }
+
 
     public enum SceneType{
         STARTING_SCENE,

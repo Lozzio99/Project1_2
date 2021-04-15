@@ -43,4 +43,51 @@ public class Clock
     }
 
 
+    public static int getDay() {
+        return dd;
+    }
+
+    public static void setDay(int dd) {
+        Clock.dd = dd;
+    }
+
+    public static int getMinutes() {
+        return mm;
+    }
+
+    public static void setMinutes(int mm) {
+        Clock.mm = mm;
+    }
+
+    public static int getYear() {
+        return yy;
+    }
+
+    public static void setYy(int yy) {
+        Clock.yy = yy;
+    }
+
+    public static int getHour() {
+        return hour;
+    }
+
+    public static void setHour(int hour) {
+        Clock.hour = hour;
+    }
+
+    public static int getSec() {
+        return sec;
+    }
+
+    public static void setSec(int sec) {
+        Clock.sec = sec;
+    }
+
+    public static int getMin() {
+        return min;
+    }
+
+    public static void setMin(int min) {
+        Clock.min = min;
+    }
 }

@@ -4,12 +4,16 @@ import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Vector3D;
 import group17.phase1.Titan.interfaces.*;
 
+import java.util.List;
+
 
 public class Solver implements ODEFunctionInterface, ODESolverInterface
 {
     static final double G =  6.67408e-11;
     public static double currTime = 0;
     public static double endTime = Double.MAX_VALUE;
+
+    List<Vector3dInterface> calculations;
 
 
     @Override
@@ -31,7 +35,7 @@ public class Solver implements ODEFunctionInterface, ODESolverInterface
                         if two bodies collapses into the same point
                         that would crash to NaN and consequently
                         the same in all the system
-                     */
+                    */
                     acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
                     acc.mul((G * Main.simulation.solarSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist) ); // Convert force to acceleration
                     totalAcc.addMul(Main.simulation.getStepSize(), acc);
@@ -50,11 +54,12 @@ public class Solver implements ODEFunctionInterface, ODESolverInterface
         StateInterface[] states = new StateInterface[ts.length];
         endTime = ts[ts.length-1];
         currTime = ts[0];
+
         for (int i = 0; i< ts.length-1; i++)
         {
             double h = ts[i+1]-ts[i];
             Main.simulation.setStepSize(h);
-            states [i] = y0.addMul(currTime,f.call(h,y0));
+            states [i] = this.step(f,currTime,y0,h);
             currTime+= h;
         }
         states[states.length-1] = y0.addMul(currTime,f.call(ts[ts.length-1]-currTime,y0));
@@ -80,15 +85,14 @@ public class Solver implements ODEFunctionInterface, ODESolverInterface
 
     @Override
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
-        /*
-        StateInterface[] ks = new StateInterface[4];
-        for (int i = 0; i< y.getPositions().size(); i++){
-            ks[0].getPositions().set(i,y.getPositions().get(i).clone().mul(stepSize));
-        }
-        for (int i = 0; i< y.getPositions().size(); i++){
-            ks[1].getPositions().set(i,y.getPositions().get(i).clone().mul(stepSize));
-        }
-         */
+        // y1 = y0 +f(x,y0);
+        this.calculations = y.getPositions();
+        for (int i = 0; i< y.getPositions().size(); i++)
+            this.calculations.set(i,y.getPositions().get(i).clone());
+
+
+
+        StateInterface k1 = y.addMul(stepSize,f.call(currentTime,y));
 
         return y.addMul(stepSize, f.call(currentTime, y));
     }

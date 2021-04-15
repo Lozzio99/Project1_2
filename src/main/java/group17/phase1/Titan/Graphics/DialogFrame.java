@@ -260,7 +260,7 @@ public class DialogFrame extends JPanel
             simulation.graphics().changeScene(Scene.SceneType.STARTING_SCENE);
             simulation.reset();
             System.out.println("Reset simulation...");
-            System.out.println(simulation.toString());
+            //System.out.println(simulation.toString());
         }
 
     }

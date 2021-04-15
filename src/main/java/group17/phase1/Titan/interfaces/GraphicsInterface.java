@@ -3,6 +3,7 @@ package group17.phase1.Titan.interfaces;
 import group17.phase1.Titan.Graphics.DialogFrame;
 import group17.phase1.Titan.Graphics.Scenes.Scene;
 
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
 public interface GraphicsInterface
@@ -12,4 +13,6 @@ public interface GraphicsInterface
     AtomicReference<DialogFrame> getAssistFrame();
 
     void changeScene(Scene.SceneType scene);
+
+    Semaphore getSemaphore();
 }

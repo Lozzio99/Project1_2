@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class MetaGraphics extends Canvas implements GraphicsInterface, Runnable
@@ -76,6 +77,11 @@ public class MetaGraphics extends Canvas implements GraphicsInterface, Runnable
                 this.scene.started = true;
             }
         }
+    }
+
+    @Override
+    public Semaphore getSemaphore() {
+        return null;
     }
 
     @Override

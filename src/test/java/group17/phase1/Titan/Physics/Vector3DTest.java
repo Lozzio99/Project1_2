@@ -20,6 +20,7 @@ class Vector3DTest {
     @Test
     @DisplayName("Mul")
     void Mul() {
+
     }
 
     @Test
@@ -61,6 +62,7 @@ class Vector3DTest {
     @Test
     @DisplayName("Dot")
     void Dot() {
+
     }
 
     @Test

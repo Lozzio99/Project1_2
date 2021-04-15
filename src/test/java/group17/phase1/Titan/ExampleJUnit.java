@@ -17,6 +17,12 @@ class ExampleJUnit
     @Test
     void demoTest() {
         assertEquals(1,1);
+        assertThrows(IllegalArgumentException.class, ()->dostuff(10));
+    }
+
+
+    public void dostuff(int x){
+        throw new IllegalArgumentException();
     }
 
     @Test

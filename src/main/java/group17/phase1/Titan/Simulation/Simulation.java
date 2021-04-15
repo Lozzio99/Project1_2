@@ -8,6 +8,8 @@ import group17.phase1.Titan.Physics.SolarSystem.ProbeSimulator;
 import group17.phase1.Titan.Physics.SolarSystem.SolarSystem;
 import group17.phase1.Titan.interfaces.*;
 
+import static group17.phase1.Titan.Config.stepSize;
+
 public class Simulation implements SimulationInterface
 {
     GraphicsInterface graphicsManager;
@@ -18,7 +20,6 @@ public class Simulation implements SimulationInterface
     ODEFunctionInterface functionInterface;
     private ProbeSimulator probe;
     static double t = 0;
-    public static double stepSize = 5e4;
 
     private static int CPU;
 
@@ -56,7 +57,8 @@ public class Simulation implements SimulationInterface
     }
 
     @Override
-    public void step(){
+    public void step()
+    {
         this.solverInterface.step(this.functionInterface,t,this.systemState, stepSize);
         t+= stepSize;
     }

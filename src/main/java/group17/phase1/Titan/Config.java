@@ -6,5 +6,6 @@ public class Config
     public static final int MAX_CPU = 5;
     public static final int MIN_CPU = 1;
     public static final boolean DEBUG = false;
+    public static double stepSize = 8e3;
 
 }

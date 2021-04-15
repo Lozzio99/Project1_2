@@ -25,6 +25,7 @@ public class Trajectories extends SimulationScene
     @Override
     public void paintComponent(Graphics graphics)
     {
+        System.out.println("painting");
         Graphics2D g = (Graphics2D) graphics;
         super.paintComponent(g);
         for (int i = 0; i< this.trajectories.length; i++){
