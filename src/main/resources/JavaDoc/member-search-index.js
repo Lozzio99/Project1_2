@@ -1,0 +1,1297 @@
+memberSearchIndex = [{
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "acquireData()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "add(Vector3dInterface)",
+    "u": "add(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "add(Vector3dInterface)",
+    "u": "add(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "addMouseControl(MouseInput)",
+    "u": "addMouseControl(group17.phase1.Titan.Graphics.MouseInput)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "StateInterface",
+    "l": "addMul(double, RateInterface)",
+    "u": "addMul(double,group17.phase1.Titan.Interfaces.RateInterface)"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SystemState",
+    "l": "addMul(double, RateInterface)",
+    "u": "addMul(double,group17.phase1.Titan.Interfaces.RateInterface)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "addMul(double, Vector3dInterface)",
+    "u": "addMul(double,group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "addMul(double, Vector3dInterface)",
+    "u": "addMul(double,group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "appendToOutput(String)",
+    "u": "appendToOutput(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "assist()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "Simulation",
+    "l": "assist()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite.SatellitesEnum",
+    "l": "ASTEROID"
+}, {"p": "group17.phase1.Titan.Graphics", "c": "MouseInput.ClickType", "l": "BackPage"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "BETA_SIMULATION"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "bottom"}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ODEFunctionInterface",
+    "l": "call(double, StateInterface)",
+    "u": "call(double,group17.phase1.Titan.Interfaces.StateInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "MaxCPUSolver",
+    "l": "call(double, StateInterface)",
+    "u": "call(double,group17.phase1.Titan.Interfaces.StateInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "CelestialBody()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "changeScene(Scene.SceneType)",
+    "u": "changeScene(group17.phase1.Titan.Graphics.Scenes.Scene.SceneType)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "GraphicsInterface",
+    "l": "changeScene(Scene.SceneType)",
+    "u": "changeScene(group17.phase1.Titan.Graphics.Scenes.Scene.SceneType)"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "Clock()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "clone()"
+}, {"p": "group17.phase1.Titan.Physics.Math", "c": "Vector3D", "l": "clone()"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "Config()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3DConverter",
+    "l": "convertPoint(Point3D)",
+    "u": "convertPoint(group17.phase1.Titan.Physics.Math.Point3D)"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "CPU_LEVEL"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "CPU_LEVEL2"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "CPU_LEVEL3"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "CPU_LEVEL4"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "Simulation",
+    "l": "create(int)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "cross(Vector3dInterface, Vector3dInterface)",
+    "u": "cross(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {"p": "group17.phase1.Titan.Physics.Math", "c": "EulerSolver", "l": "currTime"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "day"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "DEBUG"}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "deltaX"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "deltaY"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "DialogFrame()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "dist(Vector3dInterface)",
+    "u": "dist(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "dist(Vector3dInterface)",
+    "u": "dist(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "dist(Vector3dInterface, Vector3dInterface)",
+    "u": "dist(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "div(double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "div(double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "dot(Vector3dInterface, Vector3dInterface)",
+    "u": "dot(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {"p": "group17.phase1.Titan.Physics.Bodies", "c": "Planet.PlanetsEnum", "l": "EARTH"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "ENABLE_ASSIST"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "ENABLE_GRAPHICS"}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "EulerSolver",
+    "l": "endTime"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "euclidDist(Point3D)",
+    "u": "euclidDist(group17.phase1.Titan.Physics.Math.Point3D)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "euclidDist(Point3D, Point3D)",
+    "u": "euclidDist(group17.phase1.Titan.Physics.Math.Point3D,group17.phase1.Titan.Physics.Math.Point3D)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "EulerSolver",
+    "l": "EulerSolver()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "MaxCPUSolver",
+    "l": "evaluate(int)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput.ClickType",
+    "l": "ForwardPage"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "FPS"}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "fromVector()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "fromVector()"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "front"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "G"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "getBody(String)",
+    "u": "getBody(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "getBody(String)",
+    "u": "getBody(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "getButton()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "getCelestialBodies()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "getCelestialBodies()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "getClock()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "getClock()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "getColour()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getDateDD()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getDateMM()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getDateYYYY()"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "getDay()"}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "getDensity()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ODESolverInterface",
+    "l": "getFunction()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "EulerSolver",
+    "l": "getFunction()"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "getHour()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "getLaunchDay()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getLaunchVelocityX()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getLaunchVelocityY()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getLaunchVelocityZ()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getLaunchX()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getLaunchY()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getLaunchZ()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "getMASS()"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "getMinute()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "getMonth()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "SimulationScene",
+    "l": "getPlanetPositions()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "StateInterface",
+    "l": "getPositions()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SystemState",
+    "l": "getPositions()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getProbeMass()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "getRADIUS()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "RateInterface",
+    "l": "getRateOfChange()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "RateOfChange",
+    "l": "getRateOfChange()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3DConverter",
+    "l": "getScale()"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "getSecond()"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getTimeHH()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getTimeMin()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getTimeSS()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "getTimeStepSize()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "getVectorLocation()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "getVectorVelocity()"
+}, {"p": "group17.phase1.Titan.Graphics", "c": "MouseInput", "l": "getX()"}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "getX()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "getX()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "getXCoordinate()"
+}, {"p": "group17.phase1.Titan.Graphics", "c": "MouseInput", "l": "getY()"}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "getY()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "getY()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "getYCoordinate()"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "getYear()"}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "getZ()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "getZ()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "getZCoordinate()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "graphics()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "Simulation",
+    "l": "graphics()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "GraphicsManager()",
+    "u": "%3Cinit%3E()"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "hour"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "init()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "init()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "init()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "SimulationScene",
+    "l": "init()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "StartingScene",
+    "l": "init()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "GraphicsInterface",
+    "l": "init()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "initClock()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "initClock()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "initCPU(int)"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "initCPU(int)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "initDetector()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "initDetector()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "initGraphics(boolean, boolean)",
+    "u": "initGraphics(boolean,boolean)"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "initGraphics(boolean, boolean)",
+    "u": "initGraphics(boolean,boolean)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "initialX"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "initialY"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "initPlanets()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "initPlanets()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "initProbe()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "initProbe()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "initProperties()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet",
+    "l": "initProperties()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "ProbeSimulator",
+    "l": "initProperties()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite",
+    "l": "initProperties()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Star",
+    "l": "initProperties()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "initReport()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "initReport()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "initSystem()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "initSystem()"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "INSERT_PROBE"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "isScrollingDown()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "isScrollingUp()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "JUPITER"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "LAUNCH_DATE"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "launch()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "launch()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "GraphicsInterface",
+    "l": "launch()"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "left"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput.ClickType",
+    "l": "LeftClick"
+}, {"p": "group17.phase1.Titan", "c": "Main", "l": "Main()", "u": "%3Cinit%3E()"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Main",
+    "l": "main(String[])",
+    "u": "main(java.lang.String[])"
+}, {"p": "group17.phase1.Titan.Physics.Bodies", "c": "Planet.PlanetsEnum", "l": "MARS"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "MAX_CPU"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "MaxCPUSolver",
+    "l": "MaxCPUSolver()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "MERCURY"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "META_SIMULATION"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "MIN_CPU"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "minute"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "month"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite.SatellitesEnum",
+    "l": "MOON"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "mouse"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mouseClicked(MouseEvent)",
+    "u": "mouseClicked(java.awt.event.MouseEvent)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mouseDragged(MouseEvent)",
+    "u": "mouseDragged(java.awt.event.MouseEvent)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mouseEntered(MouseEvent)",
+    "u": "mouseEntered(java.awt.event.MouseEvent)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mouseExited(MouseEvent)",
+    "u": "mouseExited(java.awt.event.MouseEvent)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "MouseInput()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mouseMoved(MouseEvent)",
+    "u": "mouseMoved(java.awt.event.MouseEvent)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mousePressed(MouseEvent)",
+    "u": "mousePressed(java.awt.event.MouseEvent)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mouseReleased(MouseEvent)",
+    "u": "mouseReleased(java.awt.event.MouseEvent)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "mouseSensitivity"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "mouseWheelMoved(MouseWheelEvent)",
+    "u": "mouseWheelMoved(java.awt.event.MouseWheelEvent)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "mul(double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "mul(double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "NEPTUNE"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "norm()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "norm()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "normalize(Vector3dInterface)",
+    "u": "normalize(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "origin"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "paintComponent(Graphics)",
+    "u": "paintComponent(java.awt.Graphics)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "SimulationScene",
+    "l": "paintComponent(Graphics)",
+    "u": "paintComponent(java.awt.Graphics)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "StartingScene",
+    "l": "paintComponent(Graphics)",
+    "u": "paintComponent(java.awt.Graphics)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet",
+    "l": "Planet(Planet.PlanetsEnum)",
+    "u": "%3Cinit%3E(group17.phase1.Titan.Physics.Bodies.Planet.PlanetsEnum)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "Point3D(double, double, double)",
+    "u": "%3Cinit%3E(double,double,double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3DConverter",
+    "l": "Point3DConverter()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "ProbeSimulator",
+    "l": "ProbeSimulator()",
+    "u": "%3Cinit%3E()"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "radiusMag"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "RateOfChange",
+    "l": "RateOfChange()",
+    "u": "%3Cinit%3E()"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "rear"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Config",
+    "l": "REPORT"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "reset()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "reset()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "reset()"
+}, {"p": "group17.phase1.Titan.System", "c": "SolarSystem", "l": "reset()"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "resetButton()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "resetMouse()"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput",
+    "l": "resetScroll()"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "right"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput.ClickType",
+    "l": "RightClick"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3DConverter",
+    "l": "rotateAxisX(Point3D, boolean, double)",
+    "u": "rotateAxisX(group17.phase1.Titan.Physics.Math.Point3D,boolean,double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3DConverter",
+    "l": "rotateAxisY(Point3D, boolean, double)",
+    "u": "rotateAxisY(group17.phase1.Titan.Physics.Math.Point3D,boolean,double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3DConverter",
+    "l": "rotateAxisZ(Point3D, boolean, double)",
+    "u": "rotateAxisZ(group17.phase1.Titan.Physics.Math.Point3D,boolean,double)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "rotateOnAxisY(boolean, double)",
+    "u": "rotateOnAxisY(boolean,double)"
+}, {"p": "group17.phase1.Titan.Graphics", "c": "DialogFrame", "l": "run()"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "run()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite",
+    "l": "Satellite(Satellite.SatellitesEnum)",
+    "u": "%3Cinit%3E(group17.phase1.Titan.Physics.Bodies.Satellite.SatellitesEnum)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "SATURN"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "scale"}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "scale(double)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "Scene()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "GraphicsInterface",
+    "l": "screen"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput.ClickType",
+    "l": "ScrollClick"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "second"}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "MaxCPUSolver",
+    "l": "set(int, Vector3dInterface)",
+    "u": "set(int,group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "setColour(Color)",
+    "u": "setColour(java.awt.Color)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "MaxCPUSolver",
+    "l": "setCPULevel(int)"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "setCurrentDate(int, int, int, int, int, int)",
+    "u": "setCurrentDate(int,int,int,int,int,int)"
+}, {"p": "group17.phase1.Titan.Graphics", "c": "DialogFrame", "l": "setDate()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "setDay(int)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setDdField(String)",
+    "u": "setDdField(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "setDENSITY(double)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setHhField(String)",
+    "u": "setHhField(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "setHints(Graphics2D)",
+    "u": "setHints(java.awt.Graphics2D)"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "setHour(int)"}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "setMASS(double)"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "setMinute(int)"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setMinuteField(String)",
+    "u": "setMinuteField(java.lang.String)"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "setMonth(int)"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setMonthField(String)",
+    "u": "setMonthField(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setOutput(String)",
+    "u": "setOutput(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setProbeField(String)",
+    "u": "setProbeField(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "setRADIUS(double)"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "setSecond(int)"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setSsField(String)",
+    "u": "setSsField(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setStepField(String)",
+    "u": "setStepField(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "setVectorLocation(Vector3dInterface)",
+    "u": "setVectorLocation(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "setVectorVelocity(Vector3dInterface)",
+    "u": "setVectorVelocity(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "setX(double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "setX(double)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "setY(double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "setY(double)"
+}, {"p": "group17.phase1.Titan.System", "c": "Clock", "l": "setYear(int)"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "setYyField(String)",
+    "u": "setYyField(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "setZ(double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "setZ(double)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "DialogFrame",
+    "l": "showAssistParameters()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ODEFunctionInterface",
+    "l": "shutDown()"
+}, {"p": "group17.phase1.Titan.Physics.Math", "c": "MaxCPUSolver", "l": "shutDown()"}, {
+    "p": "group17.phase1.Titan",
+    "c": "Main",
+    "l": "simulation"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "SIMULATION_LEVEL"}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene.SceneType",
+    "l": "SIMULATION_SCENE"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "Simulation",
+    "l": "Simulation()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "SimulationScene",
+    "l": "SimulationScene()",
+    "u": "%3Cinit%3E()"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "SOLAR_SYSTEM_SIMULATION"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "SolarSystem()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "SolarSystemSimulation()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ODESolverInterface",
+    "l": "solve(ODEFunctionInterface, StateInterface, double, double)",
+    "u": "solve(group17.phase1.Titan.Interfaces.ODEFunctionInterface,group17.phase1.Titan.Interfaces.StateInterface,double,double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "EulerSolver",
+    "l": "solve(ODEFunctionInterface, StateInterface, double, double)",
+    "u": "solve(group17.phase1.Titan.Interfaces.ODEFunctionInterface,group17.phase1.Titan.Interfaces.StateInterface,double,double)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ODESolverInterface",
+    "l": "solve(ODEFunctionInterface, StateInterface, double[])",
+    "u": "solve(group17.phase1.Titan.Interfaces.ODEFunctionInterface,group17.phase1.Titan.Interfaces.StateInterface,double[])"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "EulerSolver",
+    "l": "solve(ODEFunctionInterface, StateInterface, double[])",
+    "u": "solve(group17.phase1.Titan.Interfaces.ODEFunctionInterface,group17.phase1.Titan.Interfaces.StateInterface,double[])"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "solver()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "solver()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Star",
+    "l": "Star()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "start()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "start()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "start()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "start()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene.SceneType",
+    "l": "STARTING_SCENE"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "StartingScene",
+    "l": "StartingScene()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "StateInterface",
+    "l": "state0()"
+}, {"p": "group17.phase1.Titan.System", "c": "RateOfChange", "l": "state0()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SystemState",
+    "l": "state0()"
+}, {"p": "group17.phase1.Titan", "c": "Config", "l": "STEP_SIZE"}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "step()"
+}, {"p": "group17.phase1.Titan.System", "c": "SolarSystem", "l": "step()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "step(double)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ODESolverInterface",
+    "l": "step(ODEFunctionInterface, double, StateInterface, double)",
+    "u": "step(group17.phase1.Titan.Interfaces.ODEFunctionInterface,double,group17.phase1.Titan.Interfaces.StateInterface,double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "EulerSolver",
+    "l": "step(ODEFunctionInterface, double, StateInterface, double)",
+    "u": "step(group17.phase1.Titan.Interfaces.ODEFunctionInterface,double,group17.phase1.Titan.Interfaces.StateInterface,double)"
+}, {"p": "group17.phase1.Titan.Graphics", "c": "DialogFrame", "l": "stop()"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "stop()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "GraphicsInterface",
+    "l": "stop()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "stop()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "stop()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "SolarSystemSimulation",
+    "l": "stop()"
+}, {"p": "group17.phase1.Titan.System", "c": "SolarSystem", "l": "stop()"}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "sub(Vector3dInterface)",
+    "u": "sub(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "sub(Vector3dInterface)",
+    "u": "sub(group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SimulationInterface",
+    "l": "system()"
+}, {
+    "p": "group17.phase1.Titan.Simulation",
+    "c": "Simulation",
+    "l": "system()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "systemRateOfChange()"
+}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SolarSystem",
+    "l": "systemRateOfChange()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "systemState()"
+}, {"p": "group17.phase1.Titan.System", "c": "SolarSystem", "l": "systemState()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SystemState",
+    "l": "SystemState()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite.SatellitesEnum",
+    "l": "TITAN"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "top"}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "SimulationScene",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "StartingScene",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "StateInterface",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "SystemInterface",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "Vector3dInterface",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "CelestialBody",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "ProbeSimulator",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Star",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "toString()"
+}, {"p": "group17.phase1.Titan.Simulation", "c": "Simulation", "l": "toString()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "toString()"
+}, {"p": "group17.phase1.Titan.System", "c": "SolarSystem", "l": "toString()"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "SystemState",
+    "l": "toString()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "totalXDif"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "totalYDif"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene.SceneType",
+    "l": "TRAJECTORIES"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ProbeSimulatorInterface",
+    "l": "trajectory(Vector3dInterface, Vector3dInterface, double, double)",
+    "u": "trajectory(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface,double,double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "ProbeSimulator",
+    "l": "trajectory(Vector3dInterface, Vector3dInterface, double, double)",
+    "u": "trajectory(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface,double,double)"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "ProbeSimulatorInterface",
+    "l": "trajectory(Vector3dInterface, Vector3dInterface, double[])",
+    "u": "trajectory(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface,double[])"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "ProbeSimulator",
+    "l": "trajectory(Vector3dInterface, Vector3dInterface, double[])",
+    "u": "trajectory(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface,double[])"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "unitVectorDistance(Vector3dInterface, Vector3dInterface)",
+    "u": "unitVectorDistance(group17.phase1.Titan.Interfaces.Vector3dInterface,group17.phase1.Titan.Interfaces.Vector3dInterface)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput.ClickType",
+    "l": "Unknown"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "GraphicsManager",
+    "l": "update()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene",
+    "l": "update()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "SimulationScene",
+    "l": "update()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "StartingScene",
+    "l": "update()"
+}, {
+    "p": "group17.phase1.Titan.Interfaces",
+    "c": "GraphicsInterface",
+    "l": "update()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "SimulationScene",
+    "l": "updateBodies()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "URANUS"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput.ClickType",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene.SceneType",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite.SatellitesEnum",
+    "l": "valueOf(String)",
+    "u": "valueOf(java.lang.String)"
+}, {
+    "p": "group17.phase1.Titan.Graphics",
+    "c": "MouseInput.ClickType",
+    "l": "values()"
+}, {
+    "p": "group17.phase1.Titan.Graphics.Scenes",
+    "c": "Scene.SceneType",
+    "l": "values()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "values()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Satellite.SatellitesEnum",
+    "l": "values()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "Vector3D()",
+    "u": "%3Cinit%3E()"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "Vector3D(double, double, double)",
+    "u": "%3Cinit%3E(double,double,double)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "Vector3D(Point3D)",
+    "u": "%3Cinit%3E(group17.phase1.Titan.Physics.Math.Point3D)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Vector3D",
+    "l": "Vector3D(Point3D, Point3D)",
+    "u": "%3Cinit%3E(group17.phase1.Titan.Physics.Math.Point3D,group17.phase1.Titan.Physics.Math.Point3D)"
+}, {
+    "p": "group17.phase1.Titan.Physics.Bodies",
+    "c": "Planet.PlanetsEnum",
+    "l": "VENUS"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "x"}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "x"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "xDif"}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "xOffset"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "y"}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "y"
+}, {"p": "group17.phase1.Titan.Graphics.Scenes", "c": "Scene", "l": "yDif"}, {
+    "p": "group17.phase1.Titan.System",
+    "c": "Clock",
+    "l": "year"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "yOffset"
+}, {"p": "group17.phase1.Titan.Physics.Math", "c": "Point3D", "l": "z"}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3D",
+    "l": "zOffset"
+}, {
+    "p": "group17.phase1.Titan.Physics.Math",
+    "c": "Point3DConverter",
+    "l": "zoomIn()"
+}, {"p": "group17.phase1.Titan.Physics.Math", "c": "Point3DConverter", "l": "zoomOut()"}];
+updateSearchResults();

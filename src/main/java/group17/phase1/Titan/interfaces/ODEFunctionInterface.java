@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package group17.phase1.Titan.interfaces;
+package group17.phase1.Titan.Interfaces;
 
 public interface ODEFunctionInterface
 {
@@ -27,4 +27,9 @@ public interface ODEFunctionInterface
 
     RateInterface call(double t, StateInterface y);
 
+
+    /**
+     * For Higher cpu usages, shuts down all waiting or busy threads
+     */
+    void shutDown();
 }

@@ -1,9 +1,8 @@
 package group17.phase1.Titan.Graphics.Scenes;
 
-import group17.phase1.Titan.Graphics.Geometry.Point3D;
-import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
-import group17.phase1.Titan.Graphics.GraphicsManager;
-import group17.phase1.Titan.Graphics.MouseInput;
+
+import group17.phase1.Titan.Physics.Math.Point3D;
+import group17.phase1.Titan.Physics.Math.Point3DConverter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,37 +12,35 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public abstract class Scene extends JPanel
-{
-    public MouseInput mouse;
+import static group17.phase1.Titan.Interfaces.GraphicsInterface.screen;
 
-    protected static int initialX, initialY,x,y,xDif,yDif,deltaX,deltaY,totalXDif,totalYDif;
+public abstract class Scene extends JPanel {
+    private final static int UNIT_SIZE = 1410;//*(int) scale;
+    public static MouseInput mouse;
     protected final static double mouseSensitivity = 16;
-    static double scale = 3e8;
-    double radiusMag = 1e2;
-    private final static int UNIT_SIZE = GraphicsManager.screen.width ;//*(int) scale;
+    protected static int initialX, initialY, x, y, xDif, yDif, deltaX, deltaY, totalXDif, totalYDif;
+    protected static double scale = 3e8;
+    protected double radiusMag = 1e2;
     private BufferedImage image;
     private Graphics2D g;
 
 
-    protected Point3D left = new Point3D(-UNIT_SIZE,0,0),
-            right = new Point3D(UNIT_SIZE,0,0),
-            top = new Point3D(0,UNIT_SIZE,0),
-            bottom = new Point3D(0,-UNIT_SIZE,0),
-            front = new Point3D(0,0,UNIT_SIZE),
-            rear = new Point3D(0,0,-UNIT_SIZE);
+    protected Point3D left = new Point3D(-UNIT_SIZE, 0, 0),
+            right = new Point3D(UNIT_SIZE, 0, 0),
+            top = new Point3D(0, UNIT_SIZE, 0),
+            bottom = new Point3D(0, -UNIT_SIZE, 0),
+            front = new Point3D(0, 0, UNIT_SIZE),
+            rear = new Point3D(0, 0, -UNIT_SIZE);
 
-
-    public void paintComponent(Graphics graphics){
+    public void paintComponent(Graphics graphics) {
 
         //super.paintComponent(graphics);
         g = (Graphics2D) graphics;
         if (image == null) {
             create();
             setHints(g);
-        }
-        else {
-            g.drawImage(image,0,0,GraphicsManager.screen.width,GraphicsManager.screen.height,0,0,image.getWidth(),image.getHeight(),new Color(0,0,0, 111),null);
+        } else {
+            g.drawImage(image, 0, 0, screen.width, screen.height, 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
         }
 
 
@@ -76,29 +73,25 @@ public abstract class Scene extends JPanel
 
     public abstract void init();
 
-    public void update()
-    {
-        x = this.mouse.getX();
-        y = this.mouse.getY();
+    public void update() {
+        x = mouse.getX();
+        y = mouse.getY();
         deltaX = deltaY = 0;
 
-        if(this.mouse.getButton() == MouseInput.ClickType.LeftClick) {
+        if (mouse.getButton() == MouseInput.ClickType.LeftClick) {
             deltaX = xDif = x - initialX;
-            this.rotateOnAxisY(false,xDif/mouseSensitivity);
+            this.rotateOnAxisY(false, xDif / mouseSensitivity);
             totalXDif += xDif;
-        }
-
-        else if(this.mouse.getButton() == MouseInput.ClickType.RightClick) {
+        } else if (mouse.getButton() == MouseInput.ClickType.RightClick) {
             deltaY = yDif = y - initialY;
-            this.rotateOnAxisX(false,yDif/mouseSensitivity);
+            this.rotateOnAxisX(false, yDif / mouseSensitivity);
             totalYDif += yDif;
         }
 
 
-        if(this.mouse.isScrollingUp()) {
+        if (mouse.isScrollingUp()) {
             Point3DConverter.zoomIn();
-        }
-        else if(this.mouse.isScrollingDown()) {
+        } else if (mouse.isScrollingDown()) {
             Point3DConverter.zoomOut();
         }
 
@@ -108,11 +101,11 @@ public abstract class Scene extends JPanel
     }
 
     public void addMouseControl(MouseInput mouse){
-        this.mouse = mouse;
+        Scene.mouse = mouse;
     }
 
     public void resetMouse(){
-        this.mouse.resetScroll();
+        mouse.resetScroll();
         initialX = x;
         initialY = y;
     }

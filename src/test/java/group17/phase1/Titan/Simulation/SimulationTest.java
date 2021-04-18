@@ -6,33 +6,8 @@ import org.junit.jupiter.api.Test;
 class SimulationTest {
 
     @Test
-    @DisplayName("Init")
-    void Init() {
-    }
-
-    @Test
-    @DisplayName("InitGraphics")
-    void InitGraphics() {
-    }
-
-    @Test
-    @DisplayName("Reset")
-    void Reset() {
-    }
-
-    @Test
-    @DisplayName("Step")
-    void Step() {
-    }
-
-    @Test
-    @DisplayName("Start")
-    void Start() {
-    }
-
-    @Test
-    @DisplayName("SolarSystem")
-    void SolarSystem() {
+    @DisplayName("Create")
+    void Create() {
     }
 
     @Test
@@ -41,28 +16,13 @@ class SimulationTest {
     }
 
     @Test
-    @DisplayName("SystemState")
-    void SystemState() {
+    @DisplayName("Assist")
+    void Assist() {
     }
 
     @Test
-    @DisplayName("RateOfChange")
-    void RateOfChange() {
-    }
-
-    @Test
-    @DisplayName("GetBody")
-    void GetBody() {
-    }
-
-    @Test
-    @DisplayName("SetStepSize")
-    void SetStepSize() {
-    }
-
-    @Test
-    @DisplayName("GetStepSize")
-    void GetStepSize() {
+    @DisplayName("System")
+    void System() {
     }
 
     @Test

@@ -8,13 +8,6 @@ class DialogFrameTest {
     @Test
     @DisplayName("Init")
     void Init() {
-
-    }
-
-    @Test
-    @DisplayName("IsStopped")
-    void IsStopped() {
-
     }
 
     @Test
@@ -30,6 +23,21 @@ class DialogFrameTest {
     @Test
     @DisplayName("AcquireData")
     void AcquireData() {
+    }
+
+    @Test
+    @DisplayName("Launch")
+    void Launch() {
+    }
+
+    @Test
+    @DisplayName("Stop")
+    void Stop() {
+    }
+
+    @Test
+    @DisplayName("Run")
+    void Run() {
     }
 
     @Test
@@ -118,8 +126,8 @@ class DialogFrameTest {
     }
 
     @Test
-    @DisplayName("SetMmField")
-    void SetMmField() {
+    @DisplayName("SetMonthField")
+    void SetMonthField() {
     }
 
     @Test
@@ -133,8 +141,8 @@ class DialogFrameTest {
     }
 
     @Test
-    @DisplayName("SetmField")
-    void SetmField() {
+    @DisplayName("SetMinuteField")
+    void SetMinuteField() {
     }
 
     @Test

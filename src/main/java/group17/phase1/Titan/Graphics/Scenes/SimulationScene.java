@@ -1,17 +1,20 @@
 package group17.phase1.Titan.Graphics.Scenes;
 
-import group17.phase1.Titan.Graphics.Geometry.Point3D;
-import group17.phase1.Titan.Graphics.Geometry.Point3DConverter;
+
 import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Physics.Math.Point3D;
+import group17.phase1.Titan.Physics.Math.Point3DConverter;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.util.Arrays;
 
 public class SimulationScene extends Scene
 {
-    Point3D [] planetsPositions;
+    Point3D[] planetsPositions;
     double[] radius;
-    Color[] colors;
+    Bag[] trajectories;
 
 
     @Override
@@ -19,59 +22,107 @@ public class SimulationScene extends Scene
     {
         Graphics2D g = (Graphics2D) graphics;
         super.paintComponent(g);
-        for (int i = 0; i< this.planetsPositions.length; i++)
-        {
+        for (int i = 0; i < this.planetsPositions.length; i++) {
             Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);
-            g.setColor(this.colors[i]);
-            g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
             g.setColor(Color.WHITE);
             g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-            g.drawString(Main.simulation.solarSystem().getCelestialBodies().get(i).toString(),p.x,p.y);
+            g.drawString(Main.simulation.system().getCelestialBodies().get(i).toString(), p.x, p.y);
+            g.setColor(Main.simulation.system().getCelestialBodies().get(i).getColour());
+            g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
+            for (int k = this.trajectories[i].insert; k < this.trajectories[i].getTrajectories().length - 1; k++) {
+                if (this.trajectories[i].getTrajectories()[k + 1] == null)
+                    break;
+                g.draw(new Line2D.Double(
+                        Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k]),
+                        Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k + 1])));
+            }
+            for (int k = 0; k < this.trajectories[i].insert - 1; k++) {
+                if (this.trajectories[i].getTrajectories()[k + 1] == null)
+                    break;
+                g.draw(new Line2D.Double(
+                        Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k]),
+                        Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k + 1])));
+            }
         }
     }
 
     @Override
-    public void init()
-    {
-        this.planetsPositions = new Point3D[Main.simulation.solarSystem().getCelestialBodies().size()];
-        this.radius = new double[Main.simulation.solarSystem().getCelestialBodies().size()];
-        this.colors = new Color[this.radius.length];
-        for (int i = 0; i< this.planetsPositions.length; i++)
-        {
-            this.planetsPositions[i] = Main.simulation.systemState().getPositions().get(i).fromVector();
+    public void init() {
+        this.planetsPositions = new Point3D[Main.simulation.system().getCelestialBodies().size()];
+        this.radius = new double[Main.simulation.system().getCelestialBodies().size()];
+        this.trajectories = new Bag[this.planetsPositions.length];
+        for (int i = 0; i < this.planetsPositions.length; i++) {
+            this.trajectories[i] = new Bag();
+            this.planetsPositions[i] = Main.simulation.system().systemState().getPositions().get(i).fromVector();
             this.planetsPositions[i].scale(scale);
-            radius[i] = (Main.simulation.solarSystem().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale()* radiusMag;
-            this.colors[i] = Main.simulation.solarSystem().getCelestialBodies().get(i).getColour();
+            radius[i] = (Main.simulation.system().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;
         }
     }
 
-    public Point3D[] getPlanetPositions(){
+    public Point3D[] getPlanetPositions() {
         return this.planetsPositions;
     }
 
-    public void update()
-    {
+    public void update() {
         super.update();
         this.updateBodies();
+        super.resetMouse();
     }
 
-    public void updateBodies()
-    {
-        for (int i = 0; i< this.planetsPositions.length; i++)
-        {
-            this.planetsPositions[i] = Main.simulation.systemState().getPositions().get(i).fromVector();
+    public void updateBodies() {
+        for (int i = 0; i < this.planetsPositions.length; i++) {
+            this.planetsPositions[i] = Main.simulation.system().systemState().getPositions().get(i).fromVector();
             this.planetsPositions[i].scale(scale);
-            radius[i] = (Main.simulation.solarSystem().getCelestialBodies().get(i).getRADIUS()/scale) * Point3DConverter.getScale()* radiusMag;
+            radius[i] = (Main.simulation.system().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;
             Point3DConverter.rotateAxisY(this.planetsPositions[i], false, totalXDif / mouseSensitivity);
             Point3DConverter.rotateAxisX(this.planetsPositions[i], false, totalYDif / mouseSensitivity);
+            this.trajectories[i].add(this.planetsPositions[i]);
+            for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
+                if (this.trajectories[i].getTrajectories()[k] == null)
+                    break;
+                //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
+                Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, deltaX / mouseSensitivity);
+                Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, deltaY / mouseSensitivity);
+            }
         }
 
     }
 
-    Ellipse2D.Double planetShape(Point3D position, double radius)
-    {
+    Ellipse2D.Double planetShape(Point3D position, double radius) {
         Point p = Point3DConverter.convertPoint(position);
         return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
     }
 
+    @Override
+    public String toString() {
+        return "SimulationScene{" +
+                "planetsPositions=" + Arrays.toString(planetsPositions) +
+                '}';
+    }
+
+
+    class Bag {
+        Point3D[] trajectories;
+        int insert;
+        boolean loop;
+
+        Bag() {
+            this.trajectories = new Point3D[1000];
+            this.insert = 0;
+            this.loop = false;
+        }
+
+        void add(Point3D p) {
+            this.trajectories[this.insert] = p;
+            this.insert++;
+            if (this.insert == this.trajectories.length) {
+                this.insert = 0;
+            }
+        }
+
+        Point3D[] getTrajectories() {
+            return this.trajectories;
+        }
+
+    }
 }

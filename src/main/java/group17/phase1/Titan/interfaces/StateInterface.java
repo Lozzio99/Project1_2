@@ -1,4 +1,4 @@
-package group17.phase1.Titan.interfaces;
+package group17.phase1.Titan.Interfaces;
 /*
  * @author Pieter Collins, Christof Seiler, Katerina Stankova, Nico Roos, Katharina Schueller
  * @version 0.99.0
@@ -16,6 +16,7 @@ import java.util.List;
 public interface StateInterface
 {
 
+    StateInterface state0();
 
     List<Vector3dInterface> getPositions();
 

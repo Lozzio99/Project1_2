@@ -5,7 +5,9 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package group17.phase1.Titan.interfaces;
+package group17.phase1.Titan.Interfaces;
+
+import group17.phase1.Titan.Physics.Math.EulerSolver;
 
 /*
  * A class for solving a general differential equation dy/dt = f(t,y)
@@ -46,4 +48,16 @@ public interface ODESolverInterface {
      * @return  the new state after taking one step
      */
     StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h);
+
+    /**
+     * For Higher CPU usages, should return MaxCPUSolver object
+     * this is used to evaluate single bodies by individual threads,
+     * therefore will be consequently implemented in different ways
+     *
+     * @return the function used for calculations
+     * @see group17.phase1.Titan.Physics.Math.MaxCPUSolver
+     * @see EulerSolver#getFunction()
+     * @see EulerSolver#singleCoreF
+     */
+    ODEFunctionInterface getFunction();
 }

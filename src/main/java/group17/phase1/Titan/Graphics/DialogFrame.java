@@ -7,8 +7,8 @@
 
 package group17.phase1.Titan.Graphics;
 
+
 import group17.phase1.Titan.Graphics.Scenes.Scene;
-import group17.phase1.Titan.Main;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -16,20 +16,21 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
+import static group17.phase1.Titan.Config.*;
 import static group17.phase1.Titan.Main.simulation;
-import static group17.phase1.Titan.Physics.Clock.*;
-
-
 
 /**
  * DialogFrame
  */
-public class DialogFrame extends JPanel
-{
+public class DialogFrame extends JPanel implements Runnable {
 
+
+    private static final AtomicBoolean stopped = new AtomicBoolean(true);
     private final JFrame frame;
-    private final JTextArea textArea = new JTextArea(10,30);
+    private final JTextArea textArea = new JTextArea(10, 30);
     private final JTextField stSizeField = new JTextField();
     private final JTextField massSizeField = new JTextField();
 
@@ -44,39 +45,36 @@ public class DialogFrame extends JPanel
     private final JTextField hhField = new JTextField();
     private final JTextField mField = new JTextField();
     private final JTextField ssField = new JTextField();
-
     private final JSlider xVelSlider = new JSlider(-30000, 30000);
     private final JSlider yVelSlider = new JSlider(-30000, 30000);
     private final JSlider zVelSlider = new JSlider(-30000, 30000);
 
-    private static boolean stopped = true;
 
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
+    private final AtomicReference<Thread> assist = new AtomicReference<>();
+    private boolean running;
 
 
-    public DialogFrame()
-    {
+    public DialogFrame() {
         this.frame = new JFrame();
         this.frame.setSize(700, 300);
         this.frame.setTitle("Dialog window");
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.init();
-        this.frame.setVisible(true);
-        this.frame.setFocusable(true);
     }
 
     /**
      * Initialises the frame.
      */
-    public void init()
-    {
-        JPanel wrapperPanel  = this;
+    public void init() {
+        JPanel wrapperPanel = this;
         wrapperPanel.setLayout(new GridLayout(1, 2));
         wrapperPanel.add(createSetUpPanel());
         JScrollPane scrollPane = new JScrollPane(textArea);
         wrapperPanel.add(scrollPane);
         this.frame.add(wrapperPanel);
+        this.frame.setVisible(true);
+        this.frame.setFocusable(true);
     }
 
     /**
@@ -159,144 +157,144 @@ public class DialogFrame extends JPanel
         return inputPanel;
     }
 
-    public boolean isStopped() {
-        return stopped;
+
+    public void setDate() {
+        this.setSsField("" + simulation.system().getClock().second);
+        this.setMinuteField("" + simulation.system().getClock().minute);
+        this.setHhField("" + simulation.system().getClock().hour);
+        this.setDdField("" + simulation.system().getClock().day);
+        this.setMonthField("" + simulation.system().getClock().month);
+        this.setYyField("" + simulation.system().getClock().year);
     }
 
-
-    public void setDate(int s, int m, int h, int d, int mo, int ye)
-    {
-        this.setSsField(""+s);
-        this.setmField(""+m);
-        this.setHhField(""+h);
-        this.setDdField(""+d);
-        this.setMmField(""+mo);
-        this.setYyField(""+ye);
-    }
-
-    public void showAssistParameters()
-    {
-        this.setProbeField(""+simulation.getBody("PROBE").getMASS());
-        this.setStepField(""+simulation.getStepSize());
-
-        this.setDdField(""+ dd);
-        this.setMmField(""+mm);
-        this.setYyField(""+yy);
-        this.setHhField(""+hour);
-        this.setmField(""+min);
-        this.setSsField(""+sec);
-
-        lXCoordField.setText(""+ Main.simulation.getBody("PROBE").getVectorLocation().getX());
-        lYCoordField.setText(""+Main.simulation.getBody("PROBE").getVectorLocation().getY());
-        lZCoordField.setText(""+Main.simulation.getBody("PROBE").getVectorLocation().getZ());
-
-        String ready = ("READY TO START\n") +
-        ("Those are the starting coordinates : ")+
-        (simulation.solarSystem().getCelestialBodies().get(11).getVectorLocation().toString())+
-        ("\nThis is the starting velocity:\n")+
-        (simulation.solarSystem().getCelestialBodies().get(11).getVectorVelocity().toString())+
-        ("\nIf you want to change the starting velocity\n" +
-                "   > you can increase / decrease the sliders\n")+
-        ("If you want to change the starting position\n" +
-                "   > you can plug in the desired values")+
-        ("If you want to change step size or probe mass\n" +
-                "   > you can plug in the desired value")+
-        ("If you trust our shoot then just START SIMULATION :=)");
-
-        this.setOutput(ready);
-    }
+    public void showAssistParameters() {
 
 
-    public void acquireData()
-    {
-        if (getLaunchVelocityX()!= 0)
-            simulation.getBody("PROBE").getVectorVelocity().setX(getLaunchVelocityX());
-        if (getLaunchVelocityY()!= 0)
-            simulation.getBody("PROBE").getVectorVelocity().setY(getLaunchVelocityY());
-        if (getLaunchVelocityZ()!= 0)
-            simulation.getBody("PROBE").getVectorVelocity().setZ(getLaunchVelocityZ());
-        simulation.setStepSize(getTimeStepSize()) ;
-        simulation.getBody("PROBE").setMASS(getProbeMass());
-    }
+        this.setStepField("" + STEP_SIZE);
 
 
+        this.setDate();
 
+        if (INSERT_PROBE) {
 
-    /**
-     * Nested class representing the update label on the right side of the dialog frame.
-     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
-     * @version 1.0
-     * @since	19/02/2021
-     */
-    class updateLabel implements ChangeListener
-    {
-        private JLabel jLabel = new JLabel();
-        private JSlider jSlider = new JSlider();
-        public updateLabel(JSlider jSlider, JLabel jLabel) {
-            this.jLabel = jLabel;
-            this.jSlider = jSlider;
+            this.setProbeField("" + simulation.system().getCelestialBodies().get(11).getMASS());
+            lXCoordField.setText("" + simulation.system().getCelestialBodies().get(11).getVectorLocation().getX());
+            lYCoordField.setText("" + simulation.system().getCelestialBodies().get(11).getVectorLocation().getY());
+            lZCoordField.setText("" + simulation.system().getCelestialBodies().get(11).getVectorLocation().getZ());
+            String ready = ("READY TO START\n") +
+                    ("Those are the starting coordinates : ") +
+                    (simulation.system().getCelestialBodies().get(11).getVectorLocation().toString()) +
+                    ("\nThis is the starting velocity:\n") +
+                    (simulation.system().getCelestialBodies().get(11).getVectorVelocity().toString()) +
+                    ("\nIf you want to change the starting velocity\n" +
+                            "   > you can increase / decrease the sliders\n") +
+                    ("If you want to change the starting position\n" +
+                            "   > you can plug in the desired values") +
+                    ("If you want to change step size or probe mass\n" +
+                            "   > you can plug in the desired value") +
+                    ("If you trust our shoot then just START SIMULATION :=)");
+            ready += "\n" + simulation.toString() + "\n";
+            this.setOutput(ready);
         }
-
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            jLabel.setText(String.valueOf(velocitySliderW*jSlider.getValue()));
-        }
-
     }
 
-    /**
-     * Nested class representing the ActionListener, when the clear button is clicked.
-     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
-     * @version 1.0
-     * @since	19/02/2021
-     */
 
-    class clearBtnListener implements ActionListener {
+    public void acquireData() {
+        STEP_SIZE = getTimeStepSize();
 
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {
-            stopped= true;
-            simulation.graphics().changeScene(Scene.SceneType.STARTING_SCENE);
-            simulation.reset();
-            System.out.println("Reset simulation...");
-            //System.out.println(simulation.toString());
+        if (INSERT_PROBE) {
+            if (getLaunchVelocityX() != 0)
+                simulation.system().getCelestialBodies().get(11).getVectorVelocity().setX(getLaunchVelocityX());
+            if (getLaunchVelocityY() != 0)
+                simulation.system().getCelestialBodies().get(11).getVectorVelocity().setY(getLaunchVelocityY());
+            if (getLaunchVelocityZ() != 0)
+                simulation.system().getCelestialBodies().get(11).getVectorVelocity().setZ(getLaunchVelocityZ());
+            simulation.system().getCelestialBodies().get(11).setMASS(getProbeMass());
         }
-
     }
-    /**
-     * Nested class for the ActionListener.
-     * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
-     * @version 1.0
-     * @since	19/02/2021
-     */
-    class startBtnListener implements ActionListener {
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // TODO Auto-generated method stub
-            stopped= false;
-            acquireData();
-            simulation.graphics().changeScene(Scene.SceneType.TRAJECTORIES);
-            System.out.println("Commence simulation...");
+    public void launch() {
+        this.assist.set(new Thread(this, "Dialog Frame"));
+        this.assist.get().setDaemon(true);
+        this.running = true;
+        this.assist.get().start();
+    }
+
+    public void stop() {
+        try {
+            this.assist.get().join(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-
     }
+
+    @Override
+    public void run() {
+        long lastTime = System.nanoTime();
+        long timer = System.currentTimeMillis();
+        final double ns = 1000000000.0 / FPS;
+        double delta = 0;
+
+        while (this.running) {
+            long now = System.nanoTime();
+            delta += (now - lastTime) / ns;
+            lastTime = now;
+            while (delta >= 1) {
+
+                if (stopped.get()) {
+                    this.showAssistParameters();
+                    while (stopped.get()) {
+
+                    }
+                    this.acquireData();
+                } else {
+
+                    simulation.system().step();
+                    simulation.system().getClock().step(STEP_SIZE);
+                    if (System.currentTimeMillis() - timer > 1000) {
+                        this.setOutput(simulation.toString());
+                        this.setDate();
+                        timer += 1000;
+                    }
+                }
+                delta--;
+            }
+
+        }
+    }
+
+    public void setMonthField(String mmField) {
+        this.mmField.setText(mmField);
+    }
+
+    public void setMinuteField(String mField) {
+        this.mField.setText(mField);
+    }
+
     /**
      * Method to append text to output.
+     *
      * @param message
      */
-    public void appendToOutput(String message)
-    {
+    public void appendToOutput(String message) {
         textArea.append(message + "\n");
     }
 
     /**
+     * Returns the time in seconds.
+     *
+     * @return
+     */
+    public double getTimeSS() {
+        return Double.parseDouble(ssField.getText());
+    }
+
+    /**
      * Sets the output.
+     *
      * @param toString
      */
-    public void setOutput(String toString)
-    {
+    public void setOutput(String toString) {
         textArea.setText(toString + "\n");
     }
 
@@ -428,12 +426,26 @@ public class DialogFrame extends JPanel
     }
 
     /**
-     * Returns the time in seconds.
-     * @return
+     * Nested class representing the update label on the right side of the dialog frame.
+     *
+     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since 19/02/2021
      */
-    public double getTimeSS()
-    {
-        return Double.parseDouble(ssField.getText());
+    class updateLabel implements ChangeListener {
+        private JLabel jLabel = new JLabel();
+        private JSlider jSlider = new JSlider();
+
+        public updateLabel(JSlider jSlider, JLabel jLabel) {
+            this.jLabel = jLabel;
+            this.jSlider = jSlider;
+        }
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            jLabel.setText(String.valueOf(velocitySliderW * jSlider.getValue()));
+        }
+
     }
 
 
@@ -441,8 +453,25 @@ public class DialogFrame extends JPanel
         this.ddField.setText(ddField);
     }
 
-    public void setMmField(String mmField) {
-        this.mmField.setText(mmField);
+    /**
+     * Nested class representing the ActionListener, when the clear button is clicked.
+     *
+     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since 19/02/2021
+     */
+
+    class clearBtnListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            stopped.set(true);
+            simulation.graphics().changeScene(Scene.SceneType.STARTING_SCENE);
+            simulation.reset();
+            System.out.println("Reset simulation...");
+            //System.out.println(simulation.toString());
+        }
+
     }
 
     public void setYyField(String yyField) {
@@ -453,8 +482,24 @@ public class DialogFrame extends JPanel
         this.hhField.setText(hhField);
     }
 
-    public void setmField(String mField) {
-        this.mField.setText(mField);
+    /**
+     * Nested class for the ActionListener.
+     *
+     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since 19/02/2021
+     */
+    class startBtnListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // TODO Auto-generated method stub
+            stopped.set(false);
+            simulation.system().start();
+            simulation.graphics().changeScene(Scene.SceneType.SIMULATION_SCENE);
+            System.out.println("Commence simulation...");
+        }
+
     }
 
     public void setSsField(String ssField) {

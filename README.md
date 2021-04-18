@@ -1,5 +1,5 @@
 # Project1_2
-Dke Group 17 Mission group17.phase1.Titan
+Dke Group 17 Mission group17.phase1.group17.phase1.Titan
 # MISSION TITAN
 
 
@@ -25,7 +25,7 @@ Gradle 6.8.3
 ## Usage
 
 ```java
-import group17.phase1.Titan.Interfaces.SimulationInterface;
+import group17.phase1.group17.phase1.Titan.Interfaces.SimulationInterface;
 
 class Main{
 
@@ -60,7 +60,7 @@ Press (START SIMULATION) and . . enjoy :=)
 
 ##UML Diagram
 
-[UML](src/main/java/group17/phase1/Titan/diagram.png)
+[UML](src/main/java/group17/phase1/group17.phase1.Titan/diagram.png)
 
 
 

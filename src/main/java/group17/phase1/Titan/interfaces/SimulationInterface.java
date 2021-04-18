@@ -1,33 +1,28 @@
-package group17.phase1.Titan.interfaces;
+package group17.phase1.Titan.Interfaces;
 
-import group17.phase1.Titan.Physics.SolarSystem.CelestialBody;
 
-public interface SimulationInterface
-{
+import group17.phase1.Titan.Graphics.DialogFrame;
+import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 
-    int CPU();
-
-    void init(int cpu);
-
-    void initGraphics();
+public interface SimulationInterface {
+    void start();
 
     void reset();
 
-    void step();
+    void stop();
 
-    void start();
-
-    SolarSystemInterface solarSystem();
+    SystemInterface system();
 
     GraphicsInterface graphics();
 
-    StateInterface systemState();
+    DialogFrame assist();
 
-    RateInterface rateOfChange();
+    void initCPU(int cpu);
 
-    CelestialBody getBody(String name);
+    void initSystem();
 
-    void setStepSize(double timeStepSize);
+    void initGraphics(boolean graphics, boolean assist);
 
-    double getStepSize();
+    CelestialBody getBody(String probe);
+
 }
