@@ -1,0 +1,22 @@
+package group17.phase1.Titan.Physics.Bodies;
+
+import group17.phase1.Titan.Physics.Math.Vector3D;
+
+import java.awt.*;
+
+public class BlackHole extends CelestialBody {
+
+    @Override
+    public String toString() {
+        return "M86";
+    }
+
+    @Override
+    public void initProperties() {
+        this.setMASS(2e30);
+        this.setRADIUS(7e5);
+        this.setColour(new Color(255, 0, 0, 149));
+        this.setVectorLocation(new Vector3D(0.2, -0.2, 0.2));
+        this.setVectorVelocity(new Vector3D(0.1, 0.1, 0.1));
+    }
+}

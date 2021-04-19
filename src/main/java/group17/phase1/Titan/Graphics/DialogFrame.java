@@ -171,8 +171,6 @@ public class DialogFrame extends JPanel implements Runnable {
 
 
         this.setStepField("" + STEP_SIZE);
-
-
         this.setDate();
 
         if (INSERT_PROBE) {
@@ -200,6 +198,7 @@ public class DialogFrame extends JPanel implements Runnable {
 
 
     public void acquireData() {
+
         STEP_SIZE = getTimeStepSize();
 
         if (INSERT_PROBE) {
@@ -251,6 +250,7 @@ public class DialogFrame extends JPanel implements Runnable {
 
                     simulation.system().step();
                     simulation.system().getClock().step(STEP_SIZE);
+
                     if (System.currentTimeMillis() - timer > 1000) {
                         this.setOutput(simulation.toString());
                         this.setDate();
@@ -495,7 +495,6 @@ public class DialogFrame extends JPanel implements Runnable {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
             stopped.set(false);
-            simulation.system().start();
             simulation.graphics().changeScene(Scene.SceneType.SIMULATION_SCENE);
             System.out.println("Commence simulation...");
         }

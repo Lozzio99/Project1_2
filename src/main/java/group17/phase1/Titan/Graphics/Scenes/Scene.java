@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import static group17.phase1.Titan.Config.SIMULATION_LEVEL;
+import static group17.phase1.Titan.Config.SOLAR_SYSTEM_SIMULATION;
 import static group17.phase1.Titan.Interfaces.GraphicsInterface.screen;
 
 public abstract class Scene extends JPanel {
@@ -35,17 +37,20 @@ public abstract class Scene extends JPanel {
     public void paintComponent(Graphics graphics) {
 
         //super.paintComponent(graphics);
+
         g = (Graphics2D) graphics;
-        if (image == null) {
-            create();
-            setHints(g);
+        if (SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION) {
+            if (image == null) {
+                create();
+                setHints(g);
+            } else {
+                g.drawImage(image, 0, 0, screen.width, screen.height, 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
+            }
         } else {
-            g.drawImage(image, 0, 0, screen.width, screen.height, 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
+            g.setColor(Color.BLACK);
+            g.fillRect(0, 0, screen.width, screen.height);
         }
 
-
-        //g.setColor(Color.BLACK);
-        //g.fillRect(0,0,GraphicsManager.screen.width,GraphicsManager.screen.height);
     }
 
     public void setHints(Graphics2D g)

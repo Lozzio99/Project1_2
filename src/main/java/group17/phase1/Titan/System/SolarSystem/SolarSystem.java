@@ -1,15 +1,19 @@
-package group17.phase1.Titan.System;
+package group17.phase1.Titan.System.SolarSystem;
 
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Physics.Bodies.*;
 import group17.phase1.Titan.Physics.Math.EulerSolver;
 import group17.phase1.Titan.Physics.Math.MaxCPUSolver;
+import group17.phase1.Titan.System.Clock;
+import group17.phase1.Titan.System.RateOfChange;
+import group17.phase1.Titan.System.SystemState;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static group17.phase1.Titan.Config.INSERT_PROBE;
+import static group17.phase1.Titan.Config.LAUNCH_DATE;
 
 public class SolarSystem implements SystemInterface {
 
@@ -57,7 +61,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initClock() {
-        this.clock = new Clock().getLaunchDay();
+        this.clock = LAUNCH_DATE = new Clock().getLaunchDay();
     }
 
     @Override
