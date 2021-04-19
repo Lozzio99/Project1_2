@@ -466,6 +466,7 @@ public class DialogFrame extends JPanel implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             stopped.set(true);
+            simulation.system().stop();
             simulation.graphics().changeScene(Scene.SceneType.STARTING_SCENE);
             simulation.reset();
             System.out.println("Reset simulation...");

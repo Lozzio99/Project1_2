@@ -100,7 +100,7 @@ public class ParticlesSystem implements SystemInterface {
 
     @Override
     public void stop() {
-
+        this.f.shutDown();
     }
 
     @Override

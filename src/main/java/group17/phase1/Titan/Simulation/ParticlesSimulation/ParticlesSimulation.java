@@ -7,6 +7,7 @@ import group17.phase1.Titan.System.ParticlesSystem.ParticlesSystem;
 public class ParticlesSimulation extends Simulation {
     @Override
     public void start() {
+        this.reset();
         this.graphics.launch();
         this.assist.launch();
     }
@@ -14,6 +15,7 @@ public class ParticlesSimulation extends Simulation {
     @Override
     public void reset() {
         this.system.reset();
+        this.system.start();
     }
 
     @Override
@@ -26,8 +28,6 @@ public class ParticlesSimulation extends Simulation {
     @Override
     public void initSystem() {
         this.system = new ParticlesSystem();
-        this.system.reset();
-        this.system.start();
     }
 
 

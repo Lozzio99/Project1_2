@@ -15,6 +15,7 @@ public class SolarSystemSimulation extends Simulation {
     @Override
     public void reset() {
         this.system.reset();
+        this.system.start();
     }
 
     @Override
@@ -30,7 +31,6 @@ public class SolarSystemSimulation extends Simulation {
         this.system = new SolarSystem();
         this.system.initPlanets();
         this.system.initProbe();
-        this.system.start();
     }
 
     @Override

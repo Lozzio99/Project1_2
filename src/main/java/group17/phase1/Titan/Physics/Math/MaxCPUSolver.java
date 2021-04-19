@@ -10,7 +10,7 @@ import group17.phase1.Titan.Main;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.RejectedExecutionException;
 
 import static group17.phase1.Titan.Config.G;
 
@@ -62,19 +62,20 @@ public class MaxCPUSolver implements ODEFunctionInterface {
 
         for (int i = 0; i < y.getPositions().size(); i++) {
             final var finalI = i;
-            CompletableFuture.supplyAsync(() -> evaluate(finalI), service)
-                    .thenApply(e -> set(finalI, e));
+            try {
+                CompletableFuture.supplyAsync(() -> evaluate(finalI), service)
+                        .thenApply(e -> set(finalI, e));
+            } catch (RejectedExecutionException ignored) {
+
+            }
         }
         return Main.simulation.system().systemRateOfChange();
     }
 
     public void shutDown() {
-        try {
-            if (this.service.awaitTermination(100, TimeUnit.MILLISECONDS))
-                this.service.shutdown();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        this.service.shutdownNow();
+        this.service.shutdown();
+        this.service = null;
     }
 
 

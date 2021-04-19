@@ -22,14 +22,23 @@ public class Config {
 
     public static final boolean DEBUG = false;
     public static final boolean ENABLE_GRAPHICS = true;
+
+    //TODO: wtf this will literally never work
     public static final boolean ENABLE_ASSIST = true;
+
+
     public static final double G = 6.67408e-11;
     public static boolean INSERT_PROBE = false;
     public static int CPU_LEVEL = 1;
     public static double STEP_SIZE = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 8e3 : 8;
 
+
+    //TODO : set this to be updated for particles simulation
     public static boolean TRAJECTORIES = false;
+    //TODO : set this to be updated for particles simulation
     public static boolean NAMES = false;
+
+
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;
 
 

@@ -32,7 +32,7 @@ public class Particle extends CelestialBody {
         if (new Random().nextDouble() < 0.5)
             z *= -1;
 
-        this.setMASS(10e3);
+        this.setMASS(10e5);
         this.setVectorLocation(new Vector3D(x, y, z));
         this.setVectorVelocity(new Vector3D(0.1, 0.1, 0.1));
         this.setColour(new Color(97, 255, 52, 215));

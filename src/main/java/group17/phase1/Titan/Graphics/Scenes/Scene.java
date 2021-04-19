@@ -1,6 +1,7 @@
 package group17.phase1.Titan.Graphics.Scenes;
 
 
+import group17.phase1.Titan.Interfaces.SystemInterface;
 import group17.phase1.Titan.Physics.Math.Point3D;
 import group17.phase1.Titan.Physics.Math.Point3DConverter;
 
@@ -16,6 +17,18 @@ import static group17.phase1.Titan.Config.SIMULATION_LEVEL;
 import static group17.phase1.Titan.Config.SOLAR_SYSTEM_SIMULATION;
 import static group17.phase1.Titan.Interfaces.GraphicsInterface.screen;
 
+/**
+ * Abstract class to Render a scene
+ * to implement a Scene inherit from this class like this :
+ * class MyScene extends Scene{
+ * }
+ * <p>
+ * it is also possible to delegate the background painting
+ * to the superclass with a call to the super.paintComponent(graphics)
+ * {@link #paintComponent(Graphics)}
+ * or to update the bodies positions and the mouse updates by a call
+ * to the {@link #update()} and a consequent call to  {@link #resetMouse()}
+ */
 public abstract class Scene extends JPanel {
     private final static int UNIT_SIZE = 1410;//*(int) scale;
     public static MouseInput mouse;
@@ -34,6 +47,12 @@ public abstract class Scene extends JPanel {
             front = new Point3D(0, 0, UNIT_SIZE),
             rear = new Point3D(0, 0, -UNIT_SIZE);
 
+    /**
+     * Load and renders the background for the children scenes
+     *
+     * @param graphics the graphics object on which the background has to be painted
+     */
+    @Override
     public void paintComponent(Graphics graphics) {
 
         //super.paintComponent(graphics);
@@ -53,8 +72,14 @@ public abstract class Scene extends JPanel {
 
     }
 
-    public void setHints(Graphics2D g)
-    {
+
+    /**
+     * Improves the rendering performance as well as the scaling and coloring
+     * interpolations
+     *
+     * @param g the graphics object to configure
+     */
+    public void setHints(Graphics2D g) {
         this.doLayout();
         g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -66,8 +91,13 @@ public abstract class Scene extends JPanel {
         g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
     }
 
-    void create()
-    {
+    /**
+     * Loads the background image from resources
+     * todo set throw exception
+     *
+     * @throws IOException file not found
+     */
+    void create() {
         try {
             File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("milky-way4k.jpg")).getFile());
             image = ImageIO.read(f);
@@ -76,8 +106,24 @@ public abstract class Scene extends JPanel {
         }
     }
 
+
+    /**
+     * abstract void to init all bodies positions,
+     * as well as the initial state of bodies, such a call must happen
+     * after that the system state has been initialised
+     *
+     * @see SystemInterface#systemState()
+     * @see group17.phase1.Titan.Interfaces.StateInterface#state0()
+     */
     public abstract void init();
 
+
+    /**
+     * updates the mouse tracking variables to update the bodies if
+     * any mouse event was generated
+     *
+     * @see SimulationScene#updateBodies()
+     */
     public void update() {
         x = mouse.getX();
         y = mouse.getY();
@@ -105,47 +151,89 @@ public abstract class Scene extends JPanel {
 
     }
 
-    public void addMouseControl(MouseInput mouse){
+    /**
+     * add the Mouse listener object to the scene
+     *
+     * @param mouse
+     */
+    public void addMouseControl(MouseInput mouse) {
         Scene.mouse = mouse;
     }
 
-    public void resetMouse(){
+    /**
+     * Reset the mouse events generated, after the update call,
+     * in order to let them awake for the next frame,
+     * avoiding such a call will lead to interminable mouse events such as
+     * continuous spinning or zooming
+     */
+    public void resetMouse() {
         mouse.resetScroll();
         initialX = x;
         initialY = y;
     }
 
-    public void rotateOnAxisY(boolean cw, double y){
-        Point3DConverter.rotateAxisY(top,cw,y);
-        Point3DConverter.rotateAxisY(bottom,cw,y);
-        Point3DConverter.rotateAxisY(left,cw,y);
-        Point3DConverter.rotateAxisY(right,cw,y);
-        Point3DConverter.rotateAxisY(rear,cw,y);
-        Point3DConverter.rotateAxisY(front,cw,y);
-    }
-    void rotateOnAxisX(boolean cw, double x)
-    {
-        Point3DConverter.rotateAxisX(top,cw,x);
-        Point3DConverter.rotateAxisX(bottom,cw,x);
-        Point3DConverter.rotateAxisX(left,cw,x);
-        Point3DConverter.rotateAxisX(right,cw,x);
-        Point3DConverter.rotateAxisX(rear,cw,x);
-        Point3DConverter.rotateAxisX(front,cw,x);
+    /**
+     * Rotates over the Y axis
+     *
+     * @param cw true if clockwise , false otherwise
+     * @param y  the degree of rotation
+     */
+    public void rotateOnAxisY(boolean cw, double y) {
+        Point3DConverter.rotateAxisY(top, cw, y);
+        Point3DConverter.rotateAxisY(bottom, cw, y);
+        Point3DConverter.rotateAxisY(left, cw, y);
+        Point3DConverter.rotateAxisY(right, cw, y);
+        Point3DConverter.rotateAxisY(rear, cw, y);
+        Point3DConverter.rotateAxisY(front, cw, y);
     }
 
-    void rotateOnAxisZ(boolean cw, double z){
-        Point3DConverter.rotateAxisZ(top,cw,z);
-        Point3DConverter.rotateAxisZ(bottom,cw,z);
-        Point3DConverter.rotateAxisZ(left,cw,z);
-        Point3DConverter.rotateAxisZ(right,cw,z);
-        Point3DConverter.rotateAxisZ(rear,cw,z);
-        Point3DConverter.rotateAxisZ(front,cw,z);
+    /**
+     * Rotates over the X axis
+     *
+     * @param cw true if clockwise , false otherwise
+     * @param x  the degree of rotation
+     */
+    void rotateOnAxisX(boolean cw, double x) {
+        Point3DConverter.rotateAxisX(top, cw, x);
+        Point3DConverter.rotateAxisX(bottom, cw, x);
+        Point3DConverter.rotateAxisX(left, cw, x);
+        Point3DConverter.rotateAxisX(right, cw, x);
+        Point3DConverter.rotateAxisX(rear, cw, x);
+        Point3DConverter.rotateAxisX(front, cw, x);
+    }
+
+    /**
+     * Rotates over the Z axis
+     *
+     * @param cw true if clockwise , false otherwise
+     * @param z  the degree of rotation
+     */
+    void rotateOnAxisZ(boolean cw, double z) {
+        Point3DConverter.rotateAxisZ(top, cw, z);
+        Point3DConverter.rotateAxisZ(bottom, cw, z);
+        Point3DConverter.rotateAxisZ(left, cw, z);
+        Point3DConverter.rotateAxisZ(right, cw, z);
+        Point3DConverter.rotateAxisZ(rear, cw, z);
+        Point3DConverter.rotateAxisZ(front, cw, z);
     }
 
 
-    public enum SceneType{
+    /**
+     * enum for the scenes implementations
+     */
+    public enum SceneType {
+        /**
+         * Only 3-dimensional axis and user suggestions
+         */
         STARTING_SCENE,
+        /**
+         * Renders the system state bodies
+         */
         SIMULATION_SCENE,
+        /**
+         * @deprecated
+         * @// TODO: 19/04/2021 implement this back
+         */
         TRAJECTORIES
     }
 

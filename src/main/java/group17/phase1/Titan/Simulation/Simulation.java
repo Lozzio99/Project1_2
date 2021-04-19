@@ -1,5 +1,6 @@
 package group17.phase1.Titan.Simulation;
 
+import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Graphics.DialogFrame;
 import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Interfaces.GraphicsInterface;
@@ -18,6 +19,15 @@ public abstract class Simulation implements SimulationInterface {
     protected DialogFrame assist;
     protected SystemInterface system;
 
+    /**
+     * Instantiate the Simulation specified from level
+     *
+     * @param level the desired simulation to create
+     * @return the unique instance of the SimulationInterface interface
+     * @throws RuntimeException for a non valid level
+     * @see SimulationInterface
+     * @see Config#SIMULATION_LEVEL
+     */
     public static SimulationInterface create(int level) {
         SIMULATION_LEVEL = level;
         STEP_SIZE = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 8e3 : 8;
@@ -39,6 +49,15 @@ public abstract class Simulation implements SimulationInterface {
         }
     }
 
+
+    /**
+     * Enable the graphics thread and all the computational thread
+     * TODO : set the dialog thread to be independent -> I.O. or ExceptionHandler
+     *
+     * @param enable_graphics if enabling graphics
+     * @param enable_assist   if enabling assist
+     * @// FIXME: 19/04/2021 enable_assist doesn't make the computations threadGroup working alone
+     */
     public void initGraphics(boolean enable_graphics, boolean enable_assist) {
         if (enable_graphics) {
             this.graphics = new GraphicsManager();
@@ -51,20 +70,45 @@ public abstract class Simulation implements SimulationInterface {
     }
 
 
+    /**
+     * Will set the global config to the desired level,
+     * from here onwards the desired number of threads will be
+     * called and set in an awaiting state.
+     *
+     * @param cpu the level of the cpu usage desired
+     * @implSpec MAX_CPU will try to awaken all available threads
+     * @see Config#CPU_LEVEL
+     * @see group17.phase1.Titan.Physics.Math.MaxCPUSolver#setCPULevel(int)
+     */
     public void initCPU(int cpu) {
         CPU_LEVEL = cpu;
     }
 
+    /**
+     * @return the main graphics object which is owner of the graphics thread
+     * @see GraphicsInterface
+     */
     @Override
     public GraphicsInterface graphics() {
         return this.graphics;
     }
 
+    /**
+     * @return the assist graphics object which is owner of the computational threadGroup
+     * @see DialogFrame
+     * @see DialogFrame#run()
+     */
     @Override
     public DialogFrame assist() {
         return this.assist;
     }
 
+    /**
+     * @return the system containing all important states and rate of change of the simulation
+     * @see SystemInterface
+     * @see group17.phase1.Titan.Interfaces.StateInterface
+     * @see group17.phase1.Titan.Interfaces.RateInterface
+     */
     @Override
     public SystemInterface system() {
         return this.system;
@@ -73,9 +117,9 @@ public abstract class Simulation implements SimulationInterface {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder("\n");
-        if (SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION)
+        if (SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION) {
             s.append(this.system.toString()).append("\n");
-
+        }
         s.append("Threads : ")
                 .append(Thread.currentThread().getThreadGroup().activeCount())
                 .append("\n");

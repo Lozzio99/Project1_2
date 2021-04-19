@@ -13,7 +13,7 @@ public class BlackHole extends CelestialBody {
 
     @Override
     public void initProperties() {
-        this.setMASS(2e30);
+        this.setMASS(2e30); //would be nice to push this higher
         this.setRADIUS(7e5);
         this.setColour(new Color(255, 0, 0, 149));
         this.setVectorLocation(new Vector3D(0.2, -0.2, 0.2));
