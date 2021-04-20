@@ -13,6 +13,6 @@ public class Main {
         simulation.initCPU(MIN_CPU);
         simulation.initSystem();
         simulation.initGraphics(ENABLE_GRAPHICS, ENABLE_ASSIST);
-        simulation.start();
+        simulation.startGraphics();
     }
 }

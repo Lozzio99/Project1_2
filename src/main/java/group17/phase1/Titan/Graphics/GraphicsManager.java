@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.phase1.Titan.Config.FPS;
@@ -23,7 +22,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     private WindowEvent listen;
     private MouseInput mouse;
     private Scene currentScene;
-    private final AtomicBoolean stopped = new AtomicBoolean(true);
+    private boolean stopped = true;
     private boolean running = false;
     private final AtomicReference<Thread> main = new AtomicReference<>();
 
@@ -109,8 +108,13 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     }
 
     @Override
-    public AtomicBoolean waiting() {
+    public boolean waiting() {
         return this.stopped;
+    }
+
+    @Override
+    public void setWaiting(boolean isWaiting) {
+        this.stopped = isWaiting;
     }
 
     @Override

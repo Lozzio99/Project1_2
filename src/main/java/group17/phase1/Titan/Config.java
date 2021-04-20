@@ -9,7 +9,7 @@ public class Config {
     public static final double FPS = 60;
     public static final int BETA_SIMULATION = 2;
 
-
+    public static int CPU_LEVEL = 1;
     public static final int MIN_CPU = 1;  //2 threads
     public static final int CPU_LEVEL2 = 2;
     public static final int CPU_LEVEL3 = 3;
@@ -31,14 +31,14 @@ public class Config {
 
     public static final double G = 6.67408e-11;
     public static boolean INSERT_PROBE = false;
-    public static int CPU_LEVEL = 1;
+
     public static double STEP_SIZE = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 8e3 : 8;
 
 
     //TODO : set this to be updated for particles simulation
-    public static boolean TRAJECTORIES = false;
+    public static boolean TRAJECTORIES = true;
     //TODO : set this to be updated for particles simulation
-    public static boolean NAMES = false;
+    public static boolean NAMES = true;
 
 
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;

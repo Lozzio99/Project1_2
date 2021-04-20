@@ -5,16 +5,8 @@ import group17.phase1.Titan.Simulation.Simulation;
 import group17.phase1.Titan.System.ParticlesSystem.ParticlesSystem;
 
 public class ParticlesSimulation extends Simulation {
-
-    @Override
-    public void reset() {
-        this.system.reset();
-        this.system.start();
-    }
-
     @Override
     public void initSystem() {
-        super.initSystem();
         this.system = new ParticlesSystem();
     }
 

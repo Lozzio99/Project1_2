@@ -74,7 +74,7 @@ public class ParticlesSystem implements SystemInterface {
     }
 
     @Override
-    public void start() {
+    public void startSolver() {
         this.solver = new EulerSolver();
         switch (Config.CPU_LEVEL) {
             case 1 -> {

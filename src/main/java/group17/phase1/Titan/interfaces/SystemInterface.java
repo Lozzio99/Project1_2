@@ -1,9 +1,9 @@
 package group17.phase1.Titan.Interfaces;
 
 
-import group17.phase1.Titan.Graphics.DialogFrame;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Math.MaxCPUSolver;
+import group17.phase1.Titan.Simulation.SimulationUpdater;
 import group17.phase1.Titan.System.Clock;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public interface SystemInterface {
     /**
      *
      */
-    void start();
+    void startSolver();
 
     /**
      * Safely shuts down all current group thread which are running
@@ -62,7 +62,7 @@ public interface SystemInterface {
      *
      * @see GraphicsInterface#stop()
      * @see MaxCPUSolver#shutDown()
-     * @see DialogFrame#stop()
+     * @see SimulationUpdater#tryStop()
      */
     void stop();
 
