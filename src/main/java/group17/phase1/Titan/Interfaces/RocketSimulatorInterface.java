@@ -15,5 +15,4 @@ public interface RocketSimulatorInterface extends ProbeSimulatorInterface {
 
     String toString();
 
-
 }
