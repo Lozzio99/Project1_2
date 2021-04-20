@@ -20,6 +20,10 @@ public class RateOfChange implements RateInterface {
         return this;
     }
 
+    public void setVel(List<Vector3dInterface> vel) {
+        this.vel = vel;
+    }
+
     @Override
     public List<Vector3dInterface> getRateOfChange() {
         return this.vel;

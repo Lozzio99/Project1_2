@@ -24,6 +24,10 @@ public class SystemState implements StateInterface {
         return this;
     }
 
+    public void setPositions(List<Vector3dInterface> positions) {
+        this.positions = positions;
+    }
+
     @Override
     public List<Vector3dInterface> getPositions() {
         return this.positions;
