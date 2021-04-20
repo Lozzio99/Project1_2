@@ -15,8 +15,8 @@ public class TrajectoryErrorCalc {
 
     // Variables
     File inputData;
-    Vector3dInterface[][][] originalData = new Vector3D[11][13][2];
-                                // 11 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: luna, 5: mars, 6: jupiter, 7: saturn, 8: titan, 9: uranus, 10: neptune
+    Vector3dInterface[][][] originalData = new Vector3D[10][13][2];
+                                // 10 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: mars, 5: jupiter, 6: saturn, 7: titan, 8: uranus, 9: neptune
                                 // Stores the exact values of the celestial bodies in 3 dimensions:
                                 // 1. planet index
                                 // 2. month (starting from 04.2020, ending at 04.2021)
@@ -30,8 +30,8 @@ public class TrajectoryErrorCalc {
         double velX, velY, velZ;
         // fill originalData with values from file:
         for (int i = 0; i < 13; i++) { // for each month
-            in.nextLine(); // Skip string of month
-            for (int j = 0; j < 11; j++) { // for each body
+            in.nextLine(); // skip month name
+            for (int j = 0; j < 10; j++) { // for each body
                 posX = in.nextDouble();
                 posY = in.nextDouble();
                 posZ = in.nextDouble();
@@ -39,16 +39,23 @@ public class TrajectoryErrorCalc {
                 velY = in.nextDouble();
                 velZ = in.nextDouble();
 
-                originalData[j][i][0] = new Vector3D(); // position vector
-                originalData[j][i][1] = new Vector3D(); // velocity vector
+                originalData[j][i][0] = new Vector3D(posX, posY, posZ); // position vector
+                originalData[j][i][1] = new Vector3D(velX, velY, velZ); // velocity vector
+
+                if (in.hasNextLine()) {
+                    in.nextLine();
+                }
             }
         }
 
+        System.out.println(originalData[0][0][0].getX());
     }
 
     public void printOriginal() {
         for (int i = 0; i < originalData.length; i++) {
+            System.out.println(" --- Planet " + i + " --- ");
             for (int j = 0; j < originalData[i].length; j++) {
+                System.out.println("Month " + j);
                 for (int k = 0; k < originalData[i][j].length; k++) {
                     System.out.print(originalData[i][j][k].toString() + "\t");
                 }
@@ -60,5 +67,6 @@ public class TrajectoryErrorCalc {
     // Only for testing purposes
     public static void main(String[] args) throws FileNotFoundException {
         TrajectoryErrorCalc test = new TrajectoryErrorCalc();
+        test.printOriginal();
     }
 }
