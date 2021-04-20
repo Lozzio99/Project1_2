@@ -5,5 +5,5 @@
 /build/classes/java/test/
 /gradle/
 /bin/
-
+/.idea
 /.settings/
