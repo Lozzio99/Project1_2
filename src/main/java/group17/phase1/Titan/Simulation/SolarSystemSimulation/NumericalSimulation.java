@@ -52,8 +52,15 @@ public class NumericalSimulation extends Simulation {
     }
 
     public void solveAndWait() {
+        this.system.reset();
         this.setRunning();
+        this.system.startSolver();
         this.updater.get().launch();
+
     }
 
+    @Override
+    public String toString() {
+        return this.system.toString();
+    }
 }

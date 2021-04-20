@@ -77,6 +77,7 @@ public abstract class Simulation implements SimulationInterface {
      * @// FIXME: 19/04/2021 enable_assist doesn't make the computations threadGroup working alone
      */
     public void initGraphics(boolean enable_graphics, boolean enable_assist) {
+
         if (enable_graphics) {
             this.graphics.set(new GraphicsManager());
             this.graphics.get().init();
