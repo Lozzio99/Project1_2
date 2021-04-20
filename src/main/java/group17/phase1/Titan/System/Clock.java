@@ -73,6 +73,12 @@ public class Clock {
     }
 
     public void setCurrentDate(int yy, int mm, int dd, int hour, int min, int sec) {
+        year = yy;
+        month = mm;
+        day = dd;
+        this.hour = hour;
+        minute = min;
+        second = sec;
         this.currentDate.set(yy, mm - 1, dd, hour, min, sec);
     }
 
