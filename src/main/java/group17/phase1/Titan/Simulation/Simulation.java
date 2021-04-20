@@ -10,14 +10,16 @@ import group17.phase1.Titan.Simulation.ParticlesSimulation.ParticlesSimulation;
 import group17.phase1.Titan.Simulation.SolarSystemSimulation.SolarSystemSimulation;
 
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.phase1.Titan.Config.*;
 
 public abstract class Simulation implements SimulationInterface {
     private static SimulationInterface instance;
-    protected GraphicsInterface graphics;
+    protected final AtomicReference<GraphicsInterface> graphics = new AtomicReference<GraphicsInterface>();
     protected DialogFrame assist;
     protected SystemInterface system;
+    protected final AtomicReference<SimulationUpdater> updater = new AtomicReference<SimulationUpdater>();
 
     /**
      * Instantiate the Simulation specified from level
@@ -52,7 +54,6 @@ public abstract class Simulation implements SimulationInterface {
 
     /**
      * Enable the graphics thread and all the computational thread
-     * TODO : set the dialog thread to be independent -> I.O. or ExceptionHandler
      *
      * @param enable_graphics if enabling graphics
      * @param enable_assist   if enabling assist
@@ -60,8 +61,8 @@ public abstract class Simulation implements SimulationInterface {
      */
     public void initGraphics(boolean enable_graphics, boolean enable_assist) {
         if (enable_graphics) {
-            this.graphics = new GraphicsManager();
-            this.graphics.init();
+            this.graphics.set(new GraphicsManager());
+            this.graphics.get().init();
         }
         if (enable_assist) {
             this.assist = new DialogFrame();
@@ -89,14 +90,13 @@ public abstract class Simulation implements SimulationInterface {
      * @see GraphicsInterface
      */
     @Override
-    public GraphicsInterface graphics() {
+    public AtomicReference<GraphicsInterface> graphics() {
         return this.graphics;
     }
 
     /**
      * @return the assist graphics object which is owner of the computational threadGroup
      * @see DialogFrame
-     * @see DialogFrame#run()
      */
     @Override
     public DialogFrame assist() {
@@ -134,4 +134,25 @@ public abstract class Simulation implements SimulationInterface {
         }
         return s.toString();
     }
+
+    @Override
+    public SimulationUpdater updater() {
+        return this.updater.get();
+    }
+
+
+    @Override
+    public void initSystem() {
+        this.updater.set(new SimulationUpdater());
+        this.updater.get().setDaemon(true);
+    }
+
+    @Override
+    public void stop() {
+        this.updater.get().tryStop();
+        this.graphics.get().stop();
+        this.system.stop();
+    }
+
+
 }

@@ -17,10 +17,12 @@ public class Config {
     //which simulation is going to run
     public static int SIMULATION_LEVEL = 0;
     public static final int MAX_CPU = 5;
+
+
     public static final boolean REPORT = false;
-
-
     public static final boolean DEBUG = false;
+
+
     public static final boolean ENABLE_GRAPHICS = true;
 
     //TODO: wtf this will literally never work

@@ -4,6 +4,7 @@ package group17.phase1.Titan.Interfaces;
 import group17.phase1.Titan.Graphics.Scenes.Scene;
 
 import java.awt.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public interface GraphicsInterface {
 
@@ -45,5 +46,14 @@ public interface GraphicsInterface {
      * exit from code with status 0
      */
     void stop();
+
+
+    boolean running();
+
+
+    void setRunning();
+
+
+    AtomicBoolean waiting();
 
 }

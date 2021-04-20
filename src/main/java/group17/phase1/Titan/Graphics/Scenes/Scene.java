@@ -231,7 +231,6 @@ public abstract class Scene extends JPanel {
          */
         SIMULATION_SCENE,
         /**
-         * @deprecated
          * @// TODO: 19/04/2021 implement this back
          */
         TRAJECTORIES

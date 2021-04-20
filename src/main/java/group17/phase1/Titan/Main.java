@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         simulation = Simulation.create(PARTICLES_SIMULATION);
-        simulation.initCPU(CPU_LEVEL3);
+        simulation.initCPU(CPU_LEVEL4);
         simulation.initSystem();
         simulation.initGraphics(ENABLE_GRAPHICS, ENABLE_ASSIST);
         simulation.start();

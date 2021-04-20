@@ -16,19 +16,17 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.phase1.Titan.Config.*;
+import static group17.phase1.Titan.Config.INSERT_PROBE;
+import static group17.phase1.Titan.Config.STEP_SIZE;
 import static group17.phase1.Titan.Main.simulation;
 
 /**
  * DialogFrame
  */
-public class DialogFrame extends JPanel implements Runnable {
+public class DialogFrame extends JPanel {
 
-
-    private static final AtomicBoolean stopped = new AtomicBoolean(true);
     private final JFrame frame;
     private final JTextArea textArea = new JTextArea(10, 30);
     private final JTextField stSizeField = new JTextField();
@@ -53,7 +51,6 @@ public class DialogFrame extends JPanel implements Runnable {
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
     private final AtomicReference<Thread> assist = new AtomicReference<>();
-    private boolean running;
 
 
     public DialogFrame() {
@@ -212,56 +209,6 @@ public class DialogFrame extends JPanel implements Runnable {
         }
     }
 
-    public void launch() {
-        this.assist.set(new Thread(this, "Dialog Frame"));
-        this.assist.get().setDaemon(true);
-        this.running = true;
-        this.assist.get().start();
-    }
-
-    public void stop() {
-        try {
-            this.assist.get().join(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void run() {
-        long lastTime = System.nanoTime();
-        long timer = System.currentTimeMillis();
-        final double ns = 1000000000.0 / FPS;
-        double delta = 0;
-
-        while (this.running) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
-            while (delta >= 1) {
-
-                if (stopped.get()) {
-                    this.showAssistParameters();
-                    while (stopped.get()) {
-
-                    }
-                    this.acquireData();
-                } else {
-
-                    simulation.system().step();
-                    simulation.system().getClock().step(STEP_SIZE);
-
-                    if (System.currentTimeMillis() - timer > 1000) {
-                        this.setOutput(simulation.toString());
-                        this.setDate();
-                        timer += 1000;
-                    }
-                }
-                delta--;
-            }
-
-        }
-    }
 
     public void setMonthField(String mmField) {
         this.mmField.setText(mmField);
@@ -465,9 +412,9 @@ public class DialogFrame extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            stopped.set(true);
+            simulation.graphics().get().waiting().set(true);
             simulation.system().stop();
-            simulation.graphics().changeScene(Scene.SceneType.STARTING_SCENE);
+            simulation.graphics().get().changeScene(Scene.SceneType.STARTING_SCENE);
             simulation.reset();
             System.out.println("Reset simulation...");
             //System.out.println(simulation.toString());
@@ -495,8 +442,8 @@ public class DialogFrame extends JPanel implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
-            stopped.set(false);
-            simulation.graphics().changeScene(Scene.SceneType.SIMULATION_SCENE);
+            simulation.graphics().get().waiting().set(false);
+            simulation.graphics().get().changeScene(Scene.SceneType.SIMULATION_SCENE);
             System.out.println("Commence simulation...");
         }
 

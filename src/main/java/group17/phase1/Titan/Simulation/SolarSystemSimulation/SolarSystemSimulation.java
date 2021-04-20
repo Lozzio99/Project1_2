@@ -8,8 +8,8 @@ public class SolarSystemSimulation extends Simulation {
     @Override
     public void start() {
         this.reset();
-        this.graphics.launch();
-        this.assist.launch();
+        this.graphics.get().launch();
+        this.updater.get().launch();
     }
 
     @Override
@@ -18,16 +18,12 @@ public class SolarSystemSimulation extends Simulation {
         this.system.start();
     }
 
-    @Override
-    public void stop() {
-        this.graphics.stop();
-        this.assist.stop();
-        this.system.stop();
-    }
+
 
 
     @Override
     public void initSystem() {
+        super.initSystem();
         this.system = new SolarSystem();
         this.system.initPlanets();
         this.system.initProbe();
