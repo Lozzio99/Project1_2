@@ -38,7 +38,7 @@ public class ParticlesSystem implements SystemInterface {
         this.particles = new ArrayList<>();
         this.particles.add(new BlackHole());
         this.particles.get(0).initProperties();
-        PARTICLES = CPU_LEVEL * 400;
+        PARTICLES = CPU_LEVEL * PARTICLES;
         for (int i = 1; i < PARTICLES; i++) {
             this.particles.add(new Particle(i));
             this.particles.get(i).initProperties();

@@ -23,8 +23,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     private MouseInput mouse;
     private Scene currentScene;
     private final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
-    private volatile boolean onPause = true;
-    private volatile boolean running = false;
+
 
     @Override
     public void init() {
@@ -57,7 +56,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     public void launch() {
         this.mainGraphicsTh.set(new Thread(this, "Main Graphics"));
         this.mainGraphicsTh.get().setDaemon(true);
-        this.running = true;
+        simulation.setRunning();
         this.mainGraphicsTh.get().start();
     }
 
@@ -96,25 +95,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         }
     }
 
-    @Override
-    public boolean running() {
-        return this.running;
-    }
 
-    @Override
-    public void setRunning() {
-        this.running = true;
-    }
-
-    @Override
-    public boolean waiting() {
-        return this.onPause;
-    }
-
-    @Override
-    public void setWaiting(boolean isWaiting) {
-        this.onPause = isWaiting;
-    }
 
     @Override
     public synchronized void run() {
@@ -124,7 +105,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         double delta = 0;
         int frames = 0;
 
-        while (this.running) {
+        while (simulation.running()) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
@@ -146,7 +127,6 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     public String toString() {
         return "GraphicsManager{" +
                 "currentScene=" + currentScene.toString() +
-                ", running=" + running +
                 ", FPS=" + FPS +
                 '}';
     }

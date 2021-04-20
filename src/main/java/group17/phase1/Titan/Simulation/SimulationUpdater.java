@@ -24,8 +24,7 @@ public class SimulationUpdater extends Thread {
         if (ENABLE_ASSIST)
             simulation.assist().acquireData();
 
-        while (simulation.graphics().get().running()) {
-
+        while (simulation.running()) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
@@ -45,7 +44,7 @@ public class SimulationUpdater extends Thread {
                         simulation.assist().setDate();
                     } else {
                         //TODO : here goes IO stream
-                        //System.out.println(simulation.toString());
+                        System.out.println(simulation.toString());
                     }
                     timer += 1000;
                 }
@@ -70,8 +69,10 @@ public class SimulationUpdater extends Thread {
     }
 
     public void launch() {
-        System.out.println("Launching main graphics...");
-        simulation.graphics().get().setRunning();
+        if (ENABLE_GRAPHICS) {
+            System.out.println("Launching main graphics...");
+            simulation.setRunning();
+        }
         if (this.isKilled) {
             this.isKilled = false;
             return;

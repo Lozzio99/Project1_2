@@ -411,7 +411,7 @@ public class DialogFrame extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            simulation.graphics().get().setWaiting(true);
+            simulation.setWaiting(true);
             simulation.system().stop();
             simulation.graphics().get().changeScene(Scene.SceneType.STARTING_SCENE);
             simulation.reset();
@@ -441,7 +441,7 @@ public class DialogFrame extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
-            simulation.graphics().get().setWaiting(false);
+            simulation.setWaiting(false);
             acquireData();
             simulation.graphics().get().changeScene(Scene.SceneType.SIMULATION_SCENE);
             simulation.startUpdater();

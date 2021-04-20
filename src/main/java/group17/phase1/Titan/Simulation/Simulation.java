@@ -8,6 +8,7 @@ import group17.phase1.Titan.Interfaces.GraphicsInterface;
 import group17.phase1.Titan.Interfaces.SimulationInterface;
 import group17.phase1.Titan.Interfaces.SystemInterface;
 import group17.phase1.Titan.Simulation.ParticlesSimulation.ParticlesSimulation;
+import group17.phase1.Titan.Simulation.SolarSystemSimulation.NumericalSimulation;
 import group17.phase1.Titan.Simulation.SolarSystemSimulation.SolarSystemSimulation;
 
 import java.util.Set;
@@ -21,6 +22,9 @@ public abstract class Simulation implements SimulationInterface {
     protected SystemInterface system;
     protected final AtomicReference<SimulationUpdater> updater = new AtomicReference<SimulationUpdater>();
 
+    private volatile boolean onPause = true;
+    private volatile boolean running = false;
+
     /**
      * Instantiate the Simulation specified from level
      *
@@ -33,7 +37,7 @@ public abstract class Simulation implements SimulationInterface {
     public static SimulationInterface create(int level) {
         SIMULATION_LEVEL = level;
         //why is it slower? mass? initial velocity?
-        STEP_SIZE = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 8e3 : 8;
+        STEP_SIZE = SIMULATION_LEVEL == PARTICLES_SIMULATION ? 8 : 8e3;
 
         //too heavy for all particles, but 50 looks fine
         TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;
@@ -44,12 +48,19 @@ public abstract class Simulation implements SimulationInterface {
         //TODO: implement this in a better way
         NAMES = (SIMULATION_LEVEL != PARTICLES_SIMULATION && NAMES);
 
+        //TODO: yo let's put all the cases here
         switch (level) {
             case 0 -> {
                 return new SolarSystemSimulation();
             }
             case 1 -> {
                 return new ParticlesSimulation();
+            }
+            case 2 -> {
+                if (ENABLE_GRAPHICS || ENABLE_ASSIST) {
+                    System.err.println("Bad configuration settings [ ENABLE_GRAPHICS, ENABLE_ASSIST ]");
+                }
+                return new NumericalSimulation();
             }
             default -> {
                 throw new RuntimeException("Select a valid level for the simulation instance");
@@ -156,7 +167,7 @@ public abstract class Simulation implements SimulationInterface {
     @Override
     public void startGraphics() {
         if (!ENABLE_GRAPHICS)
-            throw new RuntimeException("Graphics hasn't been initialized");
+            throw new RuntimeException("Bad configuration input");
 
         this.system.reset();
         this.system.startSolver();
@@ -164,7 +175,7 @@ public abstract class Simulation implements SimulationInterface {
         if (ENABLE_ASSIST)
             this.assist.showAssistParameters();
         else {
-            this.graphics.get().setWaiting(false);
+            this.setWaiting(false);
             this.graphics.get().changeScene(Scene.SceneType.SIMULATION_SCENE);
             this.startUpdater();
             System.out.println("Commence simulation...");
@@ -188,6 +199,27 @@ public abstract class Simulation implements SimulationInterface {
         this.updater.get().tryStop();
         this.system.reset();
         this.system.startSolver();
+    }
+
+
+    @Override
+    public boolean running() {
+        return this.running;
+    }
+
+    @Override
+    public void setRunning() {
+        this.running = true;
+    }
+
+    @Override
+    public boolean waiting() {
+        return this.onPause;
+    }
+
+    @Override
+    public void setWaiting(boolean isWaiting) {
+        this.onPause = isWaiting;
     }
 
 }
