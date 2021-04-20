@@ -1,7 +1,6 @@
 package group17.phase1.Titan.Simulation;
 
-import static group17.phase1.Titan.Config.FPS;
-import static group17.phase1.Titan.Config.STEP_SIZE;
+import static group17.phase1.Titan.Config.*;
 import static group17.phase1.Titan.Main.simulation;
 
 public class SimulationUpdater extends Thread {
@@ -22,7 +21,8 @@ public class SimulationUpdater extends Thread {
         final double ns = 1000000000.0 / FPS;
         double delta = 0;
 
-        simulation.assist().acquireData();
+        if (ENABLE_ASSIST)
+            simulation.assist().acquireData();
 
         while (simulation.graphics().get().running()) {
 
@@ -40,8 +40,13 @@ public class SimulationUpdater extends Thread {
                 simulation.system().getClock().step(STEP_SIZE);
 
                 if (System.currentTimeMillis() - timer > 1000) {
-                    simulation.assist().setOutput(simulation.toString());
-                    simulation.assist().setDate();
+                    if (ENABLE_ASSIST) {
+                        simulation.assist().setOutput(simulation.toString());
+                        simulation.assist().setDate();
+                    } else {
+                        //TODO : here goes IO stream
+                        //System.out.println(simulation.toString());
+                    }
                     timer += 1000;
                 }
                 delta--;
@@ -65,7 +70,7 @@ public class SimulationUpdater extends Thread {
     }
 
     public void launch() {
-        System.out.println("launching");
+        System.out.println("Launching main graphics...");
         simulation.graphics().get().setRunning();
         if (this.isKilled) {
             this.isKilled = false;

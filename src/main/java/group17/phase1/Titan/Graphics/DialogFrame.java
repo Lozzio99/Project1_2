@@ -193,7 +193,6 @@ public class DialogFrame extends JPanel {
         }
     }
 
-
     public void acquireData() {
 
         STEP_SIZE = getTimeStepSize();
@@ -448,7 +447,6 @@ public class DialogFrame extends JPanel {
             simulation.startUpdater();
             System.out.println("Commence simulation...");
         }
-
     }
 
     public void setSsField(String ssField) {

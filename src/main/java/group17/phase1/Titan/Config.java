@@ -26,7 +26,7 @@ public class Config {
     public static final boolean ENABLE_GRAPHICS = true;
 
     //TODO: wtf this will literally never work
-    public static final boolean ENABLE_ASSIST = true;
+    public static final boolean ENABLE_ASSIST = false;
 
 
     public static final double G = 6.67408e-11;

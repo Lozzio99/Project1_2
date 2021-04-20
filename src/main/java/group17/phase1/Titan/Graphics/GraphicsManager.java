@@ -5,7 +5,6 @@ import group17.phase1.Titan.Graphics.Scenes.Scene;
 import group17.phase1.Titan.Graphics.Scenes.SimulationScene;
 import group17.phase1.Titan.Graphics.Scenes.StartingScene;
 import group17.phase1.Titan.Interfaces.GraphicsInterface;
-import group17.phase1.Titan.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.phase1.Titan.Config.FPS;
+import static group17.phase1.Titan.Main.simulation;
 
 
 public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {
@@ -22,10 +22,9 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     private WindowEvent listen;
     private MouseInput mouse;
     private Scene currentScene;
-    private boolean stopped = true;
-    private boolean running = false;
-    private final AtomicReference<Thread> main = new AtomicReference<>();
-
+    private final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
+    private volatile boolean onPause = true;
+    private volatile boolean running = false;
 
     @Override
     public void init() {
@@ -41,7 +40,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
             public void windowClosing(WindowEvent e) {
                 listen = new WindowEvent(frame, 201);
                 Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(listen);
-                Main.simulation.stop();
+                simulation.stop();
                 System.out.println("System closed by user");
                 System.exit(0);
             }
@@ -56,10 +55,10 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
 
     @Override
     public void launch() {
-        this.main.set(new Thread(this, "Main Graphics"));
-        this.main.get().setDaemon(true);
+        this.mainGraphicsTh.set(new Thread(this, "Main Graphics"));
+        this.mainGraphicsTh.get().setDaemon(true);
         this.running = true;
-        this.main.get().start();
+        this.mainGraphicsTh.get().start();
     }
 
 
@@ -91,7 +90,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     @Override
     public void stop() {
         try {
-            this.main.get().join(100);
+            this.mainGraphicsTh.get().join(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -109,12 +108,12 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
 
     @Override
     public boolean waiting() {
-        return this.stopped;
+        return this.onPause;
     }
 
     @Override
     public void setWaiting(boolean isWaiting) {
-        this.stopped = isWaiting;
+        this.onPause = isWaiting;
     }
 
     @Override

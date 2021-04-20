@@ -3,6 +3,7 @@ package group17.phase1.Titan.Simulation;
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Graphics.DialogFrame;
 import group17.phase1.Titan.Graphics.GraphicsManager;
+import group17.phase1.Titan.Graphics.Scenes.Scene;
 import group17.phase1.Titan.Interfaces.GraphicsInterface;
 import group17.phase1.Titan.Interfaces.SimulationInterface;
 import group17.phase1.Titan.Interfaces.SystemInterface;
@@ -154,11 +155,20 @@ public abstract class Simulation implements SimulationInterface {
 
     @Override
     public void startGraphics() {
+        if (!ENABLE_GRAPHICS)
+            throw new RuntimeException("Graphics hasn't been initialized");
+
         this.system.reset();
         this.system.startSolver();
         this.graphics.get().launch();
-        this.assist.showAssistParameters();
-
+        if (ENABLE_ASSIST)
+            this.assist.showAssistParameters();
+        else {
+            this.graphics.get().setWaiting(false);
+            this.graphics.get().changeScene(Scene.SceneType.SIMULATION_SCENE);
+            this.startUpdater();
+            System.out.println("Commence simulation...");
+        }
     }
 
     @Override
