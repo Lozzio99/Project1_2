@@ -47,14 +47,6 @@ public interface GraphicsInterface {
     void stop();
 
 
-    boolean running();
 
-
-    void setRunning();
-
-
-    boolean waiting();
-
-    void setWaiting(boolean isWaiting);
 
 }
