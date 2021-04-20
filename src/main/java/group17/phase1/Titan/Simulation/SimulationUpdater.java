@@ -34,10 +34,8 @@ public class SimulationUpdater extends Thread {
             }
 
             while (delta >= 1) {
-
                 simulation.system().step();
                 simulation.system().getClock().step(STEP_SIZE);
-
                 if (System.currentTimeMillis() - timer > 1000) {
                     if (ENABLE_ASSIST) {
                         simulation.assist().setOutput(simulation.toString());
