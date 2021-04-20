@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Implements differential equation: yd = sin(t) + y - y^3
  * With y(0) = 2
- * And exact value of -0:6599693029 (10 dp).
+ * And exact value of y(6) = -0:6599693029 (10 dp).
  */
 public class ODESolvable implements ODEFunctionInterface {
 
