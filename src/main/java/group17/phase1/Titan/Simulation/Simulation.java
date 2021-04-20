@@ -91,6 +91,10 @@ public abstract class Simulation implements SimulationInterface {
 
         //TODO : is this really what we want?
         TRAJECTORIES = SIMULATION_LEVEL == PARTICLES_SIMULATION ? (CPU_LEVEL <= 3 && TRAJECTORIES) : TRAJECTORIES;
+
+        this.updater.set(new SimulationUpdater());
+        this.updater.get().setDaemon(true);
+
     }
 
     /**
@@ -154,12 +158,11 @@ public abstract class Simulation implements SimulationInterface {
         this.system.startSolver();
         this.graphics.get().launch();
         this.assist.showAssistParameters();
+
     }
 
     @Override
     public void startUpdater() {
-        this.updater.set(new SimulationUpdater());
-        this.updater.get().setDaemon(true);
         this.updater.get().launch();
     }
 

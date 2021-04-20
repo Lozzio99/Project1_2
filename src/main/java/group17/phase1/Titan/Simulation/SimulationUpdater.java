@@ -5,11 +5,14 @@ import static group17.phase1.Titan.Config.STEP_SIZE;
 import static group17.phase1.Titan.Main.simulation;
 
 public class SimulationUpdater extends Thread {
-    private boolean isKilled;
+    private volatile boolean isKilled;
 
     //TODO : set the this thread to be independent -> I.O. or ExceptionHandler
     //TODO : if no Dialog Assist simulation doesn't run/start
 
+    public SimulationUpdater() {
+        super("Updater");
+    }
 
     @Override
     public void run() {
@@ -27,14 +30,12 @@ public class SimulationUpdater extends Thread {
             delta += (now - lastTime) / ns;
             lastTime = now;
 
+            while (isKilled) {
+                onSpinWait();
+            }
+
             while (delta >= 1) {
-                if (isKilled) {
-                    try {
-                        this.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+
                 simulation.system().step();
                 simulation.system().getClock().step(STEP_SIZE);
 
@@ -66,6 +67,10 @@ public class SimulationUpdater extends Thread {
     public void launch() {
         System.out.println("launching");
         simulation.graphics().get().setRunning();
+        if (this.isKilled) {
+            this.isKilled = false;
+            return;
+        }
         this.start();
     }
 }
