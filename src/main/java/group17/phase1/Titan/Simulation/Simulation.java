@@ -15,7 +15,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import static group17.phase1.Titan.Config.*;
 
 public abstract class Simulation implements SimulationInterface {
-    private static SimulationInterface instance;
     protected final AtomicReference<GraphicsInterface> graphics = new AtomicReference<GraphicsInterface>();
     protected DialogFrame assist;
     protected SystemInterface system;
@@ -42,15 +41,14 @@ public abstract class Simulation implements SimulationInterface {
         INSERT_PROBE = SIMULATION_LEVEL != PARTICLES_SIMULATION && INSERT_PROBE;
 
         //TODO: implement this in a better way
-        NAMES = SIMULATION_LEVEL != PARTICLES_SIMULATION;
-
+        NAMES = (SIMULATION_LEVEL != PARTICLES_SIMULATION && NAMES);
 
         switch (level) {
             case 0 -> {
-                return instance = new SolarSystemSimulation();
+                return new SolarSystemSimulation();
             }
             case 1 -> {
-                return instance = new ParticlesSimulation();
+                return new ParticlesSimulation();
             }
             default -> {
                 throw new RuntimeException("Select a valid level for the simulation instance");
@@ -93,6 +91,10 @@ public abstract class Simulation implements SimulationInterface {
 
         //TODO : is this really what we want?
         TRAJECTORIES = SIMULATION_LEVEL == PARTICLES_SIMULATION ? (CPU_LEVEL <= 3 && TRAJECTORIES) : TRAJECTORIES;
+
+        this.updater.set(new SimulationUpdater());
+        this.updater.get().setDaemon(true);
+
     }
 
     /**
@@ -146,22 +148,17 @@ public abstract class Simulation implements SimulationInterface {
     }
 
     @Override
-    public SimulationUpdater updater() {
-        return this.updater.get();
-    }
-
-
-    @Override
-    public void initSystem() {
-        this.updater.set(new SimulationUpdater());
-        this.updater.get().setDaemon(true);
+    public AtomicReference<SimulationUpdater> updater() {
+        return this.updater;
     }
 
     @Override
-    public void start() {
-        this.reset();
+    public void startGraphics() {
+        this.system.reset();
+        this.system.startSolver();
         this.graphics.get().launch();
         this.assist.showAssistParameters();
+
     }
 
     @Override
@@ -176,5 +173,11 @@ public abstract class Simulation implements SimulationInterface {
         this.graphics.get().stop();
     }
 
+    @Override
+    public void reset() {
+        this.updater.get().tryStop();
+        this.system.reset();
+        this.system.startSolver();
+    }
 
 }
