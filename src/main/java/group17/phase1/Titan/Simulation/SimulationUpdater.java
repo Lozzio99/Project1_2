@@ -16,26 +16,20 @@ public class SimulationUpdater extends Thread {
         final double ns = 1000000000.0 / FPS;
         double delta = 0;
 
+        simulation.assist().acquireData();
+
         while (simulation.graphics().get().running()) {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
             while (delta >= 1) {
-                if (simulation.graphics().get().waiting().get()) {
-                    simulation.assist().showAssistParameters();
-                    while (simulation.graphics().get().waiting().get()) {
+                simulation.system().step();
+                simulation.system().getClock().step(STEP_SIZE);
 
-                    }
-                    simulation.assist().acquireData();
-                } else {
-                    simulation.system().step();
-                    simulation.system().getClock().step(STEP_SIZE);
-
-                    if (System.currentTimeMillis() - timer > 1000) {
-                        simulation.assist().setOutput(simulation.toString());
-                        simulation.assist().setDate();
-                        timer += 1000;
-                    }
+                if (System.currentTimeMillis() - timer > 1000) {
+                    simulation.assist().setOutput(simulation.toString());
+                    simulation.assist().setDate();
+                    timer += 1000;
                 }
                 delta--;
             }

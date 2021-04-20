@@ -158,6 +158,18 @@ public abstract class Simulation implements SimulationInterface {
     }
 
     @Override
+    public void start() {
+        this.reset();
+        this.graphics.get().launch();
+        this.assist.showAssistParameters();
+    }
+
+    @Override
+    public void startUpdater() {
+        this.updater.get().launch();
+    }
+
+    @Override
     public void stop() {
         this.system.stop();
         this.updater.get().tryStop();

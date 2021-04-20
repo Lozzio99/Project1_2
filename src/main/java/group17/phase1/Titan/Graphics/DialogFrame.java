@@ -443,7 +443,9 @@ public class DialogFrame extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
             simulation.graphics().get().waiting().set(false);
+            acquireData();
             simulation.graphics().get().changeScene(Scene.SceneType.SIMULATION_SCENE);
+            simulation.startUpdater();
             System.out.println("Commence simulation...");
         }
 

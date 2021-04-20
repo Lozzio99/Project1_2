@@ -5,12 +5,6 @@ import group17.phase1.Titan.System.SolarSystem.SolarSystem;
 
 public class SolarSystemSimulation extends Simulation {
 
-    @Override
-    public void start() {
-        this.reset();
-        this.graphics.get().launch();
-        this.updater.get().launch();
-    }
 
     @Override
     public void reset() {

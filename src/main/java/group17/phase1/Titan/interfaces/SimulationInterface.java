@@ -10,6 +10,8 @@ import java.util.concurrent.atomic.AtomicReference;
 public interface SimulationInterface {
     void start();
 
+    void startUpdater();
+
     void reset();
 
     void stop();
