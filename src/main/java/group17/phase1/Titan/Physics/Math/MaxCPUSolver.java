@@ -75,7 +75,6 @@ public class MaxCPUSolver implements ODEFunctionInterface {
     public void shutDown() {
         this.service.shutdownNow();
         this.service.shutdown();
-        this.service = null;
     }
 
 

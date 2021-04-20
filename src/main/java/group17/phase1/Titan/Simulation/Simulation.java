@@ -32,11 +32,18 @@ public abstract class Simulation implements SimulationInterface {
      */
     public static SimulationInterface create(int level) {
         SIMULATION_LEVEL = level;
+        //why is it slower? mass? initial velocity?
         STEP_SIZE = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 8e3 : 8;
+
+        //too heavy for all particles, but 50 looks fine
         TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;
 
         //TODO: do we want this forever? ->
         INSERT_PROBE = SIMULATION_LEVEL != PARTICLES_SIMULATION && INSERT_PROBE;
+
+        //TODO: implement this in a better way
+        NAMES = SIMULATION_LEVEL != PARTICLES_SIMULATION;
+
 
         switch (level) {
             case 0 -> {
@@ -83,6 +90,9 @@ public abstract class Simulation implements SimulationInterface {
      */
     public void initCPU(int cpu) {
         CPU_LEVEL = cpu;
+
+        //TODO : is this really what we want?
+        TRAJECTORIES = SIMULATION_LEVEL == PARTICLES_SIMULATION ? (CPU_LEVEL <= 3 && TRAJECTORIES) : TRAJECTORIES;
     }
 
     /**
@@ -149,9 +159,9 @@ public abstract class Simulation implements SimulationInterface {
 
     @Override
     public void stop() {
+        this.system.stop();
         this.updater.get().tryStop();
         this.graphics.get().stop();
-        this.system.stop();
     }
 
 
