@@ -1,34 +1,33 @@
 package group17.phase1.Titan.Physics.Math;
 
 import group17.phase1.Titan.Interfaces.StateInterface;
-import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Physics.Solvers.VerletSolver;
+import group17.phase1.Titan.Physics.Solvers.VerletVelocitySolver;
 import group17.phase1.Titan.System.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-
-public class VerletSolverTest {
+public class VerletVelocitySolverTest {
 
     @Test
     @DisplayName("SolveODE")
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();
-        VerletSolver solver = new VerletSolver();
+        VerletVelocitySolver solver = new VerletVelocitySolver();
         // init parameters
-        Vector3D initPos = new Vector3D(0, 0, 0);
+        Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0
         Vector3D initVelocity = new Vector3D(0,0, 0);
-        ArrayList<Vector3dInterface> stateList = new ArrayList<>();
-        stateList.add(initPos);
-        stateList.add(initVelocity);
-        SystemState initState = new SystemState(stateList);
+        SystemState initState = new SystemState();
+        initState.getPositions().add(initPos);
+        initState.getRateOfChange().getVelocities().add(initVelocity);
         // get solution
         double tf = 6.0; // final time
-        StateInterface[] aprxSolution = solver.solve(yd, initState, tf,0.05);
-        double aprxDouble = aprxSolution[aprxSolution.length-1].getPositions().get(0).getZ();
-        assertTrue(1e-12 > Math.abs((initVelocity.getZ()*tf-0.5*FreeFallFunction.CONSTANT_G*tf*tf) - aprxDouble));
+        StateInterface[] aprxStates = solver.solve(yd, initState, tf,0.05);
+
+        double aprxSolution = aprxStates[aprxStates.length-1].getPositions().get(0).getZ();
+        double expectedSol = initVelocity.getZ()*tf-0.5*FreeFallFunction.CONSTANT_G*tf*tf; // free fall equation
+
+        assertTrue(1e-12 > Math.abs(expectedSol - aprxSolution));
     }
 
     @Test
