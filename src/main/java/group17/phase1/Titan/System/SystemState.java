@@ -13,9 +13,11 @@ import static group17.phase1.Titan.Main.simulation;
 public class SystemState implements StateInterface {
 
     List<Vector3dInterface> positions;
+    RateInterface rateOfChange;
 
     public SystemState() {
         this.positions = new ArrayList<>();
+        this.rateOfChange = new RateOfChange();
     }
 
     @Override
@@ -38,8 +40,9 @@ public class SystemState implements StateInterface {
     public StateInterface addMul(double step, RateInterface rate) {
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.positions.size(); i++) {
-            this.positions.set(i, this.positions.get(i).addMul(step, rate.getRateOfChange().get(i)));
+            this.positions.set(i, this.positions.get(i).addMul(step, rate.getVelocities().get(i)));
             newState.getPositions().add(this.positions.get(i).clone());
+            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i));
         }
         return newState;
     }
@@ -55,4 +58,78 @@ public class SystemState implements StateInterface {
         }
         return s.toString().trim();
     }
+
+    @Override
+    public StateInterface copy(StateInterface tobeCloned) {
+        StateInterface s = new SystemState();
+        for (Vector3dInterface v : tobeCloned.getPositions()) {
+            s.getPositions().add(v.clone());
+        }
+        return s;
+    }
+
+    @Override
+    public StateInterface multiply(double scalar) {
+        if (this.positions.size() == 0)
+            throw new RuntimeException(" Nothing to multiply ");
+
+        for (int i = 0; i < this.positions.size(); i++) {
+            this.positions.set(i, this.positions.get(i).mul(scalar));
+            this.rateOfChange.getVelocities().set(i, this.rateOfChange.getVelocities().get(i).mul(scalar));
+        }
+        return this;
+    }
+
+    @Override
+    public StateInterface div(double scalar) {
+        if (this.positions.size() == 0)
+            throw new RuntimeException(" Nothing to multiply ");
+
+        for (int i = 0; i < this.positions.size(); i++) {
+            this.positions.set(i, this.positions.get(i).div(scalar));
+            this.rateOfChange.getVelocities().set(i, this.rateOfChange.getVelocities().get(i).div(scalar));
+        }
+        return this;
+    }
+
+    @Override
+    public StateInterface add(StateInterface tobeAdded) {
+        if (this.positions.size() == 0)
+            throw new RuntimeException(" Nothing to add ");
+
+        for (int i = 0; i < this.positions.size(); i++) {
+            this.positions.set(i, this.positions.get(i).add(tobeAdded.getPositions().get(i)));
+            this.rateOfChange.getVelocities().set(i, this.rateOfChange.getVelocities().get(i).add(tobeAdded.getRateOfChange().getVelocities().get(i)));
+        }
+        return this;
+    }
+
+    @Override
+    public RateInterface getRateOfChange() {
+        return this.rateOfChange;
+    }
+
+    @Override
+    public void initialVelocity() {
+        this.rateOfChange = new RateOfChange().state0();
+    }
+
+    @Override
+    public StateInterface sumOf(StateInterface... rates) {
+
+        for (int i = 0; i < rates[0].getPositions().size(); i++) {
+            Vector3dInterface sum = this.getPositions().get(i);
+            Vector3dInterface velsum = this.getRateOfChange().getVelocities().get(i);
+            for (StateInterface r : rates) {
+                sum = sum.add(r.getPositions().get(i));
+                velsum = velsum.add(r.getRateOfChange().getVelocities().get(i));
+            }
+            this.getPositions().set(i, sum);
+            this.getRateOfChange().getVelocities().set(i, velsum);
+        }
+        return this;
+
+    }
+
+
 }

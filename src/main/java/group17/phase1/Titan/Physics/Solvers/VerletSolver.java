@@ -57,11 +57,11 @@ public class VerletSolver implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         // next position
         Vector3dInterface part1 = y.getPositions().get(1).mul(h); // (v_n)*delta_t
-        Vector3dInterface part2 = f.call(t,y).getRateOfChange().get(0).mul(0.5*h*h); // 1/2*(a_n)*(delta_t^2)
+        Vector3dInterface part2 = f.call(t, y).getVelocities().get(0).mul(0.5 * h * h); // 1/2*(a_n)*(delta_t^2)
         Vector3dInterface part3 = y.getPositions().get(0).add(part1.add(part2)); // x_n + (v_n)*delta_t+1/2*(a_n)*(delta_t^2);
 
         // next velocity
-        Vector3dInterface part4 = f.call(t+h,y).getRateOfChange().get(0).add(f.call(t,y).getRateOfChange().get(0)).mul(0.5*h); // 1/2*((a_n+1)+(a_n))*(delta_t)
+        Vector3dInterface part4 = f.call(t + h, y).getVelocities().get(0).add(f.call(t, y).getVelocities().get(0)).mul(0.5 * h); // 1/2*((a_n+1)+(a_n))*(delta_t)
         Vector3dInterface part5 = y.getPositions().get(1).add(part4); // v_n + 1/2*((a_n+1)+(a_n))*(delta_t)
 
         y.getPositions().set(0, part3);

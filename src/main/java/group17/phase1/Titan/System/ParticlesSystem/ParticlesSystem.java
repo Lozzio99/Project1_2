@@ -1,14 +1,16 @@
 package group17.phase1.Titan.System.ParticlesSystem;
 
 import group17.phase1.Titan.Config;
-import group17.phase1.Titan.Interfaces.*;
+import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
+import group17.phase1.Titan.Interfaces.ODESolverInterface;
+import group17.phase1.Titan.Interfaces.StateInterface;
+import group17.phase1.Titan.Interfaces.SystemInterface;
 import group17.phase1.Titan.Physics.Bodies.BlackHole;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Bodies.Particle;
 import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.System.Clock;
-import group17.phase1.Titan.System.RateOfChange;
 import group17.phase1.Titan.System.SystemState;
 
 import java.util.ArrayList;
@@ -25,7 +27,6 @@ public class ParticlesSystem implements SystemInterface {
 
     double t = 0;
     List<CelestialBody> particles;
-    private RateInterface rateOfChange;
     private Clock clock;
 
     @Override
@@ -73,7 +74,7 @@ public class ParticlesSystem implements SystemInterface {
         this.initClock();
         this.initPlanets();
         this.systemState = new SystemState().state0();
-        this.rateOfChange = new RateOfChange().state0();
+        this.systemState.initialVelocity();
     }
 
     @Override
@@ -111,10 +112,6 @@ public class ParticlesSystem implements SystemInterface {
         return this.systemState;
     }
 
-    @Override
-    public RateInterface systemRateOfChange() {
-        return this.rateOfChange;
-    }
 
     @Override
     public ODESolverInterface solver() {

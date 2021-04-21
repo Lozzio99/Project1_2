@@ -1,12 +1,14 @@
 package group17.phase1.Titan.System.SolarSystem;
 
 import group17.phase1.Titan.Config;
-import group17.phase1.Titan.Interfaces.*;
+import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
+import group17.phase1.Titan.Interfaces.ODESolverInterface;
+import group17.phase1.Titan.Interfaces.StateInterface;
+import group17.phase1.Titan.Interfaces.SystemInterface;
 import group17.phase1.Titan.Physics.Bodies.*;
-import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
+import group17.phase1.Titan.Physics.Solvers.RungeKutta4thSolver;
 import group17.phase1.Titan.System.Clock;
-import group17.phase1.Titan.System.RateOfChange;
 import group17.phase1.Titan.System.SystemState;
 
 import java.util.ArrayList;
@@ -24,7 +26,6 @@ public class SolarSystem implements SystemInterface {
 
 
     double t = 0;
-    private RateInterface rateOfChange;
     private Clock clock;
 
     @Override
@@ -78,13 +79,13 @@ public class SolarSystem implements SystemInterface {
     public void reset() {
         this.initClock();
         this.systemState = new SystemState().state0();
-        this.rateOfChange = new RateOfChange().state0();
+        this.systemState.initialVelocity();
 
     }
 
     @Override
     public void startSolver() {
-        this.solver = new EulerSolver();
+        this.solver = new RungeKutta4thSolver();
         switch (Config.CPU_LEVEL) {
             case 1 -> {
                 this.f = this.solver.getFunction();
@@ -118,11 +119,6 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
-    public RateInterface systemRateOfChange() {
-        return this.rateOfChange;
-    }
-
-    @Override
     public ODESolverInterface solver() {
         return this.solver;
     }
@@ -145,7 +141,7 @@ public class SolarSystem implements SystemInterface {
             s.append("[");
             s.append(allBodies.get(i).toString()).append("]\n");
             s.append("Position :").append(systemState.getPositions().get(i)).append("\n");
-            s.append("Velocity :").append(rateOfChange.getRateOfChange().get(i)).append("\n");
+            s.append("Velocity :").append(systemState.getRateOfChange().getVelocities().get(i)).append("\n");
         }
         return s.toString().trim();
     }

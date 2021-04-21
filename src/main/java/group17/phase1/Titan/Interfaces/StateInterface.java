@@ -7,6 +7,8 @@ package group17.phase1.Titan.Interfaces;
  */
 
 
+import group17.phase1.Titan.System.SystemState;
+
 import java.util.List;
 
 /**
@@ -44,6 +46,32 @@ public interface StateInterface {
      * @return a String containing the state of the system
      */
     String toString();
+
+
+    static StateInterface clone(StateInterface tobeCloned) {
+        StateInterface s = new SystemState();
+
+        for (int i = 0; i < tobeCloned.getPositions().size(); i++) {
+            s.getPositions().add(tobeCloned.getPositions().get(i).clone());
+            s.getRateOfChange().getVelocities().add(tobeCloned.getRateOfChange().getVelocities().get(i).clone());
+        }
+        return s;
+    }
+
+    StateInterface copy(StateInterface tobeCloned);
+
+    StateInterface multiply(double scalar);
+
+    StateInterface div(double scalar);
+
+
+    StateInterface add(StateInterface tobeAdded);
+
+    RateInterface getRateOfChange();
+
+    void initialVelocity();
+
+    StateInterface sumOf(StateInterface... states);
 
 }
 

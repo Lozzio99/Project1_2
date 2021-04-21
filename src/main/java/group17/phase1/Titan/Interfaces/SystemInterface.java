@@ -84,14 +84,6 @@ public interface SystemInterface {
     StateInterface systemState();
 
     /**
-     * Implementation of the system rate of change at a given point in time
-     *
-     * @return the state of the system
-     * @see group17.phase1.Titan.System.RateOfChange
-     */
-    RateInterface systemRateOfChange();
-
-    /**
      * Implementation of the function solver
      *
      * @return the solver that is being used
@@ -115,4 +107,6 @@ public interface SystemInterface {
      * @see ODESolverInterface#step(ODEFunctionInterface, double, StateInterface, double)
      */
     void step();
+
+
 }

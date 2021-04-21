@@ -11,5 +11,9 @@ public interface RateInterface {
      * @see group17.phase1.Titan.System.SystemState
      * @see StateInterface
      */
-    List<Vector3dInterface> getRateOfChange();
+    List<Vector3dInterface> getVelocities();
+
+    RateInterface mul(int i);
+
+
 }

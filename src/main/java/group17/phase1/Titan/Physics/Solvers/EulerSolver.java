@@ -41,11 +41,12 @@ public class EulerSolver implements ODESolverInterface {
                         acc = acc.mul((G * Main.simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                         totalAcc = totalAcc.addMul(t, acc);
                     }
-                }
-                Main.simulation.system().systemRateOfChange().getRateOfChange()
-                        .set(i, Main.simulation.system().systemRateOfChange().getRateOfChange().get(i).add(totalAcc));
+                }  // y1 =y0 + h*acc
+                // y1 = y0 + p
+                y.getRateOfChange().getVelocities()
+                        .set(i, y.getRateOfChange().getVelocities().get(i).add(totalAcc));
             }
-            return Main.simulation.system().systemRateOfChange();
+            return y.getRateOfChange();
         }
 
         @Override
