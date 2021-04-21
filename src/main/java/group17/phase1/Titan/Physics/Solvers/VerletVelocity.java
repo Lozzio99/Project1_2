@@ -1,6 +1,5 @@
 package group17.phase1.Titan.Physics.Solvers;
 
-import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.ODESolverInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
@@ -63,13 +62,13 @@ public class VerletVelocity implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         // next position
         Vector3dInterface part1 = y.getPositions().get(1).mul(h); // + (v_n)*delta_t
-        Vector3dInterface part2 = f.call(t,y).getRateOfChange().get(0).mul(0.5*h*h).add(part1); // + 1/2*(a_n)*(delta_t^2)
+        Vector3dInterface part2 = f.call(t, y).getVelocities().get(0).mul(0.5 * h * h).add(part1); // + 1/2*(a_n)*(delta_t^2)
         Vector3dInterface part3 = y.getPositions().get(0).add(part2); // + x_n
 
         // next velocity
-        Vector3dInterface part4 = f.call(t+h, new SystemState(part3)).getRateOfChange().get(0); // a_n+1
-        Vector3dInterface part5 = f.call(t,y).getRateOfChange().get(0); // a_n
-        Vector3dInterface part6 = (part4.add(part5)).mul(0.5*h); //
+        Vector3dInterface part4 = f.call(t + h, new SystemState(part3)).getVelocities().get(0); // a_n+1
+        Vector3dInterface part5 = f.call(t, y).getVelocities().get(0); // a_n
+        Vector3dInterface part6 = (part4.add(part5)).mul(0.5 * h); //
         Vector3dInterface part7 = y.getPositions().get(1).add(part6); // v_n + 1/2*((a_n+1)+(a_n))*(delta_t)
 
         StateInterface next_y = new SystemState();
