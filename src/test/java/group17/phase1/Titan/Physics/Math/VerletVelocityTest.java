@@ -9,15 +9,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 
-public class VerletSolverTest {
+public class VerletVelocityTest {
 
     @Test
     @DisplayName("SolveODE")
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();
-        VerletSolver solver = new VerletSolver();
+        VerletVelocity solver = new VerletVelocity();
         // init parameters
-        Vector3D initPos = new Vector3D(0, 0, 0);
+        Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0
         Vector3D initVelocity = new Vector3D(0,0, 0);
         ArrayList<Vector3dInterface> stateList = new ArrayList<>();
         stateList.add(initPos);
@@ -27,7 +27,7 @@ public class VerletSolverTest {
         double tf = 6.0; // final time
         StateInterface[] aprxSolution = solver.solve(yd, initState, tf,0.05);
         double aprxDouble = aprxSolution[aprxSolution.length-1].getPositions().get(0).getZ();
-        assertTrue(1e-12 > Math.abs((initVelocity.getZ()*tf-0.5*FreeFallFunction.CONSTANT_G*tf*tf) - aprxDouble));
+        assertTrue(1e-9 > Math.abs((initVelocity.getZ()*tf-0.5*FreeFallFunction.CONSTANT_G*tf*tf) - aprxDouble));
     }
 
     @Test
