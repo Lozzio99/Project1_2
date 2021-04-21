@@ -79,10 +79,12 @@ public abstract class Simulation implements SimulationInterface {
         if (enable_graphics) {
             this.graphics.set(new GraphicsManager());
             this.graphics.get().init();
+            System.out.println("Enabling graphics");
         }
         if (enable_assist) {
             this.assist = new DialogFrame();
             this.assist.init();
+            System.out.println("Enabling assist");
         }
     }
 

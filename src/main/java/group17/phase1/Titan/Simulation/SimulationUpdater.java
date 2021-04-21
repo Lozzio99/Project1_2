@@ -48,7 +48,8 @@ public class SimulationUpdater extends Thread {
                         simulation.assist().setDate();
                     } else {
                         //TODO : here goes IO stream
-                        System.out.println(simulation.toString());
+                        if (REPORT)
+                            System.out.println(simulation.toString());
                     }
                     timer += 1000;
                 }
@@ -74,13 +75,14 @@ public class SimulationUpdater extends Thread {
 
     public void launch() {
         if (ENABLE_GRAPHICS) {
-            System.out.println("Launching main graphics...");
+            System.out.println("Launching main graphics thread...");
             simulation.setRunning();
         }
         if (this.isKilled) {
             this.isKilled = false;
             return;
         }
+        System.out.println("Launching system updater thread...");
         this.start();
     }
 

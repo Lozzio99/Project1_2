@@ -3,11 +3,12 @@ package group17.phase1.Titan;
 import group17.phase1.Titan.System.Clock;
 
 public class Config {
+
     public static final int NUMERICAL_SIMULATION = 2;
     public static final int PARTICLES_SIMULATION = 1;
 
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
-    public static final boolean ENABLE_GRAPHICS = false;
+    public static final boolean ENABLE_GRAPHICS = true;
     public static final double FPS = 60;
     public static final int BETA_SIMULATION = 2;
 
@@ -24,19 +25,19 @@ public class Config {
     public static final boolean DEBUG = false;
     //which simulation is going to run
     public static int SIMULATION_LEVEL = 0;
-    public static final boolean ENABLE_ASSIST = false;
+    public static final boolean ENABLE_ASSIST = true;
 
 
     public static final double G = 6.67408e-11;
     public static boolean INSERT_PROBE = false;
 
-    public static double STEP_SIZE = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 8e3 : 8;
+    public static double STEP_SIZE = 4e3;
 
 
     //TODO : set this to be updated for particles simulation
-    public static boolean TRAJECTORIES = false;
+    public static boolean TRAJECTORIES = true;
     //TODO : set this to be updated for particles simulation
-    public static boolean NAMES = false;
+    public static boolean NAMES = true;
 
 
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;

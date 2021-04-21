@@ -35,7 +35,7 @@ public abstract class Scene extends JPanel {
     protected final static double mouseSensitivity = 16;
     protected static int initialX, initialY, x, y, xDif, yDif, deltaX, deltaY, totalXDif, totalYDif;
     protected static double scale = 3e8;
-    protected double radiusMag = 1e2;
+    protected double radiusMag = 4e2;
     private BufferedImage image;
     private Graphics2D g;
 
