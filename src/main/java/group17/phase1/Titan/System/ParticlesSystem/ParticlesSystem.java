@@ -5,8 +5,8 @@ import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Physics.Bodies.BlackHole;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Bodies.Particle;
-import group17.phase1.Titan.Physics.Math.EulerSolver;
-import group17.phase1.Titan.Physics.Math.MaxCPUSolver;
+import group17.phase1.Titan.Physics.Solvers.EulerSolver;
+import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.RateOfChange;
 import group17.phase1.Titan.System.SystemState;
@@ -38,7 +38,10 @@ public class ParticlesSystem implements SystemInterface {
         this.particles = new ArrayList<>();
         this.particles.add(new BlackHole());
         this.particles.get(0).initProperties();
+
+        //TODO : this only at the first launch (lmt)
         PARTICLES = CPU_LEVEL * PARTICLES;
+
         for (int i = 1; i < PARTICLES; i++) {
             this.particles.add(new Particle(i));
             this.particles.get(i).initProperties();

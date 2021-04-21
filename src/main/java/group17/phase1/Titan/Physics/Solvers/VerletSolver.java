@@ -1,6 +1,5 @@
-package group17.phase1.Titan.Physics.Math;
+package group17.phase1.Titan.Physics.Solvers;
 
-import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.ODESolverInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
@@ -16,7 +15,7 @@ public class VerletSolver implements ODESolverInterface {
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         endTime = tf;
-        StateInterface[] path = new StateInterface[(int)(Math.round(tf/h))+1];
+        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
         currTime = 0;
         for (int i = 0; i < path.length - 1; i++) {
             path[i] = this.step(f, currTime, y0, h);

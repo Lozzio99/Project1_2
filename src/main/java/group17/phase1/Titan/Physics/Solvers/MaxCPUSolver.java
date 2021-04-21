@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Physics.Math;
+package group17.phase1.Titan.Physics.Solvers;
 
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
@@ -6,6 +6,7 @@ import group17.phase1.Titan.Interfaces.RateInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
 import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Physics.Math.Vector3D;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;

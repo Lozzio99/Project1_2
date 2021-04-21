@@ -1,6 +1,8 @@
 package group17.phase1.Titan.Physics.Math;
 
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
+import group17.phase1.Titan.Physics.Solvers.ODESolvable;
+import group17.phase1.Titan.Physics.Solvers.VerletSolver;
 import group17.phase1.Titan.System.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

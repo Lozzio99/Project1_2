@@ -1,16 +1,22 @@
 package group17.phase1.Titan.Simulation;
 
+import group17.phase1.Titan.Interfaces.StateInterface;
+
 import static group17.phase1.Titan.Config.*;
 import static group17.phase1.Titan.Main.simulation;
 
 public class SimulationUpdater extends Thread {
-    private volatile boolean isKilled;
+    protected volatile boolean isKilled;
 
     //TODO : set the this thread to be independent -> I.O. or ExceptionHandler
     //TODO : if no Dialog Assist simulation doesn't run/start
 
     public SimulationUpdater() {
         super("Updater");
+    }
+
+    public SimulationUpdater(String name) {
+        super(name);
     }
 
     @Override
@@ -76,5 +82,13 @@ public class SimulationUpdater extends Thread {
             return;
         }
         this.start();
+    }
+
+    public boolean isKilled() {
+        return isKilled;
+    }
+
+    public StateInterface[] getStates() {
+        return null;
     }
 }

@@ -3,8 +3,8 @@ package group17.phase1.Titan.System.SolarSystem;
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Physics.Bodies.*;
-import group17.phase1.Titan.Physics.Math.EulerSolver;
-import group17.phase1.Titan.Physics.Math.MaxCPUSolver;
+import group17.phase1.Titan.Physics.Solvers.EulerSolver;
+import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.RateOfChange;
 import group17.phase1.Titan.System.SystemState;
@@ -36,16 +36,16 @@ public class SolarSystem implements SystemInterface {
     public void initPlanets() {
         this.allBodies = new ArrayList<>();
         this.allBodies.add(new Star());
-        this.allBodies.add(new Planet(Planet.PlanetsEnum.EARTH));
-        this.allBodies.add(new Planet(Planet.PlanetsEnum.MARS));
         this.allBodies.add(new Planet(Planet.PlanetsEnum.MERCURY));
         this.allBodies.add(new Planet(Planet.PlanetsEnum.VENUS));
+        this.allBodies.add(new Planet(Planet.PlanetsEnum.EARTH));
+        this.allBodies.add(new Planet(Planet.PlanetsEnum.MARS));
         this.allBodies.add(new Planet(Planet.PlanetsEnum.JUPITER));
         this.allBodies.add(new Planet(Planet.PlanetsEnum.SATURN));
+        this.allBodies.add(new Satellite(Satellite.SatellitesEnum.TITAN));
         this.allBodies.add(new Planet(Planet.PlanetsEnum.URANUS));
         this.allBodies.add(new Planet(Planet.PlanetsEnum.NEPTUNE));
         this.allBodies.add(new Satellite(Satellite.SatellitesEnum.MOON));
-        this.allBodies.add(new Satellite(Satellite.SatellitesEnum.TITAN));
         for (CelestialBody c : this.allBodies)
             c.initProperties();
     }

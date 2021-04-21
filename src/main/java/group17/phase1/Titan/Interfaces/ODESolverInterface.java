@@ -7,7 +7,8 @@
 
 package group17.phase1.Titan.Interfaces;
 
-import group17.phase1.Titan.Physics.Math.EulerSolver;
+import group17.phase1.Titan.Physics.Solvers.EulerSolver;
+import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 
 /*
  * A class for solving a general differential equation dy/dt = f(t,y)
@@ -55,7 +56,7 @@ public interface ODESolverInterface {
      * therefore will be consequently implemented in different ways
      *
      * @return the function used for calculations
-     * @see group17.phase1.Titan.Physics.Math.MaxCPUSolver
+     * @see MaxCPUSolver
      * @see EulerSolver#getFunction()
      * @see EulerSolver#singleCoreF
      */

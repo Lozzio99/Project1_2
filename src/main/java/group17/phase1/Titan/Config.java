@@ -7,7 +7,7 @@ public class Config {
     public static final int PARTICLES_SIMULATION = 1;
 
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
-    public static final boolean ENABLE_GRAPHICS = true;
+    public static final boolean ENABLE_GRAPHICS = false;
     public static final double FPS = 60;
     public static final int BETA_SIMULATION = 2;
 
@@ -24,7 +24,7 @@ public class Config {
     public static final boolean DEBUG = false;
     //which simulation is going to run
     public static int SIMULATION_LEVEL = 0;
-    public static final boolean ENABLE_ASSIST = true;
+    public static final boolean ENABLE_ASSIST = false;
 
 
     public static final double G = 6.67408e-11;
