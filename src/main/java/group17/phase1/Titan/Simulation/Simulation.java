@@ -7,6 +7,7 @@ import group17.phase1.Titan.Graphics.Scenes.Scene;
 import group17.phase1.Titan.Interfaces.GraphicsInterface;
 import group17.phase1.Titan.Interfaces.SimulationInterface;
 import group17.phase1.Titan.Interfaces.SystemInterface;
+import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Simulation.ParticlesSimulation.ParticlesSimulation;
 import group17.phase1.Titan.Simulation.SolarSystemSimulation.NumericalSimulation;
 import group17.phase1.Titan.Simulation.SolarSystemSimulation.SolarSystemSimulation;
@@ -57,9 +58,6 @@ public abstract class Simulation implements SimulationInterface {
                 return new ParticlesSimulation();
             }
             case 2 -> {
-                if (ENABLE_GRAPHICS || ENABLE_ASSIST) {
-                    System.err.println("Bad configuration settings [ ENABLE_GRAPHICS, ENABLE_ASSIST ]");
-                }
                 return new NumericalSimulation();
             }
             default -> {
@@ -81,10 +79,12 @@ public abstract class Simulation implements SimulationInterface {
         if (enable_graphics) {
             this.graphics.set(new GraphicsManager());
             this.graphics.get().init();
+            System.out.println("Enabling graphics");
         }
         if (enable_assist) {
             this.assist = new DialogFrame();
             this.assist.init();
+            System.out.println("Enabling assist");
         }
     }
 
@@ -97,7 +97,7 @@ public abstract class Simulation implements SimulationInterface {
      * @param cpu the level of the cpu usage desired
      * @implSpec MAX_CPU will try to awaken all available threads
      * @see Config#CPU_LEVEL
-     * @see group17.phase1.Titan.Physics.Math.MaxCPUSolver#setCPULevel(int)
+     * @see MaxCPUSolver#setCPULevel(int)
      */
     public void initCPU(int cpu) {
         CPU_LEVEL = cpu;

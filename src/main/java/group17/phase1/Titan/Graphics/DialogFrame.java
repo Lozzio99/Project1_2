@@ -16,6 +16,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.phase1.Titan.Config.INSERT_PROBE;
@@ -415,7 +416,7 @@ public class DialogFrame extends JPanel {
             simulation.system().stop();
             simulation.graphics().get().changeScene(Scene.SceneType.STARTING_SCENE);
             simulation.reset();
-            System.out.println("Reset simulation...");
+            System.out.println("Reset simulation");
             //System.out.println(simulation.toString());
         }
 
@@ -445,7 +446,7 @@ public class DialogFrame extends JPanel {
             acquireData();
             simulation.graphics().get().changeScene(Scene.SceneType.SIMULATION_SCENE);
             simulation.startUpdater();
-            System.out.println("Commence simulation...");
+            System.out.println("Start simulation " + LocalTime.now());
         }
     }
 

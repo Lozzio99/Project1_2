@@ -1,9 +1,10 @@
-package group17.phase1.Titan.Physics.Math;
+package group17.phase1.Titan.Physics.Solvers;
 
 
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Physics.Math.Vector3D;
 
 import static group17.phase1.Titan.Config.G;
 import static java.lang.Double.NaN;

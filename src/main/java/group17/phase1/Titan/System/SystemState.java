@@ -3,11 +3,12 @@ package group17.phase1.Titan.System;
 import group17.phase1.Titan.Interfaces.RateInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static group17.phase1.Titan.Main.simulation;
 
 public class SystemState implements StateInterface {
 
@@ -28,7 +29,7 @@ public class SystemState implements StateInterface {
 
     @Override
     public StateInterface state0() {
-        for (CelestialBody c : Main.simulation.system().getCelestialBodies())
+        for (CelestialBody c : simulation.system().getCelestialBodies())
             this.positions.add(c.getVectorLocation().clone());
         return this;
     }
@@ -54,8 +55,13 @@ public class SystemState implements StateInterface {
 
     @Override
     public String toString() {
-        return "SystemState{" +
-                "positions=" + positions +
-                '}';
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < this.positions.size(); i++) {
+            s.append(simulation.system().getCelestialBodies().get(i).toString());
+            s.append("\tPV : ");
+            s.append(this.positions.get(i).toString());
+            s.append("\n");
+        }
+        return s.toString().trim();
     }
 }
