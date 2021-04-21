@@ -20,6 +20,15 @@ public class SystemState implements StateInterface {
         this.rateOfChange = new RateOfChange();
     }
 
+    public SystemState(List<Vector3dInterface> positions) {
+        this.positions = positions;
+    }
+
+    public SystemState(Vector3dInterface positionsVector) {
+        this.positions = new ArrayList<>();
+        positions.add(positionsVector);
+    }
+
     @Override
     public StateInterface state0() {
         for (CelestialBody c : simulation.system().getCelestialBodies())
