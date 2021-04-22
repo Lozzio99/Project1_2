@@ -12,6 +12,13 @@ public class Config {
     public static final double FPS = 60;
     public static final int BETA_SIMULATION = 2;
 
+
+    public static final int EULER_SOLVER = 1;
+    public static final int RUNGE_KUTTA_SOLVER = 2;
+    public static final int VERLET_SOLVER = 3;
+    public static int SOLVER = 1;
+
+
     public static int CPU_LEVEL = 1;
     public static final int MIN_CPU = 1;  //2 threads
     public static final int CPU_LEVEL2 = 2;

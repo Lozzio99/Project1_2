@@ -1,6 +1,5 @@
 package group17.phase1.Titan.Physics.Solvers;
 
-import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.RateInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
@@ -22,7 +21,7 @@ public class MaxCPUSolver implements ODEFunctionInterface {
     public MaxCPUSolver() {
     }
 
-    public static StateInterface evaluate(int i, StateInterface y) {
+    public static Vector3dInterface evaluate(double t, int i, StateInterface y) {
         Vector3dInterface totalAcc = new Vector3D();
         for (int k = 0; k < y.getPositions().size(); k++) {
             if (i != k) {
@@ -38,12 +37,15 @@ public class MaxCPUSolver implements ODEFunctionInterface {
                      */
                 acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
                 acc = acc.mul((G * simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
-                totalAcc = totalAcc.addMul(Config.STEP_SIZE, acc);
+                totalAcc = totalAcc.addMul(t, acc);
             }
         }
-        y.getRateOfChange().getVelocities()
-                .set(i, y.getRateOfChange().getVelocities().get(i).add(totalAcc));
-        return y;
+        return totalAcc;
+    }
+
+    public Vector3dInterface set(int i, StateInterface state, Vector3dInterface acc) {
+        state.getRateOfChange().getVelocities().set(i, acc.clone());
+        return acc;
     }
 
     public MaxCPUSolver setCPULevel(int level) {
@@ -53,18 +55,16 @@ public class MaxCPUSolver implements ODEFunctionInterface {
 
     @Override
     public RateInterface call(double t, StateInterface yGiven) {
-        Config.STEP_SIZE = t;
-        final StateInterface y = yGiven;
-
         for (int i = 0; i < yGiven.getPositions().size(); i++) {
             final var finalI = i;
             try {
-                CompletableFuture.supplyAsync(() -> evaluate(finalI, y), service);
+                CompletableFuture.supplyAsync(() -> evaluate(t, finalI, yGiven), service)
+                        .thenAccept(e -> set(finalI, yGiven, e));
             } catch (RejectedExecutionException ignored) {
 
             }
         }
-        return y.getRateOfChange();
+        return yGiven.getRateOfChange();
     }
 
     public void shutDown() {

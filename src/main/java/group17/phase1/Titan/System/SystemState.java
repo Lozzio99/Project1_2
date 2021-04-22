@@ -6,7 +6,6 @@ import group17.phase1.Titan.Interfaces.Vector3dInterface;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 
-import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +104,7 @@ public class SystemState implements StateInterface {
     @Override
     public StateInterface div(double scalar) {
         if (this.positions.size() == 0)
-            throw new RuntimeException(" Nothing to multiply ");
+            throw new RuntimeException(" Nothing to divide ");
 
         for (int i = 0; i < this.positions.size(); i++) {
             this.positions.set(i, this.positions.get(i).div(scalar));

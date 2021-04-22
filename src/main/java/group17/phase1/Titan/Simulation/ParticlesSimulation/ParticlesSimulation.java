@@ -4,9 +4,13 @@ import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Simulation.Simulation;
 import group17.phase1.Titan.System.ParticlesSystem.ParticlesSystem;
 
+import static group17.phase1.Titan.Config.SOLVER;
+
 public class ParticlesSimulation extends Simulation {
     @Override
-    public void initSystem() {
+    public void initSystem(int solver) {
+
+        SOLVER = solver;
         this.system = new ParticlesSystem();
     }
 

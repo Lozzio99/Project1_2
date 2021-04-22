@@ -53,7 +53,7 @@ public interface SystemInterface {
     /**
      *
      */
-    void startSolver();
+    void startSolver(int solver);
 
     /**
      * Safely shuts down all current group thread which are running

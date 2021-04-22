@@ -11,9 +11,12 @@ import group17.phase1.Titan.System.SolarSystem.SolarSystem;
 import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static group17.phase1.Titan.Config.SOLVER;
+
 public class NumericalSimulation extends Simulation {
     @Override
-    public void initSystem() {
+    public void initSystem(int solver) {
+        SOLVER = solver;
         this.system = new SolarSystem();
         this.system.initPlanets();
         this.system.initProbe();
@@ -67,7 +70,7 @@ public class NumericalSimulation extends Simulation {
     public void solveAndWait() {
         this.system.reset();
         this.setRunning();
-        this.system.startSolver();
+        this.system.startSolver(SOLVER);
         this.updater.get().launch();
         while (!this.updater.get().isKilled()) {
         }

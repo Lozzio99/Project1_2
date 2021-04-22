@@ -28,8 +28,4 @@ public class FreeFallFunction implements ODEFunctionInterface {
     /**
      * For Higher cpu usages, shuts down all waiting or busy threads
      */
-    @Override
-    public void shutDown() {
-
-    }
 }

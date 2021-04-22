@@ -171,7 +171,7 @@ public abstract class Simulation implements SimulationInterface {
             throw new RuntimeException("Bad configuration input");
 
         this.system.reset();
-        this.system.startSolver();
+        this.system.startSolver(SOLVER);
         this.graphics.get().launch();
         if (ENABLE_ASSIST)
             this.assist.showAssistParameters();
@@ -199,7 +199,7 @@ public abstract class Simulation implements SimulationInterface {
     public void reset() {
         this.updater.get().tryStop();
         this.system.reset();
-        this.system.startSolver();
+        this.system.startSolver(SOLVER);
     }
 
 

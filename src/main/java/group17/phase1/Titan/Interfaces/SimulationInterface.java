@@ -84,11 +84,10 @@ public interface SimulationInterface {
      * @param cpu the configuration setting
      * @implNote throws runtime exception for missing cpu settings
      * @see group17.phase1.Titan.Config#CPU_LEVEL
-     * @see SystemInterface#startSolver()
      */
     void initCPU(int cpu);
 
-    void initSystem();
+    void initSystem(int solver);
 
     void initGraphics(boolean graphics, boolean assist);
 

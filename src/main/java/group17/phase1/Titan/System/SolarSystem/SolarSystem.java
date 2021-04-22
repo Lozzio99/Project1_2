@@ -6,16 +6,17 @@ import group17.phase1.Titan.Interfaces.ODESolverInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.SystemInterface;
 import group17.phase1.Titan.Physics.Bodies.*;
+import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Physics.Solvers.RungeKutta4thSolver;
+import group17.phase1.Titan.Physics.Solvers.StandardVerletSolver;
 import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.SystemState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.phase1.Titan.Config.INSERT_PROBE;
-import static group17.phase1.Titan.Config.LAUNCH_DATE;
+import static group17.phase1.Titan.Config.*;
 
 public class SolarSystem implements SystemInterface {
 
@@ -84,33 +85,26 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
-    public void startSolver() {
-        this.solver = new RungeKutta4thSolver();
-        switch (Config.CPU_LEVEL) {
-            case 1 -> {
-                this.f = this.solver.getFunction();
-            } //4 threads
-            case 2 -> {
-                this.f = new MaxCPUSolver().setCPULevel(4);
-            }  //8 threads
-            case 3 -> {
-                this.f = new MaxCPUSolver().setCPULevel(6);
-            }  //10 threads
-            case 4 -> {
-                this.f = new MaxCPUSolver().setCPULevel(8);
-            }  //12 threads
-            case 5 -> {
-                this.f = new MaxCPUSolver().setCPULevel(Runtime.getRuntime().availableProcessors());
-            } //for me is 16 but can be less
-            default -> {
-                throw new RuntimeException("Select a valid cpu level [1-5]");
-            }
+    public void startSolver(int solver) {
+        switch (solver) {
+            case EULER_SOLVER -> this.solver = new EulerSolver();
+            case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKutta4thSolver();
+            case VERLET_SOLVER -> this.solver = new StandardVerletSolver();
+            default -> throw new RuntimeException("Select a valid solver [1-3]");
+        }
+        switch (CPU_LEVEL) {
+            case 1 -> this.f = this.solver.getFunction(); //4 threads
+            case 2 -> this.f = new MaxCPUSolver().setCPULevel(4);  //8 threads
+            case 3 -> this.f = new MaxCPUSolver().setCPULevel(6);  //10 threads
+            case 4 -> this.f = new MaxCPUSolver().setCPULevel(8);  //12 threads
+            case 5 -> this.f = new MaxCPUSolver().setCPULevel(Runtime.getRuntime().availableProcessors()); //for me is 16 but can be less
+            default -> throw new RuntimeException("Select a valid cpu level [1-5]");
         }
     }
 
     @Override
     public void stop() {
-        this.f.shutDown();
+        //this.f.shutDown();
     }
 
     @Override

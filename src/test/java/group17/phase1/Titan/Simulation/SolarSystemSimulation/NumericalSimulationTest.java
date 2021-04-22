@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static group17.phase1.Titan.Config.SOLVER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NumericalSimulationTest {
@@ -16,7 +17,7 @@ class NumericalSimulationTest {
     static void beforeAll() {
         simulation = Main.simulation = Simulation.create(2);//numerical
         simulation.initCPU(1);
-        simulation.initSystem();
+        simulation.initSystem(SOLVER);
         System.out.println(simulation.toString());
     }
 
