@@ -3,7 +3,10 @@ package group17.phase1.Titan.Physics.Solvers;
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.ODESolverInterface;
+import group17.phase1.Titan.Interfaces.RateInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
+import group17.phase1.Titan.System.RateOfChange;
+import group17.phase1.Titan.System.SystemState;
 
 public class RungeKutta4thSolver implements ODESolverInterface {
 
@@ -44,10 +47,11 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         return path;
     }
 
+
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
-        StateInterface k1, k2, k3, k4, kk;
-
+        RateInterface k21, k22, k23, k24, kv;
+        StateInterface k11,k12,k13,k14,kk;
         /*  f (has method f.calL) same as f2
 
         def RK4step(f,w,dt):
@@ -64,38 +68,72 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         double k4 = h * f.f_y(t+h,w + k3);
         return  w + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));
          */
+       // System.out.println(y.getRateOfChange().getVelocities() + " Init Velocities");
+
+        System.out.println("StepSize: "+ h);
+
         System.out.println("old y");
         System.out.println(y);
+        RateInterface velocity = new RateOfChange();
 
-        k1 = y.addMul(h, f.call(h, StateInterface.clone(y)));
-        System.out.println("k1");
-        System.out.println(k1);
-        k2 = y.addMul(h / 2, f.call(h / 2, StateInterface.clone(k1).div(2))).multiply(2);
-        System.out.println("k2");
-
-        System.out.println(k2);
-
-        k3 = y.addMul(h / 2, f.call(h / 2, StateInterface.clone(k2).div(2))).multiply(2);
-        System.out.println("k3");
-
-        System.out.println(k3);
-        k4 = y.addMul(h, f.call(h, StateInterface.clone(k3)));
-        System.out.println("k4");
-
-        System.out.println(k4);
-        kk = k1.sumOf(k2, k3, k4);
+        velocity.setVel(y.getRateOfChange().getVelocities());
 
 
-        kk = kk.div(6);
+        k11 = StateInterface.clone(y).rateMul(h,RateInterface.clone(velocity)); // k11
+
+        k21 = f.call(1,StateInterface.clone(y)).multiply(h);
+        // to try - without multiply by h
+        k12 = StateInterface.clone(y).rateMul(h,RateInterface.clone(velocity).add(RateInterface.clone(k21).multiply(0.5))); //!!
+
+        k22 = f.call(1,StateInterface.clone(y).add(StateInterface.clone(k11).multiply(0.5))).multiply(h);
+
+        k13 = StateInterface.clone(y).rateMul(h,RateInterface.clone(velocity).add(RateInterface.clone(k22).multiply(0.5)));
+
+        k23 = f.call(1,StateInterface.clone(y).add(StateInterface.clone(k12).multiply(0.5))).multiply(h);
+
+        k14 =StateInterface.clone(y).rateMul(h,RateInterface.clone(velocity).add(RateInterface.clone(k23)));
+
+        k24 = f.call(1,StateInterface.clone(y).add(StateInterface.clone(k13))).multiply(h);
+
+
+        System.out.println("k11");
+        System.out.println(k11);
+        System.out.println("k12");
+        System.out.println(k12);
+        System.out.println("k13");
+        System.out.println(k13);
+        System.out.println("k14");
+        System.out.println(k14);
+
+
+        k12 = k12.multiply(2);
+        k13 = k13.multiply(2);
+
+        k22 = k22.multiply(2);
+        k23 = k23.multiply(2);
+
+
+
+
+
+
+        kk = (k11.sumOf(k12, k13, k14)).div(6);
+
+        kv = (k21.sumOf(k22,k23,k24)).div(6);
+
+        //-6.80564659829616E8
+        //-6.806783239281648E8
 
         System.out.println("kk");
         System.out.println(kk);
-        y = StateInterface.clone(kk);
+        y.getRateOfChange().setVel(y.getRateOfChange().add(kv).getVelocities());
+        y = y.add(kk);
 
 
         System.out.println("new y");
         System.out.println(y);
-        System.exit(0);
+        System.out.println("*******************************************************************************************************************");
+        //System.exit(0);
 
 
         return y;
@@ -106,4 +144,3 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         return this.singleCoreF;
     }
 }
-

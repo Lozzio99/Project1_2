@@ -41,7 +41,7 @@ public interface StateInterface {
      */
 
     StateInterface addMul(double step, RateInterface rate);
-
+     StateInterface rateMul(double step, RateInterface rate);
     /**
      * @return a String containing the state of the system
      */
