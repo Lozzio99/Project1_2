@@ -31,7 +31,7 @@ public class Config {
     public static final double G = 6.67408e-11;
     public static boolean INSERT_PROBE = false;
 
-    public static double STEP_SIZE = 4e3;
+    public static double STEP_SIZE = 8000;
 
 
     //TODO : set this to be updated for particles simulation

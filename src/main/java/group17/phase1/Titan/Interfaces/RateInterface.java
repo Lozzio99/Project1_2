@@ -1,6 +1,7 @@
 package group17.phase1.Titan.Interfaces;
 
 import group17.phase1.Titan.System.RateOfChange;
+import group17.phase1.Titan.System.SystemState;
 
 import java.util.List;
 
@@ -15,6 +16,10 @@ public interface RateInterface {
      */
     List<Vector3dInterface> getVelocities();
 
+    void setVel(List<Vector3dInterface> vel); // !!
+
+    RateInterface sub(int i);
+
     static RateInterface clone(RateInterface tobeCloned) {
         RateInterface s = new RateOfChange();
 
@@ -23,8 +28,6 @@ public interface RateInterface {
         }
         return s;
     }
-
-    RateInterface sub(int i);
 
     RateInterface copy(RateInterface tobeCloned);
 

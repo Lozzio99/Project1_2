@@ -43,8 +43,9 @@ public class EulerSolver implements ODESolverInterface {
                     }
                 }  // y1 =y0 + h*acc
                 // y1 = y0 + p
+                Vector3dInterface new_vector = new Vector3D(0,0,0);
                 y.getRateOfChange().getVelocities()
-                        .set(i, y.getRateOfChange().getVelocities().get(i).add(totalAcc));
+                        .set(i,new_vector.add(totalAcc));
             }
             return y.getRateOfChange();
         }

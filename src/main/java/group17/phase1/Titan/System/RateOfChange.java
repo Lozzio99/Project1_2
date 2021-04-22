@@ -1,7 +1,9 @@
 package group17.phase1.Titan.System;
 
 import group17.phase1.Titan.Interfaces.RateInterface;
+import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
+import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 
 import java.util.ArrayList;
@@ -16,7 +18,8 @@ public class RateOfChange implements RateInterface {
         this.vel = new ArrayList<>();
     }
 
-    public RateOfChange state0() {
+    public RateOfChange state0()
+    {
         for (int i = 0; i < simulation.system().systemState().getPositions().size(); i++)
             this.vel.add(simulation.system().getCelestialBodies().get(i).getVectorVelocity());
         return this;
@@ -32,12 +35,13 @@ public class RateOfChange implements RateInterface {
     }
 
     @Override
-    public RateInterface sub(int scalar) {
+    public RateInterface sub(int scalar)
+    {
         if (this.vel.size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
 
         for (int i = 0; i < this.vel.size(); i++) {
-            this.vel.set(i, this.vel.get(i).sub(new Vector3D(scalar, scalar, scalar)));
+            this.vel.set(i, this.vel.get(i).sub(new Vector3D(scalar,scalar,scalar)));
         }
         return this;
     }
@@ -48,8 +52,7 @@ public class RateOfChange implements RateInterface {
         for (Vector3dInterface v : tobeCloned.getVelocities()) {
             s.getVelocities().add(v.clone());
         }
-        return s;
-    }
+        return s;    }
 
     @Override
     public RateInterface multiply(double scalar) {
@@ -70,8 +73,7 @@ public class RateOfChange implements RateInterface {
         for (int i = 0; i < this.vel.size(); i++) {
             this.vel.set(i, this.vel.get(i).div(scalar));
         }
-        return this;
-    }
+        return this;    }
 
     @Override
     public RateInterface add(RateInterface tobeAdded) {
@@ -85,9 +87,11 @@ public class RateOfChange implements RateInterface {
     }
 
     @Override
-    public RateInterface sumOf(RateInterface... states) {
+    public RateInterface sumOf(RateInterface... states)
+    {
         for (int i = 0; i < states[0].getVelocities().size(); i++) {
             Vector3dInterface velsum = this.getVelocities().get(i);
+
             for (RateInterface r : states) {
                 velsum = velsum.add(r.getVelocities().get(i));
             }
@@ -110,9 +114,10 @@ public class RateOfChange implements RateInterface {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        for (int i = 0; i < vel.size(); i++) {
+        for (int i = 0; i< vel.size(); i++)
+        {
             s.append(simulation.system().getCelestialBodies().get(i).toString());
-            s.append(" : ");
+            s.append(" : " );
             s.append(this.vel.get(i).toString()).append("\n");
         }
         return vel.toString();
