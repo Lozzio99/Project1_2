@@ -6,9 +6,10 @@ import group17.phase1.Titan.Physics.Solvers.VerletSolver;
 import group17.phase1.Titan.System.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VerletSolverTest {
 
@@ -19,7 +20,7 @@ public class VerletSolverTest {
         VerletSolver solver = new VerletSolver();
         // init parameters
         Vector3D initPos = new Vector3D(0, 0, 0);
-        Vector3D initVelocity = new Vector3D(0,0, 0);
+        Vector3D initVelocity = new Vector3D(0, 0, 0);
         ArrayList<Vector3dInterface> stateList = new ArrayList<>();
         stateList.add(initPos);
         stateList.add(initVelocity);

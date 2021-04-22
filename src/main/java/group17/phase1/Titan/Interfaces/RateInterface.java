@@ -1,5 +1,7 @@
 package group17.phase1.Titan.Interfaces;
 
+import group17.phase1.Titan.System.RateOfChange;
+
 import java.util.List;
 
 public interface RateInterface {
@@ -13,7 +15,29 @@ public interface RateInterface {
      */
     List<Vector3dInterface> getVelocities();
 
-    RateInterface mul(int i);
+    static RateInterface clone(RateInterface tobeCloned) {
+        RateInterface s = new RateOfChange();
+
+        for (int i = 0; i < tobeCloned.getVelocities().size(); i++) {
+            s.getVelocities().add(tobeCloned.getVelocities().get(i).clone());
+        }
+        return s;
+    }
+
+    RateInterface sub(int i);
+
+    RateInterface copy(RateInterface tobeCloned);
+
+    RateInterface multiply(double scalar);
+
+    RateInterface sub(double scalar);
+
+
+    RateInterface add(RateInterface tobeAdded);
+
+    RateInterface sumOf(RateInterface... states);
+
+    RateInterface div(int i);
 
 
 }

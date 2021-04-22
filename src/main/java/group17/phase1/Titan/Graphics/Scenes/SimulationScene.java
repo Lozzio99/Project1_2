@@ -15,7 +15,7 @@ import static group17.phase1.Titan.Config.*;
 public class SimulationScene extends Scene {
     Point3D[] planetsPositions;
     double[] radius;
-    Bag[] trajectories;
+    volatile Bag[] trajectories;
 
 
     @Override
