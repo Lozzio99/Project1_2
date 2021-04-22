@@ -26,7 +26,8 @@ public class StandardVerletSolverTest {
 
         double aprxSolution = aprxStates[aprxStates.length-1].getPositions().get(0).getZ();
         double expectedSol = initVelocity.getZ()*tf-0.5*FreeFallFunction.CONSTANT_G*tf*tf; // free fall equation
-
+        System.out.println(expectedSol);
+        System.out.println(aprxSolution);
         assertTrue(1e-12 > Math.abs(expectedSol - aprxSolution));
     }
 

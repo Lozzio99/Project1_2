@@ -21,9 +21,8 @@ public class VerletVelocitySolver implements ODESolverInterface {
         StateInterface[] path = new StateInterface[(int)(Math.round(tf/h))+1];
         currTime = 0;
         for (int i = 0; i < path.length - 1; i++) {
-            path[i] = this.step(f, currTime, y0, h);
+            path[i] = this.step(f, currTime+=h, y0, h);
             y0 = path[i];
-            currTime+=h;
         }
         path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
         return path;
@@ -37,9 +36,8 @@ public class VerletVelocitySolver implements ODESolverInterface {
 
         for (int i = 0; i < ts.length - 1; i++) {
             double h = ts[i + 1] - ts[i];
-            states[i] = this.step(f, currTime, y0, h);
+            states[i] = this.step(f, currTime+=h, y0, h);
             y0 = states[i];
-            currTime += h;
         }
         states[states.length - 1] = this.step(f, currTime, y0, ts[ts.length - 1] - currTime);
         return states;
