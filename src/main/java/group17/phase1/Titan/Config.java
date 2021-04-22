@@ -34,9 +34,9 @@ public class Config {
 
 
     //TODO : set this to be updated for particles simulation
-    public static boolean TRAJECTORIES = false;
+    public static boolean TRAJECTORIES = true;
     //TODO : set this to be updated for particles simulation
-    public static boolean NAMES = false;
+    public static boolean NAMES = true;
 
 
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;

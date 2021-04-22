@@ -5,10 +5,12 @@ import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Physics.Bodies.*;
 import group17.phase1.Titan.Physics.Math.EulerSolver;
 import group17.phase1.Titan.Physics.Math.MaxCPUSolver;
+import group17.phase1.Titan.Simulation.SolarSystemSimulation.TrajectoryErrorCalc;
 import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.RateOfChange;
 import group17.phase1.Titan.System.SystemState;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class SolarSystem implements SystemInterface {
     double t = 0;
     private RateInterface rateOfChange;
     private Clock clock;
+    private TrajectoryErrorCalc trajectoryErrorCalc;
+    private int monthCount = 0;
 
     @Override
     public List<CelestialBody> getCelestialBodies() {
@@ -33,7 +37,7 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
-    public void initPlanets() {
+    public void initPlanets() throws FileNotFoundException {
         this.allBodies = new ArrayList<>();
         this.allBodies.add(new Star());
         this.allBodies.add(new Planet(Planet.PlanetsEnum.EARTH));
@@ -46,8 +50,10 @@ public class SolarSystem implements SystemInterface {
         this.allBodies.add(new Planet(Planet.PlanetsEnum.NEPTUNE));
         this.allBodies.add(new Satellite(Satellite.SatellitesEnum.MOON));
         this.allBodies.add(new Satellite(Satellite.SatellitesEnum.TITAN));
-        for (CelestialBody c : this.allBodies)
+        for (CelestialBody c : this.allBodies) {
             c.initProperties();
+        }
+        trajectoryErrorCalc = new TrajectoryErrorCalc();
     }
 
     @Override
@@ -57,6 +63,7 @@ public class SolarSystem implements SystemInterface {
             p.initProperties();
             this.allBodies.add(p);
         }
+        fillValues();
     }
 
     @Override
@@ -136,6 +143,62 @@ public class SolarSystem implements SystemInterface {
     public void step() {
         this.systemState = this.solver.step(this.f, t, this.systemState, Config.STEP_SIZE);
         t += Config.STEP_SIZE;
+        updateTrajectoryLog();
+    }
+
+    /**
+     * Determines a start of a new month and if it is the case, the method writes the values into the log
+     * of the TrajectoryErrorCalc class.
+     */
+    public void updateTrajectoryLog() {
+        // System.out.println("Month: " + clock.getMonth());
+        if (this.monthCount < clock.getMonth()) {
+            if (this.monthCount <= 12) {
+                monthCount++;
+                System.out.println(monthCount);
+                // Fill in the values of each body:
+                fillValues();
+            }
+            else {
+                trajectoryErrorCalc.printSimulationData();
+            }
+        }
+    }
+
+    /**
+     * Fills the current state of the solar system into the log.
+     */
+    public void fillValues() {
+        // Sun
+        trajectoryErrorCalc.fillSimulation(0,monthCount,0,this.getCelestialBodies().get(0).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(0,monthCount,1,this.getCelestialBodies().get(0).getVectorVelocity());
+        // Mercury
+        trajectoryErrorCalc.fillSimulation(1,monthCount,0,this.getCelestialBodies().get(3).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(1,monthCount,1,this.getCelestialBodies().get(3).getVectorVelocity());
+        // Venus
+        trajectoryErrorCalc.fillSimulation(2,monthCount,0,this.getCelestialBodies().get(4).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(2,monthCount,1,this.getCelestialBodies().get(4).getVectorVelocity());
+        // Earth
+        trajectoryErrorCalc.fillSimulation(3,monthCount,0,this.getCelestialBodies().get(1).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(3,monthCount,1,this.getCelestialBodies().get(1).getVectorVelocity());
+        // Mars
+        trajectoryErrorCalc.fillSimulation(4,monthCount,0,this.getCelestialBodies().get(2).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(4,monthCount,1,this.getCelestialBodies().get(2).getVectorVelocity());
+        // Jupiter
+        trajectoryErrorCalc.fillSimulation(5,monthCount,0,this.getCelestialBodies().get(5).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(5,monthCount,1,this.getCelestialBodies().get(5).getVectorVelocity());
+        // Saturn
+        trajectoryErrorCalc.fillSimulation(6,monthCount,0,this.getCelestialBodies().get(6).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(6,monthCount,1,this.getCelestialBodies().get(6).getVectorVelocity());
+        // Titan
+        trajectoryErrorCalc.fillSimulation(7,monthCount,0,this.getCelestialBodies().get(10).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(7,monthCount,1,this.getCelestialBodies().get(10).getVectorVelocity());
+        // Uranus
+        trajectoryErrorCalc.fillSimulation(8,monthCount,0,this.getCelestialBodies().get(7).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(8,monthCount,1,this.getCelestialBodies().get(7).getVectorVelocity());
+        // Neptune
+        trajectoryErrorCalc.fillSimulation(9,monthCount,0,this.getCelestialBodies().get(8).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(9,monthCount,1,this.getCelestialBodies().get(8).getVectorVelocity());
     }
 
     @Override

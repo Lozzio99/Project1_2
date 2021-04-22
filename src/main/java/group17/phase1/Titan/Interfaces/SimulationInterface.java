@@ -6,6 +6,7 @@ import group17.phase1.Titan.Graphics.GraphicsManager;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Simulation.SimulationUpdater;
 
+import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicReference;
 
 public interface SimulationInterface {
@@ -88,7 +89,7 @@ public interface SimulationInterface {
      */
     void initCPU(int cpu);
 
-    void initSystem();
+    void initSystem() throws FileNotFoundException;
 
     void initGraphics(boolean graphics, boolean assist);
 
