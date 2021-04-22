@@ -22,7 +22,7 @@ public class VerletVelocitySolverTest {
         initState.getRateOfChange().getVelocities().add(initVelocity);
         // get solution
         double tf = 6.0; // final time
-        StateInterface[] aprxStates = solver.solve(yd, initState, tf,0.05);
+        StateInterface[] aprxStates = solver.solve(yd, initState, tf,0.5);
 
         double aprxSolution = aprxStates[aprxStates.length-1].getPositions().get(0).getZ();
         double expectedSol = initVelocity.getZ()*tf-0.5*FreeFallFunction.CONSTANT_G*tf*tf; // free fall equation

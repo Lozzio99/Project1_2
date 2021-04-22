@@ -9,6 +9,8 @@ import static java.lang.Double.NaN;
 
 public class StandardVerletSolver implements ODESolverInterface {
 
+    private StateInterface prevState;
+
     public static double currTime = 0;
     public static double endTime = NaN;
 
@@ -21,13 +23,13 @@ public class StandardVerletSolver implements ODESolverInterface {
         // first step with a Runge-Kutta
         RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
         path[0] = rk4.step(f, currTime+=h,y0,h);
-        // Adding previous storing prev position
-        path[0].getPositions().add(y0.getPositions().get(0));
+        // Adding previous storing prev
+        y0 = path[0];
+        prevState = y0;
         // solve
         for (int i = 1; i < path.length - 1; i++) {
-            path[i] = this.step(f, currTime, y0, h);
+            path[i] = this.step(f, currTime+=h, y0, h);
             y0 = path[i];
-            currTime+=h;
         }
         path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
         return path;
@@ -43,13 +45,13 @@ public class StandardVerletSolver implements ODESolverInterface {
         RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
         states[0] = rk4.step(f, currTime+=ts[1]-ts[0],y0,ts[1]-ts[0]);
         // Adding previous storing prev position
-        states[0].getPositions().add(y0.getPositions().get(0));
+        y0 = states[0];
+        prevState = y0;
         // solve
         for (int i = 1; i < ts.length - 1; i++) {
             double h = ts[i + 1] - ts[i];
-            states[i] = this.step(f, currTime, y0, h);
+            states[i] = this.step(f, currTime+=h, y0, h);
             y0 = states[i];
-            currTime += h;
         }
         states[states.length - 1] = this.step(f, currTime, y0, ts[ts.length - 1] - currTime);
         return states;
@@ -71,10 +73,10 @@ public class StandardVerletSolver implements ODESolverInterface {
         // next position
         Vector3dInterface part1 = y.getPositions().get(0).mul(2); // 2*(x_n)
         Vector3dInterface part2 = f.call(t, y).getVelocities().get(0).mul(h*h).add(part1); // + f(x_n,t_n)*h^2
-        Vector3dInterface part3 = part2.sub(y.getPositions().get(1)); // - x_n-1
+        Vector3dInterface part3 = part2.sub(prevState.getPositions().get(0)); // - x_n-1
         StateInterface next_y = StateInterface.clone(y);
+        prevState = StateInterface.clone(y);
         next_y.getPositions().set(0, part3);
-        next_y.getPositions().set(1, y.getPositions().get(0));
         return next_y;
     }
 
