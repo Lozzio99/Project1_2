@@ -3,10 +3,6 @@ package group17.phase1.Titan.Physics.Math;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.RateInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
-import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.System.RateOfChange;
-
-import java.util.ArrayList;
 
 /**
  * Implements a free fall ODE
@@ -16,8 +12,6 @@ import java.util.ArrayList;
  */
 public class FreeFallFunction implements ODEFunctionInterface {
 
-    private RateOfChange next_rate;
-    private ArrayList<Vector3dInterface> stateList;
     public static final double CONSTANT_G = 9.81998;
 
     @Override
@@ -26,12 +20,8 @@ public class FreeFallFunction implements ODEFunctionInterface {
         next_vector.setX(y.getPositions().get(0).getX());
         next_vector.setY(y.getPositions().get(0).getY());
         next_vector.setZ(-CONSTANT_G);
-
-        next_rate = new RateOfChange();
-        stateList = new ArrayList<>();
-        stateList.add(next_vector);
-        next_rate.setVel(stateList);
-
+        RateInterface next_rate = StateInterface.clone(y).getRateOfChange();
+        next_rate.getVelocities().set(0, next_vector);
         return next_rate;
     }
 

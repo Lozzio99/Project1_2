@@ -7,7 +7,10 @@ import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
 import static java.lang.Double.NaN;
 
-public class VerletSolver implements ODESolverInterface {
+/**
+ * Verlet Velosity Solver (both positions and velocity, less round-off errors)
+ */
+public class VerletVelocitySolver implements ODESolverInterface {
 
     public static double currTime = 0;
     public static double endTime = NaN;
@@ -15,10 +18,11 @@ public class VerletSolver implements ODESolverInterface {
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         endTime = tf;
-        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
+        StateInterface[] path = new StateInterface[(int)(Math.round(tf/h))+1];
         currTime = 0;
         for (int i = 0; i < path.length - 1; i++) {
             path[i] = this.step(f, currTime, y0, h);
+            y0 = path[i];
             currTime+=h;
         }
         path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
@@ -34,6 +38,7 @@ public class VerletSolver implements ODESolverInterface {
         for (int i = 0; i < ts.length - 1; i++) {
             double h = ts[i + 1] - ts[i];
             states[i] = this.step(f, currTime, y0, h);
+            y0 = states[i];
             currTime += h;
         }
         states[states.length - 1] = this.step(f, currTime, y0, ts[ts.length - 1] - currTime);
@@ -49,25 +54,29 @@ public class VerletSolver implements ODESolverInterface {
      * Source: http://www.physics.udel.edu/~bnikolic/teaching/phys660/numerical_ode/node5.html
      * @param f ordinary differential equations - function of acceleration
      * @param t current time
-     * @param y current state; get(0) - position vector, get(1) - velocity vector
+     * @param y current state;
      * @param h step size
      * @return new state
      */
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         // next position
-        Vector3dInterface part1 = y.getPositions().get(1).mul(h); // (v_n)*delta_t
-        Vector3dInterface part2 = f.call(t, y).getVelocities().get(0).mul(0.5 * h * h); // 1/2*(a_n)*(delta_t^2)
-        Vector3dInterface part3 = y.getPositions().get(0).add(part1.add(part2)); // x_n + (v_n)*delta_t+1/2*(a_n)*(delta_t^2);
-
+        Vector3dInterface part1 = y.getRateOfChange().getVelocities().get(0).mul(h); // + (v_n)*delta_t
+        Vector3dInterface part2 = f.call(t, y).getVelocities().get(0).mul(0.5 * h * h).add(part1); // + 1/2*(a_n)*(delta_t^2)
+        Vector3dInterface part3 = y.getPositions().get(0).add(part2); // + x_n
+        StateInterface next_x = StateInterface.clone(y);
+        next_x.getPositions().set(0, part3);
         // next velocity
-        Vector3dInterface part4 = f.call(t + h, y).getVelocities().get(0).add(f.call(t, y).getVelocities().get(0)).mul(0.5 * h); // 1/2*((a_n+1)+(a_n))*(delta_t)
-        Vector3dInterface part5 = y.getPositions().get(1).add(part4); // v_n + 1/2*((a_n+1)+(a_n))*(delta_t)
+        Vector3dInterface part4 = f.call(t + h, next_x).getVelocities().get(0); // a_n+1
+        Vector3dInterface part5 = f.call(t, y).getVelocities().get(0); // a_n
+        Vector3dInterface part6 = (part4.add(part5)).mul(0.5 * h); //
+        Vector3dInterface part7 = y.getRateOfChange().getVelocities().get(0).add(part6); // v_n + 1/2*((a_n+1)+(a_n))*(delta_t)
 
-        y.getPositions().set(0, part3);
-        y.getPositions().set(1, part5);
+        StateInterface next_y = StateInterface.clone(y);
+        next_y.getPositions().set(0, part3);
+        next_y.getRateOfChange().getVelocities().set(0, part7);
 
-        return y;
+        return next_y;
     }
 
     /**
