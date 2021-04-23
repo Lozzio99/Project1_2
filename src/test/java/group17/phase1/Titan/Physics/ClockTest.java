@@ -48,6 +48,32 @@ class ClockTest {
     }
 
     @Test
+    @DisplayName("StepSizeMonth")
+    void ContinuouslyUpdateMonth() {
+        Clock c = new Clock().setLaunchDay();
+        int day = 60 * 60 * 24;
+        double totaldays = 0;
+        int april = 3, year = 0;
+        for (int i = april; i < c.getDaysInMonths().length; i++) {
+            int days = day * c.getDaysInMonths()[i];
+            c.step(days);
+            totaldays += days;
+            int m = (i < 11 ? i + 2 : i - 10); //current month
+            year = m == 1 ? 1 : year;  //january, new year
+            assertEquals("Clock { [ 00 : 00 : 00 ]   °  01 / " + m / 10 + m % 10 + " / 202" + year + " ° }", c.toString());
+        }
+        for (int i = 0; i < april; i++) {
+            int days = day * c.getDaysInMonths()[i];
+            c.step(days);
+            totaldays += days;
+            int m = i + 2;
+            assertEquals("Clock { [ 00 : 00 : 00 ]   °  01 / " + m / 10 + m % 10 + " / 2021 ° }", c.toString());
+        }
+        assertEquals(3.1536E7, totaldays);
+
+    }
+
+    @Test
     @DisplayName("StepSizeDay")
     void ContinuouslyUpdate() {
         Clock clock = new Clock().setLaunchDay();
@@ -96,4 +122,6 @@ class ClockTest {
         assertEquals(inTwoYears, c.toString());
 
     }
+
+
 }

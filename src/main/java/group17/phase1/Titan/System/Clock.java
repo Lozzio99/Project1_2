@@ -12,7 +12,9 @@ public class Clock {
     }
 
     public static void main(String[] args) {
-        Clock c = new Clock().setLaunchDay();
+
+
+        /*
         while (true) {
             c.step(30 * 60);
             System.out.println(c);
@@ -22,6 +24,7 @@ public class Clock {
                 e.printStackTrace();
             }
         }
+        */
     }
 
     public Clock setLaunchDay() {
@@ -99,7 +102,7 @@ public class Clock {
 
     public void checkLeap() {
         leap = this.years % 4 == 0;
-        daysInMonths = new int[]{31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        daysInMonths = new int[]{31, (leap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     }
 
     @Override
@@ -137,4 +140,7 @@ public class Clock {
         return years;
     }
 
+    public int[] getDaysInMonths() {
+        return daysInMonths;
+    }
 }
