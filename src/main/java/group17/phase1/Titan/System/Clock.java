@@ -55,6 +55,7 @@ public class Clock {
     }
 
     private void minStep(int minutes) {
+
         int hours = minutes / 60;
         this.min += minutes % 60;
         if (this.min >= 60) {
@@ -76,7 +77,12 @@ public class Clock {
 
     private void daysStep(int days) {
         int months = days / this.daysInMonths[this.months - 1];
+
+        //FIXME : problem here i guess,
+        //TODO : receive 365, return days == days ( if ! leap )
         this.days += days % this.daysInMonths[this.months - 1];
+
+
         if (this.days > this.daysInMonths[this.months - 1]) {
             months += this.days / this.daysInMonths[this.months - 1];
             this.days = (this.days % this.daysInMonths[this.months - 1]);
@@ -143,4 +149,6 @@ public class Clock {
     public int[] getDaysInMonths() {
         return daysInMonths;
     }
+
+
 }

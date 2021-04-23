@@ -2,7 +2,6 @@ package group17.phase1.Titan.Physics;
 
 import group17.phase1.Titan.System.Clock;
 import org.junit.jupiter.api.Assumptions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -39,11 +38,11 @@ class ClockTest {
 
     //FIXME : why this doesn't work?
     @Test
-    @Disabled("TO BE FIXED")
+    //@Disabled("TO BE FIXED")
     @DisplayName("StepSizeYear")
     void StepSizeYear() {
         Clock clock = new Clock().setLaunchDay();
-        clock.step(86400 * 365);
+        clock.step(3.1536E7);
         assertEquals("Clock { [ 00 : 00 : 00 ]   °  01 / 04 / 2021 ° }", clock.toString());
     }
 

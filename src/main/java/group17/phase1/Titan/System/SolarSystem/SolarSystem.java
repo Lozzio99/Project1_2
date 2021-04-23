@@ -134,7 +134,8 @@ public class SolarSystem implements SystemInterface {
     public void step() {
         this.systemState = this.solver.step(this.f, t, this.systemState, Config.STEP_SIZE);
         t += Config.STEP_SIZE;
-        updateTrajectoryLog();
+        if (REPORT)
+            updateTrajectoryLog();
     }
 
     /**
