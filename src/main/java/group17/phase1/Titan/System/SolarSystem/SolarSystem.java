@@ -6,10 +6,7 @@ import group17.phase1.Titan.Interfaces.ODESolverInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.SystemInterface;
 import group17.phase1.Titan.Physics.Bodies.*;
-import group17.phase1.Titan.Physics.Solvers.EulerSolver;
-import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
-import group17.phase1.Titan.Physics.Solvers.RungeKutta4thSolver;
-import group17.phase1.Titan.Physics.Solvers.StandardVerletSolver;
+import group17.phase1.Titan.Physics.Solvers.*;
 import group17.phase1.Titan.Physics.Trajectories.TrajectoryErrorCalc;
 import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.SystemState;
@@ -97,8 +94,9 @@ public class SolarSystem implements SystemInterface {
         switch (solver) {
             case EULER_SOLVER -> this.solver = new EulerSolver();
             case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKutta4thSolver();
-            case VERLET_SOLVER -> this.solver = new StandardVerletSolver();
-            default -> throw new RuntimeException("Select a valid solver [1-3]");
+            case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver();
+            case VERLET_VEL_SOLVER -> this.solver = new VerletVelocitySolver();
+            default -> throw new RuntimeException("Select a valid solver [1-4]");
         }
         switch (CPU_LEVEL) {
             case 1 -> this.f = this.solver.getFunction(); //4 threads

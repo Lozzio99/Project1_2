@@ -15,7 +15,8 @@ public class Config {
 
     public static final int EULER_SOLVER = 1;
     public static final int RUNGE_KUTTA_SOLVER = 2;
-    public static final int VERLET_SOLVER = 3;
+    public static final int VERLET_VEL_SOLVER = 3;
+    public static final int VERLET_STD_SOLVER = 4;
     public static int SOLVER = 1;
 
 
