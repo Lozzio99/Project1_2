@@ -74,7 +74,7 @@ public class SimulationUpdater extends Thread {
     }
 
     public void launch() {
-        if (ENABLE_GRAPHICS) {
+        if (ENABLE_GRAPHICS && REPORT) {
             System.out.println("Launching main graphics thread...");
             simulation.setRunning();
         }
@@ -82,7 +82,8 @@ public class SimulationUpdater extends Thread {
             this.isKilled = false;
             return;
         }
-        System.out.println("Launching system updater thread...");
+        if (REPORT)
+            System.out.println("Launching system updater thread...");
         this.start();
     }
 

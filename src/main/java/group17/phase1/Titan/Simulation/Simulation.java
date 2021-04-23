@@ -179,7 +179,8 @@ public abstract class Simulation implements SimulationInterface {
             this.setWaiting(false);
             this.graphics.get().changeScene(Scene.SceneType.SIMULATION_SCENE);
             this.startUpdater();
-            System.out.println("Commence simulation...");
+            if (REPORT)
+                System.out.println("Commence simulation...");
         }
     }
 

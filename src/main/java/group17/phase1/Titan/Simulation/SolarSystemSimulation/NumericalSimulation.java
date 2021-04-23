@@ -10,6 +10,7 @@ import group17.phase1.Titan.System.SolarSystem.SolarSystem;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import static group17.phase1.Titan.Config.REPORT;
 import static group17.phase1.Titan.Config.SOLVER;
 
 public class NumericalSimulation extends Simulation {
@@ -73,17 +74,20 @@ public class NumericalSimulation extends Simulation {
         this.updater.get().launch();
         while (!this.updater.get().isKilled()) {
         }
-        TrajectoryErrorCalc test = null;
-        test = new TrajectoryErrorCalc();
-        test.revert();
 
-        for (int i = 0; i < this.updater.get().getStates().length; i++) {
-            System.out.println("Month  " + (i + 1));
-            System.out.println("SIMULATION STATE : ");
-            System.out.println(this.updater.get().getStates()[i].toString());
-            System.out.println("\nCOMPARE TO ORIGINAL : ");
-            System.out.println(test.getMonths().get(i).toString());
-            System.out.println("\n");
+
+        if (REPORT) {
+            TrajectoryErrorCalc test = null;
+            test = new TrajectoryErrorCalc();
+            test.revert();
+            for (int i = 0; i < this.updater.get().getStates().length; i++) {
+                System.out.println("Month  " + (i + 1));
+                System.out.println("SIMULATION STATE : ");
+                System.out.println(this.updater.get().getStates()[i].toString());
+                System.out.println("\nCOMPARE TO ORIGINAL : ");
+                System.out.println(test.getMonths().get(i).toString());
+                System.out.println("\n");
+            }
         }
     }
 

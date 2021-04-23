@@ -196,6 +196,8 @@ public class SolarSystem implements SystemInterface {
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < allBodies.size(); i++) {
+            if (systemState.getPositions().size() == i)
+                break;
             s.append("[");
             s.append(allBodies.get(i).toString()).append("]\n");
             s.append("Position :").append(systemState.getPositions().get(i)).append("\n");
