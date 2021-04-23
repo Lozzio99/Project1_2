@@ -104,10 +104,13 @@ public class Clock2 {
 
     @Override
     public String toString() {
-        return "Clock2{ [" +
-                this.hour + " : " + this.min + " : " + this.sec + " ]" +
-                this.days + " / " + this.months + " / " + this.years +
-                '}';
+        return "Clock2{ [ " +
+                hour / 10 + hour % 10 + " : " +
+                min / 10 + min % 10 + " : " +
+                sec / 10 + sec % 10 + " ]   °  " +
+                days / 10 + days % 10 + " / " +
+                months / 10 + months % 10 + " / " +
+                this.years + " ° }";
     }
 
     public int getSec() {
