@@ -11,7 +11,7 @@ import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Physics.Solvers.RungeKutta4thSolver;
 import group17.phase1.Titan.Physics.Solvers.StandardVerletSolver;
 import group17.phase1.Titan.Physics.Trajectories.TrajectoryErrorCalc;
-import group17.phase1.Titan.System.Clock2;
+import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.SystemState;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class SolarSystem implements SystemInterface {
 
 
     double t = 0;
-    private Clock2 clock;
+    private Clock clock;
     private TrajectoryErrorCalc trajectoryErrorCalc;
     private int monthCount = 0;
 
@@ -71,7 +71,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initClock() {
-        this.clock = new Clock2().setLaunchDay();
+        this.clock = new Clock().setLaunchDay();
     }
 
     @Override
@@ -126,7 +126,7 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
-    public Clock2 getClock() {
+    public Clock getClock() {
         return this.clock;
     }
 

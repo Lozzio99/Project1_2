@@ -1,6 +1,6 @@
 package group17.phase1.Titan.System;
 
-public class Clock2 {
+public class Clock {
 
 
     private int sec, min, hour, days, months, years;
@@ -8,13 +8,13 @@ public class Clock2 {
     private int[] daysInMonths;
 
 
-    public Clock2() {
+    public Clock() {
     }
 
     public static void main(String[] args) {
-        Clock2 c = new Clock2().setLaunchDay();
+        Clock c = new Clock().setLaunchDay();
         while (true) {
-            c.step(60 * 60 * 24);
+            c.step(30 * 60);
             System.out.println(c);
             try {
                 Thread.sleep(100);
@@ -24,7 +24,7 @@ public class Clock2 {
         }
     }
 
-    public Clock2 setLaunchDay() {
+    public Clock setLaunchDay() {
         this.sec = 0;
         this.min = 0;
         this.hour = 0;
@@ -38,6 +38,7 @@ public class Clock2 {
     public void step(double secStep) {
         int step = (int) secStep;
         secStep(step);
+        checkLeap();
     }
 
     private void secStep(int secStep) {
@@ -94,7 +95,6 @@ public class Clock2 {
 
     private void yearsStep(int years) {
         this.years += years;
-        checkLeap();
     }
 
     public void checkLeap() {
@@ -104,7 +104,7 @@ public class Clock2 {
 
     @Override
     public String toString() {
-        return "Clock2{ [ " +
+        return "Clock { [ " +
                 hour / 10 + hour % 10 + " : " +
                 min / 10 + min % 10 + " : " +
                 sec / 10 + sec % 10 + " ]   °  " +

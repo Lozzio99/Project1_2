@@ -95,7 +95,6 @@ public abstract class Scene extends JPanel {
      * Loads the background image from resources
      * todo set throw exception
      *
-     * @throws IOException file not found
      */
     void create() {
         try {

@@ -1,6 +1,6 @@
 package group17.phase1.Titan;
 
-import group17.phase1.Titan.System.Clock2;
+import group17.phase1.Titan.System.Clock;
 
 public class Config {
 
@@ -50,6 +50,6 @@ public class Config {
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;
     public static int PARTICLES = 400;
 
-    public static Clock2 LAUNCH_DATE = new Clock2().setLaunchDay();
+    public static Clock LAUNCH_DATE = new Clock().setLaunchDay();
 
 }

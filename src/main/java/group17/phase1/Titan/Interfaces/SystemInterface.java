@@ -4,7 +4,7 @@ package group17.phase1.Titan.Interfaces;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Simulation.SimulationUpdater;
-import group17.phase1.Titan.System.Clock2;
+import group17.phase1.Titan.System.Clock;
 
 import java.util.List;
 
@@ -97,7 +97,7 @@ public interface SystemInterface {
      *
      * @return the instance of the clock in the simulation
      */
-    Clock2 getClock();
+    Clock getClock();
 
     /**
      * Computes the state of the system within a step in time,
