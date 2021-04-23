@@ -17,7 +17,7 @@ public class Clock2 {
             c.step(60 * 60 * 24);
             System.out.println(c);
             try {
-                Thread.sleep(10);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -71,11 +71,12 @@ public class Clock2 {
     }
 
     private void daysStep(int days) {
-        int months = days / this.daysInMonths[this.months];
-        this.days += days % this.daysInMonths[this.months];
-        if (this.days >= this.daysInMonths[this.months]) {
-            months += this.days / this.daysInMonths[this.months];
-            this.days = (this.days % this.daysInMonths[this.months]) + 1;
+        int months = days / this.daysInMonths[this.months - 1];
+        this.days += days % this.daysInMonths[this.months - 1];
+        if (this.days > this.daysInMonths[this.months - 1]) {
+            months += this.days / this.daysInMonths[this.months - 1];
+            this.days = (this.days % this.daysInMonths[this.months - 1]);
+            this.days = this.days == 0 ? 1 : this.days;
         }
         monthsStep(months);
     }
@@ -83,9 +84,10 @@ public class Clock2 {
     private void monthsStep(int months) {
         int years = months / 12;
         this.months += months % 12;
-        if (this.months >= 12) {
+        if (this.months > 12) {
             years += this.months / 12;
-            this.months = (this.months % 12) + 1;
+            this.months = (this.months % 12);
+            this.months = this.months == 0 ? 1 : this.months;
         }
         yearsStep(years);
     }
@@ -96,9 +98,7 @@ public class Clock2 {
     }
 
     public void checkLeap() {
-        if (this.years % 4 == 0) {
-            leap = true;
-        }
+        leap = this.years % 4 == 0;
         daysInMonths = new int[]{31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     }
 
