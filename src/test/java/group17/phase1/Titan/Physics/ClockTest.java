@@ -1,6 +1,6 @@
 package group17.phase1.Titan.Physics;
 
-import group17.phase1.Titan.System.Clock;
+import group17.phase1.Titan.System.Clock2;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,8 +12,7 @@ class ClockTest {
     @Test
     @DisplayName("StepSize1000")
     void StepSize1000() {
-        Clock clock = new Clock();
-        clock.setCurrentDate(2020, 4, 1, 0, 0, 0);
+        Clock2 clock = new Clock2().setLaunchDay();
         clock.step(1000);
         assertEquals(2020 + "/" + 4 + "/" + 1 + "/" + " " + 0 + ":" + 16 + ":" + 40, clock.toString());
     }
@@ -21,8 +20,7 @@ class ClockTest {
     @Test
     @DisplayName("StepSize1005")
     void StepSize1005() {
-        Clock clock = new Clock();
-        clock.setCurrentDate(2020,4,1,0,0,0);
+        Clock2 clock = new Clock2().setLaunchDay();
         clock.step(1005);
         assertEquals(2020+"/"+4+"/"+1+"/"+" "+0+":"+16+":"+45, clock.toString());
     }
@@ -30,17 +28,17 @@ class ClockTest {
     @Test
     @DisplayName("StepSizeDay")
     void StepSizeDay() {
-        Clock clock = new Clock();
-        clock.setCurrentDate(2020,4,1,0,0,0);
+        Clock2 clock = new Clock2().setLaunchDay();
+
         clock.step(86400);
-        assertEquals(2020+"/"+4+"/"+2+"/"+" "+0+":"+0+":"+0, clock.toString());
+        assertEquals(2020 + "/" + 4 + "/" + 2 + "/" + " " + 0 + ":" + 0 + ":" + 0, clock.toString());
     }
 
     @Test
     @DisplayName("StepSizeYear")
     void StepSizeYear() {
-        Clock clock = new Clock();
-        clock.setCurrentDate(2020, 4, 1, 0, 0, 0);
+        Clock2 clock = new Clock2().setLaunchDay();
+
         clock.step(86400 * 365);
         assertEquals(2021 + "/" + 4 + "/" + 1 + "/" + " " + 0 + ":" + 0 + ":" + 0, clock.toString());
     }
@@ -49,7 +47,8 @@ class ClockTest {
     @Disabled("FIX_ME")
     @DisplayName("StepSizeDay")
     void ContinuouslyUpdate() {
-        Clock clock = new Clock().getLaunchDay();
+        Clock2 clock = new Clock2().setLaunchDay();
+
         int[] daysInMonths = new int[]{30, 31, 30, 31, 31, 30, 31, 30, 31, 31, 28, 31};
         double secInADay = 60 * 60 * 24; // 60sec * 60min * 24h
         double[] allMonths = new double[daysInMonths.length];
@@ -68,7 +67,7 @@ class ClockTest {
             {
                 System.out.println("taking step : " + allMonths[i]);
                 clock.step(allMonths[i]);  //step 1 month
-                assertEquals(fromApril[i], clock.getMonth());
+                assertEquals(fromApril[i], clock.getMonths());
             }
     }
 }
