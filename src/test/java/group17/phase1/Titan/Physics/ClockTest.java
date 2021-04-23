@@ -1,7 +1,6 @@
 package group17.phase1.Titan.Physics;
 
 import group17.phase1.Titan.System.Clock2;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +43,6 @@ class ClockTest {
     }
 
     @Test
-    @Disabled("FIX_ME")
     @DisplayName("StepSizeDay")
     void ContinuouslyUpdate() {
         Clock2 clock = new Clock2().setLaunchDay();

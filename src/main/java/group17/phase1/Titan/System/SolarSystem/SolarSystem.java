@@ -54,7 +54,8 @@ public class SolarSystem implements SystemInterface {
         for (CelestialBody c : this.allBodies)
             c.initProperties();
 
-        trajectoryErrorCalc = new TrajectoryErrorCalc();
+        if (REPORT)
+            trajectoryErrorCalc = new TrajectoryErrorCalc();
     }
 
     @Override
@@ -64,7 +65,8 @@ public class SolarSystem implements SystemInterface {
             p.initProperties();
             this.allBodies.add(p);
         }
-        fillValues();
+        if (REPORT)
+            fillValues();
     }
 
     @Override
