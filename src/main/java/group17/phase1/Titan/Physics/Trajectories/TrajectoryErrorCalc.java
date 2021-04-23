@@ -20,7 +20,14 @@ public class TrajectoryErrorCalc {
 
     // Variables
     File inputData;
+
     Vector3dInterface[][][] originalData = new Vector3D[10][13][2];
+                                // 10 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: mars, 5: jupiter, 6: saturn, 7: titan, 8: uranus, 9: neptune
+                                // Stores the exact values of the celestial bodies in 3 dimensions:
+                                // 1. planet index
+                                // 2. month (starting from 04.2020, ending at 04.2021)
+                                // 3. position vector at index 0 and velocity vector at index 1
+    Vector3dInterface[][][] simulationData = new Vector3D[10][13][2];
     private ArrayList<StateInterface> months;
     // 10 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: mars, 5: jupiter, 6: saturn, 7: titan, 8: uranus, 9: neptune
     // Stores the exact values of the celestial bodies in 3 dimensions:
@@ -79,19 +86,48 @@ public class TrajectoryErrorCalc {
         return months;
     }
 
-    public void printOriginal() {
-        for (int i = 0; i < originalData.length; i++) {
-            System.out.println(" --- Planet " + i + " --- ");
-            for (int j = 0; j < originalData[i].length; j++) {
+    /**
+     * Prints the original values.
+     */
+    private void printData(Vector3dInterface[][][] array) {
+        for (int i = 0; i < array.length; i++) {
+            System.out.println(" --- Body " + i + " --- ");
+            for (int j = 0; j < array[i].length; j++) {
                 System.out.println("Month " + j);
-                for (int k = 0; k < originalData[i][j].length; k++) {
-                    System.out.print(originalData[i][j][k].toString() + "\t");
+                for (int k = 0; k < array[i][j].length; k++) {
+                    System.out.print(array[i][j][k].toString() + "\t");
                 }
                 System.out.println();
             }
         }
     }
 
+    public void printSimulationData() {
+        this.printData(simulationData);
+    }
+
+    public void printOriginalData() {
+        this.printData(originalData);
+    }
+
+    /**
+     * Fills the simulation-array at a certain index with either a position or a velocity vector
+     * @param planetIndex
+     * @param month
+     * @param type          0 for position, 1 for velocity
+     */
+    public void fillSimulation(int planetIndex, int month, int type, Vector3dInterface vector) {
+        this.simulationData[planetIndex][month][type] = vector;
+    }
+
+    public void exportFile() {
+
+    }
+
+    // Only for testing purposes
+    public static void main(String[] args) throws FileNotFoundException {
+        TrajectoryErrorCalc test = new TrajectoryErrorCalc();
+        test.printData(test.simulationData);
     public ArrayList<StateInterface> getMonths() {
         return this.months;
     }

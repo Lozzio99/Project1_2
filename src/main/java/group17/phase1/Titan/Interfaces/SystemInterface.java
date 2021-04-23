@@ -6,6 +6,7 @@ import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Simulation.SimulationUpdater;
 import group17.phase1.Titan.System.Clock;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface SystemInterface {
@@ -20,7 +21,7 @@ public interface SystemInterface {
     /**
      * Initialises all planets and set their initial positions and velocities
      */
-    void initPlanets();
+    void initPlanets() throws FileNotFoundException;
 
     /**
      * Initialises the probe if specified from configurations

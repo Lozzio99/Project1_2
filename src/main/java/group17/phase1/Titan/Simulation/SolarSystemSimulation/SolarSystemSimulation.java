@@ -1,5 +1,4 @@
 package group17.phase1.Titan.Simulation.SolarSystemSimulation;
-
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Simulation.Simulation;
 import group17.phase1.Titan.System.SolarSystem.SolarSystem;
