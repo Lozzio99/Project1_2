@@ -80,8 +80,10 @@ public class Clock {
 
         //FIXME : problem here i guess,
         //TODO : receive 365, return days == days ( if ! leap )
-        this.days += days % this.daysInMonths[this.months - 1];
-
+        if (days >= 365)
+            this.days += days % 365 % this.daysInMonths[this.months - 1];
+        else
+            this.days += days % this.daysInMonths[this.months - 1];
 
         if (this.days > this.daysInMonths[this.months - 1]) {
             months += this.days / this.daysInMonths[this.months - 1];
