@@ -56,12 +56,13 @@ public class SystemState implements StateInterface {
         }
         return newState;
     }
+
     @Override
-    public StateInterface rateMul(double step, RateInterface rate){ //!!
+    public StateInterface rateMul(double step, RateInterface rate) { //!!
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.positions.size(); i++) {
-                newState.getPositions().add(rate.getVelocities().get(i).mul(step));
-                newState.getRateOfChange().getVelocities().add(new Vector3D(0,0,0));
+            newState.getPositions().add(rate.getVelocities().get(i).mul(step));
+            newState.getRateOfChange().getVelocities().add(new Vector3D(0, 0, 0));
         }
         return newState;
 
