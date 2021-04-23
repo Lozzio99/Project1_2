@@ -157,12 +157,12 @@ public class DialogFrame extends JPanel {
 
 
     public void setDate() {
-        this.setSsField("" + simulation.system().getClock().second);
-        this.setMinuteField("" + simulation.system().getClock().minute);
-        this.setHhField("" + simulation.system().getClock().hour);
-        this.setDdField("" + simulation.system().getClock().day);
-        this.setMonthField("" + simulation.system().getClock().month);
-        this.setYyField("" + simulation.system().getClock().year);
+        this.setSsField("" + simulation.system().getClock().getSec());
+        this.setMinuteField("" + simulation.system().getClock().getMin());
+        this.setHhField("" + simulation.system().getClock().getHour());
+        this.setDdField("" + simulation.system().getClock().getDays());
+        this.setMonthField("" + simulation.system().getClock().getMonths());
+        this.setYyField("" + simulation.system().getClock().getYears());
     }
 
     public void showAssistParameters() {

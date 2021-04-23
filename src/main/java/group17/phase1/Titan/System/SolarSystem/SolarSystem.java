@@ -10,8 +10,8 @@ import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Physics.Solvers.RungeKutta4thSolver;
 import group17.phase1.Titan.Physics.Solvers.StandardVerletSolver;
-import group17.phase1.Titan.System.Clock;
-import group17.phase1.Titan.Simulation.SolarSystemSimulation.TrajectoryErrorCalc;
+import group17.phase1.Titan.Physics.Trajectories.TrajectoryErrorCalc;
+import group17.phase1.Titan.System.Clock2;
 import group17.phase1.Titan.System.SystemState;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class SolarSystem implements SystemInterface {
 
 
     double t = 0;
-    private Clock clock;
+    private Clock2 clock;
     private TrajectoryErrorCalc trajectoryErrorCalc;
     private int monthCount = 0;
 
@@ -53,7 +53,7 @@ public class SolarSystem implements SystemInterface {
         this.allBodies.add(new Satellite(Satellite.SatellitesEnum.MOON));
         for (CelestialBody c : this.allBodies)
             c.initProperties();
-        }
+
         trajectoryErrorCalc = new TrajectoryErrorCalc();
     }
 
@@ -69,7 +69,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initClock() {
-        this.clock = LAUNCH_DATE = new Clock().getLaunchDay();
+        this.clock = new Clock2().setLaunchDay();
     }
 
     @Override
@@ -124,7 +124,7 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
-    public Clock getClock() {
+    public Clock2 getClock() {
         return this.clock;
     }
 
@@ -141,14 +141,13 @@ public class SolarSystem implements SystemInterface {
      */
     public void updateTrajectoryLog() {
         // System.out.println("Month: " + clock.getMonth());
-        if (this.monthCount < clock.getMonth()) {
+        if (this.monthCount < clock.getMonths()) {
             if (this.monthCount <= 12) {
                 monthCount++;
                 System.out.println(monthCount);
                 // Fill in the values of each body:
                 fillValues();
-            }
-            else {
+            } else {
                 trajectoryErrorCalc.printSimulationData();
             }
         }
@@ -159,14 +158,14 @@ public class SolarSystem implements SystemInterface {
      */
     public void fillValues() {
         // Sun
-        trajectoryErrorCalc.fillSimulation(0,monthCount,0,this.getCelestialBodies().get(0).getVectorLocation());
-        trajectoryErrorCalc.fillSimulation(0,monthCount,1,this.getCelestialBodies().get(0).getVectorVelocity());
+        trajectoryErrorCalc.fillSimulation(0, monthCount, 0, this.getCelestialBodies().get(0).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(0, monthCount, 1, this.getCelestialBodies().get(0).getVectorVelocity());
         // Mercury
-        trajectoryErrorCalc.fillSimulation(1,monthCount,0,this.getCelestialBodies().get(3).getVectorLocation());
-        trajectoryErrorCalc.fillSimulation(1,monthCount,1,this.getCelestialBodies().get(3).getVectorVelocity());
+        trajectoryErrorCalc.fillSimulation(1, monthCount, 0, this.getCelestialBodies().get(3).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(1, monthCount, 1, this.getCelestialBodies().get(3).getVectorVelocity());
         // Venus
-        trajectoryErrorCalc.fillSimulation(2,monthCount,0,this.getCelestialBodies().get(4).getVectorLocation());
-        trajectoryErrorCalc.fillSimulation(2,monthCount,1,this.getCelestialBodies().get(4).getVectorVelocity());
+        trajectoryErrorCalc.fillSimulation(2, monthCount, 0, this.getCelestialBodies().get(4).getVectorLocation());
+        trajectoryErrorCalc.fillSimulation(2, monthCount, 1, this.getCelestialBodies().get(4).getVectorVelocity());
         // Earth
         trajectoryErrorCalc.fillSimulation(3,monthCount,0,this.getCelestialBodies().get(1).getVectorLocation());
         trajectoryErrorCalc.fillSimulation(3,monthCount,1,this.getCelestialBodies().get(1).getVectorVelocity());

@@ -8,7 +8,6 @@ import group17.phase1.Titan.Physics.Trajectories.TrajectoryErrorCalc;
 import group17.phase1.Titan.Simulation.Simulation;
 import group17.phase1.Titan.System.SolarSystem.SolarSystem;
 
-import java.io.FileNotFoundException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.phase1.Titan.Config.SOLVER;
@@ -75,11 +74,7 @@ public class NumericalSimulation extends Simulation {
         while (!this.updater.get().isKilled()) {
         }
         TrajectoryErrorCalc test = null;
-        try {
-            test = new TrajectoryErrorCalc();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        test = new TrajectoryErrorCalc();
         test.revert();
 
         for (int i = 0; i < this.updater.get().getStates().length; i++) {

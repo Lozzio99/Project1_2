@@ -10,13 +10,14 @@ import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Bodies.Particle;
 import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
-import group17.phase1.Titan.System.Clock;
+import group17.phase1.Titan.System.Clock2;
 import group17.phase1.Titan.System.SystemState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.phase1.Titan.Config.*;
+import static group17.phase1.Titan.Config.CPU_LEVEL;
+import static group17.phase1.Titan.Config.PARTICLES;
 
 public class ParticlesSystem implements SystemInterface {
 
@@ -27,7 +28,7 @@ public class ParticlesSystem implements SystemInterface {
 
     double t = 0;
     List<CelestialBody> particles;
-    private Clock clock;
+    private Clock2 clock;
 
     @Override
     public List<CelestialBody> getCelestialBodies() {
@@ -56,7 +57,7 @@ public class ParticlesSystem implements SystemInterface {
 
     @Override
     public void initClock() {
-        this.clock = LAUNCH_DATE = new Clock().getLaunchDay();
+        this.clock = new Clock2().setLaunchDay();
     }
 
     @Override
@@ -119,7 +120,7 @@ public class ParticlesSystem implements SystemInterface {
     }
 
     @Override
-    public Clock getClock() {
+    public Clock2 getClock() {
         return this.clock;
     }
 

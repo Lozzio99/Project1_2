@@ -79,7 +79,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
 
-        RateInterface k21, k22, k23, k24, kv;
+        RateInterface v21, v22, v23, v24, kv;
         StateInterface k11, k12, k13, k14, kk;
 
 
@@ -99,31 +99,33 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
         /*
         k11 = StateInterface.clone(y).rateMul(h,RateInterface.clone(velocity)); // k11
-        k21 = f.call(1,StateInterface.clone(y)).multiply(h);
+        v21 = f.call(1,StateInterface.clone(y)).multiply(h);
         // to try - without multiply by h
-        k12 = StateInterface.clone(y).rateMul(h,RateInterface.clone(velocity).add(RateInterface.clone(k21).multiply(0.5))); //!!
-        k22 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k11).multiply(0.5))).multiply(h);
-        k13 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(k22).multiply(0.5)));
-        k23 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k12).multiply(0.5))).multiply(h);
-        k14 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(k23)));
-        k24 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k13))).multiply(h);
+        k12 = StateInterface.clone(y).rateMul(h,RateInterface.clone(velocity).add(RateInterface.clone(v21).multiply(0.5))); //!!
+        v22 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k11).multiply(0.5))).multiply(h);
+        k13 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(v22).multiply(0.5)));
+        v23 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k12).multiply(0.5))).multiply(h);
+        k14 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(v23)));
+        v24 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k13))).multiply(h);
+
+
          */
 
         k11 = y.rateMul(h, velocity); // k11
 
-        k21 = f.call(1, y).multiply(h);
-        // to try - without multiply by h
-        k12 = y.rateMul(h, velocity.add(k21.multiply(0.5))); //!!
+        v21 = f.call(1, y).multiply(h);
 
-        k22 = f.call(1, y.add(k11.multiply(0.5))).multiply(h);
+        k12 = y.rateMul(h, velocity.add(v21.multiply(0.5))); //!!
 
-        k13 = y.rateMul(h, velocity.add(k22.multiply(0.5)));
+        v22 = f.call(1, y.add(k11.multiply(0.5))).multiply(h);
 
-        k23 = f.call(1, y.add(k12.multiply(0.5))).multiply(h);
+        k13 = y.rateMul(h, velocity.add(v22.multiply(0.5)));
 
-        k14 = y.rateMul(h, velocity.add(k23));
+        v23 = f.call(1, y.add(k12.multiply(0.5))).multiply(h);
 
-        k24 = f.call(1, y.add(k13)).multiply(h);
+        k14 = y.rateMul(h, velocity.add(v23));
+
+        v24 = f.call(1, y.add(k13)).multiply(h);
 
         if (DEBUG) {
             System.out.println("k11");
@@ -139,12 +141,12 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         k12 = k12.multiply(2);
         k13 = k13.multiply(2);
 
-        k22 = k22.multiply(2);
-        k23 = k23.multiply(2);
+        v22 = v22.multiply(2);
+        v23 = v23.multiply(2);
 
         kk = (k11.sumOf(k12, k13, k14)).div(6);
 
-        kv = (k21.sumOf(k22, k23, k24)).div(6);
+        kv = (v21.sumOf(v22, v23, v24)).div(6);
 
         //-6.80564659829616E8
         //-6.806783239281648E8

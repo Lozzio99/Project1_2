@@ -4,9 +4,8 @@ package group17.phase1.Titan.Interfaces;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Simulation.SimulationUpdater;
-import group17.phase1.Titan.System.Clock;
+import group17.phase1.Titan.System.Clock2;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 public interface SystemInterface {
@@ -21,7 +20,7 @@ public interface SystemInterface {
     /**
      * Initialises all planets and set their initial positions and velocities
      */
-    void initPlanets() throws FileNotFoundException;
+    void initPlanets();
 
     /**
      * Initialises the probe if specified from configurations
@@ -98,7 +97,7 @@ public interface SystemInterface {
      *
      * @return the instance of the clock in the simulation
      */
-    Clock getClock();
+    Clock2 getClock();
 
     /**
      * Computes the state of the system within a step in time,

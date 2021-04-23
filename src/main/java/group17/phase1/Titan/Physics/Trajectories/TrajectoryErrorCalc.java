@@ -27,49 +27,52 @@ public class TrajectoryErrorCalc {
                                 // 1. planet index
                                 // 2. month (starting from 04.2020, ending at 04.2021)
                                 // 3. position vector at index 0 and velocity vector at index 1
-    Vector3dInterface[][][] simulationData = new Vector3D[10][13][2];
-    private ArrayList<StateInterface> months;
+                                Vector3dInterface[][][] simulationData = new Vector3D[10][13][2];
+    private List<StateInterface> months;
     // 10 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: mars, 5: jupiter, 6: saturn, 7: titan, 8: uranus, 9: neptune
     // Stores the exact values of the celestial bodies in 3 dimensions:
     // 1. planet index
     // 2. month (starting from 04.2020, ending at 04.2021)
     // 3. position vector at index 0 and velocity vector at index 1
 
-    public TrajectoryErrorCalc() throws FileNotFoundException {
+    public TrajectoryErrorCalc() {
         inputData = new File("src/main/resources/SS_coords.txt");
-        Scanner in = new Scanner(inputData);
+        Scanner in = null;
+        try {
 
-        double posX, posY, posZ;
-        double velX, velY, velZ;
-        // fill originalData with values from file:
-        for (int i = 0; i < 13; i++) { // for each month
-            in.nextLine(); // skip month name
-            for (int j = 0; j < 10; j++) { // for each body
-                posX = in.nextDouble();
-                posY = in.nextDouble();
-                posZ = in.nextDouble();
-                velX = in.nextDouble();
-                velY = in.nextDouble();
-                velZ = in.nextDouble();
+            in = new Scanner(inputData);
+            double posX, posY, posZ;
+            double velX, velY, velZ;
+            // fill originalData with values from file:
+            for (int i = 0; i < 13; i++) { // for each month
+                in.nextLine(); // skip month name
+                for (int j = 0; j < 10; j++) { // for each body
+                    posX = in.nextDouble();
+                    posY = in.nextDouble();
+                    posZ = in.nextDouble();
+                    velX = in.nextDouble();
+                    velY = in.nextDouble();
+                    velZ = in.nextDouble();
 
-                originalData[j][i][0] = new Vector3D(posX, posY, posZ); // position vector
-                originalData[j][i][1] = new Vector3D(velX, velY, velZ); // velocity vector
+                    originalData[j][i][0] = new Vector3D(posX, posY, posZ); // position vector
+                    originalData[j][i][1] = new Vector3D(velX, velY, velZ); // velocity vector
 
-                if (in.hasNextLine()) {
-                    in.nextLine();
+                    if (in.hasNextLine()) {
+                        in.nextLine();
+                    }
                 }
             }
+
+        } catch (FileNotFoundException | NullPointerException e) {
+
+            System.out.println(e.getLocalizedMessage());
+            e.printStackTrace();
         }
+
 
         //System.out.println(originalData[0][0][0].getX());
     }
 
-    // Only for testing purposes
-    public static void main(String[] args) throws FileNotFoundException {
-        TrajectoryErrorCalc test = new TrajectoryErrorCalc();
-        test.printOriginal();
-        test.printReverse(test.revert());
-    }
 
     public List<StateInterface> revert() {
         //don't wanna change the way it's imported
@@ -124,11 +127,7 @@ public class TrajectoryErrorCalc {
 
     }
 
-    // Only for testing purposes
-    public static void main(String[] args) throws FileNotFoundException {
-        TrajectoryErrorCalc test = new TrajectoryErrorCalc();
-        test.printData(test.simulationData);
-    public ArrayList<StateInterface> getMonths() {
+    public List<StateInterface> getMonths() {
         return this.months;
     }
 
