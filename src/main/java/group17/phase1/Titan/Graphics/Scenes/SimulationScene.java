@@ -85,13 +85,17 @@ public class SimulationScene extends Scene {
             Point3DConverter.rotateAxisX(this.planetsPositions[i], false, totalYDif / mouseSensitivity);
 
             if (TRAJECTORIES) {
-                this.trajectories[i].add(this.planetsPositions[i]);
-                for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
-                    if (this.trajectories[i].getTrajectories()[k] == null)
-                        break;
-                    //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
-                    Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, deltaX / mouseSensitivity);
-                    Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, deltaY / mouseSensitivity);
+                try {
+                    this.trajectories[i].add(this.planetsPositions[i]);
+                    for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
+                        if (this.trajectories[i].getTrajectories()[k] == null)
+                            break;
+                        //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
+                        Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, deltaX / mouseSensitivity);
+                        Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, deltaY / mouseSensitivity);
+                    }
+                } catch (NullPointerException ignored) {
+                    System.err.println("Missed graphics update - waiting for main thread to init scene");
                 }
             }
         }

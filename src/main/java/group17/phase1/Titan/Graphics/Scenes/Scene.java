@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 import static group17.phase1.Titan.Config.SIMULATION_LEVEL;
 import static group17.phase1.Titan.Config.SOLAR_SYSTEM_SIMULATION;
@@ -65,7 +64,6 @@ public abstract class Scene extends JPanel {
                 setHints(g);
             } else {
                 g.drawImage(image, 0, 0, screen.width, screen.height, 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
-
             }
         } else {
             g.setColor(Color.BLACK);
@@ -100,11 +98,12 @@ public abstract class Scene extends JPanel {
      */
     void create() {
         try {
-            File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("milky-way4k.jpg")).getFile());
+            File f = new File(Scene.class.getClassLoader().getResource("milky-way4k.jpg").getFile());
             image = ImageIO.read(f);
-        } catch (IOException e) {
+        } catch (NullPointerException | IOException e) {
             IMAGE_FAILED = true;
-            e.printStackTrace();
+            image = null;
+            System.err.println(e.getMessage() + "\nPossible fix : make sure 'milky-way4k.jpg' is in resources");
         }
     }
 
