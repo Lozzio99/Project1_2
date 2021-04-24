@@ -160,10 +160,13 @@ public class SolarSystem implements SystemInterface {
                 fillValues();
                 System.out.println("Month: " + clock.getMonths());
                 System.out.println("Month count: " + monthCount);
-            } else {
+                System.out.println(13 - monthCount + " months to go to finish the trajectory error calculation...");
+                System.out.println();
+            } else if (this.monthCount == 12) {
+                monthCount++;
                 monthIndex = clock.getMonths();
-                // trajectoryErrorCalc.printSimulationData();
                 trajectoryErrorCalc.exportFile();
+                System.out.println("Error calculation finished and exported to /out/production/trajectoryData");
             }
         }
     }

@@ -6,10 +6,7 @@ import group17.phase1.Titan.Physics.Math.Point3D;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 import group17.phase1.Titan.System.SystemState;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +16,6 @@ import java.util.Scanner;
  * This class calculates the error between the running simulation and the actual positions of the planets in our solar system.
  * It reads the data from a given file and creates an output file, which can be reviewed later.
  */
-
 public class TrajectoryErrorCalc {
 
     // Variables
@@ -35,10 +31,13 @@ public class TrajectoryErrorCalc {
     double[][][] errorData = new double[10][13][2];
     private List<StateInterface> months;
 
-    private final String ORIGINAL_DATA_PATH = "out/trajectoryData/originalData.csv";
-    private final String SIMULATION_DATA_PATH = "out/trajectoryData/simulationData.csv";
-    private final String ERROR_DATA_PATH = "out/trajectoryData/errorData.csv";
+    private final String ORIGINAL_DATA_PATH = "out/trajectoryData/originalData.txt";
+    private final String SIMULATION_DATA_PATH = "out/trajectoryData/simulationData.txt";
+    private final String ERROR_DATA_PATH = "out/trajectoryData/errorData.txt";
 
+    /**
+     * Constructor for a new instance of a trajectory error calculation
+     */
     public TrajectoryErrorCalc() {
         inputData = new File("src/main/resources/SS_coords.txt");
         Scanner in = null;
@@ -89,6 +88,73 @@ public class TrajectoryErrorCalc {
     }
 
     /**
+     * Fills the simulation-array at a certain index with either a position or a velocity vector
+     * @param planetIndex
+     * @param month
+     * @param type          0 for position, 1 for velocity
+     */
+    public void fillSimulation(int planetIndex, int month, int type, Vector3dInterface vector) {
+        this.simulationData[planetIndex][month][type] = vector;
+    }
+
+    /**
+     * Creates 3 files in /out/production/trajectoryData and outputs the positions and velocities
+     * over one year at the beginning of each month.
+     * The error data is the euclidean distance between the simulation- and the original data.
+     */
+    public void exportFile() {
+        // Iterate through both arrays to check, that no entry is 0.
+        if (arrayIsFilled(originalData) && arrayIsFilled(simulationData)) {
+            computeErrors();
+
+            // Write data in files
+            try {
+                FileWriter fwOriginal = new FileWriter(ORIGINAL_DATA_PATH, false);
+                BufferedWriter bwOriginal = new BufferedWriter(fwOriginal);
+                PrintWriter pwOriginal = new PrintWriter(bwOriginal);
+
+                FileWriter fwSimulation = new FileWriter(SIMULATION_DATA_PATH, false);
+                BufferedWriter bwSimulation = new BufferedWriter(fwSimulation);
+                PrintWriter pwSimulation = new PrintWriter(bwSimulation);
+
+                FileWriter fwError = new FileWriter(ERROR_DATA_PATH, false);
+                BufferedWriter bwError = new BufferedWriter(fwError);
+                PrintWriter pwError = new PrintWriter(bwError);
+
+                for (int i = 0; i < originalData.length; i++) {
+                    pwOriginal.println(" --- Body " + i + " --- ");
+                    pwSimulation.println(" --- Body " + i + " --- ");
+                    pwError.println(" --- Body " + i + " --- ");
+                    for (int j = 0; j < originalData[i].length; j++) {
+                        pwOriginal.println("Month " + j);
+                        pwSimulation.println("Month " + j);
+                        pwError.println("Month " + j);
+                        for (int k = 0; k < originalData[i][j].length; k++) {
+                            pwOriginal.print(originalData[i][j][k].toString() + "\t");
+                            pwSimulation.print(simulationData[i][j][k].toString() + "\t");
+                            pwError.print(errorData[i][j][k] + "\t");
+                        }
+                        pwOriginal.println();
+                        pwSimulation.println();
+                        pwError.println();
+                    }
+                }
+                pwOriginal.flush();
+                pwOriginal.close();
+
+                pwSimulation.flush();
+                pwSimulation.close();
+
+                pwError.flush();
+                pwError.close();
+            }
+            catch (Exception E) {
+                System.out.println("ERROR! Failed to write output file");
+            }
+        }
+    }
+
+    /**
      * Prints the values of a 3D-Matrix.
      */
     private void printData(Vector3dInterface[][][] array) {
@@ -104,39 +170,18 @@ public class TrajectoryErrorCalc {
         }
     }
 
+    /**
+     * Prints the simulation data.
+     */
     public void printSimulationData() {
         this.printData(simulationData);
     }
 
+    /**
+     * Prints the origianl data.
+     */
     public void printOriginalData() {
         this.printData(originalData);
-    }
-
-    /**
-     * Fills the simulation-array at a certain index with either a position or a velocity vector
-     * @param planetIndex
-     * @param month
-     * @param type          0 for position, 1 for velocity
-     */
-    public void fillSimulation(int planetIndex, int month, int type, Vector3dInterface vector) {
-        this.simulationData[planetIndex][month][type] = vector;
-    }
-
-    public void exportFile() {
-        // Iterate through both arrays to check, that no entry is 0.
-        if (arrayIsFilled(originalData) && arrayIsFilled(simulationData)) {
-            computeErrors();
-            printErrors();
-
-            // Write data in files
-            try {
-                FileWriter fwOriginal = new FileWriter(ORIGINAL_DATA_PATH, false);
-
-            }
-            catch (Exception E) {
-                System.out.println("ERROR! Failed to write output file");
-            }
-        }
     }
 
     public void printErrors() {
@@ -153,6 +198,10 @@ public class TrajectoryErrorCalc {
         }
     }
 
+    /**
+     * Calculates the error between the simulation- and the original data.
+     * The results are stored in the array errorData[][][].
+     */
     private void computeErrors() {
         for (int i = 0; i < errorData.length; i++) {
             for (int j = 0; j < errorData[i].length; j++) {
@@ -193,10 +242,5 @@ public class TrajectoryErrorCalc {
             for (Vector3dInterface v : onemonth.getPositions())
                 System.out.println(v.toString());
         }
-    }
-
-    public static void main(String[] args) {
-        TrajectoryErrorCalc test = new TrajectoryErrorCalc();
-        test.printOriginalData();
     }
 }
