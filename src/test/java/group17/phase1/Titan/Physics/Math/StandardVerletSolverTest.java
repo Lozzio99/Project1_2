@@ -16,7 +16,7 @@ public class StandardVerletSolverTest {
         StandardVerletSolver solver = new StandardVerletSolver();
         // init parameters
         Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0
-        Vector3D initVelocity = new Vector3D(0,0, 0);
+        Vector3D initVelocity = new Vector3D(0,0, 1);
         SystemState initState = new SystemState();
         initState.getPositions().add(initPos);
         initState.getRateOfChange().getVelocities().add(initVelocity);
