@@ -94,13 +94,16 @@ public class VerletVelocitySolver implements ODESolverInterface {
         RateInterface velocity = new RateOfChange();
         velocity.setVel(y.getRateOfChange().getVelocities());
         // next position
-        StateInterface next_y = (y.addMul(h, velocity)).addMul(0.5*h*h,f.call(t,y));
-        // next velocity
-        RateInterface next_v = velocity.add( ((f.call(t+h,next_y)).add(f.call(t,y))).multiply(0.5*h) );
+        StateInterface part2 = StateInterface.clone(y).rateMul(0.5*h*h,f.call(t,StateInterface.clone(y))).add(StateInterface.clone(y));
+        StateInterface part3 = StateInterface.clone(y).rateMul(h, velocity);
+        StateInterface part4 = part2.add(part3);
 
-        next_y.getRateOfChange().setVel(y.getRateOfChange().add(next_v).getVelocities());
-        y = next_y;
-        return next_y;
+        RateInterface part5 = f.call(t+h,StateInterface.clone(part4)).add(f.call(t, StateInterface.clone(y)));
+        RateInterface part6 = part5.multiply(0.5*h);
+        RateInterface part7 = RateInterface.clone(velocity).add(part6);
+        part4.getRateOfChange().setVel(part7.getVelocities());
+
+        return part4;
     }
 
     @Override
