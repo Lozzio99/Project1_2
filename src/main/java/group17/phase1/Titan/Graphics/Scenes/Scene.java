@@ -58,7 +58,7 @@ public abstract class Scene extends JPanel {
         //super.paintComponent(graphics);
 
         g = (Graphics2D) graphics;
-        if (SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION) {
+        if (SIMULATION_LEVEL != SOLAR_SYSTEM_SIMULATION) {
             if (image == null) {
                 create();
                 setHints(g);

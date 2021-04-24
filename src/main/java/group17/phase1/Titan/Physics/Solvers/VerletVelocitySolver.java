@@ -1,10 +1,11 @@
 package group17.phase1.Titan.Physics.Solvers;
 
-import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
-import group17.phase1.Titan.Interfaces.ODESolverInterface;
-import group17.phase1.Titan.Interfaces.StateInterface;
-import group17.phase1.Titan.Interfaces.Vector3dInterface;
+import group17.phase1.Titan.Interfaces.*;
+import group17.phase1.Titan.Main;
+import group17.phase1.Titan.Physics.Math.Vector3D;
+import group17.phase1.Titan.System.RateOfChange;
 
+import static group17.phase1.Titan.Config.G;
 import static java.lang.Double.NaN;
 
 /**
@@ -14,6 +15,38 @@ public class VerletVelocitySolver implements ODESolverInterface {
 
     public static double currTime = 0;
     public static double endTime = NaN;
+    private final ODEFunctionInterface singleCoreF;
+
+    public VerletVelocitySolver() {
+        this.singleCoreF = (t, y) -> {
+            for (int i = 0; i < y.getPositions().size(); i++) {
+                Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
+                for (int k = 0; k < y.getPositions().size(); k++) {
+                    if (i != k) {
+                        Vector3dInterface acc = y.getPositions().get(i).clone();
+                        double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
+                        acc = y.getPositions().get(k).sub(acc); // Get the force vector
+                        double den = Math.sqrt(squareDist);
+                    /*
+                        ! Important !
+                        if two bodies collapses into the same point
+                        that would crash to NaN and consequently
+                        the same in all the system
+                    */
+                        acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
+                        acc = acc.mul((G * Main.simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                        totalAcc = totalAcc.addMul(t, acc);
+                        // p = h*acc(derivative of velocity)
+                    }
+                }  // y1 =y0 + h*acc
+                // y1 = y0 + p
+                //FIXME : why did we had to change this?
+                y.getRateOfChange().getVelocities()
+                        .set(i, totalAcc.clone());
+            }
+            return y.getRateOfChange();
+        };
+    }
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
@@ -58,31 +91,20 @@ public class VerletVelocitySolver implements ODESolverInterface {
      */
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+        RateInterface velocity = new RateOfChange();
+        velocity.setVel(y.getRateOfChange().getVelocities());
         // next position
-        Vector3dInterface part1 = y.getRateOfChange().getVelocities().get(0).mul(h); // + (v_n)*delta_t
-        Vector3dInterface part2 = f.call(t, y).getVelocities().get(0).mul(0.5 * h * h).add(part1); // + 1/2*(a_n)*(delta_t^2)
-        Vector3dInterface part3 = y.getPositions().get(0).add(part2); // + x_n
-        StateInterface next_x = StateInterface.clone(y);
-        next_x.getPositions().set(0, part3);
+        StateInterface next_y = (y.addMul(h, velocity)).addMul(0.5*h*h,f.call(t,y));
         // next velocity
-        Vector3dInterface part4 = f.call(t + h, next_x).getVelocities().get(0); // a_n+1
-        Vector3dInterface part5 = f.call(t, y).getVelocities().get(0); // a_n
-        Vector3dInterface part6 = (part4.add(part5)).mul(0.5 * h); //
-        Vector3dInterface part7 = y.getRateOfChange().getVelocities().get(0).add(part6); // v_n + 1/2*((a_n+1)+(a_n))*(delta_t)
+        RateInterface next_v = velocity.add( ((f.call(t+h,next_y)).add(f.call(t,y))).multiply(0.5*h) );
 
-        StateInterface next_y = StateInterface.clone(y);
-        next_y.getPositions().set(0, part3);
-        next_y.getRateOfChange().getVelocities().set(0, part7);
-
+        next_y.getRateOfChange().setVel(y.getRateOfChange().add(next_v).getVelocities());
+        y = next_y;
         return next_y;
     }
 
-    /**
-     * No idea why we need it here
-     * @return null
-     */
     @Override
     public ODEFunctionInterface getFunction() {
-        return null;
+        return singleCoreF;
     }
 }
