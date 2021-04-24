@@ -11,7 +11,6 @@ import group17.phase1.Titan.Physics.Bodies.Particle;
 import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Physics.Solvers.RungeKutta4thSolver;
-import group17.phase1.Titan.Physics.Solvers.StandardVerletSolver;
 import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.SystemState;
 
@@ -83,7 +82,7 @@ public class ParticlesSystem implements SystemInterface {
         switch (solver) {
             case EULER_SOLVER -> this.solver = new EulerSolver();
             case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKutta4thSolver();
-            case VERLET_SOLVER -> this.solver = new StandardVerletSolver();
+            //case VERLET_SOLVER -> this.solver = new StandardVerletSolver();
             default -> throw new RuntimeException("Select a valid solver [1-3]");
         }
         switch (CPU_LEVEL) {

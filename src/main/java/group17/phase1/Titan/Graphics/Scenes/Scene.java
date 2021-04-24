@@ -38,6 +38,7 @@ public abstract class Scene extends JPanel {
     protected double radiusMag = 4e2;
     private BufferedImage image;
     private Graphics2D g;
+    private boolean IMAGE_FAILED = false;
 
 
     protected Point3D left = new Point3D(-UNIT_SIZE, 0, 0),
@@ -58,12 +59,13 @@ public abstract class Scene extends JPanel {
         //super.paintComponent(graphics);
 
         g = (Graphics2D) graphics;
-        if (SIMULATION_LEVEL != SOLAR_SYSTEM_SIMULATION) {
+        if (!IMAGE_FAILED && SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION) {
             if (image == null) {
                 create();
                 setHints(g);
             } else {
                 g.drawImage(image, 0, 0, screen.width, screen.height, 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
+
             }
         } else {
             g.setColor(Color.BLACK);
@@ -101,6 +103,7 @@ public abstract class Scene extends JPanel {
             File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("milky-way4k.jpg")).getFile());
             image = ImageIO.read(f);
         } catch (IOException e) {
+            IMAGE_FAILED = true;
             e.printStackTrace();
         }
     }
