@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 import static group17.phase1.Titan.Config.SIMULATION_LEVEL;
 import static group17.phase1.Titan.Config.SOLAR_SYSTEM_SIMULATION;
@@ -38,6 +37,7 @@ public abstract class Scene extends JPanel {
     protected double radiusMag = 4e2;
     private BufferedImage image;
     private Graphics2D g;
+    private boolean IMAGE_FAILED = false;
 
 
     protected Point3D left = new Point3D(-UNIT_SIZE, 0, 0),
@@ -58,7 +58,7 @@ public abstract class Scene extends JPanel {
         //super.paintComponent(graphics);
 
         g = (Graphics2D) graphics;
-        if (SIMULATION_LEVEL != SOLAR_SYSTEM_SIMULATION) {
+        if (!IMAGE_FAILED && SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION) {
             if (image == null) {
                 create();
                 setHints(g);
@@ -98,10 +98,12 @@ public abstract class Scene extends JPanel {
      */
     void create() {
         try {
-            File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("milky-way4k.jpg")).getFile());
+            File f = new File(Scene.class.getClassLoader().getResource("milky-way4k.jpg").getFile());
             image = ImageIO.read(f);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (NullPointerException | IOException e) {
+            IMAGE_FAILED = true;
+            image = null;
+            System.err.println(e.getMessage() + "\nPossible fix : make sure 'milky-way4k.jpg' is in resources");
         }
     }
 

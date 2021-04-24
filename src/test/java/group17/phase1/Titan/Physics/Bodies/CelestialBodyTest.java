@@ -83,6 +83,7 @@ class CelestialBodyTest {
         assertNotNull(planet);
         planet = new Star();
         planet.initProperties();
+        assertEquals("SUN", planet.toString());
         assertEquals(6.96342e7, planet.getRADIUS());
         assertEquals(1.988500e+30, planet.getMASS());
         assertEquals(Color.yellow, planet.getColour());

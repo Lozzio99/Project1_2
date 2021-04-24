@@ -90,6 +90,11 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
+    public void stop() {
+        if (CPU_LEVEL > 1)
+            ((MaxCPUSolver) this.f).shutDown();
+    }
+
     public void startSolver(int solver) {
         switch (solver) {
             case EULER_SOLVER -> this.solver = new EulerSolver();
@@ -106,11 +111,6 @@ public class SolarSystem implements SystemInterface {
             case 5 -> this.f = new MaxCPUSolver().setCPULevel(Runtime.getRuntime().availableProcessors()); //for me is 16 but can be less
             default -> throw new RuntimeException("Select a valid cpu level [1-5]");
         }
-    }
-
-    @Override
-    public void stop() {
-        //this.f.shutDown();
     }
 
     @Override

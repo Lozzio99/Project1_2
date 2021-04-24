@@ -9,7 +9,7 @@ public class Config {
 
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
     public static final boolean ENABLE_GRAPHICS = true;
-    public static final double FPS = 60;
+    public static final double FPS = 80;
     public static final int BETA_SIMULATION = 2;
 
 
@@ -49,7 +49,7 @@ public class Config {
 
 
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;
-    public static int PARTICLES = 400;
+    public static int PARTICLES = 700;
 
     public static Clock LAUNCH_DATE = new Clock().setLaunchDay();
 

@@ -70,8 +70,8 @@ class NumericalSimulationTest {
     @ValueSource(strings = {"SUN", "MERCURY", "VENUS", "EARTH", "MARS", "JUPITER", "SATURN", "TITAN", "URANUS", "NEPTUNE", "MOON"})
     @DisplayName("GetBody")
     void GetBody(String name) {
-
         assertNotNull(simulation.getBody(name));
+        assertEquals(name, simulation.getBody(name).toString());
     }
 
     @Test
