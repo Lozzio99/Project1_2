@@ -62,5 +62,8 @@ public interface ODESolverInterface {
      */
     ODEFunctionInterface getFunction();
 
+    String toString();
 
+
+    void setF(ODEFunctionInterface f);
 }

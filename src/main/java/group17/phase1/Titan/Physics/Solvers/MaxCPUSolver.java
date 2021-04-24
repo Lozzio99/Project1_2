@@ -56,6 +56,9 @@ public class MaxCPUSolver implements ODEFunctionInterface {
         return this;
     }
 
+    public ExecutorService getService() {
+        return service;
+    }
 
     @Override
     public RateInterface call(double t, StateInterface yGiven) {
@@ -78,5 +81,10 @@ public class MaxCPUSolver implements ODEFunctionInterface {
         this.service.shutdown();
     }
 
-
+    @Override
+    public String toString() {
+        return "MaxCPUSolver{" +
+                "service=" + service.toString() +
+                '}';
+    }
 }

@@ -98,4 +98,15 @@ public class EulerSolver implements ODESolverInterface {
     }
 
 
+    @Override
+    public String toString() {
+        return "EulerSolver{" +
+                "function used =" + singleCoreF +
+                '}';
+    }
+
+    @Override
+    public void setF(ODEFunctionInterface f) {
+        this.singleCoreF = f;
+    }
 }

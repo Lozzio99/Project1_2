@@ -15,7 +15,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
 
     public static double currTime = 0;
     public static double endTime = NaN;
-    private final ODEFunctionInterface singleCoreF;
+    private ODEFunctionInterface singleCoreF;
 
     public VerletVelocitySolver() {
         this.singleCoreF = (t, y) -> {
@@ -106,5 +106,10 @@ public class VerletVelocitySolver implements ODESolverInterface {
     @Override
     public ODEFunctionInterface getFunction() {
         return singleCoreF;
+    }
+
+    @Override
+    public void setF(ODEFunctionInterface f) {
+        this.singleCoreF = f;
     }
 }

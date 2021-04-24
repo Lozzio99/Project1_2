@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project_1.2" default="all">
+
+
+    <property file="build.properties"/>
+    <!-- Uncomment the following property if no tests compilation is needed -->
+    <!--
+    <property name="skip.tests" value="true"/>
+     -->
+
+    <!-- Compiler options -->
+
+    <property name="compiler.debug" value="on"/>
+    <property name="compiler.generate.no.warnings" value="off"/>
+    <property name="compiler.args" value=""/>
+    <property name="compiler.max.memory" value="700m"/>
+    <patternset id="ignored.files">
+        <exclude name="**/*.pyc/**"/>
+        <exclude name="**/*.pyo/**"/>
+        <exclude name="**/*.rbc/**"/>
+        <exclude name="**/*.yarb/**"/>
+        <exclude name="**/*~/**"/>
+        <exclude name="**/.DS_Store/**"/>
+        <exclude name="**/.git/**"/>
+        <exclude name="**/.hg/**"/>
+        <exclude name="**/.svn/**"/>
+        <exclude name="**/CVS/**"/>
+        <exclude name="**/__pycache__/**"/>
+        <exclude name="**/_svn/**"/>
+        <exclude name="**/vssver.scc/**"/>
+        <exclude name="**/vssver2.scc/**"/>
+    </patternset>
+    <patternset id="library.patterns">
+        <include name="*.egg"/>
+        <include name="*.zip"/>
+        <include name="*.war"/>
+        <include name="*.swc"/>
+        <include name="*.ear"/>
+        <include name="*.jar"/>
+        <include name="*.ane"/>
+    </patternset>
+    <patternset id="compiler.resources">
+        <exclude name="**/?*.java"/>
+        <exclude name="**/?*.form"/>
+        <exclude name="**/?*.class"/>
+        <exclude name="**/?*.groovy"/>
+        <exclude name="**/?*.scala"/>
+        <exclude name="**/?*.flex"/>
+        <exclude name="**/?*.kt"/>
+        <exclude name="**/?*.clj"/>
+        <exclude name="**/?*.aj"/>
+    </patternset>
+
+    <!-- JDK definitions -->
+
+    <property name="jdk.bin.14" value="${jdk.home.14}/bin"/>
+    <path id="jdk.classpath.14">
+        <fileset dir="${jdk.home.14}">
+            <include name="../jdk-15.0.1!/java.base"/>
+            <include name="../jdk-15.0.1!/java.compiler"/>
+            <include name="../jdk-15.0.1!/java.datatransfer"/>
+            <include name="../jdk-15.0.1!/java.desktop"/>
+            <include name="../jdk-15.0.1!/java.instrument"/>
+            <include name="../jdk-15.0.1!/java.logging"/>
+            <include name="../jdk-15.0.1!/java.management"/>
+            <include name="../jdk-15.0.1!/java.management.rmi"/>
+            <include name="../jdk-15.0.1!/java.naming"/>
+            <include name="../jdk-15.0.1!/java.net.http"/>
+            <include name="../jdk-15.0.1!/java.prefs"/>
+            <include name="../jdk-15.0.1!/java.rmi"/>
+            <include name="../jdk-15.0.1!/java.scripting"/>
+            <include name="../jdk-15.0.1!/java.se"/>
+            <include name="../jdk-15.0.1!/java.security.jgss"/>
+            <include name="../jdk-15.0.1!/java.security.sasl"/>
+            <include name="../jdk-15.0.1!/java.smartcardio"/>
+            <include name="../jdk-15.0.1!/java.sql"/>
+            <include name="../jdk-15.0.1!/java.sql.rowset"/>
+            <include name="../jdk-15.0.1!/java.transaction.xa"/>
+            <include name="../jdk-15.0.1!/java.xml"/>
+            <include name="../jdk-15.0.1!/java.xml.crypto"/>
+            <include name="../jdk-15.0.1!/jdk.accessibility"/>
+            <include name="../jdk-15.0.1!/jdk.aot"/>
+            <include name="../jdk-15.0.1!/jdk.attach"/>
+            <include name="../jdk-15.0.1!/jdk.charsets"/>
+            <include name="../jdk-15.0.1!/jdk.compiler"/>
+            <include name="../jdk-15.0.1!/jdk.crypto.cryptoki"/>
+            <include name="../jdk-15.0.1!/jdk.crypto.ec"/>
+            <include name="../jdk-15.0.1!/jdk.crypto.mscapi"/>
+            <include name="../jdk-15.0.1!/jdk.dynalink"/>
+            <include name="../jdk-15.0.1!/jdk.editpad"/>
+            <include name="../jdk-15.0.1!/jdk.hotspot.agent"/>
+            <include name="../jdk-15.0.1!/jdk.httpserver"/>
+            <include name="../jdk-15.0.1!/jdk.incubator.foreign"/>
+            <include name="../jdk-15.0.1!/jdk.incubator.jpackage"/>
+            <include name="../jdk-15.0.1!/jdk.internal.ed"/>
+            <include name="../jdk-15.0.1!/jdk.internal.jvmstat"/>
+            <include name="../jdk-15.0.1!/jdk.internal.le"/>
+            <include name="../jdk-15.0.1!/jdk.internal.opt"/>
+            <include name="../jdk-15.0.1!/jdk.internal.vm.ci"/>
+            <include name="../jdk-15.0.1!/jdk.internal.vm.compiler"/>
+            <include name="../jdk-15.0.1!/jdk.internal.vm.compiler.management"/>
+            <include name="../jdk-15.0.1!/jdk.jartool"/>
+            <include name="../jdk-15.0.1!/jdk.javadoc"/>
+            <include name="../jdk-15.0.1!/jdk.jcmd"/>
+            <include name="../jdk-15.0.1!/jdk.jconsole"/>
+            <include name="../jdk-15.0.1!/jdk.jdeps"/>
+            <include name="../jdk-15.0.1!/jdk.jdi"/>
+            <include name="../jdk-15.0.1!/jdk.jdwp.agent"/>
+            <include name="../jdk-15.0.1!/jdk.jfr"/>
+            <include name="../jdk-15.0.1!/jdk.jlink"/>
+            <include name="../jdk-15.0.1!/jdk.jshell"/>
+            <include name="../jdk-15.0.1!/jdk.jsobject"/>
+            <include name="../jdk-15.0.1!/jdk.jstatd"/>
+            <include name="../jdk-15.0.1!/jdk.localedata"/>
+            <include name="../jdk-15.0.1!/jdk.management"/>
+            <include name="../jdk-15.0.1!/jdk.management.agent"/>
+            <include name="../jdk-15.0.1!/jdk.management.jfr"/>
+            <include name="../jdk-15.0.1!/jdk.naming.dns"/>
+            <include name="../jdk-15.0.1!/jdk.naming.rmi"/>
+            <include name="../jdk-15.0.1!/jdk.net"/>
+            <include name="../jdk-15.0.1!/jdk.nio.mapmode"/>
+            <include name="../jdk-15.0.1!/jdk.sctp"/>
+            <include name="../jdk-15.0.1!/jdk.security.auth"/>
+            <include name="../jdk-15.0.1!/jdk.security.jgss"/>
+            <include name="../jdk-15.0.1!/jdk.unsupported"/>
+            <include name="../jdk-15.0.1!/jdk.unsupported.desktop"/>
+            <include name="../jdk-15.0.1!/jdk.xml.dom"/>
+            <include name="../jdk-15.0.1!/jdk.zipfs"/>
+        </fileset>
+    </path>
+
+    <property name="project.jdk.home" value="${jdk.home.14}"/>
+    <property name="project.jdk.bin" value="${jdk.bin.14}"/>
+    <property name="project.jdk.classpath" value="jdk.classpath.14"/>
+
+
+    <!-- Project Libraries -->
+
+    <path id="library.gradle:_org.apiguardian:apiguardian-api:1.1.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.0/fc9dff4bb36d627bdc553de77e1f17efd790876c/apiguardian-api-1.1.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.junit.jupiter:junit-jupiter-api:5.7.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.7.0/b25f3815c4c1860a73041e733a14a0379d00c4d5/junit-jupiter-api-5.7.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.junit.jupiter:junit-jupiter-engine:5.7.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.7.0/d9044d6b45e2232ddd53fa56c15333e43d1749fd/junit-jupiter-engine-5.7.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.junit.jupiter:junit-jupiter-params:5.7.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.7.0/521dbecace93d5d7ef13a74aab231befd7954424/junit-jupiter-params-5.7.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.junit.jupiter:junit-jupiter:5.7.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.7.0/3152d152da916ccbb0715f89f7f873f45362ad7f/junit-jupiter-5.7.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.junit.platform:junit-platform-commons:1.7.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.7.0/84e309fbf21d857aac079a3c1fffd84284e1114d/junit-platform-commons-1.7.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.junit.platform:junit-platform-engine:1.7.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.7.0/eadb73c5074a4ac71061defd00fc176152a4d12c/junit-platform-engine-1.7.0.jar"/>
+    </path>
+
+    <path id="library.gradle:_org.opentest4j:opentest4j:1.2.0.classpath">
+        <pathelement
+                location="${basedir}/../../Gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar"/>
+    </path>
+
+    <!-- Modules -->
+
+    <import file="${basedir}/.idea/module_project_1.2.xml"/>
+
+    <import file="${basedir}/.idea/modules/module_project_1.2.main.xml"/>
+
+    <import file="${basedir}/.idea/modules/module_project_1.2.test.xml"/>
+
+    <target name="init" description="Build initialization">
+        <!-- Perform any build initialization in this target -->
+    </target>
+
+    <target name="clean.module.project_1.2"></target>
+    <target name="clean.module.project_1.2.main"></target>
+    <target name="clean.module.project_1.2.test"></target>
+    <target name="clean"
+            depends="clean.module.project_1.2, clean.module.project_1.2.main, clean.module.project_1.2.test"
+            description="cleanup all"/>
+
+    <target name="compile.module.project_1.2"></target>
+    <target name="compile.module.project_1.2.main"></target>
+    <target name="compile.module.project_1.2.test"></target>
+    <target name="build.modules"
+            depends="init, clean, compile.module.project_1.2, compile.module.project_1.2.main, compile.module.project_1.2.test"
+            description="build all modules"/>
+
+    <target name="init.artifacts">
+        <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+        <property name="artifact.output.project_1.2.main:jar" value="${basedir}/out/artifacts/Project_1_2_main_jar"/>
+        <mkdir dir="${artifacts.temp.dir}"/>
+        <property name="temp.jar.path.Project_1.2.main_jar.jar" value="${artifacts.temp.dir}/Project_1.2.main_jar.jar"/>
+    </target>
+
+    <property name="project_1.2.main.output.dir" value=""/>
+    <target name="artifact.project_1.2.main:jar" depends="init.artifacts, compile.module.project_1.2.main"
+            description="Build &#39;Project_1.2.main:jar&#39; artifact">
+        <property name="artifact.temp.output.project_1.2.main:jar" value="${artifacts.temp.dir}/Project_1_2_main_jar"/>
+        <mkdir dir="${artifact.temp.output.project_1.2.main:jar}"/>
+        <jar destfile="${temp.jar.path.Project_1.2.main_jar.jar}" duplicate="preserve"
+             filesetmanifest="mergewithoutmain">
+            <zipfileset dir="${project_1.2.main.output.dir}"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.6.2/c0833bd6de29dd77f8d071025b97b8b434308cd3/junit-jupiter-engine-5.6.2.jar"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.1.0/fc9dff4bb36d627bdc553de77e1f17efd790876c/apiguardian-api-1.1.0.jar"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.6.2/f2a64a42cf73077062c2386db0598062b7480d91/junit-jupiter-params-5.6.2.jar"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.6.2/c9ba885abfe975cda123bf6f8f0a69a1b46956d0/junit-jupiter-api-5.6.2.jar"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.6.2/1752cad2579e20c2b224602fe846fc660fb35805/junit-platform-engine-1.6.2.jar"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.6.2/b5c481685b6a8ca91c0d46f28f886a444354daa5/junit-jupiter-5.6.2.jar"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar"/>
+            <zipfileset
+                    src="${basedir}/../../Users/Lorenzo/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.6.2/7644a14b329e76b5fe487628b50fb5eab6ba7d26/junit-platform-commons-1.6.2.jar"/>
+        </jar>
+        <copy file="${temp.jar.path.Project_1.2.main_jar.jar}"
+              tofile="${artifact.temp.output.project_1.2.main:jar}/Project_1.2.main_jar.jar"/>
+    </target>
+
+    <target name="build.all.artifacts" depends="artifact.project_1.2.main:jar" description="Build all artifacts">
+        <mkdir dir="${artifact.output.project_1.2.main:jar}"/>
+        <copy todir="${artifact.output.project_1.2.main:jar}">
+            <fileset dir="${artifact.temp.output.project_1.2.main:jar}"/>
+        </copy>
+
+        <!-- Delete temporary files -->
+        <delete dir="${artifacts.temp.dir}"/>
+    </target>
+
+    <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

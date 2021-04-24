@@ -12,7 +12,7 @@ import static group17.phase1.Titan.Config.G;
 public class RungeKutta4thSolver implements ODESolverInterface {
 
     private static double t, tf;
-    private final ODEFunctionInterface singleCoreF;
+    private ODEFunctionInterface singleCoreF;
 
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) -> {
@@ -140,5 +140,17 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     @Override
     public ODEFunctionInterface getFunction() {
         return this.singleCoreF;
+    }
+
+    @Override
+    public String toString() {
+        return "RungeKutta4thSolver{" +
+                "function used =" + singleCoreF +
+                '}';
+    }
+
+    @Override
+    public void setF(ODEFunctionInterface f) {
+        this.singleCoreF = f;
     }
 }
