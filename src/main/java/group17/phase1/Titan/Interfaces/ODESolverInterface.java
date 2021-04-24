@@ -61,4 +61,6 @@ public interface ODESolverInterface {
      * @see EulerSolver#singleCoreF
      */
     ODEFunctionInterface getFunction();
+
+
 }

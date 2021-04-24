@@ -49,6 +49,7 @@ public abstract class Simulation implements SimulationInterface {
         //TODO: implement this in a better way
         NAMES = (SIMULATION_LEVEL != PARTICLES_SIMULATION && NAMES);
 
+
         //TODO: yo let's put all the cases here
         switch (level) {
             case 0 -> {

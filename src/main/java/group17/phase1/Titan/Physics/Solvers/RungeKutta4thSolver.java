@@ -103,6 +103,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         k14 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(v23)));
         v24 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k13))).multiply(h);
 
+        //rate   -> y.add(rate).mul(h)   -> y.addMul(h,rate)
 
         if (DEBUG) {
             System.out.println("k11");
