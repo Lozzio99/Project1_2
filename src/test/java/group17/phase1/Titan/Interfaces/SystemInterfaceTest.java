@@ -4,8 +4,8 @@ import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Physics.Bodies.*;
 import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
-import group17.phase1.Titan.Physics.Solvers.RungeKutta4thSolver;
 import group17.phase1.Titan.Simulation.Simulation;
+import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.SolarSystem.SolarSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +13,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
+import static group17.phase1.Titan.Config.CPU_LEVEL;
+import static group17.phase1.Titan.Config.EULER_SOLVER;
 import static group17.phase1.Titan.Main.simulation;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -150,12 +153,21 @@ class SystemInterfaceTest {
     @Test
     @DisplayName("Start")
     void Start() {
-        system.startSolver(1);
+        CPU_LEVEL = 1;
+        system.startSolver(EULER_SOLVER);
+        system.solver().setClock(new Clock().setInitialTime(0, 0, 0));
         assertEquals("", system.toString());
         assertSame(new EulerSolver().getFunction(), system.solver().getFunction());
-        system.startSolver(2);
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        CPU_LEVEL = 2;
+        system.startSolver(EULER_SOLVER);
         assertEquals("", system.toString());
-        assertSame(new RungeKutta4thSolver().getFunction(), system.solver().getFunction());
+        assertEquals(ForkJoinPool.class, ((MaxCPUSolver) system.solver().getFunction()).getService().getClass());
     }
 
     @Test
@@ -205,6 +217,8 @@ class SystemInterfaceTest {
     void Step() {
         simulation.initCPU(1);
         simulation.initSystem(1);
+        simulation.system().startSolver(EULER_SOLVER);
+        simulation.system().solver().setClock(new Clock().setInitialTime(0, 0, 0));
         simulation.system().reset();
         simulation.system().step();
     }

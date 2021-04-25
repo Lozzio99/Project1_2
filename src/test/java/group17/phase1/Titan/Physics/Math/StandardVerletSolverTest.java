@@ -2,10 +2,12 @@ package group17.phase1.Titan.Physics.Math;
 
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Physics.Solvers.StandardVerletSolver;
+import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StandardVerletSolverTest {
 
@@ -14,6 +16,7 @@ public class StandardVerletSolverTest {
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();
         StandardVerletSolver solver = new StandardVerletSolver();
+        solver.setClock(new Clock().setInitialTime(0, 0, 0));
         // init parameters
         Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0
         Vector3D initVelocity = new Vector3D(0,0, 1);

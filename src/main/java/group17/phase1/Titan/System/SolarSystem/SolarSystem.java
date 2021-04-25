@@ -26,6 +26,9 @@ public class SolarSystem implements SystemInterface {
     double t = 0;
     private Clock clock;
 
+    public SolarSystem() {
+        this.allBodies = new ArrayList<>();
+    }
 
     @Override
     public List<CelestialBody> getCelestialBodies() {
@@ -34,7 +37,8 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initPlanets() {
-        this.allBodies = new ArrayList<>();
+        if (SIMULATION_LEVEL == PARTICLES_SIMULATION)
+            this.allBodies = new ArrayList<>();
         this.allBodies.add(new Star());
         this.allBodies.add(new Planet(Planet.PlanetsEnum.MERCURY));
         this.allBodies.add(new Planet(Planet.PlanetsEnum.VENUS));
@@ -88,7 +92,9 @@ public class SolarSystem implements SystemInterface {
             ((MaxCPUSolver) this.f).shutDown();
     }
 
+
     //TODO : set f in a proper way (solver may return something else) see : step()
+    @Override
     public void startSolver(int solver) {
         switch (solver) {
             case EULER_SOLVER -> this.solver = new EulerSolver();

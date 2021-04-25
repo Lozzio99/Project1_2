@@ -11,6 +11,12 @@ public class Clock {
                     "July", "August", "September", "October", "November", "December"};
 
     public Clock() {
+        sec = 0;
+        min = 0;
+        hour = 0;
+        days = 0;
+        months = 0;
+        years = 0;
     }
 
     public static void main(String[] args) {
@@ -37,6 +43,13 @@ public class Clock {
         this.months = 4;
         this.years = 2020;
         checkLeap();
+        return this;
+    }
+
+    public Clock setInitialTime(int sec, int min, int hours) {
+        this.sec = sec;
+        this.min = min;
+        this.hour = hours;
         return this;
     }
 
