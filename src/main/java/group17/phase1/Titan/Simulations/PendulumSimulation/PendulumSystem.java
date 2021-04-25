@@ -11,14 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PendulumSystem implements SystemInterface {
+    StateInterface systemState;
+    ODESolverInterface solver;
     private final List<CelestialBody> bodies;
-    private StateInterface systemState;
     private Clock clock;
     private double t;
-    private ODESolverInterface solver;
 
     public PendulumSystem() {
         this.bodies = new ArrayList<>();
+        Config.STEP_SIZE = 10;
     }
 
     @Override
@@ -28,8 +29,13 @@ public class PendulumSystem implements SystemInterface {
 
     @Override
     public void initPlanets() {
-
-
+        PendulumBody p1 = new PendulumBody(1);
+        this.bodies.add(p1);
+        PendulumBody p2 = new PendulumBody(2);
+        this.bodies.add(p2);
+        p1.initProperties();
+        p2.initProperties();
+        this.systemState = new PendulumState();
     }
 
     @Override
@@ -55,8 +61,8 @@ public class PendulumSystem implements SystemInterface {
 
     @Override
     public void reset() {
-        this.systemState.state0();
-        this.systemState.initialVelocity();
+        this.systemState = this.systemState().state0();
+        this.systemState().initialVelocity();
         this.initClock();
     }
 
@@ -90,5 +96,12 @@ public class PendulumSystem implements SystemInterface {
     public void step() {
         this.solver().step(this.solver().getFunction(), t, this.systemState(), Config.STEP_SIZE);
         t += Config.STEP_SIZE;
+    }
+
+    @Override
+    public String toString() {
+        return "PendulumSystem{" +
+                "clock=" + clock +
+                '}';
     }
 }

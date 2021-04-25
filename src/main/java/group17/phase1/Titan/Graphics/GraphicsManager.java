@@ -21,8 +21,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     private JFrame frame;
     private WindowEvent listen;
     private MouseInput mouse;
-    private Scene currentScene;
-    private final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
+    protected final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
+    protected Scene currentScene;
 
 
     @Override
@@ -60,6 +60,15 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.mainGraphicsTh.get().start();
     }
 
+    @Override
+    public JFrame getFrame() {
+        return this.frame;
+    }
+
+    @Override
+    public MouseInput getMouse() {
+        return this.mouse;
+    }
 
     @Override
     public void changeScene(Scene.SceneType scene) {

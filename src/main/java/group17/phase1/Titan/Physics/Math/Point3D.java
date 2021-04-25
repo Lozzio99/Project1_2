@@ -45,15 +45,21 @@ public class Point3D
         return  Math.sqrt(x2 + y2 + z2);
     }
 
-    public void scale(double scale)
-    {
-        this.x/=scale;
-        this.y/=scale;
-        this.z/=scale;
+    public void scale(double scale) {
+        this.x /= scale;
+        this.y /= scale;
+        this.z /= scale;
     }
 
     @Override
-    public String toString(){
-        return "( "+ this.getXCoordinate()+ " , "+ this.getYCoordinate() + " , " + this.getZCoordinate()+ " )";
+    public String toString() {
+        return "( " + this.getXCoordinate() + " , " + this.getYCoordinate() + " , " + this.getZCoordinate() + " )";
+    }
+
+    public Point3D translate(double x, double y, double z) {
+        this.xOffset += x;
+        this.yOffset += y;
+        this.zOffset += z;
+        return this;
     }
 }

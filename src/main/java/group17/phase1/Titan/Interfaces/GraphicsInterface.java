@@ -1,8 +1,10 @@
 package group17.phase1.Titan.Interfaces;
 
 
+import group17.phase1.Titan.Graphics.Scenes.MouseInput;
 import group17.phase1.Titan.Graphics.Scenes.Scene;
 
+import javax.swing.*;
 import java.awt.*;
 
 public interface GraphicsInterface {
@@ -12,6 +14,11 @@ public interface GraphicsInterface {
      * Accessed in Point3dConverter for dimension scaling
      */
     Dimension screen = new Dimension(1480, 810);
+
+
+    JFrame getFrame();
+
+    MouseInput getMouse();
 
     /**
      * initializes the main frame with subsequent call to changeScene,

@@ -31,11 +31,11 @@ public class Config {
     public static final int MAX_CPU = 5;
 
 
-    public static final boolean REPORT = true;
+    public static final boolean REPORT = false;
     public static final boolean DEBUG = false;
     //which simulation is going to run
     public static int SIMULATION_LEVEL = 0;
-    public static final boolean ENABLE_ASSIST = true;
+    public static final boolean ENABLE_ASSIST = false;
 
 
     public static final double G = 6.67408e-11;

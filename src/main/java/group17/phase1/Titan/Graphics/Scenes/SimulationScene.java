@@ -19,8 +19,7 @@ public class SimulationScene extends Scene {
 
 
     @Override
-    public void paintComponent(Graphics graphics)
-    {
+    public void paintComponent(Graphics graphics) {
         Graphics2D g = (Graphics2D) graphics;
         super.paintComponent(g);
         for (int i = 0; i < this.planetsPositions.length; i++) {

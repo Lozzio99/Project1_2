@@ -1,9 +1,7 @@
 package group17.phase1.Titan.System;
 
 import group17.phase1.Titan.Interfaces.RateInterface;
-import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 
 import java.util.ArrayList;
@@ -18,10 +16,12 @@ public class RateOfChange implements RateInterface {
         this.vel = new ArrayList<>();
     }
 
-    public RateOfChange state0()
-    {
-        for (int i = 0; i < simulation.system().systemState().getPositions().size(); i++)
+    public RateInterface state0() {
+        if (this.vel.size() != 0)
+            this.vel = new ArrayList<>();
+        for (int i = 0; i < simulation.system().systemState().getPositions().size(); i++) {
             this.vel.add(simulation.system().getCelestialBodies().get(i).getVectorVelocity());
+        }
         return this;
     }
 

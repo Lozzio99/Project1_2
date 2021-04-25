@@ -14,7 +14,7 @@ import java.io.IOException;
 
 import static group17.phase1.Titan.Config.SIMULATION_LEVEL;
 import static group17.phase1.Titan.Config.SOLAR_SYSTEM_SIMULATION;
-import static group17.phase1.Titan.Interfaces.GraphicsInterface.screen;
+import static group17.phase1.Titan.Main.simulation;
 
 /**
  * Abstract class to Render a scene
@@ -58,16 +58,19 @@ public abstract class Scene extends JPanel {
         //super.paintComponent(graphics);
 
         g = (Graphics2D) graphics;
+
         if (!IMAGE_FAILED && SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION) {
             if (image == null) {
                 create();
                 setHints(g);
             } else {
-                g.drawImage(image, 0, 0, screen.width, screen.height, 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
+                g.drawImage(image, 0, 0, simulation.graphics().get().getFrame().getWidth(),
+                        simulation.graphics().get().getFrame().getHeight(), 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
             }
         } else {
             g.setColor(Color.BLACK);
-            g.fillRect(0, 0, screen.width, screen.height);
+            g.fillRect(0, 0, simulation.graphics().get().getFrame().getWidth(),
+                    simulation.graphics().get().getFrame().getHeight());
         }
 
     }
