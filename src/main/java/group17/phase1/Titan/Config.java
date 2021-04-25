@@ -4,10 +4,12 @@ import group17.phase1.Titan.System.Clock;
 
 public class Config {
 
+    public static final int PENDULUM_SIMULATION = 3;
     public static final int NUMERICAL_SIMULATION = 2;
     public static final int PARTICLES_SIMULATION = 1;
-
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
+
+
     public static final boolean ENABLE_GRAPHICS = true;
     public static final double FPS = 80;
     public static final int BETA_SIMULATION = 2;

@@ -61,35 +61,15 @@ class RungeKutta4thSolverTest {
         }
 
         @Override
+        public void setPositions(List<Vector3dInterface> v) {
+
+        }
+
+        @Override
         public StateInterface addMul(double step, RateInterface rate) {
 
             //somthing = step * rate == h*f(t,y)
             //y0 = y0 + that somthing;
-            return null;
-        }
-
-        @Override
-        public StateInterface rateMul(double step, RateInterface rate) {
-            return null;
-        }
-
-        @Override
-        public StateInterface copy(StateInterface tobeCloned) {
-            return null;
-        }
-
-        @Override
-        public StateInterface multiply(double scalar) {
-            return null;
-        }
-
-        @Override
-        public StateInterface div(double scalar) {
-            return null;
-        }
-
-        @Override
-        public StateInterface add(StateInterface tobeAdded) {
             return null;
         }
 
@@ -101,11 +81,6 @@ class RungeKutta4thSolverTest {
         @Override
         public void initialVelocity() {
 
-        }
-
-        @Override
-        public StateInterface sumOf(StateInterface... states) {
-            return null;
         }
     }
 }

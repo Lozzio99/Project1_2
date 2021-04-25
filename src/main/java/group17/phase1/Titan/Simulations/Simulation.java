@@ -11,6 +11,7 @@ import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
 import group17.phase1.Titan.Simulations.NumericalSimulation.NumericalSimulation;
 import group17.phase1.Titan.Simulations.NumericalSimulation.TrajectoriesUpdater;
 import group17.phase1.Titan.Simulations.ParticlesSimulation.ParticlesSimulation;
+import group17.phase1.Titan.Simulations.PendulumSimulation.DoublePendulumSimulation;
 import group17.phase1.Titan.Simulations.SolarSystemSimulation.SimulationUpdater;
 import group17.phase1.Titan.Simulations.SolarSystemSimulation.SolarSystemSimulation;
 
@@ -62,6 +63,9 @@ public abstract class Simulation implements SimulationInterface {
             }
             case 2 -> {
                 return new NumericalSimulation();
+            }
+            case 3 -> {
+                return new DoublePendulumSimulation();
             }
             default -> {
                 throw new RuntimeException("Select a valid level for the simulation instance");
