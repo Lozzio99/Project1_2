@@ -1,8 +1,8 @@
-package group17.phase1.Titan.Simulation.SolarSystemSimulation;
+package group17.phase1.Titan.Simulations.SolarSystemSimulation;
 
 import group17.phase1.Titan.Interfaces.SimulationInterface;
 import group17.phase1.Titan.Main;
-import group17.phase1.Titan.Simulation.Simulation;
+import group17.phase1.Titan.Simulations.Simulation;
 import group17.phase1.Titan.System.Clock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

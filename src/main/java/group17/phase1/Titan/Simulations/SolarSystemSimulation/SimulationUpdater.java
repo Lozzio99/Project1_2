@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Simulation;
+package group17.phase1.Titan.Simulations.SolarSystemSimulation;
 
 import group17.phase1.Titan.Interfaces.StateInterface;
 

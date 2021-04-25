@@ -1,8 +1,7 @@
-package group17.phase1.Titan.Simulation.ParticlesSimulation;
+package group17.phase1.Titan.Simulations.ParticlesSimulation;
 
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
-import group17.phase1.Titan.Simulation.Simulation;
-import group17.phase1.Titan.System.ParticlesSystem.ParticlesSystem;
+import group17.phase1.Titan.Simulations.Simulation;
 
 import static group17.phase1.Titan.Config.SOLVER;
 

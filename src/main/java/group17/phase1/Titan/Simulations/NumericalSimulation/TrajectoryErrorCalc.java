@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Physics.Trajectories;
+package group17.phase1.Titan.Simulations.NumericalSimulation;
 
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;

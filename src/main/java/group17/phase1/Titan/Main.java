@@ -1,7 +1,7 @@
 package group17.phase1.Titan;
 
 import group17.phase1.Titan.Interfaces.SimulationInterface;
-import group17.phase1.Titan.Simulation.Simulation;
+import group17.phase1.Titan.Simulations.Simulation;
 
 import static group17.phase1.Titan.Config.*;
 

@@ -1,7 +1,7 @@
-package group17.phase1.Titan.Simulation;
+package group17.phase1.Titan.Simulations.NumericalSimulation;
 
 import group17.phase1.Titan.Interfaces.StateInterface;
-import group17.phase1.Titan.Physics.Trajectories.TrajectoryErrorCalc;
+import group17.phase1.Titan.Simulations.SolarSystemSimulation.SimulationUpdater;
 
 import static group17.phase1.Titan.Config.REPORT;
 import static group17.phase1.Titan.Main.simulation;

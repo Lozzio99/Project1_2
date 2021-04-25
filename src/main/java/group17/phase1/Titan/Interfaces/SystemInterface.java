@@ -3,7 +3,7 @@ package group17.phase1.Titan.Interfaces;
 
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
-import group17.phase1.Titan.Simulation.SimulationUpdater;
+import group17.phase1.Titan.Simulations.SolarSystemSimulation.SimulationUpdater;
 import group17.phase1.Titan.System.Clock;
 
 import java.util.List;

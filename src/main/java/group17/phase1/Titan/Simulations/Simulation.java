@@ -1,4 +1,4 @@
-package group17.phase1.Titan.Simulation;
+package group17.phase1.Titan.Simulations;
 
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Graphics.DialogFrame;
@@ -8,9 +8,11 @@ import group17.phase1.Titan.Interfaces.GraphicsInterface;
 import group17.phase1.Titan.Interfaces.SimulationInterface;
 import group17.phase1.Titan.Interfaces.SystemInterface;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
-import group17.phase1.Titan.Simulation.ParticlesSimulation.ParticlesSimulation;
-import group17.phase1.Titan.Simulation.SolarSystemSimulation.NumericalSimulation;
-import group17.phase1.Titan.Simulation.SolarSystemSimulation.SolarSystemSimulation;
+import group17.phase1.Titan.Simulations.NumericalSimulation.NumericalSimulation;
+import group17.phase1.Titan.Simulations.NumericalSimulation.TrajectoriesUpdater;
+import group17.phase1.Titan.Simulations.ParticlesSimulation.ParticlesSimulation;
+import group17.phase1.Titan.Simulations.SolarSystemSimulation.SimulationUpdater;
+import group17.phase1.Titan.Simulations.SolarSystemSimulation.SolarSystemSimulation;
 
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;

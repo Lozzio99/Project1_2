@@ -1,11 +1,10 @@
-package group17.phase1.Titan.Simulation.SolarSystemSimulation;
+package group17.phase1.Titan.Simulations.NumericalSimulation;
 
 import group17.phase1.Titan.Graphics.DialogFrame;
 import group17.phase1.Titan.Interfaces.GraphicsInterface;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
-import group17.phase1.Titan.Simulation.Simulation;
-import group17.phase1.Titan.Simulation.TrajectoriesUpdater;
-import group17.phase1.Titan.System.SolarSystem.SolarSystem;
+import group17.phase1.Titan.Simulations.Simulation;
+import group17.phase1.Titan.Simulations.SolarSystemSimulation.SolarSystem;
 
 import java.util.concurrent.atomic.AtomicReference;
 

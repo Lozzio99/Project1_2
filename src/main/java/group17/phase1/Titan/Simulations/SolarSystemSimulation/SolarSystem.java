@@ -1,4 +1,4 @@
-package group17.phase1.Titan.System.SolarSystem;
+package group17.phase1.Titan.Simulations.SolarSystemSimulation;
 
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;

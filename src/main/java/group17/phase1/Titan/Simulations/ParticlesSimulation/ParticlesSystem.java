@@ -1,4 +1,4 @@
-package group17.phase1.Titan.System.ParticlesSystem;
+package group17.phase1.Titan.Simulations.ParticlesSimulation;
 
 import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
