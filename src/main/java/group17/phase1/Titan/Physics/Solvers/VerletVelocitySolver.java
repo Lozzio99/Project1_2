@@ -18,7 +18,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
     private ODEFunctionInterface singleCoreF;
 
     public VerletVelocitySolver() {
-        this.singleCoreF = (t, y) -> {
+        this.singleCoreF = (h, y) -> {
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -35,7 +35,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
                     */
                         acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
                         acc = acc.mul((G * Main.simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
-                        totalAcc = totalAcc.addMul(t, acc);
+                        totalAcc = totalAcc.addMul(h, acc);
                         // p = h*acc(derivative of velocity)
                     }
                 }  // y1 =y0 + h*acc
@@ -94,16 +94,17 @@ public class VerletVelocitySolver implements ODESolverInterface {
         RateInterface velocity = new RateOfChange();
         velocity.setVel(y.getRateOfChange().getVelocities());
         // next position
-        StateInterface part2 = StateInterface.clone(y).rateMul(0.5*h*h,f.call(t,StateInterface.clone(y))).add(StateInterface.clone(y));
+        StateInterface part2 = StateInterface.clone(y).rateMul(0.5*h*h, f.call(1,StateInterface.clone(y)) ).add(StateInterface.clone(y));
         StateInterface part3 = StateInterface.clone(y).rateMul(h, velocity);
         StateInterface part4 = part2.add(part3);
 
-        RateInterface part5 = f.call(t+h,StateInterface.clone(part4)).add(f.call(t, StateInterface.clone(y)));
+        RateInterface part5 = f.call(1,StateInterface.clone(part4)).add(f.call(1, StateInterface.clone(y)));
         RateInterface part6 = part5.multiply(0.5*h);
         RateInterface part7 = RateInterface.clone(velocity).add(part6);
-        part4.getRateOfChange().setVel(part7.getVelocities());
 
-        return part4;
+        part4.getRateOfChange().setVel(part7.getVelocities());
+        y = part4;
+        return y;
     }
 
     @Override
