@@ -3,6 +3,7 @@ package group17.phase1.Titan.Physics.Math;
 
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
 
+
 public class Vector3D implements Vector3dInterface
 {
 
@@ -127,8 +128,12 @@ public class Vector3D implements Vector3dInterface
      * Converts a vector to a string.
      */
     @Override
-    public String toString(){
-        return "(" + this.getX() + "," + this.getY() + "," + this.getZ() + ")";
+    public String toString() {
+        String s = "(" +
+                this.getX() + "," +
+                this.getY() + "," +
+                this.getZ() + ")";
+        return s;
     }
 
     double x,y,z;

@@ -3,17 +3,16 @@ package group17.phase1.Titan.Simulation.SolarSystemSimulation;
 import group17.phase1.Titan.Graphics.DialogFrame;
 import group17.phase1.Titan.Interfaces.GraphicsInterface;
 import group17.phase1.Titan.Physics.Bodies.CelestialBody;
-import group17.phase1.Titan.Physics.Trajectories.TrajectoriesSolver;
-import group17.phase1.Titan.Physics.Trajectories.TrajectoryErrorCalc;
 import group17.phase1.Titan.Simulation.Simulation;
+import group17.phase1.Titan.Simulation.TrajectoriesUpdater;
 import group17.phase1.Titan.System.SolarSystem.SolarSystem;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.phase1.Titan.Config.REPORT;
 import static group17.phase1.Titan.Config.SOLVER;
 
 public class NumericalSimulation extends Simulation {
+
     @Override
     public void initSystem(int solver) {
         SOLVER = solver;
@@ -33,7 +32,7 @@ public class NumericalSimulation extends Simulation {
 
     @Override
     public void initCPU(int level) {
-        this.updater.set(new TrajectoriesSolver());
+        this.updater.set(new TrajectoriesUpdater());
         this.updater.get().setDaemon(true);
     }
 
@@ -73,21 +72,7 @@ public class NumericalSimulation extends Simulation {
         this.system.startSolver(SOLVER);
         this.updater.get().launch();
         while (!this.updater.get().isKilled()) {
-        }
 
-
-        if (REPORT) {
-            TrajectoryErrorCalc test = null;
-            test = new TrajectoryErrorCalc();
-            test.revert();
-            for (int i = 0; i < this.updater.get().getStates().length; i++) {
-                System.out.println("Month  " + (i + 1));
-                System.out.println("SIMULATION STATE : ");
-                System.out.println(this.updater.get().getStates()[i].toString());
-                System.out.println("\nCOMPARE TO ORIGINAL : ");
-                System.out.println(test.getMonths().get(i).toString());
-                System.out.println("\n");
-            }
         }
     }
 

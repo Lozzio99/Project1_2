@@ -32,7 +32,7 @@ public class SimulationScene extends Scene {
             }
             g.setColor(Main.simulation.system().getCelestialBodies().get(i).getColour());
             g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
-            if (TRAJECTORIES) {
+            if (DRAW_TRAJECTORIES) {
                 for (int k = this.trajectories[i].insert; k < this.trajectories[i].getTrajectories().length - 1; k++) {
                     if (this.trajectories[i].getTrajectories()[k + 1] == null)
                         break;
@@ -58,7 +58,7 @@ public class SimulationScene extends Scene {
         this.radius = new double[Main.simulation.system().getCelestialBodies().size()];
         this.trajectories = new Bag[this.planetsPositions.length];
         for (int i = 0; i < this.planetsPositions.length; i++) {
-            if (TRAJECTORIES)
+            if (DRAW_TRAJECTORIES)
                 this.trajectories[i] = new Bag();
             this.planetsPositions[i] = Main.simulation.system().systemState().getPositions().get(i).fromVector();
             this.planetsPositions[i].scale(scale);
@@ -84,7 +84,7 @@ public class SimulationScene extends Scene {
             Point3DConverter.rotateAxisY(this.planetsPositions[i], false, totalXDif / mouseSensitivity);
             Point3DConverter.rotateAxisX(this.planetsPositions[i], false, totalYDif / mouseSensitivity);
 
-            if (TRAJECTORIES) {
+            if (DRAW_TRAJECTORIES) {
                 try {
                     this.trajectories[i].add(this.planetsPositions[i]);
                     for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {

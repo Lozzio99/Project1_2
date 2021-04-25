@@ -1,18 +1,19 @@
 package group17.phase1.Titan.Physics.Solvers;
 
-import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.*;
-import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Math.Vector3D;
+import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.RateOfChange;
 
 import static group17.phase1.Titan.Config.DEBUG;
 import static group17.phase1.Titan.Config.G;
+import static group17.phase1.Titan.Main.simulation;
 
 public class RungeKutta4thSolver implements ODESolverInterface {
 
     private static double t, tf;
     private ODEFunctionInterface singleCoreF;
+    private Clock clock;
 
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) -> {
@@ -31,7 +32,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         the same in all the system
                     */
                         acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                        acc = acc.mul((G * Main.simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                        acc = acc.mul((G * simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                         totalAcc = totalAcc.addMul(t, acc);
                         // p = h*acc(derivative of velocity)
                     }
@@ -45,40 +46,12 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         };
     }
 
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
-        StateInterface[] states = new StateInterface[ts.length];
-        tf = ts[ts.length - 1];
-        t = ts[0];
-
-        for (int i = 0; i < ts.length - 1; i++) {
-            double h = ts[i + 1] - ts[i];
-            Config.STEP_SIZE = h;
-            states[i] = this.step(f, h, y0, h);
-            t += h;
-        }
-        states[states.length - 1] = y0.addMul(t, f.call(ts[ts.length - 1] - t, y0));
-        return states;
-    }
-
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
-        tf = tf;
-        Config.STEP_SIZE = h;
-        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
-        t = 0;
-        for (int i = 0; i < path.length - 1; i++) {
-            path[i] = this.step(f, t, y0, h);
-            t += h;
-        }
-        path[path.length - 1] = this.step(f, tf, y0, tf - t);
-        return path;
-    }
-
 
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
 
+        if (this.clock != null)  //verlet uses this
+            this.clock.step(h);
         RateInterface v21, v22, v23, v24, kv;
         StateInterface k11, k12, k13, k14, kk;
 
@@ -132,8 +105,6 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
         y.getRateOfChange().setVel(y.getRateOfChange().add(kv).getVelocities());
         y = y.add(kk);
-
-
         return y;
     }
 
@@ -152,5 +123,15 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     @Override
     public void setF(ODEFunctionInterface f) {
         this.singleCoreF = f;
+    }
+
+    @Override
+    public Clock getClock() {
+        return this.clock;
+    }
+
+    @Override
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 }

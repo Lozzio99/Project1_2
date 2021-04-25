@@ -1,13 +1,13 @@
 package group17.phase1.Titan.Physics.Solvers;
 
 
-import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.ODESolverInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Math.Vector3D;
+import group17.phase1.Titan.System.Clock;
 
 import static group17.phase1.Titan.Config.G;
 import static java.lang.Double.NaN;
@@ -23,7 +23,8 @@ public class EulerSolver implements ODESolverInterface {
     //v(x,y,z) = p'(x,y,z)   //velocity
     //a(x,y,z) = dv(x,y,z) = dp(x,y,z)   //acceleration
     //           dt          dt
-    public ODEFunctionInterface singleCoreF = (t, y) -> {
+    public ODEFunctionInterface singleCoreF = (t, y) ->
+    {
         for (int i = 0; i < y.getPositions().size(); i++) {
             Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
             for (int k = 0; k < y.getPositions().size(); k++) {
@@ -51,45 +52,25 @@ public class EulerSolver implements ODESolverInterface {
         return y.getRateOfChange();
     };
 
+
+    private Clock clock;
+
     //x1 = x0 + h*v0;
     //x2 = x1 + h*v1;
     //v1 = v0 + h* f(position)
     // f(pos){
     // return ((-G*M)/pos^3)* pos;}
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
-        StateInterface[] states = new StateInterface[ts.length];
-        endTime = ts[ts.length - 1];
-        currTime = ts[0];
 
-        for (int i = 0; i < ts.length - 1; i++) {
-            double h = ts[i + 1] - ts[i];
-            Config.STEP_SIZE = h;
-            states[i] = this.step(f, currTime, y0, h);
-            currTime += h;
-        }
-        states[states.length - 1] = y0.addMul(currTime, f.call(ts[ts.length - 1] - currTime, y0));
-        return states;
-    }
-
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
-        endTime = tf;
-        Config.STEP_SIZE = h;
-        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
-        currTime = 0;
-        for (int i = 0; i < path.length - 1; i++) {
-            path[i] = this.step(f, currTime, y0, h);
-            currTime += h;
-        }
-        path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
-        return path;
-    }
 
     @Override
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
         // y1 = y0 +f(x,y0);
+        currTime = currentTime;
+        this.clock.step(stepSize);
         return y.addMul(stepSize, f.call(stepSize, y));
+        //       y0  +  (y * h      dy(rate of change))
+
+        // add (y * h) to y
     }
 
     @Override
@@ -108,5 +89,15 @@ public class EulerSolver implements ODESolverInterface {
     @Override
     public void setF(ODEFunctionInterface f) {
         this.singleCoreF = f;
+    }
+
+    @Override
+    public Clock getClock() {
+        return this.clock;
+    }
+
+    @Override
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 }

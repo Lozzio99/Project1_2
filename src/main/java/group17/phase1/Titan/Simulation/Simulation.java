@@ -104,9 +104,14 @@ public abstract class Simulation implements SimulationInterface {
         CPU_LEVEL = cpu;
 
         //TODO : is this really what we want?
-        TRAJECTORIES = SIMULATION_LEVEL == PARTICLES_SIMULATION ? (CPU_LEVEL <= 3 && TRAJECTORIES) : TRAJECTORIES;
+        DRAW_TRAJECTORIES = SIMULATION_LEVEL == PARTICLES_SIMULATION ? (CPU_LEVEL <= 3 && DRAW_TRAJECTORIES) : DRAW_TRAJECTORIES;
 
-        this.updater.set(new SimulationUpdater());
+
+        if (SIMULATION_LEVEL == NUMERICAL_SIMULATION && REPORT) {
+            this.updater.set(new TrajectoriesUpdater());
+        } else {
+            this.updater.set(new SimulationUpdater());
+        }
         this.updater.get().setDaemon(true);
 
     }

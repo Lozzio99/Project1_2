@@ -2,15 +2,16 @@ package group17.phase1.Titan.Physics.Trajectories;
 
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Physics.Math.Point3D;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 import group17.phase1.Titan.System.SystemState;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
+
+import static group17.phase1.Titan.Main.simulation;
 
 /**
  * This class calculates the error between the running simulation and the actual positions of the planets in our solar system.
@@ -21,24 +22,27 @@ public class TrajectoryErrorCalc {
     // Variables
     File inputData;
 
-    Vector3dInterface[][][] originalData = new Vector3dInterface[10][13][2];
-                                // 10 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: mars, 5: jupiter, 6: saturn, 7: titan, 8: uranus, 9: neptune
-                                // Stores the exact values of the celestial bodies in 3 dimensions:
-                                // 1. planet index
-                                // 2. month (starting from 04.2020, ending at 04.2021)
-                                // 3. position vector at index 0 and velocity vector at index 1
-    Vector3dInterface[][][] simulationData = new Vector3dInterface[10][13][2];
-    double[][][] errorData = new double[10][13][2];
+    private final String ORIGINAL_DATA_PATH = "trajectoryData/originalData.txt";
+    private final String SIMULATION_DATA_PATH = "trajectoryData/simulationData.txt";
+    private final String ERROR_DATA_PATH = "trajectoryData/errorData.txt";
     private List<StateInterface> months;
-
-    private final String ORIGINAL_DATA_PATH = "out/trajectoryData/originalData.txt";
-    private final String SIMULATION_DATA_PATH = "out/trajectoryData/simulationData.txt";
-    private final String ERROR_DATA_PATH = "out/trajectoryData/errorData.txt";
+    Vector3dInterface[][][] originalData;
+    // 10 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: mars, 5: jupiter, 6: saturn, 7: titan, 8: uranus, 9: neptune
+    // Stores the exact values of the celestial bodies in 3 dimensions:
+    // 1. planet index
+    // 2. month (starting from 04.2020, ending at 04.2021)
+    // 3. position vector at index 0 and velocity vector at index 1
+    Vector3dInterface[][][] simulationData;
+    double[][][] errorData;
 
     /**
      * Constructor for a new instance of a trajectory error calculation
      */
     public TrajectoryErrorCalc() {
+        //TODO : insert MOON
+        this.originalData = new Vector3dInterface[simulation.system().getCelestialBodies().size() - 1][13][2];
+        this.simulationData = new Vector3dInterface[simulation.system().getCelestialBodies().size() - 1][13][2];
+        this.errorData = new double[simulation.system().getCelestialBodies().size() - 1][13][2];
         inputData = new File("src/main/resources/SS_coords.txt");
         Scanner in = null;
         try {
@@ -48,7 +52,8 @@ public class TrajectoryErrorCalc {
             // Fill originalData with values from file:
             for (int i = 0; i < 13; i++) { // for each month
                 in.nextLine(); // skip month name
-                for (int j = 0; j < 10; j++) { // for each body
+                //TODO : insert MOON
+                for (int j = 0; j < simulation.system().getCelestialBodies().size() - 1; j++) { // for each body
                     posX = in.nextDouble();
                     posY = in.nextDouble();
                     posZ = in.nextDouble();
@@ -66,8 +71,7 @@ public class TrajectoryErrorCalc {
             }
 
         } catch (FileNotFoundException | NullPointerException e) {
-            System.out.println(e.getLocalizedMessage());
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 
@@ -106,18 +110,22 @@ public class TrajectoryErrorCalc {
         // Iterate through both arrays to check, that no entry is 0.
         if (arrayIsFilled(originalData) && arrayIsFilled(simulationData)) {
             computeErrors();
+            printErrors();
+
+
+            ClassLoader c = TrajectoryErrorCalc.class.getClassLoader();
 
             // Write data in files
             try {
-                FileWriter fwOriginal = new FileWriter(ORIGINAL_DATA_PATH, false);
+                FileWriter fwOriginal = new FileWriter(Objects.requireNonNull(c.getResource(ORIGINAL_DATA_PATH)).getPath(), false);
                 BufferedWriter bwOriginal = new BufferedWriter(fwOriginal);
                 PrintWriter pwOriginal = new PrintWriter(bwOriginal);
 
-                FileWriter fwSimulation = new FileWriter(SIMULATION_DATA_PATH, false);
+                FileWriter fwSimulation = new FileWriter(Objects.requireNonNull(c.getResource(SIMULATION_DATA_PATH)).getPath(), false);
                 BufferedWriter bwSimulation = new BufferedWriter(fwSimulation);
                 PrintWriter pwSimulation = new PrintWriter(bwSimulation);
 
-                FileWriter fwError = new FileWriter(ERROR_DATA_PATH, false);
+                FileWriter fwError = new FileWriter(Objects.requireNonNull(c.getResource(ERROR_DATA_PATH)).getPath(), false);
                 BufferedWriter bwError = new BufferedWriter(fwError);
                 PrintWriter pwError = new PrintWriter(bwError);
 
@@ -147,10 +155,11 @@ public class TrajectoryErrorCalc {
 
                 pwError.flush();
                 pwError.close();
-            }
-            catch (Exception E) {
+            } catch (NullPointerException | IOException e) {
                 System.out.println("ERROR! Failed to write output file");
             }
+        } else {
+            System.err.println("Missing values in arrays data");
         }
     }
 
@@ -185,6 +194,7 @@ public class TrajectoryErrorCalc {
     }
 
     public void printErrors() {
+
         System.out.println("ERROR BETWEEN SIMULATION- AND ORIGINAL DATA: \n ");
         for (int i = 0; i < errorData.length; i++) {
             System.out.println(" --- Body " + i + " --- ");

@@ -3,6 +3,7 @@ package group17.phase1.Titan.Physics.Solvers;
 import group17.phase1.Titan.Interfaces.*;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Math.Vector3D;
+import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.RateOfChange;
 
 import static group17.phase1.Titan.Config.G;
@@ -16,6 +17,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
     public static double currTime = 0;
     public static double endTime = NaN;
     private ODEFunctionInterface singleCoreF;
+    private Clock clock;
 
     public VerletVelocitySolver() {
         this.singleCoreF = (h, y) -> {
@@ -48,33 +50,6 @@ public class VerletVelocitySolver implements ODESolverInterface {
         };
     }
 
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
-        endTime = tf;
-        StateInterface[] path = new StateInterface[(int)(Math.round(tf/h))+1];
-        currTime = 0;
-        for (int i = 0; i < path.length - 1; i++) {
-            path[i] = this.step(f, currTime+=h, y0, h);
-            y0 = path[i];
-        }
-        path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
-        return path;
-    }
-
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
-        StateInterface[] states = new StateInterface[ts.length];
-        endTime = ts[ts.length - 1];
-        currTime = ts[0];
-
-        for (int i = 0; i < ts.length - 1; i++) {
-            double h = ts[i + 1] - ts[i];
-            states[i] = this.step(f, currTime+=h, y0, h);
-            y0 = states[i];
-        }
-        states[states.length - 1] = this.step(f, currTime, y0, ts[ts.length - 1] - currTime);
-        return states;
-    }
 
     /**
      * Step of a Verlet Velocity Algorithm:
@@ -104,6 +79,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
 
         part4.getRateOfChange().setVel(part7.getVelocities());
         y = part4;
+        this.clock.step(h);
         return y;
     }
 
@@ -115,5 +91,15 @@ public class VerletVelocitySolver implements ODESolverInterface {
     @Override
     public void setF(ODEFunctionInterface f) {
         this.singleCoreF = f;
+    }
+
+    @Override
+    public Clock getClock() {
+        return this.clock;
+    }
+
+    @Override
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 }

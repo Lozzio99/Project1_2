@@ -72,12 +72,17 @@ public class SystemState implements StateInterface {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        for (int i = 0; i < this.positions.size(); i++) {
+        s.append(simulation.system().getClock().toString()).append("\n");
+        //TODO : insert MOON
+        for (int i = 0; i < this.positions.size() - 1; i++) {
             s.append(simulation.system().getCelestialBodies().get(i).toString());
             s.append("\tPV : ");
             s.append(this.positions.get(i).toString());
             s.append("\n");
         }
+        s.append("""
+                §-----------------------------------------------------------------------§
+                """);
         return s.toString().trim();
     }
 

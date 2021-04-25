@@ -5,10 +5,8 @@ import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.ODESolverInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.SystemInterface;
-import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Bodies.*;
 import group17.phase1.Titan.Physics.Solvers.*;
-import group17.phase1.Titan.Physics.Trajectories.TrajectoryErrorCalc;
 import group17.phase1.Titan.System.Clock;
 import group17.phase1.Titan.System.SystemState;
 
@@ -27,9 +25,7 @@ public class SolarSystem implements SystemInterface {
 
     double t = 0;
     private Clock clock;
-    private TrajectoryErrorCalc trajectoryErrorCalc;
-    private int monthCount = 0;
-    private int monthIndex = 4;     // Start on April
+
 
     @Override
     public List<CelestialBody> getCelestialBodies() {
@@ -53,13 +49,6 @@ public class SolarSystem implements SystemInterface {
         for (CelestialBody c : this.allBodies)
             c.initProperties();
 
-        if (REPORT) {
-            trajectoryErrorCalc = new TrajectoryErrorCalc();
-            for (int i = 0; i < 10; i++) {
-                trajectoryErrorCalc.fillSimulation(i, monthCount, 0, this.getCelestialBodies().get(i).getVectorLocation());
-                trajectoryErrorCalc.fillSimulation(i, monthCount, 1, this.getCelestialBodies().get(i).getVectorVelocity());
-            }
-        }
     }
 
     @Override
@@ -69,8 +58,6 @@ public class SolarSystem implements SystemInterface {
             p.initProperties();
             this.allBodies.add(p);
         }
-        // if (REPORT)
-        //     fillValues();
     }
 
     @Override
@@ -93,7 +80,6 @@ public class SolarSystem implements SystemInterface {
         this.initClock();
         this.systemState = new SystemState().state0();
         this.systemState.initialVelocity();
-
     }
 
     @Override
@@ -120,6 +106,7 @@ public class SolarSystem implements SystemInterface {
             default -> throw new RuntimeException("Select a valid cpu level [1-5]");
         }
         this.solver.setF(this.f);
+        this.solver.setClock(this.clock);
     }
 
     @Override
@@ -141,44 +128,8 @@ public class SolarSystem implements SystemInterface {
     public void step() {
         this.systemState = this.solver.step(this.f, t, this.systemState, Config.STEP_SIZE);
         t += Config.STEP_SIZE;
-        if (REPORT)
-            updateTrajectoryLog();
     }
 
-    /**
-     * Determines a start of a new month and if it is the case, the method writes the values into the log
-     * of the TrajectoryErrorCalc class.
-     */
-    public void updateTrajectoryLog() {
-        // System.out.println("Month: " + clock.getMonth());
-        if (this.monthIndex != clock.getMonths()) {
-            if (this.monthCount < 12) {
-                monthIndex = clock.getMonths();
-                monthCount++;
-                // Fill in the values of each body:
-                fillValues();
-                System.out.println("Month: " + clock.getMonths());
-                System.out.println("Month count: " + monthCount);
-                System.out.println(13 - monthCount + " months to go to finish the trajectory error calculation...");
-                System.out.println();
-            } else if (this.monthCount == 12) {
-                monthCount++;
-                monthIndex = clock.getMonths();
-                trajectoryErrorCalc.exportFile();
-                System.out.println("Error calculation finished and exported to /out/production/trajectoryData");
-            }
-        }
-    }
-
-    /**
-     * Fills the current state of the solar system into the log.
-     */
-    public void fillValues() {
-        for (int i = 0; i < 10; i++) {
-            trajectoryErrorCalc.fillSimulation(i, monthCount, 0, Main.simulation.system().systemState().getPositions().get(i));
-            trajectoryErrorCalc.fillSimulation(i, monthCount, 1, Main.simulation.system().systemState().getRateOfChange().getVelocities().get(i));
-        }
-    }
 
     @Override
     public String toString() {

@@ -6,7 +6,9 @@ public class Clock {
     private int sec, min, hour, days, months, years;
     private boolean leap;
     private int[] daysInMonths;
-
+    private static final String[] monthStrings =
+            {"January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"};
 
     public Clock() {
     }
@@ -14,9 +16,9 @@ public class Clock {
     public static void main(String[] args) {
 
 
-        /*
+        Clock c = new Clock().setLaunchDay();
         while (true) {
-            c.step(30 * 60);
+            c.step(1);
             System.out.println(c);
             try {
                 Thread.sleep(100);
@@ -24,7 +26,7 @@ public class Clock {
                 e.printStackTrace();
             }
         }
-        */
+
     }
 
     public Clock setLaunchDay() {
@@ -38,23 +40,25 @@ public class Clock {
         return this;
     }
 
-    public void step(double secStep) {
+    public synchronized void step(double secStep) {
         int step = (int) secStep;
-        secStep(step);
+        if (step != 0)
+            secStep(step);
         checkLeap();
     }
 
-    private void secStep(int secStep) {
+    private synchronized void secStep(int secStep) {
         int minutes = secStep / 60;
         this.sec += secStep % 60;
         if (this.sec >= 60) {
             minutes += this.sec / 60;
             this.sec = this.sec % 60;
         }
-        minStep(minutes);
+        if (minutes != 0)
+            minStep(minutes);
     }
 
-    private void minStep(int minutes) {
+    private synchronized void minStep(int minutes) {
 
         int hours = minutes / 60;
         this.min += minutes % 60;
@@ -62,26 +66,28 @@ public class Clock {
             hours += this.min / 60;
             this.min = this.min % 60;
         }
-        hoursStep(hours);
+        if (hours != 0)
+            hoursStep(hours);
     }
 
-    private void hoursStep(int hours) {
+    private synchronized void hoursStep(int hours) {
         int days = hours / 24;
         this.hour += hours % 24;
         if (this.hour >= 24) {
             days += this.hour / 24;
             this.hour = this.hour % 24;
         }
-        daysStep(days);
+        if (days != 0)
+            daysStep(days);
     }
 
-    private void daysStep(int days) {
+    private synchronized void daysStep(int days) {
         int months = days / this.daysInMonths[this.months - 1];
 
         //FIXME : problem here i guess,
         //TODO : receive 365, return days == days ( if ! leap )
         if (days >= 365)
-            this.days += days % 365 % this.daysInMonths[this.months - 1];
+            this.days += (days % 365) % this.daysInMonths[this.months - 1];
         else
             this.days += days % this.daysInMonths[this.months - 1];
 
@@ -90,10 +96,11 @@ public class Clock {
             this.days = (this.days % this.daysInMonths[this.months - 1]);
             this.days = this.days == 0 ? 1 : this.days;
         }
-        monthsStep(months);
+        if (months != 0)
+            monthsStep(months);
     }
 
-    private void monthsStep(int months) {
+    private synchronized void monthsStep(int months) {
         int years = months / 12;
         this.months += months % 12;
         if (this.months > 12) {
@@ -104,7 +111,7 @@ public class Clock {
         yearsStep(years);
     }
 
-    private void yearsStep(int years) {
+    private synchronized void yearsStep(int years) {
         this.years += years;
     }
 
@@ -114,7 +121,7 @@ public class Clock {
     }
 
     @Override
-    public String toString() {
+    public synchronized String toString() {
         return "Clock { [ " +
                 hour / 10 + hour % 10 + " : " +
                 min / 10 + min % 10 + " : " +
@@ -150,6 +157,10 @@ public class Clock {
 
     public int[] getDaysInMonths() {
         return daysInMonths;
+    }
+
+    public String monthString() {
+        return monthStrings[months - 1];
     }
 
 

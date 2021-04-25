@@ -6,6 +6,7 @@ import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
 import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Math.Vector3D;
+import group17.phase1.Titan.System.Clock;
 
 import static group17.phase1.Titan.Config.G;
 import static java.lang.Double.NaN;
@@ -18,6 +19,7 @@ public class StandardVerletSolver implements ODESolverInterface {
     public static double currTime = 0;
     public static double endTime = NaN;
     private ODEFunctionInterface singleCoreF;
+    private Clock clock;
 
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
@@ -50,36 +52,6 @@ public class StandardVerletSolver implements ODESolverInterface {
         };
     }
 
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
-        // init
-        endTime = tf;
-        StateInterface[] path = new StateInterface[(int)(Math.round(tf/h))+1];
-        currTime = 0;
-        // solve
-        for (int i = 1; i < path.length - 1; i++) {
-            path[i] = this.step(f, currTime+=h, y0, h);
-            y0 = path[i];
-        }
-        path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
-        return path;
-    }
-
-    @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
-        // init
-        StateInterface[] states = new StateInterface[ts.length];
-        endTime = ts[ts.length - 1];
-        currTime = ts[0];
-
-        for (int i = 1; i < ts.length - 1; i++) {
-            double h = ts[i + 1] - ts[i];
-            states[i] = this.step(f, currTime+=h, y0, h);
-            y0 = states[i];
-        }
-        states[states.length - 1] = this.step(f, currTime, y0, ts[ts.length - 1] - currTime);
-        return states;
-    }
 
     /**
      * Step of a Standard Verlet Algorithm:
@@ -100,13 +72,14 @@ public class StandardVerletSolver implements ODESolverInterface {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
             diff = rk4.step(f, t, y, h);
             first = false;
-        }
-        else {
+        } else {
             StateInterface subPrev = StateInterface.clone(prevState).multiply(-1);
-            diff = (StateInterface.clone(y).rateMul(h*h,f.call(1,StateInterface.clone(y)))).add(subPrev).add(StateInterface.clone(y)).add(y);
+            diff = (StateInterface.clone(y).rateMul(h * h, f.call(1, StateInterface.clone(y)))).add(subPrev).add(StateInterface.clone(y)).add(y);
         }
 
         prevState = StateInterface.clone(diff);
+        this.clock.step(h);
+
         y = diff;
         return y;
     }
@@ -119,5 +92,15 @@ public class StandardVerletSolver implements ODESolverInterface {
     @Override
     public void setF(ODEFunctionInterface f) {
         this.singleCoreF = f;
+    }
+
+    @Override
+    public Clock getClock() {
+        return this.clock;
+    }
+
+    @Override
+    public void setClock(Clock clock) {
+        this.clock = clock;
     }
 }

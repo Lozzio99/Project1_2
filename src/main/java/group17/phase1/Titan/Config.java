@@ -43,7 +43,7 @@ public class Config {
 
 
     //TODO : set this to be updated for particles simulation
-    public static boolean TRAJECTORIES = true;
+    public static boolean DRAW_TRAJECTORIES = true;
     //TODO : set this to be updated for particles simulation
     public static boolean NAMES = true;
 
@@ -52,5 +52,6 @@ public class Config {
     public static int PARTICLES = 700;
 
     public static Clock LAUNCH_DATE = new Clock().setLaunchDay();
+
 
 }

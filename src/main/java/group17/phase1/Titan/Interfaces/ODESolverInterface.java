@@ -7,8 +7,10 @@
 
 package group17.phase1.Titan.Interfaces;
 
+import group17.phase1.Titan.Config;
 import group17.phase1.Titan.Physics.Solvers.EulerSolver;
 import group17.phase1.Titan.Physics.Solvers.MaxCPUSolver;
+import group17.phase1.Titan.System.Clock;
 
 /*
  * A class for solving a general differential equation dy/dt = f(t,y)
@@ -25,7 +27,23 @@ public interface ODESolverInterface {
      * @param   ts      the times at which the states should be output, with ts[0] being the initial time
      * @return  an array of size ts.length with all intermediate states along the path
      */
-    StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts);
+    default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
+        StateInterface[] states = new StateInterface[ts.length];
+        double endTime = ts[ts.length - 1];
+        double currTime = ts[0];
+
+        for (int i = 0; i < ts.length - 1; i++) {
+            double h = ts[i + 1] - ts[i];
+            Config.STEP_SIZE = h;
+            states[i] = this.step(f, currTime, y0, h);
+            y0 = states[i];
+            currTime += h;
+        }
+        double h = ts[ts.length - 1] - ts[ts.length - 2];
+        getClock().step(h);
+        states[states.length - 1] = y0.addMul(currTime, f.call(h, y0));
+        return states;
+    }
 
     /*
      * Solve the differential equation by taking multiple steps of equal size, starting at time 0.
@@ -37,7 +55,20 @@ public interface ODESolverInterface {
      * @param   h       the size of step to be taken
      * @return  an array of size round(tf/h)+1 including all intermediate states along the path
      */
-    StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h);
+    default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
+        double endTime = tf;
+        Config.STEP_SIZE = h;
+        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
+        double currTime = 0;
+        for (int i = 0; i < path.length - 1; i++) {
+            path[i] = this.step(f, currTime, y0, h);
+            y0 = path[i];
+            currTime += h;
+        }
+        path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
+        getClock().step(tf - currTime);
+        return path;
+    }
 
     /*
      * Update rule for one step.
@@ -66,4 +97,9 @@ public interface ODESolverInterface {
 
 
     void setF(ODEFunctionInterface f);
+
+    Clock getClock();
+
+    void setClock(Clock clock);
+
 }
