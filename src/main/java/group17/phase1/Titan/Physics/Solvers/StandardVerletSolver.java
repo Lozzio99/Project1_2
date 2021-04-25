@@ -20,7 +20,7 @@ public class StandardVerletSolver implements ODESolverInterface {
     private ODEFunctionInterface singleCoreF;
 
     public StandardVerletSolver() {
-        this.singleCoreF = (t, y) -> {
+        this.singleCoreF = (h, y) -> {
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -37,7 +37,7 @@ public class StandardVerletSolver implements ODESolverInterface {
                     */
                         acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
                         acc = acc.mul((G * Main.simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
-                        totalAcc = totalAcc.addMul(t, acc);
+                        totalAcc = totalAcc.addMul(h, acc);
                         // p = h*acc(derivative of velocity)
                     }
                 }  // y1 =y0 + h*acc
@@ -103,11 +103,12 @@ public class StandardVerletSolver implements ODESolverInterface {
         }
         else {
             StateInterface subPrev = StateInterface.clone(prevState).multiply(-1);
-            diff = (StateInterface.clone(y).rateMul(h*h,f.call(t,StateInterface.clone(y)))).add(subPrev).add(StateInterface.clone(y)).add(y);
+            diff = (StateInterface.clone(y).rateMul(h*h,f.call(1,StateInterface.clone(y)))).add(subPrev).add(StateInterface.clone(y)).add(y);
         }
 
         prevState = StateInterface.clone(diff);
-        return diff;
+        y = diff;
+        return y;
     }
 
     @Override

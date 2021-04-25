@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class VerletVelocitySolverTest {
 
-    private boolean DEBUG = false;
+    private boolean DEBUG = true;
 
     @Test
     @DisplayName("SolveODE")
@@ -24,7 +24,7 @@ public class VerletVelocitySolverTest {
         initState.getRateOfChange().getVelocities().add(initVelocity);
         // get solution
         double tf = 6.0; // final time
-        StateInterface[] aprxStates = solver.solve(yd, initState, tf,1.5);
+        StateInterface[] aprxStates = solver.solve(yd, initState, tf,0.5);
 
         double aprxSolution = aprxStates[aprxStates.length-1].getPositions().get(0).getZ();
         double expectedSol = initVelocity.getZ()*tf-0.5*FreeFallFunction.CONSTANT_G*tf*tf; // free fall equation
