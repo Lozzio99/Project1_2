@@ -13,36 +13,48 @@ import static java.lang.Math.sin;
 
 public class PendulumSolver implements ODESolverInterface {
 
-    double G = 1;
+    double G = -0.9;
+    double damp = 0.9;
     private ODEFunctionInterface f = (h, y) ->
     {
+
         PendulumBody a = ((PendulumBody) simulation.system().getCelestialBodies().get(0)), b = ((PendulumBody) simulation.system().getCelestialBodies().get(1));
 
+        double a1 = y.getPositions().get(0).getY(), m1 = a.getMASS(), a1_v = y.getPositions().get(0).getX(), r1 = a.getLength();
+        double a2 = y.getPositions().get(1).getY(), m2 = b.getMASS(), a2_v = y.getPositions().get(1).getX(), r2 = b.getLength();
 
-        double num1 = -G * (2 * a.getMASS() + b.getMASS()) * sin(a.getAngle());
-        double num2 = -b.getMASS() * G * sin(a.getAngle() - 2 * b.getAngle());
-        double num3 = -2 * sin(a.getAngle() - b.getAngle()) * b.getMASS();
-        double num4 = square(b.getVectorVelocity().getX()) * b.getLength() +
-                square(a.getVectorVelocity().getX()) * a.getLength() *
-                        cos(a.getAngle() - b.getAngle());
-        double den = a.getLength() * (2 * a.getMASS() + b.getMASS() - b.getMASS() * cos(2 * a.getAngle() - 2 * b.getAngle()));
 
-        double a1_a = ((num1 + num2 + num3 * num4) / den);
+        double num1 = -G * (2 * m1 + m2) * sin(a1);
+        double num2 = -m2 * G * sin(a1 - 2 * a2);
+        double num3 = -2 * sin(a1 - a2) * m2;
+        double num4 = square(a2_v) * r2 + square(a1_v) * r1 * cos(a1 - a2);
+        double den = r1 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2));
 
-        Vector3dInterface a_1 = new Vector3D(a1_a, 0, 0);
+        double a1_a = (num1 + num2 + num3 * num4) / den;
 
-        num1 = 2 * sin(a.getAngle() - b.getAngle());
-        num2 = (square(a.getVectorVelocity().getX()) * a.getLength() * (a.getMASS() + b.getMASS()));
-        num3 = G * (a.getMASS() + b.getMASS()) * cos(a.getAngle());
-        num4 = square(b.getVectorVelocity().getX()) * b.getLength() * b.getMASS() * cos(a.getAngle() - b.getAngle());
-        den = b.getLength() * (2 * a.getMASS() + b.getMASS() - (b.getMASS() * cos(2 * a.getAngle() - 2 * b.getAngle())));
+
+        num1 = 2 * sin(a1 - a2);
+        num2 = square(a1_v) * r1 * (m1 + m2);
+        num3 = G * (m1 + m2) * cos(a1);
+        num4 = square(a2_v) * r2 * m2 * cos(a1 - a2);
+        den = r2 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2));
+
         double a2_a = (num1 * (num2 + num3 + num4)) / den;
 
+        Vector3dInterface a_1 = new Vector3D(a1_a, a1_v, 0);
+        Vector3dInterface a_2 = new Vector3D(a2_a, a2_v, 0);
 
-        Vector3dInterface a_2 = new Vector3D(a2_a, 0, 0);
 
-        y.getRateOfChange().getVelocities().set(0, y.getRateOfChange().getVelocities().get(0).add(a_1));
-        y.getRateOfChange().getVelocities().set(1, y.getRateOfChange().getVelocities().get(1).add(a_2));
+        // velocity += acceleration
+        // angle += velocity
+
+
+        //state has velocity, angle
+        //rate has acceleration,velocity,0
+
+
+        y.getRateOfChange().getVelocities().set(0, a_1.mul(damp));
+        y.getRateOfChange().getVelocities().set(1, a_2.mul(damp));
         return y.getRateOfChange();
     };
     private Clock clock;

@@ -25,9 +25,12 @@ public class PendulumState implements StateInterface {
     public StateInterface state0() {
         double x1 = (((PendulumBody) simulation.system().getCelestialBodies().get(0)).getAngle());
         double x2 = (((PendulumBody) simulation.system().getCelestialBodies().get(1)).getAngle());
-        this.angles.add(new Vector3D(x1, x1, 0));
-        this.angles.add(new Vector3D(x2, x2, 0));
-        this.initialVelocity();
+        double v1 = (simulation.system().getCelestialBodies().get(0).getVectorVelocity().getX());
+        double v2 = (simulation.system().getCelestialBodies().get(1).getVectorVelocity().getX());
+        this.angles.add(new Vector3D(v1, x1, 0));
+        this.angles.add(new Vector3D(v2, x2, 0));
+        this.rate.getVelocities().add(new Vector3D(0, 0, 0));
+        this.rate.getVelocities().add(new Vector3D(0, 0, 0));
         return this;
     }
 
@@ -57,13 +60,20 @@ public class PendulumState implements StateInterface {
                 (PendulumBody) simulation.getBody("2")};
 
         StateInterface newState = new SystemState();
-        for (int i = 0; i < this.getPositions().size(); i++) {
-            p[i].setAngle(p[i].getAngle() + rate.getVelocities().get(i).getX());
 
-            this.getPositions().get(i).setX(p[i].getLength() * Math.sin(p[i].getAngle()));
-            this.getPositions().get(i).setY(p[i].getLength() * Math.cos(p[i].getAngle()));
-            newState.getPositions().add(this.getPositions().get(i).clone());
-            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i));
+
+        // velocity += acceleration
+        // angle += velocity
+
+
+        //state has velocity, angle
+        //rate has acceleration,velocity,0
+
+
+        for (int i = 0; i < this.getPositions().size(); i++) {
+            this.getPositions().set(i, this.getPositions().get(i).add(rate.getVelocities().get(i)));
+            newState.getPositions().add(this.getPositions().get(i));
+            newState.getRateOfChange().getVelocities().add(new Vector3D());
         }
         return newState;
     }

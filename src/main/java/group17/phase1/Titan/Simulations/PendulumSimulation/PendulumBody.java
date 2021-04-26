@@ -5,8 +5,6 @@ import group17.phase1.Titan.Physics.Math.Vector3D;
 
 import java.awt.*;
 
-import static group17.phase1.Titan.Main.simulation;
-
 public class PendulumBody extends CelestialBody {
 
     private final int id;
@@ -24,24 +22,21 @@ public class PendulumBody extends CelestialBody {
 
     @Override
     public void initProperties() {
-        this.setMASS(10);
-        this.setRADIUS(this.getMASS());
         if (id == 1) {
-            this.setAngle(130);
+            this.setMASS(60);
+            this.setAngle(90);
             this.setLength(150);
-            this.setVectorLocation(new Vector3D(this.getLength() * Math.sin(this.angle), this.getLength() * Math.cos(this.angle), 0));
             this.setVectorVelocity(new Vector3D(0, 0, 0));
             this.setColour(new Color(9, 32, 137, 242));
         } else {
-            this.setAngle(60);
-            this.setLength(100);
-            this.setVectorLocation(new Vector3D((this.getLength() * Math.sin(this.angle)) + simulation.getBody("1").getVectorLocation().getX(),
-                    (this.getLength() * Math.cos(this.angle)) + simulation.getBody("1").getVectorLocation().getY(), 0));
+            this.setMASS(40);
+            this.setAngle(-30);
+            this.setLength(200);
             this.setVectorVelocity(new Vector3D(0, 0, 0));
             this.setColour(new Color(167, 4, 4, 223));
 
         }
-
+        this.setRADIUS(this.getMASS() / 4);
     }
 
     public double getLength() {
