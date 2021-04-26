@@ -94,7 +94,7 @@ public class PendulumSystem implements SystemInterface {
 
     @Override
     public void step() {
-        this.solver().step(this.solver().getFunction(), t, this.systemState(), Config.STEP_SIZE);
+        this.systemState = this.solver().step(this.solver().getFunction(), t, this.systemState(), Config.STEP_SIZE);
         t += Config.STEP_SIZE;
     }
 

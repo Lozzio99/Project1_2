@@ -10,11 +10,10 @@ import group17.phase1.Titan.System.Clock;
 import static group17.phase1.Titan.Main.simulation;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-
 public class PendulumSolver implements ODESolverInterface {
 
-    double G = 3.4;
-    double damp = 0.9;
+    double G = 1;
+    double damp = 0.999;
     private ODEFunctionInterface f = (h, y) ->
     {
 
@@ -25,10 +24,12 @@ public class PendulumSolver implements ODESolverInterface {
 
 
         double num1 = -G * (2 * m1 + m2) * sin(a1);
-        double num2 = -m2 * G * sin(a1 - 2 * a2);
-        double num3 = -2 * sin(a1 - a2) * m2;
+        double num2 = -(m2 * G * sin(a1 - 2 * a2));
+        double num3 = -(2 * sin(a1 - a2) * m2);
         double num4 = square(a2_v) * r2 + square(a1_v) * r1 * cos(a1 - a2);
-        double den = r1 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2));
+        double v = (2 * m1) + m2 - (m2 * cos(2 * a1 - (2 * a2)));
+
+        double den = r1 * v;
 
         double a1_a = (num1 + num2 + num3 * num4) / den;
 
@@ -37,7 +38,7 @@ public class PendulumSolver implements ODESolverInterface {
         num2 = square(a1_v) * r1 * (m1 + m2);
         num3 = G * (m1 + m2) * cos(a1);
         num4 = square(a2_v) * r2 * m2 * cos(a1 - a2);
-        den = r2 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2));
+        den = r2 * v;
 
         double a2_a = (num1 * (num2 + num3 + num4)) / den;
 
@@ -45,16 +46,18 @@ public class PendulumSolver implements ODESolverInterface {
         Vector3dInterface a_2 = new Vector3D(a2_a, a2_v, 0);
 
 
-        // velocity += acceleration
-        // angle += velocity
+        // angle velocity += angle acceleration
+        // angle += angle velocity
 
 
-        //state has velocity, angle
-        //rate has angle acceleration , angle velocity,0
+        //state has (velocity          , angle         ,0)
+        //rate has (angle acceleration , angle velocity,0)
+
+        //state + h(rate) = next state
 
 
-        y.getRateOfChange().getVelocities().set(0, (a_1));
-        y.getRateOfChange().getVelocities().set(1, (a_2));
+        y.getRateOfChange().getVelocities().set(0, (a_1));  //set the rate of change to be the
+        y.getRateOfChange().getVelocities().set(1, (a_2)); // acceleration and velocity (((d2y/dt^2 ;  dy/dt )))
         return y.getRateOfChange();
     };
     private Clock clock;
