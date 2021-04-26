@@ -31,7 +31,7 @@ public class PendulumBody extends CelestialBody {
         } else {
             this.setMASS(60);
             this.setAngle(30);
-            this.setLength(70);
+            this.setLength(270);
             this.setVectorVelocity(new Vector3D(0.1, 0, 0));
             this.setColour(new Color(167, 4, 4, 223));
 

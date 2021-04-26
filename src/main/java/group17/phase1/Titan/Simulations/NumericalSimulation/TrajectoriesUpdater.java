@@ -59,6 +59,7 @@ public class TrajectoriesUpdater extends SimulationUpdater {
         if (REPORT) {
             trajectoryErrorCalc.exportFile();
             System.out.println("Error calculation finished and exported to resources/trajectoryData");
+            trajectoryErrorCalc.printErrors();
         }
         this.isKilled = true;
     }
@@ -89,6 +90,7 @@ public class TrajectoriesUpdater extends SimulationUpdater {
         monthCount++;
         // Fill in the values of each body:
         System.out.println(simulation.system().getClock().monthString() + " ( " + simulation.system().getClock().getMonths() + " )");
+        System.out.println(simulation.system().getClock());
         System.out.println("Month calculated: " + monthCount);
         System.out.println(13 - monthCount + " months to go to finish the trajectory error calculation...");
         System.out.println();

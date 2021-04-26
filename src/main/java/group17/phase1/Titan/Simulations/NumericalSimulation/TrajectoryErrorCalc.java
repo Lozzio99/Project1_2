@@ -46,6 +46,7 @@ public class TrajectoryErrorCalc {
         inputData = new File("src/main/resources/SS_coords.txt");
         Scanner in = null;
         try {
+            System.err.println("Loading original data ...");
             in = new Scanner(inputData);
             double posX, posY, posZ;
             double velX, velY, velZ;
@@ -110,13 +111,13 @@ public class TrajectoryErrorCalc {
         // Iterate through both arrays to check, that no entry is 0.
         if (arrayIsFilled(originalData) && arrayIsFilled(simulationData)) {
             computeErrors();
-            printErrors();
 
 
             ClassLoader c = TrajectoryErrorCalc.class.getClassLoader();
 
             // Write data in files
             try {
+                System.err.println("Attempt to write data files...");
                 FileWriter fwOriginal = new FileWriter(Objects.requireNonNull(c.getResource(ORIGINAL_DATA_PATH)).getPath(), false);
                 BufferedWriter bwOriginal = new BufferedWriter(fwOriginal);
                 PrintWriter pwOriginal = new PrintWriter(bwOriginal);
@@ -149,18 +150,23 @@ public class TrajectoryErrorCalc {
                 }
                 pwOriginal.flush();
                 pwOriginal.close();
+                System.out.println("Exported : " + ORIGINAL_DATA_PATH);
 
                 pwSimulation.flush();
                 pwSimulation.close();
+                System.out.println("Exported : " + SIMULATION_DATA_PATH);
 
                 pwError.flush();
                 pwError.close();
+                System.out.println("Exported : " + ERROR_DATA_PATH);
+
             } catch (NullPointerException | IOException e) {
                 System.out.println("ERROR! Failed to write output file");
             }
         } else {
             System.err.println("Missing values in arrays data");
         }
+
     }
 
     /**

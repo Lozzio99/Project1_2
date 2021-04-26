@@ -6,8 +6,11 @@ import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Simulations.Simulation;
 import group17.phase1.Titan.Simulations.SolarSystemSimulation.SolarSystem;
 
+import java.util.Locale;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static group17.phase1.Titan.Config.REPORT;
 import static group17.phase1.Titan.Config.SOLVER;
 
 public class NumericalSimulation extends Simulation {
@@ -18,6 +21,19 @@ public class NumericalSimulation extends Simulation {
         this.system = new SolarSystem();
         this.system.initPlanets();
         this.system.initProbe();
+        if (!REPORT) {
+            Scanner s = new Scanner(System.in);
+            System.err.println("Report configuration not initialized, ");
+            System.err.println("Set it true now?    [ Y / N ]");
+            String msg = s.nextLine();
+            if (msg.toUpperCase(Locale.ROOT).equals("Y")) {
+                REPORT = true;
+                System.out.println("REPORT setted to true.. expected simulation output");
+            } else {
+                System.err.println("REPORT will stay false, no output expected in console");
+            }
+            s.close();
+        }
         this.solveAndWait();
     }
 
@@ -71,8 +87,8 @@ public class NumericalSimulation extends Simulation {
         this.system.startSolver(SOLVER);
         this.updater.get().launch();
         while (!this.updater.get().isKilled()) {
-
         }
+
     }
 
     @Override

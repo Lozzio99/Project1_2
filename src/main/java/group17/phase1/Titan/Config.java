@@ -31,7 +31,7 @@ public class Config {
     public static final int MAX_CPU = 5;
 
 
-    public static final boolean REPORT = false;
+    public static boolean REPORT = false;
     public static final boolean DEBUG = false;
     //which simulation is going to run
     public static int SIMULATION_LEVEL = 0;
