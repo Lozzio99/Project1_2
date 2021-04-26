@@ -23,16 +23,16 @@ public class PendulumBody extends CelestialBody {
     @Override
     public void initProperties() {
         if (id == 1) {
-            this.setMASS(60);
+            this.setMASS(80);
             this.setAngle(90);
-            this.setLength(150);
-            this.setVectorVelocity(new Vector3D(0, 0, 0));
+            this.setLength(100);
+            this.setVectorVelocity(new Vector3D(0.1, 0, 0));
             this.setColour(new Color(9, 32, 137, 242));
         } else {
-            this.setMASS(40);
+            this.setMASS(60);
             this.setAngle(-30);
-            this.setLength(200);
-            this.setVectorVelocity(new Vector3D(0, 0, 0));
+            this.setLength(300);
+            this.setVectorVelocity(new Vector3D(0.1, 0, 0));
             this.setColour(new Color(167, 4, 4, 223));
 
         }

@@ -27,10 +27,10 @@ public class PendulumState implements StateInterface {
         double x2 = (((PendulumBody) simulation.system().getCelestialBodies().get(1)).getAngle());
         double v1 = (simulation.system().getCelestialBodies().get(0).getVectorVelocity().getX());
         double v2 = (simulation.system().getCelestialBodies().get(1).getVectorVelocity().getX());
-        this.angles.add(new Vector3D(v1, x1, 0));
-        this.angles.add(new Vector3D(v2, x2, 0));
-        this.rate.getVelocities().add(new Vector3D(0, 0, 0));
-        this.rate.getVelocities().add(new Vector3D(0, 0, 0));
+        this.angles.add(new Vector3D(0, x1, 0));
+        this.angles.add(new Vector3D(0, x2, 0));
+        this.rate.getVelocities().add(new Vector3D(v1, 0, 0));
+        this.rate.getVelocities().add(new Vector3D(v2, 0, 0));
         return this;
     }
 
@@ -71,7 +71,7 @@ public class PendulumState implements StateInterface {
 
 
         for (int i = 0; i < this.getPositions().size(); i++) {
-            this.getPositions().set(i, this.getPositions().get(i).add(rate.getVelocities().get(i)));
+            this.getPositions().set(i, this.getPositions().get(i).addMul(step, rate.getVelocities().get(i)));
             newState.getPositions().add(this.getPositions().get(i));
             newState.getRateOfChange().getVelocities().add(new Vector3D());
         }
