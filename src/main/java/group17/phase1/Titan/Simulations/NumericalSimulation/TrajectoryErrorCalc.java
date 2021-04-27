@@ -117,7 +117,7 @@ public class TrajectoryErrorCalc {
 
             // Write data in files
             try {
-                System.err.println("Attempt to write data files...");
+                System.out.println("Attempt to write data files...");
                 FileWriter fwOriginal = new FileWriter(Objects.requireNonNull(c.getResource(ORIGINAL_DATA_PATH)).getPath(), false);
                 BufferedWriter bwOriginal = new BufferedWriter(fwOriginal);
                 PrintWriter pwOriginal = new PrintWriter(bwOriginal);

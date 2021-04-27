@@ -62,4 +62,8 @@ public class Point3D
         this.zOffset += z;
         return this;
     }
+
+    public double heading() {
+        return Math.atan2(this.getYCoordinate(), this.getZCoordinate());
+    }
 }

@@ -13,7 +13,6 @@ import static java.lang.Math.sin;
 public class PendulumSolver implements ODESolverInterface {
 
     double G = 1;
-    double damp = 0.999;
     private ODEFunctionInterface f = (h, y) ->
     {
 
@@ -56,8 +55,8 @@ public class PendulumSolver implements ODESolverInterface {
         //state + h(rate) = next state
 
 
-        y.getRateOfChange().getVelocities().set(0, (a_1));  //set the rate of change to be the
-        y.getRateOfChange().getVelocities().set(1, (a_2)); // acceleration and velocity (((d2y/dt^2 ;  dy/dt )))
+        y.getRateOfChange().getVelocities().set(0, (a_1).div(square(h)));  //set the rate of change to be the
+        y.getRateOfChange().getVelocities().set(1, (a_2).div(square(h))); // acceleration and velocity (((d2y/dt^2 ;  dy/dt )))
         return y.getRateOfChange();
     };
     private Clock clock;

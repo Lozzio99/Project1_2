@@ -122,4 +122,7 @@ public interface Vector3dInterface {
      */
     Vector3dInterface clone();
 
+
+    double heading();
+
 }

@@ -20,7 +20,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
 
     private JFrame frame;
     private WindowEvent listen;
-    private MouseInput mouse;
+    protected MouseInput mouse;
     protected final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
     protected Scene currentScene;
 

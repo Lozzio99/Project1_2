@@ -12,6 +12,7 @@ import group17.phase1.Titan.Simulations.NumericalSimulation.NumericalSimulation;
 import group17.phase1.Titan.Simulations.NumericalSimulation.TrajectoriesUpdater;
 import group17.phase1.Titan.Simulations.ParticlesSimulation.ParticlesSimulation;
 import group17.phase1.Titan.Simulations.PendulumSimulation.DoublePendulumSimulation;
+import group17.phase1.Titan.Simulations.RocketSimulation.RocketSimulation;
 import group17.phase1.Titan.Simulations.SolarSystemSimulation.SimulationUpdater;
 import group17.phase1.Titan.Simulations.SolarSystemSimulation.SolarSystemSimulation;
 
@@ -55,17 +56,20 @@ public abstract class Simulation implements SimulationInterface {
 
         //TODO: yo let's put all the cases here
         switch (level) {
-            case 0 -> {
+            case SOLAR_SYSTEM_SIMULATION -> {
                 return new SolarSystemSimulation();
             }
-            case 1 -> {
+            case PARTICLES_SIMULATION -> {
                 return new ParticlesSimulation();
             }
-            case 2 -> {
+            case NUMERICAL_SIMULATION -> {
                 return new NumericalSimulation();
             }
-            case 3 -> {
+            case PENDULUM_SIMULATION -> {
                 return new DoublePendulumSimulation();
+            }
+            case ROCKET_SIMULATION -> {
+                return new RocketSimulation();
             }
             default -> {
                 throw new RuntimeException("Select a valid level for the simulation instance");
@@ -111,7 +115,6 @@ public abstract class Simulation implements SimulationInterface {
 
         //TODO : is this really what we want?
         DRAW_TRAJECTORIES = SIMULATION_LEVEL == PARTICLES_SIMULATION ? (CPU_LEVEL <= 3 && DRAW_TRAJECTORIES) : DRAW_TRAJECTORIES;
-
 
         if (SIMULATION_LEVEL == NUMERICAL_SIMULATION && REPORT) {
             this.updater.set(new TrajectoriesUpdater());

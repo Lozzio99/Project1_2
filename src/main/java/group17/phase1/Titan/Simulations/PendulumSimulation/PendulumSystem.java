@@ -19,7 +19,7 @@ public class PendulumSystem implements SystemInterface {
 
     public PendulumSystem() {
         this.bodies = new ArrayList<>();
-        Config.STEP_SIZE = 0.4;
+        Config.STEP_SIZE = 2;
     }
 
     @Override

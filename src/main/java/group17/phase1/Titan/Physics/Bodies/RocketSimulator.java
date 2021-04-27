@@ -2,7 +2,6 @@ package group17.phase1.Titan.Physics.Bodies;
 
 import group17.phase1.Titan.Interfaces.RocketSimulatorInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Main;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 
 import java.awt.*;
@@ -67,15 +66,23 @@ public class RocketSimulator extends CelestialBody implements RocketSimulatorInt
     }
 
     @Override
-    public void initProperties() {
+    public void update() {
 
+    }
+
+    @Override
+    public void initProperties() {
         this.setMASS(2000);
-        this.setRADIUS(1e8);
+        this.setRADIUS(20);
         this.setColour(Color.white);
+        this.setVectorLocation(new Vector3D(0, 0, 0));
+        this.setVectorVelocity(new Vector3D(700, 100, 0));
+        /*
         this.setVectorLocation(Main.simulation.getBody("EARTH").getVectorLocation().clone());
         this.setVectorLocation(this.getVectorLocation().add(new Vector3D(-7485730.186, 6281273.438, -8172135.798)));
         this.setVectorVelocity(Main.simulation.getBody("EARTH").getVectorVelocity().clone());
         this.setVectorVelocity(this.getVectorVelocity().add(new Vector3D(36931.5681, -50000.58958, -1244.79425)));
+         */
     }
 
     @Override

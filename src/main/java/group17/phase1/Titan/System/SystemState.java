@@ -75,7 +75,4 @@ public class SystemState implements StateInterface {
         this.rateOfChange = new RateOfChange().state0();
     }
 
-
-
-
 }

@@ -192,11 +192,12 @@ public class Vector3D implements Vector3dInterface
      */
     public static Vector3dInterface normalize(Vector3dInterface v)
     {
-        double magnitude = Math.sqrt(v.getX()*v.getX() + v.getY()*v.getY() + v.getZ()*v.getZ());
-        v.setX(v.getX()/magnitude);
-        v.setY(v.getY()/magnitude);
-        v.setZ(v.getZ()/magnitude);
-        return v;
+        Vector3dInterface v2 = new Vector3D();
+        double magnitude = Math.sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());
+        v2.setX(v.getX() / magnitude);
+        v2.setY(v.getY() / magnitude);
+        v2.setZ(v.getZ() / magnitude);
+        return v2;
     }
 
     /**
@@ -213,7 +214,18 @@ public class Vector3D implements Vector3dInterface
      */
     @Override
     public Vector3dInterface clone() {
-        return new Vector3D(this.getX(),this.getY(),this.getZ());
+        return new Vector3D(this.getX(), this.getY(), this.getZ());
+    }
+
+
+    /**
+     * Radian mode
+     *
+     * @return Angle of rotation for 2D vectors
+     */
+    @Override
+    public double heading() {
+        return Math.atan2(this.getY(), this.getX());
     }
 
     @Override

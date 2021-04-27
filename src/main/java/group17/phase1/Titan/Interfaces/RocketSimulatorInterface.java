@@ -6,7 +6,6 @@ public interface RocketSimulatorInterface extends ProbeSimulatorInterface {
 
     void startBurn(Vector3dInterface direction, double percentage, int duration);
 
-
     void stopBurn();
 
     double getFuelMass();
@@ -14,5 +13,7 @@ public interface RocketSimulatorInterface extends ProbeSimulatorInterface {
     void setFuelMass(double m);
 
     String toString();
+
+    void update();
 
 }

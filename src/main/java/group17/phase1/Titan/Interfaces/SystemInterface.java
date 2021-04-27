@@ -109,4 +109,7 @@ public interface SystemInterface {
     void step();
 
 
+    default RocketSimulatorInterface getRocket() {
+        return null;
+    }
 }

@@ -4,6 +4,8 @@ import group17.phase1.Titan.System.Clock;
 
 public class Config {
 
+
+    public static final int ROCKET_SIMULATION = 4;
     public static final int PENDULUM_SIMULATION = 3;
     public static final int NUMERICAL_SIMULATION = 2;
     public static final int PARTICLES_SIMULATION = 1;
@@ -35,7 +37,7 @@ public class Config {
     public static final boolean DEBUG = false;
     //which simulation is going to run
     public static int SIMULATION_LEVEL = 0;
-    public static final boolean ENABLE_ASSIST = false;
+    public static final boolean ENABLE_ASSIST = true;
 
 
     public static final double G = 6.67408e-11;
