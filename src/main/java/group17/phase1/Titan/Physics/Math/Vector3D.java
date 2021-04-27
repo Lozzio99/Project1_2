@@ -160,6 +160,7 @@ public class Vector3D implements Vector3dInterface
         this.z = p2.z - p1.z;
     }
 
+
     /**
      * Returns the dot product of two vectors.
      * @param v1

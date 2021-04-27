@@ -35,7 +35,7 @@ public class RocketUpdater extends SimulationUpdater {
                         simulation.system().systemState().getPositions().get(1).add(new Vector3D(r, r, r)));
                 if (System.currentTimeMillis() - timer > 1000) {
 
-                    System.out.println(simulation.system().getCelestialBodies().get(0).getVectorLocation());
+                    //System.out.println(simulation.system().systemState().getPositions().get(1));
                     timer += 1000;
                 }
                 delta--;

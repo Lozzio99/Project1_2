@@ -34,7 +34,7 @@ public class RocketSystem implements SystemInterface {
     @Override
     public void initPlanets() {
         this.allBodies.add(new Particle(1));
-        this.allBodies.get(1).setVectorLocation(new Vector3D(0, 300, 300));
+        this.allBodies.get(1).setVectorLocation(new Vector3D(80, 120, 30));
         this.allBodies.get(1).setVectorVelocity(new Vector3D());
         this.allBodies.get(1).setMASS(1000);
         this.allBodies.get(1).setRADIUS(15);
