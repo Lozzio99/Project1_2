@@ -7,6 +7,7 @@ package group17.phase1.Titan.Interfaces;
  */
 
 
+import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 import group17.phase1.Titan.System.SystemState;
 
@@ -23,7 +24,7 @@ public interface StateInterface {
      *
      * @return the StateInterface y(0)
      */
-    StateInterface state0();
+    StateInterface state0(List<CelestialBody> bodies);
 
     /**
      * The state of the bodies at a given point in time

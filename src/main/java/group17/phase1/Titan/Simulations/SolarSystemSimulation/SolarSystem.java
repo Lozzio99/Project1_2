@@ -82,7 +82,8 @@ public class SolarSystem implements SystemInterface {
     @Override
     public void reset() {
         this.initClock();
-        this.systemState = new SystemState().state0();
+        this.systemState = new SystemState();
+        this.systemState.state0(this.allBodies);
         this.systemState.initialVelocity();
     }
 

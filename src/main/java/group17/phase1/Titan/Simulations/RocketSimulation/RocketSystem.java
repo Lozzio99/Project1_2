@@ -65,7 +65,7 @@ public class RocketSystem implements SystemInterface {
 
     @Override
     public void reset() {
-        this.state.state0();
+        this.state.state0(this.allBodies);
         this.state.initialVelocity();
         this.initClock();
     }

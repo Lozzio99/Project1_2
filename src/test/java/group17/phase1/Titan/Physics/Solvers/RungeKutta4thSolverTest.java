@@ -4,6 +4,7 @@ import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
 import group17.phase1.Titan.Interfaces.RateInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
+import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.System.RateOfChange;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,7 +50,7 @@ class RungeKutta4thSolverTest {
 
 
         @Override
-        public StateInterface state0() {
+        public StateInterface state0(List<CelestialBody> v) {
             this.x = 0;
             return this;
         }

@@ -14,7 +14,6 @@ public class Config {
 
     public static final boolean ENABLE_GRAPHICS = true;
     public static final double FPS = 80;
-    public static final int BETA_SIMULATION = 2;
 
 
     public static final int EULER_SOLVER = 1;
@@ -33,7 +32,7 @@ public class Config {
     public static final int MAX_CPU = 5;
 
 
-    public static boolean REPORT = false;
+    public static boolean REPORT = true;
     public static final boolean DEBUG = false;
     //which simulation is going to run
     public static int SIMULATION_LEVEL = 0;

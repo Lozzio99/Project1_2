@@ -61,7 +61,7 @@ public class PendulumSystem implements SystemInterface {
 
     @Override
     public void reset() {
-        this.systemState = this.systemState().state0();
+        this.systemState = this.systemState().state0(this.bodies);
         this.systemState().initialVelocity();
         this.initClock();
     }

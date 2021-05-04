@@ -125,6 +125,11 @@ public abstract class Simulation implements SimulationInterface {
 
     }
 
+    @Override
+    public void startSystem() {
+
+    }
+
     /**
      * @return the main graphics object which is owner of the graphics thread
      * @see GraphicsInterface

@@ -72,7 +72,7 @@ public class ParticlesSystem implements SystemInterface {
     public void reset() {
         this.initClock();
         this.initPlanets();
-        this.systemState = new SystemState().state0();
+        this.systemState = new SystemState().state0(this.getCelestialBodies());
         this.systemState.initialVelocity();
     }
 

@@ -34,7 +34,6 @@ public class NumericalSimulation extends Simulation {
             }
             s.close();
         }
-        this.solveAndWait();
     }
 
     @Override
@@ -43,6 +42,11 @@ public class NumericalSimulation extends Simulation {
             if (c.toString().equals(name))
                 return c;
         return null;
+    }
+
+    @Override
+    public void startSystem() {
+        this.solveAndWait();
     }
 
     @Override

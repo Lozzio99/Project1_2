@@ -176,5 +176,15 @@ public class Clock {
         return monthStrings[months - 1];
     }
 
+    public final Date getDate() {
+        final Date d = new Date();
+        d.sec = this.sec;
+        d.min = this.min;
+        d.hours = this.hour;
+        d.days = this.days;
+        d.months = this.months;
+        d.years = this.years;
+        return d;
+    }
 
 }

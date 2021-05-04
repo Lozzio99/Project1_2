@@ -94,6 +94,8 @@ public interface SimulationInterface {
     CelestialBody getBody(String probe);
 
 
+    void startSystem();
+
     boolean running();
 
 

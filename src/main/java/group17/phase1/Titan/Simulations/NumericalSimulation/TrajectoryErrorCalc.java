@@ -22,9 +22,9 @@ public class TrajectoryErrorCalc {
     // Variables
     File inputData;
 
-    private final String ORIGINAL_DATA_PATH = "trajectoryData/originalData.txt";
-    private final String SIMULATION_DATA_PATH = "trajectoryData/simulationData.txt";
-    private final String ERROR_DATA_PATH = "trajectoryData/errorData.txt";
+    private final String ORIGINAL_DATA_PATH = "trajectoryData/originalData.csv";
+    private final String SIMULATION_DATA_PATH = "trajectoryData/simulationData.csv";
+    private final String ERROR_DATA_PATH = "trajectoryData/errorData.csv";
     private List<StateInterface> months;
     Vector3dInterface[][][] originalData;
     // 10 bodies in the following order: 0: sun, 1: mercury, 2: venus, 3: earth, 4: mars, 5: jupiter, 6: saturn, 7: titan, 8: uranus, 9: neptune
@@ -53,7 +53,6 @@ public class TrajectoryErrorCalc {
             // Fill originalData with values from file:
             for (int i = 0; i < 13; i++) { // for each month
                 in.nextLine(); // skip month name
-                //TODO : insert MOON
                 for (int j = 0; j < simulation.system().getCelestialBodies().size() - 1; j++) { // for each body
                     posX = in.nextDouble();
                     posY = in.nextDouble();
@@ -139,8 +138,8 @@ public class TrajectoryErrorCalc {
                         pwSimulation.println("Month " + j);
                         pwError.println("Month " + j);
                         for (int k = 0; k < originalData[i][j].length; k++) {
-                            pwOriginal.print(originalData[i][j][k].toString() + "\t");
-                            pwSimulation.print(simulationData[i][j][k].toString() + "\t");
+                            pwOriginal.println(originalData[i][j][k].toString() + "\t");
+                            pwSimulation.println(simulationData[i][j][k].toString() + "\t");
                             pwError.print(errorData[i][j][k] + "\t");
                         }
                         pwOriginal.println();

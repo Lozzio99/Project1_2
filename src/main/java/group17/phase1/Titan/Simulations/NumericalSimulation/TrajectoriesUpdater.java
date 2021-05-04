@@ -10,6 +10,7 @@ public class TrajectoriesUpdater extends SimulationUpdater {
 
     private StateInterface[] states;
     private TrajectoryErrorCalc trajectoryErrorCalc;
+    private SimulationData data;
 
     private int monthCount = 0;
     private int monthIndex = 4;     // Start on April
@@ -29,7 +30,9 @@ public class TrajectoriesUpdater extends SimulationUpdater {
 
         if (REPORT) {
             trajectoryErrorCalc = new TrajectoryErrorCalc();
-            //TODO : insert MOON
+            data = new SimulationData();
+
+
             for (int i = 0; i < simulation.system().getCelestialBodies().size() - 1; i++) {
                 trajectoryErrorCalc.fillSimulation(i, monthCount, 0, simulation.system().getCelestialBodies().get(i).getVectorLocation());
                 trajectoryErrorCalc.fillSimulation(i, monthCount, 1, simulation.system().getCelestialBodies().get(i).getVectorVelocity());
@@ -60,6 +63,7 @@ public class TrajectoriesUpdater extends SimulationUpdater {
             trajectoryErrorCalc.exportFile();
             System.out.println("Error calculation finished and exported to resources/trajectoryData");
             trajectoryErrorCalc.printErrors();
+            data.printMonth("DATA/sec1/", 2);
         }
         this.isKilled = true;
     }
@@ -94,14 +98,14 @@ public class TrajectoriesUpdater extends SimulationUpdater {
         System.out.println("Month calculated: " + monthCount);
         System.out.println(13 - monthCount + " months to go to finish the trajectory error calculation...");
         System.out.println();
-
+        data.addRaw(s, simulation.system().getClock());
     }
 
     /**
      * Fills the current state of the solar system into the log.
      */
     public void fillValues(StateInterface s) {
-        //TODO : insert MOON
+
         for (int i = 0; i < simulation.system().getCelestialBodies().size() - 1; i++) {
             trajectoryErrorCalc.fillSimulation(i, monthCount, 0, s.getPositions().get(i));
             trajectoryErrorCalc.fillSimulation(i, monthCount, 1, s.getRateOfChange().getVelocities().get(i));

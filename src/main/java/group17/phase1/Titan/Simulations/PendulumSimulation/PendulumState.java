@@ -3,6 +3,7 @@ package group17.phase1.Titan.Simulations.PendulumSimulation;
 import group17.phase1.Titan.Interfaces.RateInterface;
 import group17.phase1.Titan.Interfaces.StateInterface;
 import group17.phase1.Titan.Interfaces.Vector3dInterface;
+import group17.phase1.Titan.Physics.Bodies.CelestialBody;
 import group17.phase1.Titan.Physics.Math.Vector3D;
 import group17.phase1.Titan.System.RateOfChange;
 import group17.phase1.Titan.System.SystemState;
@@ -22,7 +23,7 @@ public class PendulumState implements StateInterface {
     }
 
     @Override
-    public StateInterface state0() {
+    public StateInterface state0(List<CelestialBody> bodies) {
         double x1 = (((PendulumBody) simulation.system().getCelestialBodies().get(0)).getAngle());
         double x2 = (((PendulumBody) simulation.system().getCelestialBodies().get(1)).getAngle());
         double v1 = (simulation.system().getCelestialBodies().get(0).getVectorVelocity().getX());

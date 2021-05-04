@@ -30,8 +30,8 @@ public class SystemState implements StateInterface {
     }
 
     @Override
-    public StateInterface state0() {
-        for (CelestialBody c : simulation.system().getCelestialBodies())
+    public StateInterface state0(List<CelestialBody> allBodies) {
+        for (CelestialBody c : allBodies)
             this.positions.add(c.getVectorLocation().clone());
         return this;
     }
@@ -50,9 +50,8 @@ public class SystemState implements StateInterface {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        s.append(simulation.system().getClock().toString()).append("\n");
-        //TODO : insert MOON
-        for (int i = 0; i < this.positions.size() - 1; i++) {
+        //s.append(simulation.system().getClock().toString()).append("\n");
+        for (int i = 0; i < this.positions.size(); i++) {
             s.append(simulation.system().getCelestialBodies().get(i).toString());
             s.append("\tPV : ");
             s.append(this.positions.get(i).toString());

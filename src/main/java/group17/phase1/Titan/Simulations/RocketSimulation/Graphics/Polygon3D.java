@@ -7,13 +7,12 @@ import group17.phase1.Titan.Physics.Math.Vector3D;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.List;
 
 public class Polygon3D {
 
-	private static final double AmbientLight = 0.05;
+	private static final double AmbientLight = 0.15;
 	private final Point3D[] points;
 	private Color baseColor, lightingColor;
 	private boolean visible;
@@ -39,28 +38,19 @@ public class Polygon3D {
 	}
 
 	public static Polygon3D[] sortPolygons(Polygon3D[] polygons) {
-		List<Polygon3D> polygonsList = new ArrayList<Polygon3D>();
 
-		for (Polygon3D poly : polygons) {
-			polygonsList.add(poly);
-		}
+		List<Polygon3D> polygonsList = new ArrayList<>(Arrays.asList(polygons));
 
-		Collections.sort(polygonsList, new Comparator<Polygon3D>() {
-
-			@Override
-			public int compare(Polygon3D p1, Polygon3D p2) {
-
-				Point3D p1Average = p1.getAveragePoint();
-				Point3D p2Average = p2.getAveragePoint();
-				double p1Dist = Point3D.euclidDist(p1Average, Point3D.origin);
-				double p2Dist = Point3D.euclidDist(p2Average, Point3D.origin);
-				double diff = p1Dist - p2Dist;
-				if (diff == 0) {
-					return 0;
-				}
-
-				return diff < 0 ? 1 : -1;
+		polygonsList.sort((p1, p2) -> {
+			Point3D p1Average = p1.getAveragePoint();
+			Point3D p2Average = p2.getAveragePoint();
+			double p1Dist = Point3D.euclidDist(p1Average, Point3D.origin);
+			double p2Dist = Point3D.euclidDist(p2Average, Point3D.origin);
+			double diff = p1Dist - p2Dist;
+			if (diff == 0) {
+				return 0;
 			}
+			return diff < 0 ? 1 : -1;
 		});
 
 		for (int i = 0; i < polygons.length; i++) {
