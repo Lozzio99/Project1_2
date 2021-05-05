@@ -1,8 +1,8 @@
 package group17.System;
 
-import group17.Interfaces.RocketInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.SystemInterface;
+import group17.Simulation.RocketSimulator;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Bodies.Planet;
 import group17.System.Bodies.Satellite;
@@ -20,10 +20,12 @@ public class SolarSystem implements SystemInterface {
     private Clock clock;
     private List<CelestialBody> bodies;
     private StateInterface systemState;
-    private RocketInterface rocket;
+    private RocketSimulator rocket;
 
     @Override
     public List<CelestialBody> getCelestialBodies() {
+        if (this.bodies == null)
+            this.bodies = new ArrayList<>();
         return this.bodies;
     }
 
@@ -33,13 +35,14 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
-    public RocketInterface getRocket() {
+    public RocketSimulator getRocket() {
         return this.rocket;
     }
 
     @Override
     public void initPlanets() {
-        this.bodies = new ArrayList<>();
+        if (this.bodies == null)
+            this.bodies = new ArrayList<>();
         this.bodies.add(new Star());
         this.bodies.add(new Planet(MERCURY));
         this.bodies.add(new Planet(VENUS));
@@ -51,13 +54,18 @@ public class SolarSystem implements SystemInterface {
         this.bodies.add(new Planet(URANUS));
         this.bodies.add(new Planet(NEPTUNE));
         this.bodies.add(new Satellite(MOON));
-
+        for (CelestialBody b : this.bodies)
+            b.initProperties();
 
     }
 
     @Override
     public void initRocket() {
-
+        if (this.bodies == null)
+            this.bodies = new ArrayList<>();
+        this.rocket = new RocketSimulator();
+        this.rocket.initProperties();
+        this.bodies.add(this.rocket);
     }
 
 
@@ -89,5 +97,15 @@ public class SolarSystem implements SystemInterface {
     @Override
     public void step() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "SolarSystem{"
+                + clock +
+                ", bodies=" + bodies +
+                ", systemState=" + systemState +
+                ", rocket=" + rocket +
+                '}';
     }
 }

@@ -1,6 +1,7 @@
 package group17.Interfaces;
 
 
+import group17.Simulation.RocketSimulator;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Clock;
 
@@ -21,7 +22,7 @@ public interface SystemInterface {
     // Initial State
     StateInterface systemState();
 
-    RocketInterface getRocket();
+    RocketSimulator getRocket();
 
     void initPlanets();
 

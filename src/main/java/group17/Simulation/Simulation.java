@@ -16,6 +16,7 @@ public class Simulation implements SimulationInterface {
     private GraphicsInterface graphics;
     private DialogFrame assist;
     private SystemInterface system;
+    private SimulationReporter reporter;
     private boolean running, paused;
 
 
@@ -56,6 +57,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public void initGraphics() {
         this.graphics = new GraphicsManager();
+        this.graphics.init();
     }
 
     @Override
@@ -91,6 +93,21 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startSystem() {
+    }
+
+    @Override
+    public SimulationReporter getReporter() {
+        return this.reporter;
+    }
+
+    @Override
+    public void initReporter() {
+        this.reporter = new SimulationReporter();
+    }
+
+    @Override
+    public void startReport() {
+
     }
 
     @Override

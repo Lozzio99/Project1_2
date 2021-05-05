@@ -2,23 +2,20 @@ package group17.Interfaces;
 
 
 import group17.Graphics.DialogFrame;
+import group17.Simulation.SimulationReporter;
 
 public interface SimulationInterface {
 
 
     // Updater
     UpdaterInterface getUpdater();
-
     void initUpdater();
-
     void startUpdater();
 
 
     //Graphics
     GraphicsInterface getGraphics();
-
     void initGraphics();
-
     void startGraphics();
 
 
@@ -34,6 +31,13 @@ public interface SimulationInterface {
     void initSystem();
 
     void startSystem();
+
+
+    SimulationReporter getReporter();
+
+    void initReporter();
+
+    void startReport();
 
 
     // simulationInstance actions
