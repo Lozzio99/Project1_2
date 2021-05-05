@@ -1,16 +1,16 @@
 
 /**
  * This class handles the mouse input for the GUI.
- * @author 	Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ *
+ * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
  * @version 1.0
- * @since	19/02/2021
+ * @since 19/02/2021
  */
-package group17.phase1.Titan.Graphics.Scenes;
+package group17.Graphics.Scenes;
 
 import java.awt.event.*;
 
-public class MouseInput extends MouseMotionAdapter implements MouseListener, MouseWheelListener
-{
+public class MouseInput extends MouseMotionAdapter implements MouseListener, MouseWheelListener {
 
     // Variables
     private int mouseX = -1;
@@ -20,56 +20,54 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
 
     /**
      * Returns the X position of the mouse.
+     *
      * @return
      */
-    public int getX()
-    {
+    public int getX() {
         return this.mouseX;
     }
 
     /**
      * Returns the Y position of the mouse.
+     *
      * @return
      */
-    public int getY()
-    {
+    public int getY() {
         return this.mouseY;
     }
 
     /**
      * Returns the state, whether the user is currently scrolling up or not.
+     *
      * @return
      */
-    public boolean isScrollingUp()
-    {
+    public boolean isScrollingUp() {
         return this.scroll == -1;
     }
 
     /**
      * Returns the state, whether the user is currently scrolling down or not.
+     *
      * @return
      */
-    public boolean isScrollingDown()
-    {
+    public boolean isScrollingDown() {
         return this.scroll == 1;
     }
 
     /**
      * Resets the scroll of the mouse.
      */
-    public void resetScroll()
-    {
+    public void resetScroll() {
         this.scroll = 0;
     }
 
     /**
      * Returns the type of the button, which is pressed.
+     *
      * @return
      */
-    public ClickType getButton()
-    {
-        switch(this.mouseB)
-        {
+    public ClickType getButton() {
+        switch (this.mouseB) {
             case 1:
                 return ClickType.LeftClick;
             case 2:
@@ -88,8 +86,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Resets the mouse button.
      */
-    public void resetButton()
-    {
+    public void resetButton() {
         this.mouseB = -1;
     }
 
@@ -97,8 +94,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles movement of the mouse wheel.
      */
-    public void mouseWheelMoved(MouseWheelEvent event)
-    {
+    public void mouseWheelMoved(MouseWheelEvent event) {
         scroll = event.getWheelRotation();
     }
 
@@ -106,8 +102,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles dragged movement of the mouse.
      */
-    public void mouseDragged(MouseEvent event)
-    {
+    public void mouseDragged(MouseEvent event) {
         this.mouseX = event.getX();
         this.mouseY = event.getY();
     }
@@ -116,8 +111,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles the general movement of the mouse.
      */
-    public void mouseMoved(MouseEvent event)
-    {
+    public void mouseMoved(MouseEvent event) {
         this.mouseX = event.getX();
         this.mouseY = event.getY();
     }
@@ -126,8 +120,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles a mouse click.
      */
-    public void mouseClicked(MouseEvent arg0)
-    {
+    public void mouseClicked(MouseEvent arg0) {
 
     }
 
@@ -135,8 +128,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles the cursor entering the frame.
      */
-    public void mouseEntered(MouseEvent arg0)
-    {
+    public void mouseEntered(MouseEvent arg0) {
         // TODO Auto-generated method stub
     }
 
@@ -144,8 +136,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles the cursor exiting the frame.
      */
-    public void mouseExited(MouseEvent arg0)
-    {
+    public void mouseExited(MouseEvent arg0) {
         // TODO Auto-generated method stub
     }
 
@@ -153,8 +144,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles a pressed mouse button.
      */
-    public void mousePressed(MouseEvent event)
-    {
+    public void mousePressed(MouseEvent event) {
         this.mouseB = event.getButton();
     }
 
@@ -162,8 +152,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Handles a released mouse button.
      */
-    public void mouseReleased(MouseEvent arg0)
-    {
+    public void mouseReleased(MouseEvent arg0) {
         this.mouseB = -1;
     }
 
@@ -171,8 +160,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Enumerates the click type of the mouse.
      */
-    public enum ClickType
-    {
+    public enum ClickType {
         Unknown,
         LeftClick,
         ScrollClick,

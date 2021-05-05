@@ -3,7 +3,7 @@
   <component name="GithubSharedProjectSettings">
     <option name="branchProtectionPatterns">
       <list>
-        <option value="Trajectories" />
+        <option value="RocketMain" />
       </list>
     </option>
   </component>
