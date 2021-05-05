@@ -1,15 +1,15 @@
-package group17.phase1.Titan.Physics.Solvers;
+package group17.Math.Solvers;
 
 
-import group17.phase1.Titan.Interfaces.ODEFunctionInterface;
-import group17.phase1.Titan.Interfaces.ODESolverInterface;
-import group17.phase1.Titan.Interfaces.StateInterface;
-import group17.phase1.Titan.Interfaces.Vector3dInterface;
-import group17.phase1.Titan.Main;
-import group17.phase1.Titan.Physics.Math.Vector3D;
-import group17.phase1.Titan.System.Clock;
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.StateInterface;
+import group17.Interfaces.Vector3dInterface;
+import group17.Main;
+import group17.Math.Vector3D;
+import group17.System.Clock;
 
-import static group17.phase1.Titan.Config.G;
+import static group17.Config.G;
 import static java.lang.Double.NaN;
 
 
@@ -40,7 +40,7 @@ public class EulerSolver implements ODESolverInterface {
                     the same in all the system
                 */
                     acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                    acc = acc.mul((G * Main.simulation.system().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                    acc = acc.mul((G * Main.simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                     totalAcc = totalAcc.addMul(t, acc);
                     // p = h*acc(derivative of velocity)
                 }

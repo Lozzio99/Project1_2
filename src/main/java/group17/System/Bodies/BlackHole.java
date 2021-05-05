@@ -1,6 +1,6 @@
-package group17.phase1.Titan.Physics.Bodies;
+package group17.System.Bodies;
 
-import group17.phase1.Titan.Physics.Math.Vector3D;
+import group17.Math.Vector3D;
 
 import java.awt.*;
 
