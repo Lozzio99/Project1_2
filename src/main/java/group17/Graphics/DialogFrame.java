@@ -24,8 +24,9 @@ import static group17.Main.simulationInstance;
 /**
  * DialogFrame
  */
-public class DialogFrame extends JPanel {
+public class DialogFrame extends JPanel implements Runnable {
 
+    protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
     private final JFrame frame;
     private final JTextArea textArea = new JTextArea(10, 30);
     private final JTextField stSizeField = new JTextField();
@@ -49,7 +50,6 @@ public class DialogFrame extends JPanel {
 
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
-    private final AtomicReference<Thread> assist = new AtomicReference<>();
 
 
     public DialogFrame() {
@@ -164,10 +164,8 @@ public class DialogFrame extends JPanel {
     }
 
     public void showAssistParameters() {
-
         this.setStepField("" + STEP_SIZE);
         this.setDate();
-
         if (INSERT_PROBE) {
             this.setProbeField("" + simulationInstance.getSystem().getCelestialBodies().get(11).getMASS());
             lXCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getX());
@@ -191,9 +189,7 @@ public class DialogFrame extends JPanel {
     }
 
     public void acquireData() {
-
         STEP_SIZE = getTimeStepSize();
-
         if (INSERT_PROBE) {
             if (getLaunchVelocityX() != 0)
                 simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setX(getLaunchVelocityX());
@@ -392,6 +388,20 @@ public class DialogFrame extends JPanel {
         this.massSizeField.setText(ssField);
     }
 
+    @Override
+    public void run() {
+        if (!simulationInstance.waiting()) {
+            this.setDate();
+            this.setOutput(simulationInstance.getSystem().toString());
+        }
+    }
+
+    public void start() {
+        this.dialogThread.set(new Thread(this, "Dialog Thread"));
+        this.dialogThread.get().setDaemon(true);
+        this.dialogThread.get().start();
+    }
+
     /**
      * Nested class representing the update label on the right side of the dialog frame.
      *
@@ -429,6 +439,7 @@ public class DialogFrame extends JPanel {
         public void actionPerformed(ActionEvent e) {
             System.out.println("RESET SIMULATION { " + LocalTime.now() + " }");
             // TODO : Handle all of this by saying simulationInstance reset/start (then check config there)
+            simulationInstance.reset();
 
         }
 
@@ -447,6 +458,8 @@ public class DialogFrame extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
             System.out.println("START SIMULATION { " + LocalTime.now() + " }");
+            acquireData();
+            simulationInstance.setWaiting(false);
         }
     }
 

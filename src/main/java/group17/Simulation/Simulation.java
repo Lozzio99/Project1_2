@@ -10,14 +10,11 @@ import group17.System.SolarSystem;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static group17.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
-    private final Lock lock = new ReentrantLock();
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
     private DialogFrame assist;
@@ -43,7 +40,7 @@ public class Simulation implements SimulationInterface {
     public void start() {
         this.setRunning();
         this.setWaiting(true);
-
+        this.getAssist().showAssistParameters();
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleWithFixedDelay(this::loop, 30, 10, MILLISECONDS);
@@ -59,19 +56,19 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void loop() {
+    public synchronized void loop() {
         if (REPORT)
             this.startReport();
         if (ENABLE_ASSIST)
             this.startAssist();
+        if (ENABLE_GRAPHICS)
+            this.startGraphics();
 
         if (!waiting()) {
             this.startUpdater();
             this.startSystem();
+            this.getSystem().getClock().step(STEP_SIZE);
         }
-
-        if (ENABLE_GRAPHICS)
-            this.startGraphics();
     }
 
     @Override
@@ -81,6 +78,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startUpdater() {
+
     }
 
     @Override
@@ -115,6 +113,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startAssist() {
+        this.assist.start();
     }
 
     @Override
