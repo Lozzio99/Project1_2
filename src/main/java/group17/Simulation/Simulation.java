@@ -45,9 +45,8 @@ public class Simulation implements SimulationInterface {
         this.setWaiting(true);
 
 
-        ScheduledExecutorService service = Executors.newScheduledThreadPool(3);
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
         service.scheduleWithFixedDelay(this::loop, 30, 10, MILLISECONDS);
-
 
     }
 
