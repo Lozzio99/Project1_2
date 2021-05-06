@@ -21,8 +21,9 @@ public interface SimulationInterface {
 
     //Assist
     DialogFrame getAssist();
-
     void initAssist();
+
+    void startAssist();
 
 
     //System

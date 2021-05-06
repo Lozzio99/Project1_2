@@ -4,6 +4,7 @@ import group17.Interfaces.ProbeSimulatorInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
 import group17.System.Bodies.ProbeSimulator;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ProbeSimulatorTest {
 
     static final double ACCURACY = 1; // 1 meter (might need to tweak that)
+
+    @BeforeEach
+    void setUp() {
+
+    }
 
     public static Vector3dInterface[] simulateOneDay() {
 

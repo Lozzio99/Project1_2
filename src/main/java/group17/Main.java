@@ -22,9 +22,6 @@ public class Main {
             // Also the testing in that module will be way much easier considering that we only need
             // to test unit cases (single methods, not the overall simulation)
             simulationInstance.init();
-            simulationInstance.initSystem();
-            simulationInstance.initGraphics();
-            simulationInstance.startGraphics();
         }
     }
 }

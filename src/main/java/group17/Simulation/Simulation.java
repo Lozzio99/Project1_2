@@ -8,8 +8,7 @@ import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.System.SolarSystem;
 
-import static group17.Config.ENABLE_ASSIST;
-import static group17.Config.ENABLE_GRAPHICS;
+import static group17.Config.*;
 
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
@@ -24,10 +23,17 @@ public class Simulation implements SimulationInterface {
     public void init() {
         this.initUpdater();
         this.initSystem();
-        if (ENABLE_ASSIST)
+        if (REPORT) {
+            this.initReporter();
+        }
+        if (ENABLE_ASSIST) {
             this.initAssist();
-        if (ENABLE_GRAPHICS)
+            this.startAssist();
+        }
+        if (ENABLE_GRAPHICS) {
             this.initGraphics();
+            this.startGraphics();
+        }
     }
 
     @Override
@@ -62,6 +68,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startGraphics() {
+        this.graphics.start();
     }
 
     @Override
@@ -73,6 +80,13 @@ public class Simulation implements SimulationInterface {
     @Override
     public void initAssist() {
         this.assist = new DialogFrame();
+        this.assist.init();
+    }
+
+
+    @Override
+    public void startAssist() {
+
     }
 
     @Override

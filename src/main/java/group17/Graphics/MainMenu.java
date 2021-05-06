@@ -163,6 +163,7 @@ public abstract class MainMenu {
 
                 // TRAJECTORY_LENGTH = trajectoryLengthSlider.getValue();
                 startSimulation();
+                frame.dispose();
             }
         });
 
