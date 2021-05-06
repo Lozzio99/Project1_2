@@ -21,14 +21,14 @@ public class Clock {
 
     public static void main(String[] args) {
         Clock c = new Clock().setLaunchDay();
+        int k = 0;
         while (true) {
-            c.step(1);
-            System.out.println(c);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            c.step(10);
+            if (k % 1000 == 0)
+                System.out.println(c);
+            Thread.onSpinWait();
+            k++;
         }
 
     }
