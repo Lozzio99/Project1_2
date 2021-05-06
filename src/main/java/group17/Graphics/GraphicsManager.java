@@ -109,31 +109,20 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         }
     }
 
-
+    int frames = 0;
     @Override
     public synchronized void run() {
-        long lastTime = System.nanoTime();
-        long timer = System.currentTimeMillis();
-        final double ns = 1000000000.0 / FPS;
-        double delta = 0;
-        int frames = 0;
-
-        while (simulationInstance.running()) {
-            long now = System.nanoTime();
-            delta += (now - lastTime) / ns;
-            lastTime = now;
-            while (delta >= 1) {
-                this.update();
-                this.currentScene.repaint();
-                delta--;
-                frames++;
-            }
+        frames++;
+        this.update();
+        this.currentScene.repaint();
+        /*
             if (System.currentTimeMillis() - timer > 1000) {
                 this.frame.setTitle("Solar System " + " | " + frames + " FPS");
                 frames = 0;
                 timer += 1000;
             }
-        }
+         */
+
     }
 
     @Override

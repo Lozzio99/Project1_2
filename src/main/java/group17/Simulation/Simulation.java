@@ -8,9 +8,16 @@ import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.System.SolarSystem;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import static group17.Config.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
+    private final Lock lock = new ReentrantLock();
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
     private DialogFrame assist;
@@ -23,17 +30,25 @@ public class Simulation implements SimulationInterface {
     public void init() {
         this.initUpdater();
         this.initSystem();
-        if (REPORT) {
+        if (REPORT)
             this.initReporter();
-        }
-        if (ENABLE_ASSIST) {
+        if (ENABLE_ASSIST)
             this.initAssist();
-            this.startAssist();
-        }
-        if (ENABLE_GRAPHICS) {
+        if (ENABLE_GRAPHICS)
             this.initGraphics();
-            this.startGraphics();
-        }
+
+    }
+
+    @Override
+    public void start() {
+        this.setRunning();
+        this.setWaiting(true);
+
+
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(3);
+        service.scheduleWithFixedDelay(this::loop, 30, 10, MILLISECONDS);
+
+
     }
 
     @Override
@@ -44,6 +59,21 @@ public class Simulation implements SimulationInterface {
     public void stop() {
     }
 
+    @Override
+    public void loop() {
+        if (REPORT)
+            this.startReport();
+        if (ENABLE_ASSIST)
+            this.startAssist();
+
+        if (!waiting()) {
+            this.startUpdater();
+            this.startSystem();
+        }
+
+        if (ENABLE_GRAPHICS)
+            this.startGraphics();
+    }
 
     @Override
     public void initUpdater() {
@@ -86,7 +116,6 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startAssist() {
-
     }
 
     @Override
@@ -100,9 +129,7 @@ public class Simulation implements SimulationInterface {
         this.system = new SolarSystem();
         this.system.initClock();
         this.system.initPlanets();
-
         //...
-
     }
 
     @Override

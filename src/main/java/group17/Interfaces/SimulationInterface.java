@@ -46,7 +46,11 @@ public interface SimulationInterface {
     //configs
     void init();
 
+    void start();
+
     void reset();
+
+    void loop();
 
     void stop();
 
