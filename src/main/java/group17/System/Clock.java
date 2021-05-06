@@ -136,10 +136,10 @@ public class Clock {
         return "Clock { [ " +
                 hour / 10 + hour % 10 + " : " +
                 min / 10 + min % 10 + " : " +
-                sec / 10 + sec % 10 + " ]   °  " +
+                sec / 10 + sec % 10 + " ]     " +
                 days / 10 + days % 10 + " / " +
                 months / 10 + months % 10 + " / " +
-                this.years + " ° }";
+                this.years + "  }";
     }
 
     public int getSec() {
