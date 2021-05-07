@@ -100,12 +100,15 @@ public class SolarSystem implements SystemInterface {
     }
 
     @Override
+    public void initialState() {
+        this.systemState = new SystemState().state0(this.bodies);
+    }
+
+    @Override
     public String toString() {
-        return "SolarSystem{"
+        return "SOLAR SYSTEM\t"
                 + clock +
-                ", bodies=" + bodies +
-                ", systemState=" + systemState +
-                ", rocket=" + rocket +
-                '}';
+                ",\n\tSTATE\n" + systemState +
+                "\n\tROCKET\n" + rocket;
     }
 }

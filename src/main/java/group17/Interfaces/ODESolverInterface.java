@@ -9,7 +9,6 @@ package group17.Interfaces;
 
 import group17.Math.Solvers.EulerSolver;
 import group17.Math.Solvers.MaxCPUSolver;
-import group17.System.Clock;
 
 import static group17.Config.STEP_SIZE;
 
@@ -42,7 +41,6 @@ public interface ODESolverInterface {
             currTime += h;
         }
         double h = ts[ts.length - 1] - ts[ts.length - 2];
-        getClock().step(h);
         states[states.length - 1] = y0.addMul(currTime, f.call(h, y0));
         return states;
     }
@@ -67,7 +65,6 @@ public interface ODESolverInterface {
             currTime += h;
         }
         path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
-        getClock().step(tf - currTime);
         return path;
     }
 
@@ -97,9 +94,5 @@ public interface ODESolverInterface {
     String toString();
 
     void setF(ODEFunctionInterface f);
-
-    Clock getClock();
-
-    void setClock(Clock clock);
 
 }

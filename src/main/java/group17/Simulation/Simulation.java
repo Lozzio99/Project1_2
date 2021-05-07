@@ -20,7 +20,7 @@ public class Simulation implements SimulationInterface {
     private DialogFrame assist;
     private SystemInterface system;
     private SimulationReporter reporter;
-    private boolean running, paused;
+    private volatile boolean running, paused;
 
 
     @Override
@@ -73,10 +73,12 @@ public class Simulation implements SimulationInterface {
     @Override
     public void initUpdater() {
         this.updater = new SimulationUpdater();
+        this.updater.init();
     }
 
     @Override
     public void startUpdater() {
+        this.updater.start();
     }
 
     @Override
@@ -125,11 +127,12 @@ public class Simulation implements SimulationInterface {
         this.system = new SolarSystem();
         this.system.initClock();
         this.system.initPlanets();
-        //...
+        this.system.initialState();
     }
 
     @Override
     public void startSystem() {
+
     }
 
     @Override

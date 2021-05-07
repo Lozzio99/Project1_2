@@ -34,7 +34,7 @@ public class SimulationReporter implements ReporterInterface {
     @Override
     public void report() {
         for (LocalDateTime s : this.report.keySet()) {
-            System.out.print("{ " + s + "} - " + this.report.remove(s));
+            System.out.print(this.report.remove(s) + " ~  { " + s + " }");
         }
     }
 

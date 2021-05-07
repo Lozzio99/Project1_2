@@ -40,5 +40,5 @@ public interface SystemInterface {
 
     void step();
 
-
+    void initialState();
 }

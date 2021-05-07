@@ -3,7 +3,6 @@ package group17.Math.Solvers;
 import group17.Interfaces.*;
 import group17.Main;
 import group17.Math.Vector3D;
-import group17.System.Clock;
 import group17.System.RateOfChange;
 
 import static group17.Config.G;
@@ -17,7 +16,6 @@ public class VerletVelocitySolver implements ODESolverInterface {
     public static double currTime = 0;
     public static double endTime = NaN;
     private ODEFunctionInterface singleCoreF;
-    private Clock clock;
 
     public VerletVelocitySolver() {
         this.singleCoreF = (h, y) -> {
@@ -80,7 +78,6 @@ public class VerletVelocitySolver implements ODESolverInterface {
 
         part4.getRateOfChange().setVel(part7.getVelocities());
         y = part4;
-        this.clock.step(h);
         return y;
     }
 
@@ -94,13 +91,4 @@ public class VerletVelocitySolver implements ODESolverInterface {
         this.singleCoreF = f;
     }
 
-    @Override
-    public Clock getClock() {
-        return this.clock;
-    }
-
-    @Override
-    public void setClock(Clock clock) {
-        this.clock = clock;
-    }
 }

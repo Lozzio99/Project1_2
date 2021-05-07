@@ -2,7 +2,6 @@ package group17.Math.Solvers;
 
 import group17.Interfaces.*;
 import group17.Math.Vector3D;
-import group17.System.Clock;
 import group17.System.RateOfChange;
 
 import static group17.Config.DEBUG;
@@ -13,7 +12,6 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
     private static double t, tf;
     private ODEFunctionInterface singleCoreF;
-    private Clock clock;
 
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) -> {
@@ -50,8 +48,6 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
 
-        if (this.clock != null)  //verlet uses this
-            this.clock.step(h);
         RateInterface v21, v22, v23, v24, kv;
         StateInterface k11, k12, k13, k14, kk;
 
@@ -125,13 +121,4 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         this.singleCoreF = f;
     }
 
-    @Override
-    public Clock getClock() {
-        return this.clock;
-    }
-
-    @Override
-    public void setClock(Clock clock) {
-        this.clock = clock;
-    }
 }

@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Config.INSERT_PROBE;
 import static group17.Config.STEP_SIZE;
+import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulationInstance;
 
 /**
@@ -456,6 +457,7 @@ public class DialogFrame extends JPanel implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
+            simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
             simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
             simulationInstance.setWaiting(false);
