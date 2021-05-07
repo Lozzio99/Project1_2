@@ -110,6 +110,5 @@ public class SolarSystem implements SystemInterface {
                 + clock +
                 ",\n\tSTATE\n" + systemState +
                 "\n\tROCKET\n" + rocket;
-
     }
 }

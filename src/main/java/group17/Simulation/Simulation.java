@@ -11,18 +11,15 @@ import group17.System.SolarSystem;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-
 import static group17.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
-    private final Lock lock = new ReentrantLock();
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
     private DialogFrame assist;
     private SystemInterface system;
     private SimulationReporter reporter;
-
     private volatile boolean running, paused;
 
 
@@ -43,7 +40,6 @@ public class Simulation implements SimulationInterface {
     public void start() {
         this.setRunning();
         this.setWaiting(true);
-
         this.getAssist().showAssistParameters();
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
@@ -59,21 +55,6 @@ public class Simulation implements SimulationInterface {
     public void stop() {
     }
 
-    @Override
-    public void loop() {
-        if (REPORT)
-            this.startReport();
-        if (ENABLE_ASSIST)
-            this.startAssist();
-
-        if (!waiting()) {
-            this.startUpdater();
-            this.startSystem();
-        }
-
-        if (ENABLE_GRAPHICS)
-            this.startGraphics();
-    }
 
     @Override
     public synchronized void loop() {
@@ -134,7 +115,6 @@ public class Simulation implements SimulationInterface {
     @Override
     public void startAssist() {
         this.assist.start();
-
     }
 
     @Override
@@ -154,7 +134,6 @@ public class Simulation implements SimulationInterface {
     @Override
     public void startSystem() {
 
-
     }
 
     @Override
@@ -171,21 +150,6 @@ public class Simulation implements SimulationInterface {
     @Override
     public void startReport() {
         this.reporter.start();
-    }
-
-    @Override
-    public SimulationReporter getReporter() {
-        return this.reporter;
-    }
-
-    @Override
-    public void initReporter() {
-        this.reporter = new SimulationReporter();
-    }
-
-    @Override
-    public void startReport() {
-
     }
 
     @Override

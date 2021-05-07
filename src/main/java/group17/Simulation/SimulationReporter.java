@@ -49,5 +49,4 @@ public class SimulationReporter implements ReporterInterface {
         for (String s : strings)
             this.report.put(LocalDateTime.now(), s);
     }
-
 }
