@@ -77,7 +77,6 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startUpdater() {
-
     }
 
     @Override
