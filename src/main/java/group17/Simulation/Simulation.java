@@ -43,7 +43,7 @@ public class Simulation implements SimulationInterface {
         this.getAssist().showAssistParameters();
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleWithFixedDelay(this::loop, 30, 8, MILLISECONDS);
+        service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);
 
     }
 
@@ -54,6 +54,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public void stop() {
     }
+
 
     @Override
     public synchronized void loop() {
@@ -178,4 +179,12 @@ public class Simulation implements SimulationInterface {
     }
 
 
+    @Override
+    public String toString() {
+        return "Simulation{" +
+                "running=" + running +
+                ",paused=" + paused +
+                ",nThreads=" + Thread.currentThread().getThreadGroup().activeCount() +
+                '}';
+    }
 }

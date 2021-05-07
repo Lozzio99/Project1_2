@@ -388,11 +388,15 @@ public class DialogFrame extends JPanel implements Runnable {
         this.massSizeField.setText(ssField);
     }
 
+    private static int t = 0;
     @Override
     public void run() {
         if (!simulationInstance.waiting()) {
             this.setDate();
-            this.setOutput(simulationInstance.getSystem().toString());
+            if (t > 50) {
+                this.setOutput(simulationInstance.getSystem().toString());
+                t = 0;
+            } else t++;
         }
     }
 
