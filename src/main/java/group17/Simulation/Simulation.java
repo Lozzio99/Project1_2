@@ -43,7 +43,7 @@ public class Simulation implements SimulationInterface {
         this.getAssist().showAssistParameters();
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleWithFixedDelay(this::loop, 30, 15, MILLISECONDS);
+        service.scheduleWithFixedDelay(this::loop, 30, 8, MILLISECONDS);
 
     }
 
