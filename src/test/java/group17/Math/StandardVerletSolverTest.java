@@ -2,6 +2,7 @@ package group17.Math;
 
 import group17.Interfaces.StateInterface;
 import group17.Math.Solvers.StandardVerletSolver;
+
 import group17.System.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ public class StandardVerletSolverTest {
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();
         StandardVerletSolver solver = new StandardVerletSolver();
+
         // init parameters
         Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0
         Vector3D initVelocity = new Vector3D(0, 0, 1);
