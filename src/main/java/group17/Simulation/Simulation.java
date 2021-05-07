@@ -10,8 +10,7 @@ import group17.System.SolarSystem;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+
 
 import static group17.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
@@ -23,7 +22,8 @@ public class Simulation implements SimulationInterface {
     private DialogFrame assist;
     private SystemInterface system;
     private SimulationReporter reporter;
-    private boolean running, paused;
+
+    private volatile boolean running, paused;
 
 
     @Override
@@ -44,9 +44,10 @@ public class Simulation implements SimulationInterface {
         this.setRunning();
         this.setWaiting(true);
 
+        this.getAssist().showAssistParameters();
 
         ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleWithFixedDelay(this::loop, 30, 10, MILLISECONDS);
+        service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);
 
     }
 
@@ -75,12 +76,29 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
+    public synchronized void loop() {
+        if (REPORT)
+            this.startReport();
+        if (ENABLE_ASSIST)
+            this.startAssist();
+        if (ENABLE_GRAPHICS)
+            this.startGraphics();
+        if (!waiting()) {
+            this.startUpdater();
+            this.startSystem();
+            this.getSystem().getClock().step(STEP_SIZE);
+        }
+    }
+
+    @Override
     public void initUpdater() {
         this.updater = new SimulationUpdater();
+        this.updater.init();
     }
 
     @Override
     public void startUpdater() {
+        this.updater.start();
     }
 
     @Override
@@ -115,6 +133,8 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startAssist() {
+        this.assist.start();
+
     }
 
     @Override
@@ -128,11 +148,29 @@ public class Simulation implements SimulationInterface {
         this.system = new SolarSystem();
         this.system.initClock();
         this.system.initPlanets();
-        //...
+        this.system.initialState();
     }
 
     @Override
     public void startSystem() {
+
+
+    }
+
+    @Override
+    public SimulationReporter getReporter() {
+        return this.reporter;
+    }
+
+    @Override
+    public void initReporter() {
+        this.reporter = new SimulationReporter();
+        this.reporter.init();
+    }
+
+    @Override
+    public void startReport() {
+        this.reporter.start();
     }
 
     @Override
@@ -177,4 +215,12 @@ public class Simulation implements SimulationInterface {
     }
 
 
+    @Override
+    public String toString() {
+        return "Simulation{" +
+                "running=" + running +
+                ",paused=" + paused +
+                ",nThreads=" + Thread.currentThread().getThreadGroup().activeCount() +
+                '}';
+    }
 }

@@ -3,10 +3,11 @@ package group17.System;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.System.Bodies.CelestialBody;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static group17.Main.simulationInstance;
 
 
 public class SystemState implements StateInterface {
@@ -29,13 +30,6 @@ public class SystemState implements StateInterface {
     }
 
     @Override
-    public StateInterface state0(List<CelestialBody> allBodies) {
-        for (CelestialBody c : allBodies)
-            this.positions.add(c.getVectorLocation().clone());
-        return this;
-    }
-
-    @Override
     public List<Vector3dInterface> getPositions() {
         return this.positions;
     }
@@ -48,14 +42,13 @@ public class SystemState implements StateInterface {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        //s.append(simulationInstance.system().getClock().toString()).append("\n");
+        s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         for (int i = 0; i < this.positions.size(); i++) {
-            //s.append(simulationInstance.system().getCelestialBodies().get(i).toString());
-            s.append("\tPV : ");
-            s.append(this.positions.get(i).toString());
-            s.append("\n");
+            s.append(simulationInstance.getSystem().getCelestialBodies().get(i).toString());
+            s.append("\tPV:\t");
+            s.append(this.positions.get(i).toString()).append("\n");
         }
-        s.append("§-----------------------------------------------------------------------§");
+        s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         return s.toString().trim();
     }
 
@@ -63,11 +56,6 @@ public class SystemState implements StateInterface {
     @Override
     public RateInterface getRateOfChange() {
         return this.rateOfChange;
-    }
-
-    @Override
-    public void initialVelocity() {
-        this.rateOfChange = new RateOfChange().state0();
     }
 
 }

@@ -7,10 +7,10 @@
 
 package group17.Interfaces;
 
-import group17.Config;
 import group17.Math.Solvers.EulerSolver;
 import group17.Math.Solvers.MaxCPUSolver;
-import group17.System.Clock;
+
+import static group17.Config.STEP_SIZE;
 
 
 /*
@@ -35,13 +35,12 @@ public interface ODESolverInterface {
 
         for (int i = 0; i < ts.length - 1; i++) {
             double h = ts[i + 1] - ts[i];
-            Config.STEP_SIZE = h;
+            STEP_SIZE = h;
             states[i] = this.step(f, currTime, y0, h);
             y0 = states[i];
             currTime += h;
         }
         double h = ts[ts.length - 1] - ts[ts.length - 2];
-        getClock().step(h);
         states[states.length - 1] = y0.addMul(currTime, f.call(h, y0));
         return states;
     }
@@ -58,7 +57,6 @@ public interface ODESolverInterface {
      */
     default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         double endTime = tf;
-        Config.STEP_SIZE = h;
         StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
         double currTime = 0;
         for (int i = 0; i < path.length - 1; i++) {
@@ -67,7 +65,6 @@ public interface ODESolverInterface {
             currTime += h;
         }
         path[path.length - 1] = this.step(f, tf, y0, tf - currTime);
-        getClock().step(tf - currTime);
         return path;
     }
 
@@ -97,9 +94,5 @@ public interface ODESolverInterface {
     String toString();
 
     void setF(ODEFunctionInterface f);
-
-    Clock getClock();
-
-    void setClock(Clock clock);
 
 }

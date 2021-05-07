@@ -80,7 +80,7 @@ public abstract class MainMenu {
         trajectoryLengthSlider.setMinimum(0);
         trajectoryLengthSlider.setMaximum(10000);
         trajectoryLengthSlider.setToolTipText("Length");
-        stepSizeText = new JTextField("100");
+        stepSizeText = new JTextField(String.valueOf(STEP_SIZE));
         particlesText = new JTextField();
 
         startButton = new JButton("Start Simulation");

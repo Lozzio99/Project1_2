@@ -6,7 +6,6 @@ import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Main;
 import group17.Math.Vector3D;
-import group17.System.Clock;
 
 import static group17.Config.G;
 import static java.lang.Double.NaN;
@@ -18,7 +17,6 @@ public class StandardVerletSolver implements ODESolverInterface {
     private StateInterface prevState;
     private boolean first = true;
     private ODEFunctionInterface singleCoreF;
-    private Clock clock;
 
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
@@ -78,8 +76,6 @@ public class StandardVerletSolver implements ODESolverInterface {
         }
 
         prevState = StateInterface.clone(diff);
-        this.clock.step(h);
-
         y = diff;
         return y;
     }
@@ -94,13 +90,4 @@ public class StandardVerletSolver implements ODESolverInterface {
         this.singleCoreF = f;
     }
 
-    @Override
-    public Clock getClock() {
-        return this.clock;
-    }
-
-    @Override
-    public void setClock(Clock clock) {
-        this.clock = clock;
-    }
 }

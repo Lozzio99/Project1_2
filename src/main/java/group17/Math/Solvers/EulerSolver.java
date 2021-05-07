@@ -7,7 +7,7 @@ import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Main;
 import group17.Math.Vector3D;
-import group17.System.Clock;
+
 
 import static group17.Config.G;
 import static java.lang.Double.NaN;
@@ -53,7 +53,7 @@ public class EulerSolver implements ODESolverInterface {
     };
 
 
-    private Clock clock;
+
 
     //x1 = x0 + h*v0;
     //x2 = x1 + h*v1;
@@ -66,7 +66,7 @@ public class EulerSolver implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
         // y1 = y0 +f(x,y0);
         currTime = currentTime;
-        this.clock.step(stepSize);
+
         return y.addMul(stepSize, f.call(stepSize, y));
         //       y0  +  (y * h      dy(rate of change))
 
@@ -91,13 +91,5 @@ public class EulerSolver implements ODESolverInterface {
         this.singleCoreF = f;
     }
 
-    @Override
-    public Clock getClock() {
-        return this.clock;
-    }
 
-    @Override
-    public void setClock(Clock clock) {
-        this.clock = clock;
-    }
 }

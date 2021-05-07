@@ -19,22 +19,9 @@ import java.util.List;
 
 public interface StateInterface {
 
-    static StateInterface clone(StateInterface tobeCloned) {
-        StateInterface s = new SystemState();
+    String toString();
 
-        for (int i = 0; i < tobeCloned.getPositions().size(); i++) {
-            s.getPositions().add(tobeCloned.getPositions().get(i).clone());
-            s.getRateOfChange().getVelocities().add(tobeCloned.getRateOfChange().getVelocities().get(i).clone());
-        }
-        return s;
-    }
-
-    /**
-     * Initialises the system state to be the initial value at the launch day
-     *
-     * @return the StateInterface y(0)
-     */
-    StateInterface state0(List<CelestialBody> bodies);
+    RateInterface getRateOfChange();
 
     /**
      * The state of the bodies at a given point in time
@@ -45,6 +32,30 @@ public interface StateInterface {
 
     void setPositions(List<Vector3dInterface> v);
 
+
+    /**
+     * Initialises the system state to be the initial value at the launch day
+     *
+     * @return the StateInterface y(0)
+     */
+    default StateInterface state0(List<CelestialBody> bodies) {
+        StateInterface state = new SystemState();
+        for (CelestialBody b : bodies) {
+            state.getPositions().add(b.getVectorLocation().clone());
+            state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());
+        }
+        return state;
+    }
+
+    static StateInterface clone(StateInterface tobeCloned) {
+        StateInterface s = new SystemState();
+        for (int i = 0; i < tobeCloned.getPositions().size(); i++) {
+            s.getPositions().add(tobeCloned.getPositions().get(i).clone());
+            s.getRateOfChange().getVelocities().add(tobeCloned.getRateOfChange().getVelocities().get(i).clone());
+        }
+        return s;
+    }
+
     /**
      * Update a state to a new state computed by: this + step * rate
      *
@@ -52,7 +63,6 @@ public interface StateInterface {
      * @param rate The average rate-of-change over the time-step. Has dimensions of [state]/[time].
      * @return The new state after the update. Required to have the same class as 'this'.
      */
-
     default StateInterface addMul(double step, RateInterface rate) {
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
@@ -62,7 +72,6 @@ public interface StateInterface {
         }
         return newState;
     }
-
     default StateInterface rateMul(double step, RateInterface rate) { //!!
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
@@ -71,12 +80,9 @@ public interface StateInterface {
         }
         return newState;
     }
-
     /**
      * @return a String containing the state of the system
      */
-    String toString();
-
     default StateInterface copy(StateInterface tobeCloned) {
         StateInterface s = new SystemState();
         for (Vector3dInterface v : tobeCloned.getPositions()) {
@@ -84,7 +90,6 @@ public interface StateInterface {
         }
         return s;
     }
-
     default StateInterface multiply(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
@@ -95,7 +100,6 @@ public interface StateInterface {
         }
         return this;
     }
-
     default StateInterface div(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to divide ");
@@ -106,8 +110,6 @@ public interface StateInterface {
         }
         return this;
     }
-
-
     default StateInterface add(StateInterface tobeAdded) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to add ");
@@ -118,11 +120,6 @@ public interface StateInterface {
         }
         return this;
     }
-
-    RateInterface getRateOfChange();
-
-    void initialVelocity();
-
     default StateInterface sumOf(StateInterface... rates) {
 
         for (int i = 0; i < rates[0].getPositions().size(); i++) {
