@@ -3,6 +3,7 @@ package group17.Simulation;
 import group17.Interfaces.ReporterInterface;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentMap;
 public class SimulationReporter implements ReporterInterface {
 
     private Thread thread;
-    private volatile ConcurrentMap<LocalDate, String> report;
+    private volatile ConcurrentMap<LocalDateTime, String> report;
 
 
     @Override
@@ -32,19 +33,20 @@ public class SimulationReporter implements ReporterInterface {
 
     @Override
     public void report() {
-        for (LocalDate s : this.report.keySet()) {
-            System.out.println(this.report.remove(s));
+        for (LocalDateTime s : this.report.keySet()) {
+            System.out.print("{ " + s + "} - " + this.report.remove(s));
         }
     }
 
     @Override
     public void report(String string) {
-        this.report.put(LocalDate.now(), string);
+        System.out.println(LocalDate.now());
+        this.report.put(LocalDateTime.now(), string);
     }
 
     @Override
     public void report(List<String> strings) {
         for (String s : strings)
-            this.report.put(LocalDate.now(), s);
+            this.report.put(LocalDateTime.now(), s);
     }
 }

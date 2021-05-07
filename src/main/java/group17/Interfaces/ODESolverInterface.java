@@ -7,10 +7,11 @@
 
 package group17.Interfaces;
 
-import group17.Config;
 import group17.Math.Solvers.EulerSolver;
 import group17.Math.Solvers.MaxCPUSolver;
 import group17.System.Clock;
+
+import static group17.Config.STEP_SIZE;
 
 
 /*
@@ -35,7 +36,7 @@ public interface ODESolverInterface {
 
         for (int i = 0; i < ts.length - 1; i++) {
             double h = ts[i + 1] - ts[i];
-            Config.STEP_SIZE = h;
+            STEP_SIZE = h;
             states[i] = this.step(f, currTime, y0, h);
             y0 = states[i];
             currTime += h;
@@ -58,7 +59,6 @@ public interface ODESolverInterface {
      */
     default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         double endTime = tf;
-        Config.STEP_SIZE = h;
         StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
         double currTime = 0;
         for (int i = 0; i < path.length - 1; i++) {

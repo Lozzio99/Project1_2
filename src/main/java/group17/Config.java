@@ -35,7 +35,7 @@ public class Config {
     public static int SIMULATION_LEVEL = 0;
     public static boolean INSERT_PROBE = false;
 
-    public static double STEP_SIZE = 10;
+    public static double STEP_SIZE = 60;
 
 
     //TODO : set this to be updated for particles simulationInstance

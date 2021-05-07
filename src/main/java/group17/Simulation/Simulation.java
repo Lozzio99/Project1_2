@@ -140,11 +140,12 @@ public class Simulation implements SimulationInterface {
     @Override
     public void initReporter() {
         this.reporter = new SimulationReporter();
+        this.reporter.init();
     }
 
     @Override
     public void startReport() {
-
+        this.reporter.start();
     }
 
     @Override

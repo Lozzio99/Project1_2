@@ -14,7 +14,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalTime;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Config.INSERT_PROBE;
@@ -437,7 +436,7 @@ public class DialogFrame extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("RESET SIMULATION { " + LocalTime.now() + " }");
+            simulationInstance.getReporter().report("RESET SIMULATION");
             // TODO : Handle all of this by saying simulationInstance reset/start (then check config there)
             simulationInstance.reset();
 
@@ -457,7 +456,7 @@ public class DialogFrame extends JPanel implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             // TODO Auto-generated method stub
-            System.out.println("START SIMULATION { " + LocalTime.now() + " }");
+            simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
             simulationInstance.setWaiting(false);
         }
