@@ -41,8 +41,8 @@ public class Simulation implements SimulationInterface {
             this.setRunning();
             this.setWaiting(true);
             this.getAssist().showAssistParameters();
-            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-            service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);
+            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
+            service.scheduleWithFixedDelay(this::loop, 30, 13, MILLISECONDS);
         } else {
             this.getReporter().report(new RuntimeException("STOP"));
         }

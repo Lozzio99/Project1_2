@@ -17,7 +17,7 @@ public class SimulationReporter implements ReporterInterface {
 
 
     @Override
-    public void run() {
+    public synchronized void run() {
         this.report();
     }
 

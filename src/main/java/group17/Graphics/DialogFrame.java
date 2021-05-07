@@ -390,7 +390,7 @@ public class DialogFrame extends JPanel implements Runnable {
 
     private static int t = 0;
     @Override
-    public void run() {
+    public synchronized void run() {
         if (!simulationInstance.waiting()) {
             this.setDate();
             if (t > 50) {

@@ -40,7 +40,7 @@ public class SimulationUpdater implements UpdaterInterface {
 
 
     @Override
-    public void run() {
+    public synchronized void run() {
         // ROCKET DECISION
         this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE);
     }

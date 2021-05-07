@@ -13,9 +13,9 @@ import java.util.Arrays;
 import static group17.Config.*;
 
 public class SimulationScene extends Scene {
-    Point3D[] planetsPositions;
-    double[] radius;
-    volatile Bag[] trajectories;
+    transient Point3D[] planetsPositions;
+    transient double[] radius;
+    transient Bag[] trajectories;
 
 
     @Override
@@ -23,7 +23,7 @@ public class SimulationScene extends Scene {
         Graphics2D g = (Graphics2D) graphics;
         super.paintComponent(g);
         for (int i = 0; i < this.planetsPositions.length; i++) {
-            Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);
+            final Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);
             if (NAMES) {
                 g.setColor(Color.WHITE);
                 g.setFont(new Font("Monospaced", Font.PLAIN, 10));
@@ -76,12 +76,13 @@ public class SimulationScene extends Scene {
     }
 
     public void updateBodies() {
+        double x = totalXDif / mouseSensitivity, y = totalYDif / mouseSensitivity, dx = deltaX / mouseSensitivity, dy = deltaY / mouseSensitivity;
         for (int i = 0; i < this.planetsPositions.length; i++) {
             this.planetsPositions[i] = Main.simulationInstance.getSystem().systemState().getPositions().get(i).fromVector();
             this.planetsPositions[i].scale(scale);
             radius[i] = (Main.simulationInstance.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;
-            Point3DConverter.rotateAxisY(this.planetsPositions[i], false, totalXDif / mouseSensitivity);
-            Point3DConverter.rotateAxisX(this.planetsPositions[i], false, totalYDif / mouseSensitivity);
+            Point3DConverter.rotateAxisY(this.planetsPositions[i], false, x);
+            Point3DConverter.rotateAxisX(this.planetsPositions[i], false, y);
 
             if (DRAW_TRAJECTORIES) {
                 try {
@@ -90,8 +91,8 @@ public class SimulationScene extends Scene {
                         if (this.trajectories[i].getTrajectories()[k] == null)
                             break;
                         //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
-                        Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, deltaX / mouseSensitivity);
-                        Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, deltaY / mouseSensitivity);
+                        Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, dx);
+                        Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, dy);
                     }
                 } catch (NullPointerException ignored) {
                     System.err.println("Missed graphics update - waiting for main thread to init scene");
@@ -115,7 +116,7 @@ public class SimulationScene extends Scene {
 
 
     class Bag {
-        Point3D[] trajectories;
+        final Point3D[] trajectories;
         int insert;
         boolean loop;
 
@@ -125,7 +126,7 @@ public class SimulationScene extends Scene {
             this.loop = false;
         }
 
-        void add(Point3D p) {
+        void add(final Point3D p) {
             this.trajectories[this.insert] = p;
             this.insert++;
             if (this.insert == this.trajectories.length) {

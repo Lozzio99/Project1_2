@@ -44,7 +44,7 @@ public class Config {
     public static boolean NAMES = true;
 
 
-    public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 1000 : 50;
+    public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 500 : 50;
     public static int PARTICLES = 700;
 
     public static Clock LAUNCH_DATE = new Clock().setLaunchDay();
