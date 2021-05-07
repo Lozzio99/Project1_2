@@ -27,7 +27,7 @@ public class Config {
     public static final int MAX_CPU = 5;
     public static final boolean ENABLE_ASSIST = true;
     public static final double G = 6.67408e-11;
-    public static int SOLVER = 1;
+    public static int SOLVER = 6;
     public static int CPU_LEVEL = 1;
     public static boolean REPORT = true;
     public static boolean DEBUG = false;

@@ -20,31 +20,32 @@ public class Simulation implements SimulationInterface {
     private DialogFrame assist;
     private SystemInterface system;
     private SimulationReporter reporter;
-    private volatile boolean running, paused;
+    private volatile boolean running, paused, stopped;
 
 
     @Override
     public void init() {
+        if (REPORT)
+            this.initReporter();   //first thing, will check all exceptions
         this.initUpdater();
         this.initSystem();
-        if (REPORT)
-            this.initReporter();
         if (ENABLE_ASSIST)
             this.initAssist();
         if (ENABLE_GRAPHICS)
             this.initGraphics();
-
     }
 
     @Override
     public void start() {
-        this.setRunning();
-        this.setWaiting(true);
-        this.getAssist().showAssistParameters();
-
-        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-        service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);
-
+        if (!this.stopped) {  // there may be some errors in the initialisation
+            this.setRunning();
+            this.setWaiting(true);
+            this.getAssist().showAssistParameters();
+            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+            service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);
+        } else {
+            this.getReporter().report(new RuntimeException("STOP"));
+        }
     }
 
     @Override
@@ -53,21 +54,26 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void stop() {
+        this.stopped = true;
+        this.running = false;
+        this.paused = true;
     }
 
 
     @Override
     public synchronized void loop() {
-        if (REPORT)
-            this.startReport();
-        if (ENABLE_ASSIST)
-            this.startAssist();
-        if (ENABLE_GRAPHICS)
-            this.startGraphics();
-        if (!waiting()) {
-            this.startUpdater();
-            this.startSystem();
-            this.getSystem().getClock().step(STEP_SIZE);
+        if (this.running) {
+            if (REPORT)
+                this.startReport();
+            if (ENABLE_ASSIST)
+                this.startAssist();
+            if (ENABLE_GRAPHICS)
+                this.startGraphics();
+            if (!waiting()) {
+                this.startUpdater();
+                this.startSystem();
+                this.getSystem().getClock().step(STEP_SIZE);
+            }
         }
     }
 
@@ -165,7 +171,8 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void setRunning() {
-        this.running = true;
+        if (!this.running)
+            this.running = true;
     }
 
     @Override
