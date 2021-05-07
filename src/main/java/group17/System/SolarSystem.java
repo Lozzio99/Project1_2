@@ -76,7 +76,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initClock() {
-        this.clock = new Clock();
+        this.clock = new Clock().setLaunchDay();
     }
 
     @Override

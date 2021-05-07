@@ -20,11 +20,11 @@ public class Clock {
     }
 
     public static void main(String[] args) {
-        Clock c = new Clock().setLaunchDay();
+        Clock c = new Clock().setLaunchDay().setInitialTime(00, 50, 23);
         int k = 0;
         while (true) {
 
-            c.step(10);
+            c.step(60);
             if (k % 1000 == 0)
                 System.out.println(c);
             Thread.onSpinWait();
@@ -70,7 +70,6 @@ public class Clock {
     }
 
     private synchronized void minStep(int minutes) {
-
         int hours = minutes / 60;
         this.min += minutes % 60;
         if (this.min >= 60) {
@@ -101,6 +100,7 @@ public class Clock {
             this.days += (days % 365) % this.daysInMonths[this.months - 1];
         else
             this.days += days % this.daysInMonths[this.months - 1];
+
 
         if (this.days > this.daysInMonths[this.months - 1]) {
             months += this.days / this.daysInMonths[this.months - 1];
