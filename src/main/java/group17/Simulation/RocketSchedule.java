@@ -34,11 +34,18 @@ public class RocketSchedule {
         this.shiftAtDistance.put(distance, decision);
     }
 
+
+    public void init() {
+        //put all things here, even if they are later in the simulation
+        //once we know them we just plan them here
+        this.plan(new Clock().setLaunchDay(), new Vector3D(100, 20, 100));
+    }
+
+
     public Vector3dInterface shift(SystemInterface system) {
         return this.getDesiredVelocity(system.getClock()).
                 add(this.getDesiredVelocity(system.systemState())).
-                add(this.getDesiredVelocity(
-                        system.getRocket().getVectorLocation()/*TODO: titan.sub(rocket) */));
+                add(this.getDesiredVelocity(system.getRocket().getVectorLocation()/*TODO: titan.sub(rocket) */));
         //eventually everything null this will return a vector (0,0,0)
     }
 
@@ -54,9 +61,5 @@ public class RocketSchedule {
         return shiftAtDistance.getOrDefault(distanceToSomething, new Vector3D());
     }
 
-    public void init() {
-        //put all things here, even if they are later in the simulation
-        //once we know them we just plan them here
-        this.plan(new Clock().setLaunchDay(), new Vector3D(10000, 100, 100));
-    }
+
 }
