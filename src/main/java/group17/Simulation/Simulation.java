@@ -2,7 +2,10 @@ package group17.Simulation;
 
 import group17.Graphics.DialogFrame;
 import group17.Graphics.GraphicsManager;
-import group17.Interfaces.*;
+import group17.Interfaces.GraphicsInterface;
+import group17.Interfaces.SimulationInterface;
+import group17.Interfaces.SystemInterface;
+import group17.Interfaces.UpdaterInterface;
 import group17.System.Bodies.CelestialBody;
 import group17.System.SolarSystem;
 
@@ -200,13 +203,11 @@ public class Simulation implements SimulationInterface {
     public void updateState() {
         for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {
             if (getSystem().getCelestialBodies().get(i).isCollided()) {
-                getSystem().systemState().getPositions().get(i).mark();
-                getSystem().systemState().getRateOfChange().getVelocities().get(i).mark();
+                getSystem().systemState().getPositions().remove(i);
+                getSystem().systemState().getRateOfChange().getVelocities().remove(i);
             }
         }
         getSystem().getCelestialBodies().removeIf(CelestialBody::isCollided);
-        getSystem().systemState().getPositions().removeIf(Vector3dInterface::isMarked);
-        getSystem().systemState().getRateOfChange().getVelocities().removeIf(Vector3dInterface::isMarked);
     }
 
 
