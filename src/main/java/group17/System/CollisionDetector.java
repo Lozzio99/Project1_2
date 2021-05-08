@@ -61,6 +61,4 @@ public class CollisionDetector {
         return system;
     }
 
-
-
 }

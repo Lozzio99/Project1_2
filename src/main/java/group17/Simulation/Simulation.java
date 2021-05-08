@@ -82,6 +82,7 @@ public class Simulation implements SimulationInterface {
             if (!waiting()) {
                 this.startUpdater();
                 this.startSystem();
+                this.getSystem().getClock().step(STEP_SIZE);
             }
         }
     }
