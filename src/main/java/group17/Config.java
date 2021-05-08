@@ -12,7 +12,7 @@ public class Config {
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
 
 
-    public static final boolean ENABLE_GRAPHICS = false;
+    public static final boolean ENABLE_GRAPHICS = true;
     public static final double FPS = 80;
 
 
