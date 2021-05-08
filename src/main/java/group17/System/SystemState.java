@@ -1,6 +1,7 @@
 package group17.System;
 
 import group17.Interfaces.RateInterface;
+import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 
@@ -41,14 +42,24 @@ public class SystemState implements StateInterface {
 
     @Override
     public String toString() {
+        SimulationInterface simulation = simulationInstance;
         StringBuilder s = new StringBuilder();
-        s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        for (int i = 0; i < this.positions.size(); i++) {
-            s.append(simulationInstance.getSystem().getCelestialBodies().get(i).toString());
-            s.append("\tPV:\t");
-            s.append(this.positions.get(i).toString()).append("\n");
+        s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        if (simulation == null) {
+            for (Vector3dInterface position : this.positions) {
+                s.append("PV:\t");
+                s.append(position.toString()).append("\n");
+            }
+        } else {
+            for (int i = 0; i < this.positions.size(); i++) {
+                s.append(simulationInstance.getSystem().getCelestialBodies().get(i).toString());
+                s.append("\tPV:\t");
+                s.append(this.positions.get(i).toString()).append("\n");
+            }
         }
         s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+
         return s.toString().trim();
     }
 

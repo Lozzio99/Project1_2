@@ -62,6 +62,6 @@ class SolarSystemTest {
         solarSystem.initClock();
         assertNotNull(solarSystem.getClock());
         assertNotEquals("null", solarSystem.getClock().toString());
-        assertEquals("Clock { [ 00 : 00 : 00 ]     00 / 00 / 0  }", solarSystem.getClock().toString());
+        assertEquals("Clock { [ 00 : 00 : 00 ]     01 / 04 / 2020  }", solarSystem.getClock().toString());
     }
 }

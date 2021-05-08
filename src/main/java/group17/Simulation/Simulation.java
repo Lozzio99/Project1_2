@@ -145,7 +145,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void startSystem() {
-
+        this.system.start();
     }
 
     @Override
