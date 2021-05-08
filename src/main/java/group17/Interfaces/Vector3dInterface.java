@@ -125,4 +125,8 @@ public interface Vector3dInterface {
 
     double heading();
 
+    void mark();
+
+    boolean isMarked();
+
 }

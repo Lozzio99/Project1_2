@@ -10,9 +10,11 @@ public class Vector3D implements Vector3dInterface {
     /* TODO : think if we need to create new objects or if we can just modify the current vector */
 
     double x, y, z;
+    boolean marked;
 
     public Vector3D() {
         this.x = this.y = this.z = 0;
+        this.marked = true;
     }
 
 
@@ -20,6 +22,7 @@ public class Vector3D implements Vector3dInterface {
         this.x = x;
         this.y = y;
         this.z = z;
+        this.marked = false;
     }
 
 
@@ -257,4 +260,11 @@ public class Vector3D implements Vector3dInterface {
         this.z = z;
     }
 
+    public boolean isMarked() {
+        return marked;
+    }
+
+    public void mark() {
+        this.marked = true;
+    }
 }
