@@ -18,7 +18,7 @@ public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
     private DialogFrame assist;
-    private SystemInterface system;
+    private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
 
@@ -78,8 +78,8 @@ public class Simulation implements SimulationInterface {
             if (!waiting()) {
                 this.startUpdater();
                 this.startSystem();
-                this.getSystem().getClock().step(STEP_SIZE);
             }
+            this.updateState();
         }
     }
 
@@ -140,6 +140,8 @@ public class Simulation implements SimulationInterface {
         this.system = new SolarSystem();
         this.system.initClock();
         this.system.initPlanets();
+        if (INSERT_ROCKET)
+            this.system.initRocket();
         this.system.initialState();
     }
 
@@ -194,6 +196,11 @@ public class Simulation implements SimulationInterface {
     @Override
     public void setStopped(boolean stopped) {
         this.stopped = stopped;
+    }
+
+    @Override
+    public synchronized void updateState() {
+
     }
 
 

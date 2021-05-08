@@ -71,7 +71,12 @@ public class SimulationScene extends Scene {
 
     public void update() {
         super.update();
-        this.updateBodies();
+        try {
+            this.updateBodies();
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            this.init();
+        }
+
         super.resetMouse();
     }
 
@@ -85,22 +90,19 @@ public class SimulationScene extends Scene {
             Point3DConverter.rotateAxisX(this.planetsPositions[i], false, y);
 
             if (DRAW_TRAJECTORIES) {
-                try {
-                    this.trajectories[i].add(this.planetsPositions[i]);
-                    for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
-                        if (this.trajectories[i].getTrajectories()[k] == null)
-                            break;
-                        //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
-                        Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, dx);
-                        Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, dy);
-                    }
-                } catch (NullPointerException ignored) {
-                    System.err.println("Missed graphics update - waiting for main thread to init scene");
+                this.trajectories[i].add(this.planetsPositions[i]);
+                for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
+                    if (this.trajectories[i].getTrajectories()[k] == null)
+                        break;
+                    //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
+                    Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, dx);
+                    Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, dy);
                 }
             }
         }
 
     }
+
 
     Ellipse2D.Double planetShape(Point3D position, double radius) {
         Point p = Point3DConverter.convertPoint(position);

@@ -10,11 +10,15 @@ import static group17.Main.simulationInstance;
 
 public class RungeKutta4thSolver implements ODESolverInterface {
 
-    private static double t, tf;
+    private int prev;
     private ODEFunctionInterface singleCoreF;
 
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) -> {
+            if (prev < simulationInstance.getSystem().getCelestialBodies().size()) {
+                prev = simulationInstance.getSystem().getCelestialBodies().size();
+                return null;
+            }
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -46,7 +50,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
 
     @Override
-    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+    public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
 
         RateInterface v21, v22, v23, v24, kv;
         StateInterface k11, k12, k13, k14, kk;
@@ -100,8 +104,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
 
         y.getRateOfChange().setVel(y.getRateOfChange().add(kv).getVelocities());
-        y = y.add(kk);
-        return y;
+        return y.add(kk);
     }
 
     @Override

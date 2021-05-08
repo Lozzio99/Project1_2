@@ -136,5 +136,9 @@ public interface StateInterface {
 
     }
 
+    default void update(StateInterface step) {
+        this.setPositions(step.getPositions());
+        this.getRateOfChange().setVel(step.getRateOfChange().getVelocities());
+    }
 }
 

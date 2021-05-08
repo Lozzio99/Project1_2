@@ -12,7 +12,6 @@ public class RocketSimulator extends ProbeSimulator implements RocketInterface {
     double specificImpulse;
     boolean burning = false;
     double burnPercentage;
-
     Vector3dInterface localAcceleration;
 
 
@@ -44,6 +43,9 @@ public class RocketSimulator extends ProbeSimulator implements RocketInterface {
         this.getVectorVelocity().add(this.localAcceleration);
     }
 
+    public void setLocalAcceleration(Vector3dInterface localAcceleration) {
+        this.localAcceleration = localAcceleration;
+    }
 
     public void updateMass(double currBurnPercentage) {
         double burnAmount = this.burnRate * currBurnPercentage;

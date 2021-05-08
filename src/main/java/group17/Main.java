@@ -5,7 +5,7 @@ import group17.Interfaces.SimulationInterface;
 import group17.Simulation.Simulation;
 
 public class Main {
-    public static SimulationInterface simulationInstance;
+    public static volatile SimulationInterface simulationInstance;
 
     public static void main(String[] args) {
         new MainMenuTitan();

@@ -64,4 +64,5 @@ public interface SimulationInterface {
 
     void setStopped(boolean stopped);
 
+    void updateState();
 }

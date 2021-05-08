@@ -33,7 +33,7 @@ public class Config {
     public static boolean DEBUG = false;
     //which simulationInstance is going to run
     public static int SIMULATION_LEVEL = 0;
-    public static boolean INSERT_PROBE = false;
+    public static boolean INSERT_ROCKET = true;
 
     public static double STEP_SIZE = 60000;
 

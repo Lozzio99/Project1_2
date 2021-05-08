@@ -165,7 +165,7 @@ public class DialogFrame extends JPanel implements Runnable {
     public void showAssistParameters() {
         this.setStepField("" + STEP_SIZE);
         this.setDate();
-        if (INSERT_PROBE) {
+        if (INSERT_ROCKET) {
             this.setProbeField("" + simulationInstance.getSystem().getCelestialBodies().get(11).getMASS());
             lXCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getX());
             lYCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getY());
@@ -189,7 +189,7 @@ public class DialogFrame extends JPanel implements Runnable {
 
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
-        if (INSERT_PROBE) {
+        if (INSERT_ROCKET) {
             if (getLaunchVelocityX() != 0)
                 simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setX(getLaunchVelocityX());
             if (getLaunchVelocityY() != 0)
@@ -393,7 +393,10 @@ public class DialogFrame extends JPanel implements Runnable {
         if (!simulationInstance.waiting()) {
             this.setDate();
             if (t > 50) {
-                this.setOutput(simulationInstance.getSystem().toString());
+                try {
+                    this.setOutput(simulationInstance.getSystem().toString());
+                } catch (NullPointerException | IndexOutOfBoundsException ignored) {
+                }
                 t = 0;
             } else t++;
         }

@@ -15,7 +15,7 @@ public class CollisionDetector {
     public static void checkCollided(CelestialBody a, Vector3dInterface pa, Vector3dInterface va, CelestialBody b, Vector3dInterface pb, Vector3dInterface vb) {
         Vector3dInterface dist = pb.sub(pa);
         double distm = dist.norm();
-        if (distm < b.getRADIUS() + a.getRADIUS()) {
+        if (distm < (b.getRADIUS() + a.getRADIUS())) {
             collision = true;
             output += "[ " + a + " - " + b + " ]";
             if (b.getMASS() < a.getMASS()) {
@@ -23,11 +23,13 @@ public class CollisionDetector {
                 pb.mark();
                 vb.mark();
                 a.setMASS(a.getMASS() + b.getMASS()); // conservation of mass
+                a.setRADIUS(a.getRADIUS() + b.getRADIUS());  //very very stupid
             } else {
                 a.setCollided(true);
                 pa.mark();
                 va.mark();
                 b.setMASS(b.getMASS() + a.getMASS());
+                b.setRADIUS(b.getRADIUS() + a.getRADIUS());
             }
         }
     }
@@ -51,6 +53,7 @@ public class CollisionDetector {
             system.getCelestialBodies().removeIf(CelestialBody::isCollided);
             system.systemState().getPositions().removeIf(Vector3dInterface::isMarked);
             system.systemState().getRateOfChange().getVelocities().removeIf(Vector3dInterface::isMarked);
+
             if (REPORT)
                 reporter.report("COLLISION " + output);
         }

@@ -20,7 +20,7 @@ public class SolarSystem implements SystemInterface {
 
     private Clock clock;
     private List<CelestialBody> bodies;
-    private StateInterface systemState;
+    private volatile StateInterface systemState;
     private RocketSimulator rocket;
 
     @Override
