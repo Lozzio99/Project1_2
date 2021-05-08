@@ -5,6 +5,8 @@ import group17.Interfaces.SystemInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.System.Bodies.CelestialBody;
 
+import static group17.Config.REPORT;
+
 public class CollisionDetector {
 
     private static boolean collision;
@@ -19,10 +21,12 @@ public class CollisionDetector {
             if (b.getMASS() < a.getMASS()) {
                 b.setCollided(true);
                 pb.mark();
-                a.setMASS(a.getMASS() + b.getMASS()); // ...
+                vb.mark();
+                a.setMASS(a.getMASS() + b.getMASS()); // conservation of mass
             } else {
                 a.setCollided(true);
                 pa.mark();
+                va.mark();
                 b.setMASS(b.getMASS() + a.getMASS());
             }
         }
@@ -47,7 +51,8 @@ public class CollisionDetector {
             system.getCelestialBodies().removeIf(CelestialBody::isCollided);
             system.systemState().getPositions().removeIf(Vector3dInterface::isMarked);
             system.systemState().getRateOfChange().getVelocities().removeIf(Vector3dInterface::isMarked);
-            reporter.report("COLLISION " + output);
+            if (REPORT)
+                reporter.report("COLLISION " + output);
         }
     }
 
