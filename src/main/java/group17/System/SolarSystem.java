@@ -82,7 +82,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void start() {
-        CollisionDetector.checkCollisions(this);
+        CollisionDetector.checkCollisions(this, simulationInstance.getReporter());
     }
 
     @Override
