@@ -2,26 +2,23 @@ package group17.System.Bodies;
 
 
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Point3D;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class CelestialBody {
-    Color color;
+    private Color color;
 
-    double MASS;
-    double RADIUS;
-    double DENSITY;
+    private double MASS;
+    private double RADIUS;
+    private double DENSITY;
 
 
-    List<Point3D> path;
-    Vector3dInterface vectorVelocity;
-    Vector3dInterface vectorLocation;
+    private Vector3dInterface vectorVelocity;
+    private Vector3dInterface vectorLocation;
+
+    private boolean collided;
 
     public CelestialBody() {
-        this.path = new ArrayList<>();
     }
 
     // --- Set-Methods ---
@@ -103,7 +100,17 @@ public abstract class CelestialBody {
      */
     public abstract String toString();
 
-    public abstract void initProperties();
+    public void initProperties() {
+        this.setCollided(false);
+    }
+
+    public boolean isCollided() {
+        return collided;
+    }
+
+    public void setCollided(boolean bool) {
+        this.collided = bool;
+    }
 
     public Vector3dInterface getVectorLocation() {
         return this.vectorLocation;
