@@ -3,9 +3,11 @@ package group17.Math.Solvers;
 import group17.Interfaces.*;
 import group17.Main;
 import group17.Math.Vector3D;
+import group17.System.CollisionDetector;
 import group17.System.RateOfChange;
 
 import static group17.Config.G;
+import static group17.Main.simulationInstance;
 import static java.lang.Double.NaN;
 
 /**
@@ -16,6 +18,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
     public static double currTime = 0;
     public static double endTime = NaN;
     private ODEFunctionInterface singleCoreF;
+    private boolean checked;
 
     public VerletVelocitySolver() {
         this.singleCoreF = (h, y) -> {
@@ -27,6 +30,10 @@ public class VerletVelocitySolver implements ODESolverInterface {
                         double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
                         acc = y.getPositions().get(k).sub(acc); // Get the force vector
                         double den = Math.sqrt(squareDist);
+                        if (!checked) {
+                            CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
+                                    simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                        }
                     /*
                         ! Important !
                         if two bodies collapses into the same point
@@ -44,6 +51,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
                 y.getRateOfChange().getVelocities()
                         .set(i, totalAcc.clone());
             }
+            checked = true;
             return y.getRateOfChange();
         };
     }
@@ -65,6 +73,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
      */
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+        checked = false;
         RateInterface velocity = new RateOfChange();
         velocity.setVel(y.getRateOfChange().getVelocities());
         // next position

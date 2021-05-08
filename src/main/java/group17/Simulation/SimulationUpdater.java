@@ -49,15 +49,7 @@ public class SimulationUpdater implements UpdaterInterface {
     public synchronized void run() {
         // ROCKET DECISION
         simulationInstance.getSystem().getRocket().setLocalAcceleration(this.schedule.shift(simulationInstance.getSystem()));
-        try {
-            simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
-            simulationInstance.getSystem().getClock().step(STEP_SIZE);
-        } catch (NullPointerException | IndexOutOfBoundsException e) {
-            System.err.println("COLLISION WILL MAKE THE SIMULATION BEING LESS ACCURATE");
-            if (REPORT)
-                simulationInstance.getReporter().report(e);
-        } finally {
-
-        }
+        simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
+        simulationInstance.getSystem().getClock().step(STEP_SIZE);
     }
 }

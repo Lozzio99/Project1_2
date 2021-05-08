@@ -2,10 +2,8 @@ package group17.Simulation;
 
 import group17.Graphics.DialogFrame;
 import group17.Graphics.GraphicsManager;
-import group17.Interfaces.GraphicsInterface;
-import group17.Interfaces.SimulationInterface;
-import group17.Interfaces.SystemInterface;
-import group17.Interfaces.UpdaterInterface;
+import group17.Interfaces.*;
+import group17.System.Bodies.CelestialBody;
 import group17.System.SolarSystem;
 
 import java.util.concurrent.Executors;
@@ -69,6 +67,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public synchronized void loop() {
         if (this.running) {
+            this.updateState();
             if (REPORT)
                 this.startReport();
             if (ENABLE_ASSIST)
@@ -79,7 +78,6 @@ public class Simulation implements SimulationInterface {
                 this.startUpdater();
                 this.startSystem();
             }
-            this.updateState();
         }
     }
 
@@ -199,8 +197,16 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public synchronized void updateState() {
-
+    public void updateState() {
+        for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {
+            if (getSystem().getCelestialBodies().get(i).isCollided()) {
+                getSystem().systemState().getPositions().get(i).mark();
+                getSystem().systemState().getRateOfChange().getVelocities().get(i).mark();
+            }
+        }
+        getSystem().getCelestialBodies().removeIf(CelestialBody::isCollided);
+        getSystem().systemState().getPositions().removeIf(Vector3dInterface::isMarked);
+        getSystem().systemState().getRateOfChange().getVelocities().removeIf(Vector3dInterface::isMarked);
     }
 
 

@@ -189,7 +189,7 @@ public class DialogFrame extends JPanel implements Runnable {
 
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
-        if (INSERT_ROCKET) {
+        if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
             if (getLaunchVelocityX() != 0)
                 simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setX(getLaunchVelocityX());
             if (getLaunchVelocityY() != 0)

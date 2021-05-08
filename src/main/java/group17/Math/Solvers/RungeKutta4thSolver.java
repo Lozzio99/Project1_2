@@ -2,6 +2,7 @@ package group17.Math.Solvers;
 
 import group17.Interfaces.*;
 import group17.Math.Vector3D;
+import group17.System.CollisionDetector;
 import group17.System.RateOfChange;
 
 import static group17.Config.DEBUG;
@@ -10,15 +11,11 @@ import static group17.Main.simulationInstance;
 
 public class RungeKutta4thSolver implements ODESolverInterface {
 
-    private int prev;
     private ODEFunctionInterface singleCoreF;
-
+    private boolean checked;
     public RungeKutta4thSolver() {
-        this.singleCoreF = (t, y) -> {
-            if (prev != 0 && prev < simulationInstance.getSystem().getCelestialBodies().size()) {
-                return null;
-            }
-            prev = simulationInstance.getSystem().getCelestialBodies().size();
+        this.singleCoreF = (t, y) ->
+        {
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -27,14 +24,22 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
                         acc = y.getPositions().get(k).sub(acc); // Get the force vector
                         double den = Math.sqrt(squareDist);
-                    /*
-                        ! Important !
-                        if two bodies collapses into the same point
-                        that would crash to NaN and consequently
-                        the same in all the system
-                    */
-                        acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                        acc = acc.mul((G * simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                        if (!checked) {
+                            CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
+                                    simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                        }
+                        /*
+                            ! Important !
+                            if two bodies collapses into the same point
+                            that would crash to NaN and consequently
+                            the same in all the system
+
+                            UPDATE :::: Mark BODIES AS COLLIDED
+                        */
+                        if (den > 0) {
+                            acc = acc.mul(1 / den); // Normalise to length 1
+                            acc = acc.mul((G * simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
+                        }
                         totalAcc = totalAcc.addMul(t, acc);
                         // p = h*acc(derivative of velocity)
                     }
@@ -44,6 +49,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                 y.getRateOfChange().getVelocities()
                         .set(i, totalAcc.clone());
             }
+            checked = true;
             return y.getRateOfChange();
         };
     }
@@ -54,7 +60,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
         RateInterface v21, v22, v23, v24, kv;
         StateInterface k11, k12, k13, k14, kk;
-
+        checked = false;
 
         /*  f (has method f.calL) same as f2
         double RKStep (f, w, t, h )
