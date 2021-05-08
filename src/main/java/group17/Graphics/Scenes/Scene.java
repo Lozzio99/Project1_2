@@ -11,8 +11,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static group17.Config.PARTICLES_SIMULATION;
 import static group17.Config.SIMULATION_LEVEL;
-import static group17.Config.SOLAR_SYSTEM_SIMULATION;
 import static group17.Main.simulationInstance;
 
 /**
@@ -56,7 +56,7 @@ public abstract class Scene extends JPanel {
 
         g = (Graphics2D) graphics;
 
-        if (!IMAGE_FAILED && SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION) {
+        if (!IMAGE_FAILED && SIMULATION_LEVEL != PARTICLES_SIMULATION) {
             if (image == null) {
                 create();
                 setHints(g);

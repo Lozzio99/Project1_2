@@ -16,6 +16,7 @@ public class CollisionDetector {
         Vector3dInterface dist = pb.sub(pa);
         double distm = dist.norm();
         if (distm < (b.getRADIUS() + a.getRADIUS())) {
+            System.out.println(distm + " should be less than " + (b.getRADIUS() + a.getRADIUS()));
             collision = true;
             output += "[ " + a + " - " + b + " ]";
             if (b.getMASS() < a.getMASS()) {

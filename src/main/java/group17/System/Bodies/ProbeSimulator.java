@@ -26,7 +26,7 @@ public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInter
     @Override
     public void initProperties() {
         this.setMASS(15000);
-        this.setRADIUS(1e6);
+        this.setRADIUS(1e2);
         this.setColour(Color.GREEN);
          /*
         this.setVectorLocation(Main.simulationInstance.getBody("EARTH").getVectorLocation().clone());

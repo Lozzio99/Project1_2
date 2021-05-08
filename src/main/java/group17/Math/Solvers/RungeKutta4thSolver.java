@@ -15,10 +15,10 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) -> {
-            if (prev < simulationInstance.getSystem().getCelestialBodies().size()) {
-                prev = simulationInstance.getSystem().getCelestialBodies().size();
+            if (prev != 0 && prev < simulationInstance.getSystem().getCelestialBodies().size()) {
                 return null;
             }
+            prev = simulationInstance.getSystem().getCelestialBodies().size();
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
