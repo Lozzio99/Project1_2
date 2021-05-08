@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static group17.Config.DEBUG;
 import static group17.Config.FPS;
 import static group17.Main.simulationInstance;
 
@@ -115,7 +116,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         frames++;
         if (frames == 60) {
             double v = System.currentTimeMillis();
-            System.out.println("Time 60fps " + (v - t));
+            if (DEBUG)
+                System.out.println("Time 60fps " + (v - t));
             t = v;
             frames = 0;
         }

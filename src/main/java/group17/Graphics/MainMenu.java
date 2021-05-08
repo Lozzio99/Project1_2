@@ -2,11 +2,10 @@ package group17.Graphics;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static group17.Config.*;
 
+@SuppressWarnings("rawtypes")
 public abstract class MainMenu {
     // Variables
 
@@ -66,15 +65,21 @@ public abstract class MainMenu {
         stepSizeLabel = new JLabel("Step Size");
         particleLabel = new JLabel("Particles");
 
-        simulationTypeDropdown = new JComboBox(SIMULATION_TYPES);
+        simulationTypeDropdown = new JComboBox<>(SIMULATION_TYPES);
         simulationTypeDropdown.setSelectedIndex(0);
-        cpuLevelDropdown = new JComboBox(CPU_LEVELS);
+        cpuLevelDropdown = new JComboBox<>(CPU_LEVELS);
         cpuLevelDropdown.setSelectedIndex(0);
-        solverDropdown = new JComboBox(SOLVERS);
+        solverDropdown = new JComboBox<>(SOLVERS);
         solverDropdown.setSelectedIndex(0);
 
         printLogCheckBox = new JCheckBox();
+        if (REPORT)
+            printLogCheckBox.setSelected(true);
+
         consoleDebugCheckBox = new JCheckBox();
+        if (DEBUG)
+            consoleDebugCheckBox.setSelected(true);
+
 
         trajectoryLengthSlider = new JSlider();
         trajectoryLengthSlider.setMinimum(0);
@@ -84,87 +89,59 @@ public abstract class MainMenu {
         particlesText = new JTextField();
 
         startButton = new JButton("Start Simulation");
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int currentSimulationType = -1;
-                int currentCPULevel = -1;
-                int currentSolver = -1;
+        startButton.addActionListener(e -> {
+            int currentSimulationType = -1;
+            int currentCPULevel = -1;
+            int currentSolver = -1;
 
-                // --- Select the correct simulationInstance ---
-                switch (simulationTypeDropdown.getSelectedItem().toString()) {
-                    case ("Rocket Simulation"):
-                        currentSimulationType = ROCKET_SIMULATION;
-                        break;
-                    case ("Pendulum Simulation"):
-                        currentSimulationType = PENDULUM_SIMULATION;
-                        break;
-                    case ("Numerical Simulation"):
-                        currentSimulationType = NUMERICAL_SIMULATION;
-                        break;
-                    case ("Particles Simulation"):
-                        currentSimulationType = PARTICLES_SIMULATION;
-                        break;
-                    case ("Solar System Simulation"):
-                        currentSimulationType = SOLAR_SYSTEM_SIMULATION;
-                        break;
-                    default:
-                        currentSimulationType = SOLAR_SYSTEM_SIMULATION;
-                        break;
-                }
+            // --- Select the correct simulationInstance ---
+            currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {
+                case ("Rocket Simulation") -> ROCKET_SIMULATION;
+                case ("Pendulum Simulation") -> PENDULUM_SIMULATION;
+                case ("Numerical Simulation") -> NUMERICAL_SIMULATION;
+                case ("Particles Simulation") -> PARTICLES_SIMULATION;
+                case ("Solar System Simulation") -> SOLAR_SYSTEM_SIMULATION;
+                default -> SOLAR_SYSTEM_SIMULATION;
+            };
 
-                // --- Select the correct CPU type ---
-                switch (cpuLevelDropdown.getSelectedItem().toString()) {
-                    case ("Min CPU"):
-                        currentCPULevel = MIN_CPU;
-                        break;
-                    case ("Max CPU"):
-                        currentCPULevel = MAX_CPU;
-                        break;
-                    default:
-                        currentCPULevel = MIN_CPU;
-                        break;
-                }
+            // --- Select the correct CPU type ---
+            currentCPULevel = switch (cpuLevelDropdown.getSelectedItem().toString()) {
+                case ("Min CPU") -> MIN_CPU;
+                case ("Max CPU") -> MAX_CPU;
+                default -> MIN_CPU;
+            };
 
-                // --- Select the correct solver ---
-                switch (solverDropdown.getSelectedItem().toString()) {
-                    case ("Euler"):
-                        currentSolver = EULER_SOLVER;
-                        break;
-                    case ("Runge Kutta"):
-                        currentSolver = RUNGE_KUTTA_SOLVER;
-                        break;
-                    case ("Verlet (VEL)"):
-                        currentSolver = VERLET_VEL_SOLVER;
-                        break;
-                    case ("Verlet (STD)"):
-                        currentSolver = VERLET_STD_SOLVER;
-                        break;
-                    default:
-                        currentSolver = EULER_SOLVER;
-                        break;
-                }
+            // --- Select the correct solver ---
+            currentSolver = switch (solverDropdown.getSelectedItem().toString()) {
+                case ("Euler") -> EULER_SOLVER;
+                case ("Runge Kutta") -> RUNGE_KUTTA_SOLVER;
+                case ("Verlet (VEL)") -> VERLET_VEL_SOLVER;
+                case ("Verlet (STD)") -> VERLET_STD_SOLVER;
+                default -> EULER_SOLVER;
+            };
 
-                // --- Select the step size ---
-                STEP_SIZE = Double.valueOf(stepSizeText.getText());
+            // --- Select the step size ---
+            STEP_SIZE = Double.valueOf(stepSizeText.getText());
+            if (DEBUG || REPORT)
                 System.out.println("Step size: " + STEP_SIZE);
 
-                if (consoleDebugCheckBox.isSelected()) {
-                    DEBUG = true;
-                }
 
-                if (printLogCheckBox.isSelected()) {
-                    REPORT = true;
-                }
-
-                if (!particlesText.getText().equals("")) {
-                    PARTICLES = Integer.valueOf(particlesText.getText());
-                }
-
-                // TRAJECTORY_LENGTH = trajectoryLengthSlider.getValue();
-                startSimulation();
-                frame.dispose();
+            if (consoleDebugCheckBox.isSelected()) {
+                DEBUG = true;
             }
+
+
+            if (printLogCheckBox.isSelected()) {
+                REPORT = true;
+            }
+
+            if (!particlesText.getText().equals("")) {
+                PARTICLES = Integer.valueOf(particlesText.getText());
+            }
+
+            // TRAJECTORY_LENGTH = trajectoryLengthSlider.getValue();
+            startSimulation();
+            frame.dispose();
         });
 
         titleLabel.setBounds(10, 10, 300, 30);

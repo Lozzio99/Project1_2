@@ -62,4 +62,6 @@ public interface SimulationInterface {
 
     void setWaiting(boolean isWaiting);
 
+    void setStopped(boolean stopped);
+
 }

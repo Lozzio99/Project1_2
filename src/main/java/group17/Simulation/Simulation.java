@@ -20,43 +20,49 @@ public class Simulation implements SimulationInterface {
     private DialogFrame assist;
     private SystemInterface system;
     private SimulationReporter reporter;
-    private volatile boolean running, paused, stopped;
+    private volatile boolean running, paused = true, stopped = false;
 
 
     @Override
     public void init() {
         if (REPORT)
             this.initReporter();   //first thing, will check all exceptions
-        this.initUpdater();
-        this.initSystem();
+
+        this.initSystem();  // before graphics and assist (clock, positions init, ...)
+
         if (ENABLE_ASSIST)
             this.initAssist();
         if (ENABLE_GRAPHICS)
             this.initGraphics();
+
+        this.initUpdater();  //last thing, will start the simulation if it's the only one running
+
     }
 
     @Override
     public void start() {
         if (!this.stopped) {  // there may be some errors in the initialisation
             this.setRunning();
-            this.setWaiting(true);
-            this.getAssist().showAssistParameters();
+            if (ENABLE_ASSIST)
+                this.getAssist().showAssistParameters();
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
             service.scheduleWithFixedDelay(this::loop, 30, 13, MILLISECONDS);
         } else {
-            this.getReporter().report(new RuntimeException("STOP"));
+            if (DEBUG || REPORT)
+                this.getReporter().report(new RuntimeException("STOP"));
         }
     }
 
     @Override
     public void reset() {
+
     }
 
     @Override
     public void stop() {
         this.stopped = true;
         this.running = false;
-        this.paused = true;
+        this.paused = false;
     }
 
 
@@ -183,6 +189,11 @@ public class Simulation implements SimulationInterface {
     @Override
     public void setWaiting(boolean isWaiting) {
         this.paused = isWaiting;
+    }
+
+    @Override
+    public void setStopped(boolean stopped) {
+        this.stopped = stopped;
     }
 
 

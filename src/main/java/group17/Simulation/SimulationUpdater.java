@@ -27,9 +27,14 @@ public class SimulationUpdater implements UpdaterInterface {
             case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver();
             default -> {
                 this.solver = new EulerSolver();
-                simulationInstance.getReporter().report(new IllegalStateException("UPDATER/SOLVER/" + EULER_SOLVER));
+                if (REPORT)
+                    simulationInstance.getReporter().report(new IllegalStateException("UPDATER/SOLVER/" + EULER_SOLVER));
             }
         }
+
+        if (!ENABLE_ASSIST)
+            simulationInstance.setWaiting(false);
+
     }
 
     public void start() {
