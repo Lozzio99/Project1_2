@@ -129,4 +129,6 @@ public interface Vector3dInterface {
 
     boolean isMarked();
 
+    boolean isZero();
+
 }

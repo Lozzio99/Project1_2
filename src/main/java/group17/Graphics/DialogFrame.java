@@ -8,6 +8,9 @@
 
 package group17.Graphics;
 
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Vector3D;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -108,13 +111,14 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
         if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
+            Vector3dInterface v = new Vector3D();
             if (getLaunchVelocityX() != 0)
-                simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setX(getLaunchVelocityX());
+                v.setX(getLaunchVelocityX());
             if (getLaunchVelocityY() != 0)
-                simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setY(getLaunchVelocityY());
+                v.setY(getLaunchVelocityY());
             if (getLaunchVelocityZ() != 0)
-                simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setZ(getLaunchVelocityZ());
-            simulationInstance.getSystem().getCelestialBodies().get(11).setMASS(getProbeMass());
+                v.setY(getLaunchVelocityY());
+            simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
         }
     }
 
