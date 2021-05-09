@@ -2,10 +2,15 @@ package group17.System.Bodies;
 
 
 import group17.Interfaces.ProbeSimulatorInterface;
+import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+
+import static group17.Main.simulationInstance;
+import static java.lang.Double.NaN;
 
 public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInterface {
 
@@ -15,7 +20,13 @@ public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInter
 
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
-        return new Vector3dInterface[0];
+        assert (simulationInstance.getSystem() != null);
+        StateInterface[] seq = simulationInstance.getUpdater().getSolver().solve(
+                simulationInstance.getUpdater().getSolver().getFunction(),
+                simulationInstance.getSystem().systemState(),
+                tf, h);
+
+        return getSequence(seq);
     }
 
     @Override
@@ -43,7 +54,24 @@ public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInter
 
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
-        return new Vector3dInterface[0];
+        assert (simulationInstance.getSystem() != null);
+        StateInterface[] seq = simulationInstance.getUpdater().getSolver().solve(
+                simulationInstance.getUpdater().getSolver().getFunction(),
+                simulationInstance.getSystem().systemState(),
+                ts);
+
+        return getSequence(seq);
+    }
+
+    @NotNull
+    private Vector3dInterface[] getSequence(StateInterface[] seq) {
+        Vector3dInterface[] trajectory = new Vector3dInterface[seq.length];
+        for (int i = 0; i < trajectory.length; i++) {
+            if (seq[i].getPositions().size() < 11)        //may have collided
+                trajectory[i] = new Vector3D(NaN, NaN, NaN);
+            trajectory[i] = seq[i].getPositions().get(11);
+        }
+        return trajectory;
     }
 
 

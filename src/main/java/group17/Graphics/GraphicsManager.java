@@ -12,8 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.Config.DEBUG;
-import static group17.Config.FPS;
+import static group17.Config.*;
 import static group17.Main.simulationInstance;
 
 
@@ -31,6 +30,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.frame.setSize(screen);
         this.frame.add(this);
         this.setWindowProperties();
+        this.frame.setVisible(true);
     }
 
     private void setWindowProperties() {
@@ -49,7 +49,6 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.frame.setLocationRelativeTo(null);// Center window
         this.mouse = new MouseInput();
         this.changeScene(Scene.SceneType.STARTING_SCENE);
-        this.frame.setVisible(true);
     }
 
     @Override
@@ -88,6 +87,9 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.currentScene.addMouseMotionListener(this.mouse);
         this.frame.add(this.currentScene);
         this.frame.setVisible(true);
+        //optional
+        if (ENABLE_ASSIST)
+            simulationInstance.getAssist().getFrame().setVisible(true);
     }
 
     @Override

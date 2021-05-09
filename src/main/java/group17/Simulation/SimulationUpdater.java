@@ -52,4 +52,14 @@ public class SimulationUpdater implements UpdaterInterface {
         simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
         simulationInstance.getSystem().getClock().step(STEP_SIZE);
     }
+
+    @Override
+    public ODESolverInterface getSolver() {
+        return solver;
+    }
+
+    @Override
+    public RocketSchedule getSchedule() {
+        return schedule;
+    }
 }

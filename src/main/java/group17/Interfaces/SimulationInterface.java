@@ -1,7 +1,7 @@
 package group17.Interfaces;
 
 
-import group17.Graphics.DialogFrame;
+import group17.Graphics.AssistFrame;
 import group17.Simulation.SimulationReporter;
 
 public interface SimulationInterface {
@@ -20,7 +20,8 @@ public interface SimulationInterface {
 
 
     //Assist
-    DialogFrame getAssist();
+    AssistFrame getAssist();
+
     void initAssist();
 
     void startAssist();

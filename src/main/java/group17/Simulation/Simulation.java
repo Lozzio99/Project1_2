@@ -1,6 +1,6 @@
 package group17.Simulation;
 
-import group17.Graphics.DialogFrame;
+import group17.Graphics.AssistFrame;
 import group17.Graphics.GraphicsManager;
 import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
@@ -18,7 +18,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
-    private DialogFrame assist;
+    private AssistFrame assist;
     private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
@@ -56,6 +56,8 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void reset() {
+        this.setWaiting(true);   //first of all
+        this.system.reset();
 
     }
 
@@ -120,7 +122,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void initAssist() {
-        this.assist = new DialogFrame();
+        this.assist = new AssistFrame();
         this.assist.init();
     }
 
@@ -131,7 +133,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public DialogFrame getAssist() {
+    public AssistFrame getAssist() {
         return this.assist;
     }
 

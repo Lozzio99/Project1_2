@@ -39,7 +39,7 @@ public interface StateInterface {
      * @return the StateInterface y(0)
      */
     default StateInterface state0(List<CelestialBody> bodies) {
-        StateInterface state = new SystemState();
+        StateInterface state = this;
         for (CelestialBody b : bodies) {
             state.getPositions().add(b.getVectorLocation().clone());
             state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());

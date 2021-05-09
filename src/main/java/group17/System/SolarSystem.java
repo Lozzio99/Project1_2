@@ -85,7 +85,8 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void reset() {
-
+        this.systemState = new SystemState().state0(this.getCelestialBodies());
+        this.clock = this.clock.setLaunchDay();
     }
 
     @Override
@@ -100,7 +101,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initialState() {
-        this.systemState = new SystemState().state0(this.bodies);
+        this.systemState = new SystemState().state0(this.getCelestialBodies());
     }
 
     @Override
