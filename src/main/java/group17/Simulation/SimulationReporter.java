@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 import static group17.Config.*;
 
-public class SimulationReporter implements ReporterInterface {
+public class SimulationReporter implements ReporterInterface, Thread.UncaughtExceptionHandler {
 
     private Thread thread;
     private volatile Map<LocalDateTime, String> report, exceptions;
@@ -31,6 +31,7 @@ public class SimulationReporter implements ReporterInterface {
     public void start() {
         this.thread = new Thread(this, "Simulation Reporter");
         this.thread.setDaemon(true);
+        this.thread.setUncaughtExceptionHandler(this);
         this.thread.start();
     }
 
@@ -63,25 +64,39 @@ public class SimulationReporter implements ReporterInterface {
         this.exceptions.put(LocalDateTime.now(), s);
     }
 
+    @Override
+    public void report(Thread t, Throwable e) {
+        final String s = this.parseException(e.getMessage() + " from Thread :" + t.getName());
+        this.exceptions.put(LocalDateTime.now(), s);
+    }
+
 
     @Override
     public String parseException(String message) {
-        if (message.startsWith("STOP")) {
-            return "\tStopped simulation due to bad initialisation configuration";
-        }
-        if (message.startsWith("UPDATER"))
-            if (message.substring(8)  // there's a slash /
-                    .startsWith("SOLVER")) {
-                int solver = Integer.parseInt(message.substring(message.length() - 1));
-                String s = switch (solver) {
-                    case RUNGE_KUTTA_SOLVER -> "RUNGE_KUTTA4TH";
-                    case EULER_SOLVER -> "EULER";
-                    case VERLET_VEL_SOLVER -> "VERLET_VEL";
-                    case VERLET_STD_SOLVER -> "VERLET_STD";
-                    default -> "";
-                };
-                return "\tMissing solver configuration or wrong level selected, select in range [1,4]\n ~ will switch to default :" + s;
+        if (message != null) {
+            if (message.startsWith("STOP")) {
+                return "\tStopped simulation due to bad initialisation configuration";
             }
+            if (message.startsWith("UPDATER"))
+                if (message.substring(8)  // there's a slash /
+                        .startsWith("SOLVER")) {
+                    int solver = Integer.parseInt(message.substring(message.length() - 1));
+                    String s = switch (solver) {
+                        case RUNGE_KUTTA_SOLVER -> "RUNGE_KUTTA4TH";
+                        case EULER_SOLVER -> "EULER";
+                        case VERLET_VEL_SOLVER -> "VERLET_VEL";
+                        case VERLET_STD_SOLVER -> "VERLET_STD";
+                        default -> "";
+                    };
+                    return "\tMissing solver configuration or wrong level selected, select in range [1,4]\n ~ will switch to default : " + s;
+                }
+        }
         return "EXCEPTION";
+    }
+
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) {
+        this.report(t, e);
     }
 }

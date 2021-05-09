@@ -20,7 +20,7 @@ public class SolarSystem implements SystemInterface {
 
     private Clock clock;
     private List<CelestialBody> bodies;
-    private StateInterface systemState;
+    private volatile StateInterface systemState;
     private RocketSimulator rocket;
 
     @Override
@@ -82,12 +82,13 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void start() {
-        CollisionDetector.checkCollisions(this, simulationInstance.getReporter());
+
     }
 
     @Override
     public void reset() {
-
+        this.systemState = new SystemState().state0(this.getCelestialBodies());
+        this.clock = this.clock.setLaunchDay();
     }
 
     @Override
@@ -102,7 +103,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initialState() {
-        this.systemState = new SystemState().state0(this.bodies);
+        this.systemState = new SystemState().state0(this.getCelestialBodies());
     }
 
     @Override

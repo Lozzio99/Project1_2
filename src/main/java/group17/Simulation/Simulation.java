@@ -1,11 +1,12 @@
 package group17.Simulation;
 
-import group17.Graphics.DialogFrame;
+import group17.Graphics.AssistFrame;
 import group17.Graphics.GraphicsManager;
 import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
+import group17.System.Bodies.CelestialBody;
 import group17.System.SolarSystem;
 
 import java.util.concurrent.Executors;
@@ -17,8 +18,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
-    private DialogFrame assist;
-    private SystemInterface system;
+    private AssistFrame assist;
+    private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
 
@@ -55,6 +56,8 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void reset() {
+        this.setWaiting(true);   //first of all
+        this.system.reset();
 
     }
 
@@ -69,6 +72,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public synchronized void loop() {
         if (this.running) {
+            this.updateState();
             if (REPORT)
                 this.startReport();
             if (ENABLE_ASSIST)
@@ -78,7 +82,6 @@ public class Simulation implements SimulationInterface {
             if (!waiting()) {
                 this.startUpdater();
                 this.startSystem();
-                this.getSystem().getClock().step(STEP_SIZE);
             }
         }
     }
@@ -119,7 +122,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void initAssist() {
-        this.assist = new DialogFrame();
+        this.assist = new AssistFrame();
         this.assist.init();
     }
 
@@ -130,7 +133,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public DialogFrame getAssist() {
+    public AssistFrame getAssist() {
         return this.assist;
     }
 
@@ -140,6 +143,8 @@ public class Simulation implements SimulationInterface {
         this.system = new SolarSystem();
         this.system.initClock();
         this.system.initPlanets();
+        if (INSERT_ROCKET)
+            this.system.initRocket();
         this.system.initialState();
     }
 
@@ -194,6 +199,17 @@ public class Simulation implements SimulationInterface {
     @Override
     public void setStopped(boolean stopped) {
         this.stopped = stopped;
+    }
+
+    @Override
+    public void updateState() {
+        for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {
+            if (getSystem().getCelestialBodies().get(i).isCollided()) {
+                getSystem().systemState().getPositions().remove(i);
+                getSystem().systemState().getRateOfChange().getVelocities().remove(i);
+            }
+        }
+        getSystem().getCelestialBodies().removeIf(CelestialBody::isCollided);
     }
 
 

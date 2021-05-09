@@ -4,8 +4,10 @@ import group17.Graphics.MainMenu;
 import group17.Interfaces.SimulationInterface;
 import group17.Simulation.Simulation;
 
+import static group17.Config.SOLVER;
+
 public class Main {
-    public static SimulationInterface simulationInstance;
+    public static volatile SimulationInterface simulationInstance;
 
     public static void main(String[] args) {
         new MainMenuTitan();
@@ -14,6 +16,9 @@ public class Main {
     static class MainMenuTitan extends MainMenu {
         @Override
         public void startSimulation() {
+            SOLVER = currentSolver;
+            //SIMULATION_LEVEL = currentSimulationType;
+            //CPU_LEVEL = currentCPULevel;
             // TODO : we could move the launch phase in an external module to select which
             //  package to pick the simulation from, this is just a beginning but we should keep
             //  the LIBRARY module the most generic as possible so that nobody should modify the

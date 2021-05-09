@@ -6,14 +6,17 @@ import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Main;
 import group17.Math.Vector3D;
+import group17.System.CollisionDetector;
 
 import static group17.Config.G;
+import static group17.Main.simulationInstance;
 import static java.lang.Double.NaN;
 
 public class StandardVerletSolver implements ODESolverInterface {
 
     public static double currTime = 0;
     public static double endTime = NaN;
+    private boolean checked;
     private StateInterface prevState;
     private boolean first = true;
     private ODEFunctionInterface singleCoreF;
@@ -28,6 +31,10 @@ public class StandardVerletSolver implements ODESolverInterface {
                         double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
                         acc = y.getPositions().get(k).sub(acc); // Get the force vector
                         double den = Math.sqrt(squareDist);
+                        if (!checked) {
+                            CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
+                                    simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                        }
                     /*
                         ! Important !
                         if two bodies collapses into the same point
@@ -45,6 +52,7 @@ public class StandardVerletSolver implements ODESolverInterface {
                 y.getRateOfChange().getVelocities()
                         .set(i, totalAcc.clone());
             }
+            checked = true;
             return y.getRateOfChange();
         };
     }
@@ -65,6 +73,7 @@ public class StandardVerletSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         // next position
+        checked = false;
         StateInterface diff;
         if (first) {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();

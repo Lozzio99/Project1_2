@@ -7,8 +7,10 @@ import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Main;
 import group17.Math.Vector3D;
+import group17.System.CollisionDetector;
 
 import static group17.Config.G;
+import static group17.Main.simulationInstance;
 import static java.lang.Double.NaN;
 
 
@@ -16,7 +18,7 @@ public class EulerSolver implements ODESolverInterface {
 
     public static double currTime = 0;
     public static double endTime = NaN;
-
+    private boolean checked;
 
     //p(x,y,z) //displacement
     //v(x,y,z) = p'(x,y,z)   //velocity
@@ -32,6 +34,10 @@ public class EulerSolver implements ODESolverInterface {
                     double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
                     acc = y.getPositions().get(k).sub(acc); // Get the force vector
                     double den = Math.sqrt(squareDist);
+                    if (!checked) {
+                        CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
+                                simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                    }
                 /*
                     ! Important !
                     if two bodies collapses into the same point
@@ -48,6 +54,7 @@ public class EulerSolver implements ODESolverInterface {
             y.getRateOfChange().getVelocities()
                     .set(i, y.getRateOfChange().getVelocities().get(i).add(totalAcc));
         }
+        checked = true;
         return y.getRateOfChange();
     };
 
@@ -63,6 +70,7 @@ public class EulerSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
         // y1 = y0 +f(x,y0);
+        checked = false;
         currTime = currentTime;
         return y.addMul(stepSize, f.call(stepSize, y));
         //       y0  +  (y * h      dy(rate of change))

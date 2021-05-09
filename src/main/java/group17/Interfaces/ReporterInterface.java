@@ -16,5 +16,7 @@ public interface ReporterInterface extends Runnable {
 
     void report(Throwable e);
 
+    void report(Thread t, Throwable e);
+
     String parseException(String message);
 }

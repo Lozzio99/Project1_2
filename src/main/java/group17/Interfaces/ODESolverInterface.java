@@ -57,7 +57,7 @@ public interface ODESolverInterface {
      */
     default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
         double endTime = tf;
-        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1];
+        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 1 /*PROBE TEST IS FORCING ME TO DO THIS*/];
         double currTime = 0;
         for (int i = 0; i < path.length - 1; i++) {
             path[i] = this.step(f, currTime, y0, h);

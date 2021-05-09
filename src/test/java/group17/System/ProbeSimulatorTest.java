@@ -3,23 +3,42 @@ package group17.System;
 import group17.Interfaces.ProbeSimulatorInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
+import group17.Simulation.Simulation;
 import group17.System.Bodies.ProbeSimulator;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
+import static group17.Config.*;
+import static group17.Main.simulationInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled
+
 class ProbeSimulatorTest {
 
     static final double ACCURACY = 1; // 1 meter (might need to tweak that)
 
-    @BeforeEach
-    void setUp() {
+    public static Vector3dInterface[] simulateOneYear() {
+
+        Vector3dInterface probe_relative_position = new Vector3D(6371e3, 0, 0);
+        Vector3dInterface probe_relative_velocity = new Vector3D(52500.0, -27000.0, 0); // 12.0 months
+        double day = 24 * 60 * 60;
+        double year = 365.25 * day;
+        /*
+         * Solve the differential equation by taking multiple steps of equal size, starting at time 0.
+         * The final step may have a smaller size, if the step-size does not exactly divide the solution time range
+         *
+         * @param   f       the function defining the differential equation dy/dt=f(t,y)
+         * @param   y0      the starting state
+         * @param   tf      the final time
+         * @param   h       the size of step to be taken
+         * @return  an array of size  <<<<<round(tf/h)+1>>>>>  including all intermediate states along the path
+         */
+        ProbeSimulatorInterface simulator = new ProbeSimulator();
+        Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, year, day);
+        return trajectory;
 
     }
 
@@ -34,16 +53,14 @@ class ProbeSimulatorTest {
 
     }
 
-    public static Vector3dInterface[] simulateOneYear() {
-
-        Vector3dInterface probe_relative_position = new Vector3D(6371e3, 0, 0);
-        Vector3dInterface probe_relative_velocity = new Vector3D(52500.0, -27000.0, 0); // 12.0 months
-        double day = 24 * 60 * 60;
-        double year = 365.25 * day;
-        ProbeSimulatorInterface simulator = new ProbeSimulator();
-        Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, year, day);
-        return trajectory;
-
+    @BeforeEach
+    void setUp() {
+        ENABLE_GRAPHICS = ENABLE_ASSIST = false;
+        REPORT = DEBUG = false;
+        simulationInstance = new Simulation();
+        simulationInstance.init();
+        simulationInstance.setRunning();
+        //simulationInstance.start();
     }
 
     @Test
@@ -120,7 +137,10 @@ class ProbeSimulatorTest {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        assertEquals(367, trajectory.length);
+
+        assertEquals(
+                /*WHAT * THE * FUCKING * FUCK ????*/367,
+                trajectory.length);
 
     }
 

@@ -11,8 +11,8 @@ public class Config {
     public static final int PARTICLES_SIMULATION = 1;
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
 
-
-    public static final boolean ENABLE_GRAPHICS = true;
+    public static boolean ENABLE_ASSIST = true;
+    public static boolean ENABLE_GRAPHICS = true;
     public static final double FPS = 80;
 
 
@@ -25,17 +25,18 @@ public class Config {
     public static final int CPU_LEVEL3 = 3;
     public static final int CPU_LEVEL4 = 4;
     public static final int MAX_CPU = 5;
-    public static final boolean ENABLE_ASSIST = true;
     public static final double G = 6.67408e-11;
     public static int SOLVER = RUNGE_KUTTA_SOLVER;
     public static int CPU_LEVEL = 1;
+
+
     public static boolean REPORT = true;
     public static boolean DEBUG = false;
     //which simulationInstance is going to run
     public static int SIMULATION_LEVEL = 0;
-    public static boolean INSERT_PROBE = false;
+    public static boolean INSERT_ROCKET = true;
 
-    public static double STEP_SIZE = 60000;
+    public static double STEP_SIZE = 600;
 
 
     //TODO : set this to be updated for particles simulationInstance

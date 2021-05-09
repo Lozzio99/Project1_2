@@ -2,6 +2,7 @@ package group17.Simulation;
 
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.UpdaterInterface;
+import group17.Interfaces.Vector3dInterface;
 import group17.Math.Solvers.EulerSolver;
 import group17.Math.Solvers.RungeKutta4thSolver;
 import group17.Math.Solvers.StandardVerletSolver;
@@ -19,6 +20,7 @@ public class SimulationUpdater implements UpdaterInterface {
     @Override
     public void init() {
         this.schedule = new RocketSchedule();
+        this.schedule.init();
         //make all tha planning
         switch (SOLVER) {
             case EULER_SOLVER -> this.solver = new EulerSolver();
@@ -47,6 +49,24 @@ public class SimulationUpdater implements UpdaterInterface {
     @Override
     public synchronized void run() {
         // ROCKET DECISION
-        this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE);
+        if (INSERT_ROCKET) {
+            Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
+            if (DEBUG && !decision.isZero())
+                System.out.println(decision);
+            simulationInstance.getSystem().getRocket().setLocalAcceleration(decision);
+            simulationInstance.getSystem().getRocket().update();
+        }
+        simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
+        simulationInstance.getSystem().getClock().step(STEP_SIZE);
+    }
+
+    @Override
+    public ODESolverInterface getSolver() {
+        return solver;
+    }
+
+    @Override
+    public RocketSchedule getSchedule() {
+        return schedule;
     }
 }

@@ -34,13 +34,16 @@ public class Clock {
     }
 
     public Clock setLaunchDay() {
-        this.sec = 0;
-        this.min = 0;
-        this.hour = 0;
-        this.days = 1;
-        this.months = 4;
-        this.years = 2020;
+        setInitialDay(1, 4, 2020);
+        setInitialTime(0, 0, 0);
         checkLeap();
+        return this;
+    }
+
+    public Clock setInitialDay(int days, int month, int years) {
+        this.days = days;
+        this.months = month;
+        this.years = years;
         return this;
     }
 
@@ -183,6 +186,29 @@ public class Clock {
         d.months = this.months;
         d.years = this.years;
         return d;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + Integer.hashCode(sec);
+        hash = 31 * hash + Integer.hashCode(min);
+        hash = 31 * hash + Integer.hashCode(hour);
+        hash = 31 * hash + Integer.hashCode(days);
+        hash = 31 * hash + Integer.hashCode(months);
+        hash = 31 * hash + Integer.hashCode(years);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Clock) {
+            Clock o = (Clock) obj;
+            return sec == o.sec && min == o.min &&
+                    hour == o.hour && days == o.days &&
+                    months == o.months && years == o.years;
+        }
+        return false;
     }
 
 }

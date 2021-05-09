@@ -14,6 +14,10 @@ public abstract class MainMenu {
     final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)"};
     private final int FRAME_WIDTH = 1000;
     private final int FRAME_HEIGHT = 300;
+    protected int currentSimulationType = -1;
+    protected int currentCPULevel = -1;
+    protected int currentSolver = -1;
+
     JFrame frame;
     JPanel controlPanel;
     JLabel titleLabel;
@@ -90,9 +94,6 @@ public abstract class MainMenu {
 
         startButton = new JButton("Start Simulation");
         startButton.addActionListener(e -> {
-            int currentSimulationType = -1;
-            int currentCPULevel = -1;
-            int currentSolver = -1;
 
             // --- Select the correct simulationInstance ---
             currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {

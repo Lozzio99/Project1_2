@@ -264,6 +264,11 @@ public class Vector3D implements Vector3dInterface {
         return marked;
     }
 
+    @Override
+    public boolean isZero() {
+        return this.x == 0 && this.y == 0 && this.z == 0;
+    }
+
     public void mark() {
         this.marked = true;
     }

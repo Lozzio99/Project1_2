@@ -8,43 +8,46 @@
 
 package group17.Graphics;
 
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Vector3D;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
+import static group17.Graphics.Scenes.Scene.SceneType.STARTING_SCENE;
 import static group17.Main.simulationInstance;
 
 /**
  * DialogFrame
  */
-public class DialogFrame extends JPanel implements Runnable {
+public abstract class DialogFrame extends JPanel implements Runnable {
 
     protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
-    private final JFrame frame;
-    private final JTextArea textArea = new JTextArea(10, 30);
-    private final JTextField stSizeField = new JTextField();
-    private final JTextField massSizeField = new JTextField();
+    protected final JFrame frame;
+    protected final JTextArea textArea = new JTextArea(10, 30);
+    protected final JTextField stSizeField = new JTextField();
+    protected final JTextField massSizeField = new JTextField();
 
-    private final JTextField lXCoordField = new JTextField();
-    private final JTextField lYCoordField = new JTextField();
-    private final JTextField lZCoordField = new JTextField();
+    protected final JTextField lXCoordField = new JTextField();
+    protected final JTextField lYCoordField = new JTextField();
+    protected final JTextField lZCoordField = new JTextField();
 
-    private final JTextField ddField = new JTextField();
-    private final JTextField mmField = new JTextField();
-    private final JTextField yyField = new JTextField();
+    protected final JTextField ddField = new JTextField();
+    protected final JTextField mmField = new JTextField();
+    protected final JTextField yyField = new JTextField();
 
-    private final JTextField hhField = new JTextField();
-    private final JTextField mField = new JTextField();
-    private final JTextField ssField = new JTextField();
-    private final JSlider xVelSlider = new JSlider(-30000, 30000);
-    private final JSlider yVelSlider = new JSlider(-30000, 30000);
-    private final JSlider zVelSlider = new JSlider(-30000, 30000);
+    protected final JTextField hhField = new JTextField();
+    protected final JTextField mField = new JTextField();
+    protected final JTextField ssField = new JTextField();
+    protected final JSlider xVelSlider = new JSlider(-30000, 30000);
+    protected final JSlider yVelSlider = new JSlider(-30000, 30000);
+    protected final JSlider zVelSlider = new JSlider(-30000, 30000);
 
 
     // TODO: weight for the velocity slider to be changed if needed
@@ -61,96 +64,14 @@ public class DialogFrame extends JPanel implements Runnable {
     /**
      * Initialises the frame.
      */
-    public void init() {
-        JPanel wrapperPanel = this;
-        wrapperPanel.setLayout(new GridLayout(1, 2));
-        wrapperPanel.add(createSetUpPanel());
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        wrapperPanel.add(scrollPane);
-        this.frame.add(wrapperPanel);
-        this.frame.setVisible(true);
-        this.frame.setFocusable(true);
-    }
+    public abstract void init();
 
     /**
      * Creates the setup panel.
      *
      * @return
      */
-    private JPanel createSetUpPanel() {
-        JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(7, 1));
-
-        // Here add all the input parameter fields
-        JPanel inputVarPanel1 = new JPanel();
-        inputVarPanel1.setLayout(new GridLayout(1, 2));
-        inputVarPanel1.add(new JLabel("Time step size "));
-        inputVarPanel1.add(stSizeField);
-        inputPanel.add(inputVarPanel1);
-
-        JPanel inputVarPanel3 = new JPanel();
-        inputVarPanel3.setLayout(new GridLayout(1, 2));
-
-        inputVarPanel3.add(new JLabel("Mass "));
-        inputVarPanel3.add(massSizeField);
-        inputPanel.add(inputVarPanel3);
-
-        JPanel inputVarPanel2 = new JPanel();
-        inputVarPanel2.setLayout(new GridLayout(3, 3));
-
-        JLabel xVelLabel = new JLabel("X");
-        JLabel yVelLabel = new JLabel("Y");
-        JLabel zVelLabel = new JLabel("Z");
-        xVelSlider.addChangeListener(new updateLabel(xVelSlider, xVelLabel));
-        yVelSlider.addChangeListener(new updateLabel(yVelSlider, yVelLabel));
-        zVelSlider.addChangeListener(new updateLabel(zVelSlider, zVelLabel));
-
-        inputVarPanel2.add(new JLabel(" "));
-        inputVarPanel2.add(xVelSlider);
-        inputVarPanel2.add(xVelLabel);
-        inputVarPanel2.add(new JLabel("Launch velocity "));
-        inputVarPanel2.add(yVelSlider);
-        inputVarPanel2.add(yVelLabel);
-        inputVarPanel2.add(new JLabel(" "));
-        inputVarPanel2.add(zVelSlider);
-        inputVarPanel2.add(zVelLabel);
-        inputPanel.add(inputVarPanel2);
-
-        JPanel inputVectorPanel = new JPanel();
-        inputVectorPanel.setLayout(new GridLayout(1, 4));
-        inputVectorPanel.add(new JLabel("Launch position "));
-        inputVectorPanel.add(lXCoordField);
-        inputVectorPanel.add(lYCoordField);
-        inputVectorPanel.add(lZCoordField);
-        inputPanel.add(inputVectorPanel);
-
-        JPanel inputDatePanel = new JPanel();
-        inputDatePanel.setLayout(new GridLayout(1, 4));
-        inputDatePanel.add(new JLabel("Date (dd/mm/yyyy) "));
-        inputDatePanel.add(ddField);
-        inputDatePanel.add(mmField);
-        inputDatePanel.add(yyField);
-        inputPanel.add(inputDatePanel);
-
-        JPanel inputTimePanel = new JPanel();
-        inputTimePanel.setLayout(new GridLayout(1, 4));
-        inputTimePanel.add(new JLabel("Time (hh/mm/ss) "));
-        inputTimePanel.add(hhField);
-        inputTimePanel.add(mField);
-        inputTimePanel.add(ssField);
-        inputPanel.add(inputTimePanel);
-
-        JPanel btnPanel = new JPanel();
-        JButton startButton = new JButton("Start simulationInstance");
-        startButton.addActionListener(new startBtnListener());
-        btnPanel.add(startButton);
-        JButton clearButton = new JButton("Reset Simulation");
-        //to be implemented
-        clearButton.addActionListener(new clearBtnListener());
-        btnPanel.add(clearButton);
-        inputPanel.add(btnPanel);
-        return inputPanel;
-    }
+    protected abstract JPanel createSetUpPanel();
 
 
     public void setDate() {
@@ -165,7 +86,7 @@ public class DialogFrame extends JPanel implements Runnable {
     public void showAssistParameters() {
         this.setStepField("" + STEP_SIZE);
         this.setDate();
-        if (INSERT_PROBE) {
+        if (INSERT_ROCKET) {
             this.setProbeField("" + simulationInstance.getSystem().getCelestialBodies().get(11).getMASS());
             lXCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getX());
             lYCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getY());
@@ -189,14 +110,15 @@ public class DialogFrame extends JPanel implements Runnable {
 
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
-        if (INSERT_PROBE) {
+        if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
+            Vector3dInterface v = new Vector3D();
             if (getLaunchVelocityX() != 0)
-                simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setX(getLaunchVelocityX());
+                v.setX(getLaunchVelocityX());
             if (getLaunchVelocityY() != 0)
-                simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setY(getLaunchVelocityY());
+                v.setY(getLaunchVelocityY());
             if (getLaunchVelocityZ() != 0)
-                simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().setZ(getLaunchVelocityZ());
-            simulationInstance.getSystem().getCelestialBodies().get(11).setMASS(getProbeMass());
+                v.setY(getLaunchVelocityY());
+            simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
         }
     }
 
@@ -393,7 +315,10 @@ public class DialogFrame extends JPanel implements Runnable {
         if (!simulationInstance.waiting()) {
             this.setDate();
             if (t > 50) {
-                this.setOutput(simulationInstance.getSystem().toString());
+                try {
+                    this.setOutput(simulationInstance.getSystem().toString());
+                } catch (NullPointerException | IndexOutOfBoundsException ignored) {
+                }
                 t = 0;
             } else t++;
         }
@@ -403,6 +328,10 @@ public class DialogFrame extends JPanel implements Runnable {
         this.dialogThread.set(new Thread(this, "Dialog Thread"));
         this.dialogThread.get().setDaemon(true);
         this.dialogThread.get().start();
+    }
+
+    public JFrame getFrame() {
+        return this.frame;
     }
 
     /**
@@ -440,8 +369,10 @@ public class DialogFrame extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            simulationInstance.getReporter().report("RESET SIMULATION");
-            // TODO : Handle all of this by saying simulationInstance reset/start (then check config there)
+            if (REPORT)
+                simulationInstance.getReporter().report("RESET SIMULATION");
+            if (ENABLE_GRAPHICS)
+                simulationInstance.getGraphics().changeScene(STARTING_SCENE);
             simulationInstance.reset();
 
         }
