@@ -12,7 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.Config.*;
+import static group17.Config.DEBUG;
+import static group17.Config.FPS;
 import static group17.Main.simulationInstance;
 
 
@@ -88,8 +89,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.frame.add(this.currentScene);
         this.frame.setVisible(true);
         //optional
-        if (ENABLE_ASSIST)
-            simulationInstance.getAssist().getFrame().setVisible(true);
+
     }
 
     @Override

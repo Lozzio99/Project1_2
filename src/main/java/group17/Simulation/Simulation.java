@@ -122,7 +122,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void initAssist() {
-        this.assist = new AssistFrame();
+        //this.assist = new AssistFrame();
         this.assist.init();
     }
 
@@ -137,6 +137,10 @@ public class Simulation implements SimulationInterface {
         return this.assist;
     }
 
+    @Override
+    public void setAssist(AssistFrame assist) {
+        this.assist = assist;
+    }
 
     @Override
     public void initSystem() {
