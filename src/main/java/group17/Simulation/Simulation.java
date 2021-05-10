@@ -73,12 +73,12 @@ public class Simulation implements SimulationInterface {
     public synchronized void loop() {
         if (this.running) {
             this.updateState();
+            if (ENABLE_GRAPHICS)
+                this.startGraphics();
             if (REPORT)
                 this.startReport();
             if (ENABLE_ASSIST)
                 this.startAssist();
-            if (ENABLE_GRAPHICS)
-                this.startGraphics();
             if (!waiting()) {
                 this.startUpdater();
                 this.startSystem();
