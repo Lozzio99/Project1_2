@@ -123,13 +123,10 @@ public class Assist2 {
                 SOLVER = currentSolver;
                 simulationInstance = new Simulation();
                 simulationInstance.setAssist(assist);
-
                 // Also the testing in that module will be way much easier considering that we only need
                 // to test unit cases (single methods, not the overall simulation)
                 simulationInstance.init();
                 simulationInstance.start();
-                mainPane.remove(0);
-
             }
         };
         menu.configFrame(card);
