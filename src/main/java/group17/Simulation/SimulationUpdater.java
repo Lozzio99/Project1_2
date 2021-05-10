@@ -9,6 +9,7 @@ import group17.Math.Solvers.StandardVerletSolver;
 import group17.Math.Solvers.VerletVelocitySolver;
 
 import static group17.Config.*;
+import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulationInstance;
 
 public class SimulationUpdater implements UpdaterInterface {
@@ -34,8 +35,13 @@ public class SimulationUpdater implements UpdaterInterface {
             }
         }
 
-        if (!ENABLE_ASSIST)
+        if (!ENABLE_ASSIST) {
+            if (ENABLE_GRAPHICS)
+                simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+            if (REPORT)
+                simulationInstance.getReporter().report("START SIMULATION");
             simulationInstance.setWaiting(false);
+        }
 
     }
 

@@ -89,7 +89,6 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.frame.add(this.currentScene);
         this.frame.setVisible(true);
         //optional
-
     }
 
     @Override

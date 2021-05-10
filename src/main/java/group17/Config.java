@@ -11,7 +11,7 @@ public class Config {
     public static final int PARTICLES_SIMULATION = 1;
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
 
-    public static boolean ENABLE_ASSIST = true;
+    public static boolean ENABLE_ASSIST = false;
     public static boolean ENABLE_GRAPHICS = true;
     public static final double FPS = 80;
 
