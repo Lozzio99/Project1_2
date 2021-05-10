@@ -6,6 +6,10 @@ import java.awt.*;
 public class AssistFrame extends DialogFrame {
 
 
+    public AssistFrame() {
+        super();
+    }
+
     @Override
     public void init() {
         JPanel wrapperPanel = this;
@@ -13,9 +17,10 @@ public class AssistFrame extends DialogFrame {
         wrapperPanel.add(createSetUpPanel());
         JScrollPane scrollPane = new JScrollPane(textArea);
         wrapperPanel.add(scrollPane);
-        this.frame.add(wrapperPanel);
-        this.frame.setVisible(true);
-        this.frame.setFocusable(true);
+        //this.frame.add(wrapperPanel);
+        //this.frame.setVisible(true);
+        //this.frame.setFocusable(true);
+        this.parentPanel.add(wrapperPanel);
     }
 
     @Override

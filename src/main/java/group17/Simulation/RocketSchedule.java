@@ -47,7 +47,8 @@ public class RocketSchedule {
         //put all things here, even if they are later in the simulation
         //once we know them we just plan them here
 
-        this.plan(LAUNCH_DATE, new Vector3D(100, 20, 100));
+        this.set(LAUNCH_DATE, new Vector3D(490, -838, -710));
+
     }
 
 
@@ -71,4 +72,15 @@ public class RocketSchedule {
     }
 
 
+    public void set(Clock launchDate, Vector3dInterface v) {
+        this.shiftAtTime.put(launchDate, v);
+    }
+
+    public void set(StateInterface s, Vector3dInterface v) {
+        this.shiftAtLocation.put(s, v);
+    }
+
+    public void set(Vector3dInterface d, Vector3dInterface v) {
+        this.shiftAtDistance.put(d, v);
+    }
 }

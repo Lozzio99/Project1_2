@@ -47,8 +47,16 @@ public class RocketSimulator extends ProbeSimulator implements RocketInterface {
         this.getVectorVelocity().add(this.localAcceleration);
     }
 
+    public void addAcceleration(Vector3dInterface toAdd) {
+        this.localAcceleration = this.localAcceleration.add(toAdd);
+    }
+
+    public Vector3dInterface getLocalAcceleration() {
+        return localAcceleration;
+    }
+
     public void setLocalAcceleration(Vector3dInterface localAcceleration) {
-        this.localAcceleration = this.localAcceleration.add(localAcceleration);
+        this.localAcceleration = localAcceleration;
     }
 
     public void updateMass(double currBurnPercentage) {
