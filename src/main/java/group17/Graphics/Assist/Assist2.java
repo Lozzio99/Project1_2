@@ -1,5 +1,6 @@
 package group17.Graphics.Assist;
 
+import group17.Graphics.AssistFrame;
 import group17.Graphics.MainMenu;
 import group17.Simulation.Simulation;
 
@@ -16,7 +17,6 @@ public class Assist2 {
     private static final List<String> tabs = new ArrayList<>();
     private static final List<Color> backGrounds = new ArrayList<>();
     private static final List<ImageIcon> icons = new ArrayList<>();
-
     static {
         tabs.add("MENU");
         backGrounds.add(new Color(204, 122, 255, 211));
@@ -24,6 +24,7 @@ public class Assist2 {
         tabs.add("LAUNCH");
         backGrounds.add(new Color(52, 52, 52, 215));
         icons.add(loadIcon("launch.png"));
+        /*
         tabs.add("STATS");
         backGrounds.add(new Color(122, 202, 255, 211));
         icons.add(loadIcon("stats.png"));
@@ -45,11 +46,13 @@ public class Assist2 {
         tabs.add("SETTINGS");
         backGrounds.add(new Color(122, 202, 255, 211));
         icons.add(loadIcon("settings.png"));
+         */
     }
 
     private final JFrame frame;
     Color c = new Color(204, 122, 255, 211);
     private JTabbedPane mainPane;
+    private AssistFrame assist;
 
     public Assist2() {
         try {
@@ -100,14 +103,15 @@ public class Assist2 {
                 return initLaunch(index);
             }
             default -> {
-                return new Card(index);
+                return null;
             }
         }
     }
 
     private Card initLaunch(int index) {
         Card card = new Card(index);
-
+        this.assist = new AssistFrame(card);
+        card.add(this.assist, BorderLayout.CENTER);
         return card;
     }
 
@@ -118,10 +122,14 @@ public class Assist2 {
             public void startSimulation() {
                 SOLVER = currentSolver;
                 simulationInstance = new Simulation();
+                simulationInstance.setAssist(assist);
+
                 // Also the testing in that module will be way much easier considering that we only need
                 // to test unit cases (single methods, not the overall simulation)
                 simulationInstance.init();
                 simulationInstance.start();
+                mainPane.remove(0);
+
             }
         };
         menu.configFrame(card);

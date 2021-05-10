@@ -163,7 +163,7 @@ public abstract class MainMenu {
 
 
             startSimulation();
-            //frame.dispose();
+
         });
 
 

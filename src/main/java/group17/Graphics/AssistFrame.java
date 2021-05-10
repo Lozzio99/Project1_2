@@ -1,5 +1,7 @@
 package group17.Graphics;
 
+import group17.Graphics.Assist.Assist2;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,17 +12,21 @@ public class AssistFrame extends DialogFrame {
         super();
     }
 
+    public AssistFrame(Assist2.Card card) {
+        super(card);
+    }
+
     @Override
     public void init() {
-        JPanel wrapperPanel = this;
-        wrapperPanel.setLayout(new GridLayout(1, 2));
-        wrapperPanel.add(createSetUpPanel());
+        this.setPreferredSize(new Dimension(1000, 500));
+        this.setLayout(new GridLayout(1, 2));
+        this.add(createSetUpPanel());
         JScrollPane scrollPane = new JScrollPane(textArea);
-        wrapperPanel.add(scrollPane);
+        this.add(scrollPane);
         //this.frame.add(wrapperPanel);
         //this.frame.setVisible(true);
-        //this.frame.setFocusable(true);
-        this.parentPanel.add(wrapperPanel);
+        this.setFocusable(true);
+        //this.parentPanel.add(this);
     }
 
     @Override

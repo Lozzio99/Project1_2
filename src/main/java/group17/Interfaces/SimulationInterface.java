@@ -30,6 +30,8 @@ public interface SimulationInterface {
     //System
     SystemInterface getSystem();
 
+    void setAssist(AssistFrame assist);
+
     void initSystem();
 
     void startSystem();
