@@ -24,7 +24,7 @@ public class Assist2 {
         tabs.add("LAUNCH");
         backGrounds.add(new Color(52, 52, 52, 215));
         icons.add(loadIcon("launch.png"));
-        /*
+
         tabs.add("STATS");
         backGrounds.add(new Color(122, 202, 255, 211));
         icons.add(loadIcon("stats.png"));
@@ -46,7 +46,7 @@ public class Assist2 {
         tabs.add("SETTINGS");
         backGrounds.add(new Color(122, 202, 255, 211));
         icons.add(loadIcon("settings.png"));
-         */
+
     }
 
     private final JFrame frame;
@@ -103,7 +103,7 @@ public class Assist2 {
                 return initLaunch(index);
             }
             default -> {
-                return null;
+                return new Card(index);
             }
         }
     }
