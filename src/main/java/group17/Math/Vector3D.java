@@ -269,7 +269,26 @@ public class Vector3D implements Vector3dInterface {
         return this.x == 0 && this.y == 0 && this.z == 0;
     }
 
+    @Override
     public void mark() {
         this.marked = true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 11;
+        hash = 31 * hash + Double.hashCode(this.x);
+        hash = 31 * hash + Double.hashCode(this.y);
+        hash = 31 * hash + Double.hashCode(this.z);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Vector3dInterface) {
+            Vector3dInterface v = (Vector3dInterface) o;
+            return this.x == v.getX() && this.y == v.getY() && this.z == v.getZ();
+        }
+        return false;
     }
 }

@@ -29,7 +29,7 @@ import static group17.Main.simulationInstance;
 public abstract class DialogFrame extends JPanel implements Runnable {
 
     protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
-    protected final JFrame frame;
+    protected JFrame frame;
     protected final JTextArea textArea = new JTextArea(10, 30);
     protected final JTextField stSizeField = new JTextField();
     protected final JTextField massSizeField = new JTextField();
@@ -49,12 +49,21 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     protected final JSlider yVelSlider = new JSlider(-30000, 30000);
     protected final JSlider zVelSlider = new JSlider(-30000, 30000);
 
+    protected JPanel parentPanel;
 
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
 
 
     public DialogFrame() {
+        //this.setFrame();
+    }
+
+    public DialogFrame(JPanel panel) {
+        this.parentPanel = panel;
+    }
+
+    private void setFrame() {
         this.frame = new JFrame();
         this.frame.setSize(700, 300);
         this.frame.setTitle("Dialog window");
@@ -111,14 +120,11 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
         if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
-            Vector3dInterface v = new Vector3D();
-            if (getLaunchVelocityX() != 0)
-                v.setX(getLaunchVelocityX());
-            if (getLaunchVelocityY() != 0)
-                v.setY(getLaunchVelocityY());
-            if (getLaunchVelocityZ() != 0)
-                v.setY(getLaunchVelocityY());
-            simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
+            Vector3dInterface v = new Vector3D(getLaunchVelocityX(),
+                    getLaunchVelocityY(),
+                    getLaunchVelocityZ());
+            if (!v.isZero())
+                simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
         }
     }
 

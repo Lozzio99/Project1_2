@@ -131,4 +131,7 @@ public interface Vector3dInterface {
 
     boolean isZero();
 
+    @Override
+    int hashCode();
+
 }

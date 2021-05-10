@@ -36,7 +36,7 @@ public class Plot extends Canvas {
                 System.exit(0);
             }
         });
-        ImageIcon img = new ImageIcon(this.getClass().getClassLoader().getResource("death.png").getFile());
+        ImageIcon img = new ImageIcon(this.getClass().getClassLoader().getResource("icons/death.png").getFile());
         this.frame.setIconImage(img.getImage());
         this.frame.setLocationRelativeTo(null);
         this.frame.setResizable(false);

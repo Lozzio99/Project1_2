@@ -11,7 +11,6 @@ import group17.System.Bodies.Star;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Main.simulationInstance;
 import static group17.System.Bodies.Planet.PlanetsEnum.*;
 import static group17.System.Bodies.Satellite.SatellitesEnum.MOON;
 import static group17.System.Bodies.Satellite.SatellitesEnum.TITAN;
@@ -42,8 +41,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initPlanets() {
-        if (this.bodies == null)
-            this.bodies = new ArrayList<>();
+        this.bodies = new ArrayList<>();
         this.bodies.add(new Star());
         this.bodies.add(new Planet(MERCURY));
         this.bodies.add(new Planet(VENUS));
@@ -55,8 +53,6 @@ public class SolarSystem implements SystemInterface {
         this.bodies.add(new Planet(URANUS));
         this.bodies.add(new Planet(NEPTUNE));
         this.bodies.add(new Satellite(MOON));
-        for (CelestialBody b : this.bodies)
-            b.initProperties();
 
     }
 
@@ -65,7 +61,6 @@ public class SolarSystem implements SystemInterface {
         if (this.bodies == null)
             this.bodies = new ArrayList<>();
         this.rocket = new RocketSimulator();
-        this.rocket.initProperties();
         this.bodies.add(this.rocket);
     }
 
@@ -87,8 +82,10 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void reset() {
-        this.systemState = new SystemState().state0(this.getCelestialBodies());
-        this.clock = this.clock.setLaunchDay();
+        this.initPlanets();
+        this.initRocket();
+        this.initClock();
+        this.initialState();
     }
 
     @Override
