@@ -1,4 +1,4 @@
-package group17.Graphics;
+package group17.Graphics.Assist;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,36 +8,18 @@ import static group17.Config.*;
 @SuppressWarnings("rawtypes")
 public abstract class MainMenu {
     // Variables
-
     static final String[] SIMULATION_TYPES = {"Rocket Simulation", "Pendulum Simulation", "Numerical Simulation", "Particles Simulation", "Solar System Simulation"};
     static final String[] CPU_LEVELS = {"Min CPU", "Max CPU"};
     static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)"};
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 300;
-    protected int currentSimulationType = -1;
-    protected int currentCPULevel = -1;
-    static protected int currentSolver = -1;
+    static protected int currentSolver = SOLVER;
+    protected int currentSimulationType = SIMULATION_LEVEL;
+    protected int currentCPULevel = CPU_LEVEL;
 
     static JFrame frame;
-    JPanel controlPanel;
     JLabel titleLabel;
-    JLabel simulationTypeLabel;
-    JLabel cpuLevelLabel;
-    JLabel solverLabel;
-    JLabel printLogLabel;
-    JLabel consoleDebugLabel;
-    JLabel trajectoryLengthLabel;
-    JLabel stepSizeLabel;
-    JLabel particleLabel;
-    JComboBox simulationTypeDropdown;
-    JComboBox cpuLevelDropdown;
-    JComboBox solverDropdown;
-    JCheckBox printLogCheckBox;
-    JSlider trajectoryLengthSlider;
-    JTextField stepSizeText;
-    JTextField particlesText;
-    JCheckBox consoleDebugCheckBox;
-    JButton startButton;
+
 
     /**
      * Constructor
@@ -45,6 +27,7 @@ public abstract class MainMenu {
     public MainMenu() {
         //this.setFrame();
     }
+
 
     public void setFrame() {
         frame = new JFrame("Project 1.2 - Group 17");
@@ -59,7 +42,7 @@ public abstract class MainMenu {
         frame.setVisible(true);
     }
 
-    public JPanel configFrame(JPanel controlPanel) {
+    public Component configFrame(Container controlPanel) {
         //frame.setLocationRelativeTo(null);
 
         controlPanel.setPreferredSize(new Dimension(700, 300));
@@ -90,9 +73,16 @@ public abstract class MainMenu {
         simulationTypeDropdown = new JComboBox<>(SIMULATION_TYPES);
         simulationTypeDropdown.setSelectedIndex(0);
         cpuLevelDropdown = new JComboBox<>(CPU_LEVELS);
-        cpuLevelDropdown.setSelectedIndex(0);
+        cpuLevelDropdown.setSelectedIndex(CPU_LEVEL == MIN_CPU ? 0 : 1);
         solverDropdown = new JComboBox<>(SOLVERS);
-        solverDropdown.setSelectedIndex(0);
+        solverDropdown.setSelectedIndex(
+                switch (SOLVER) {
+                    case RUNGE_KUTTA_SOLVER -> 1;
+                    case VERLET_VEL_SOLVER -> 2;
+                    case VERLET_STD_SOLVER -> 3;
+                    default -> 0;
+                }
+        );
 
 
         JCheckBox printLogCheckBox, consoleDebugCheckBox;
@@ -130,14 +120,12 @@ public abstract class MainMenu {
 
             // --- Select the correct CPU type ---
             int currentCPULevel = switch (cpuLevelDropdown.getSelectedItem().toString()) {
-                case ("Min CPU") -> MIN_CPU;
                 case ("Max CPU") -> MAX_CPU;
                 default -> MIN_CPU;
             };
 
             // --- Select the correct solver ---
             int currentSolver = switch (solverDropdown.getSelectedItem().toString()) {
-                case ("Euler") -> EULER_SOLVER;
                 case ("Runge Kutta") -> RUNGE_KUTTA_SOLVER;
                 case ("Verlet (VEL)") -> VERLET_VEL_SOLVER;
                 case ("Verlet (STD)") -> VERLET_STD_SOLVER;
@@ -154,6 +142,7 @@ public abstract class MainMenu {
 
 
             REPORT = printLogCheckBox.isSelected();
+
 
             if (!particlesText.getText().equals("")) {
                 PARTICLES = Integer.valueOf(particlesText.getText());

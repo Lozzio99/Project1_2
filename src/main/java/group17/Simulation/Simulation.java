@@ -1,6 +1,7 @@
 package group17.Simulation;
 
-import group17.Graphics.AssistFrame;
+import group17.Graphics.Assist.DialogWindow;
+import group17.Graphics.Assist.LaunchAssist;
 import group17.Graphics.GraphicsManager;
 import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
@@ -13,12 +14,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static group17.Config.*;
+import static group17.Main.userDialog;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
-    private AssistFrame assist;
+    private LaunchAssist assist;
     private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
@@ -29,7 +31,7 @@ public class Simulation implements SimulationInterface {
         if (REPORT)
             this.initReporter();   //first thing, will check all exceptions
 
-        this.initSystem();  // before graphics and assist (clock, positions init, ...)
+        this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
 
         if (ENABLE_ASSIST)
             this.initAssist();
@@ -44,8 +46,10 @@ public class Simulation implements SimulationInterface {
     public void start() {
         if (!this.stopped) {  // there may be some errors in the initialisation
             this.setRunning();
-            if (ENABLE_ASSIST)
+            if (ENABLE_ASSIST) {
                 this.getAssist().showAssistParameters();
+                userDialog.getMainPane().setSelectedIndex(1);
+            }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
             service.scheduleWithFixedDelay(this::loop, 30, 13, MILLISECONDS);
         } else {
@@ -122,7 +126,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void initAssist() {
-        //this.assist = new AssistFrame();
+        //this.userDialog = new AssistFrame();
         this.assist.init();
     }
 
@@ -133,13 +137,13 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public AssistFrame getAssist() {
+    public LaunchAssist getAssist() {
         return this.assist;
     }
 
     @Override
-    public void setAssist(AssistFrame assist) {
-        this.assist = assist;
+    public void setAssist(DialogWindow assist) {
+        this.assist = assist.getLaunchAssist();
     }
 
     @Override
