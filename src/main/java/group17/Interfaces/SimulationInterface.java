@@ -1,7 +1,8 @@
 package group17.Interfaces;
 
 
-import group17.Graphics.AssistFrame;
+import group17.Graphics.Assist.DialogWindow;
+import group17.Graphics.Assist.LaunchAssist;
 import group17.Simulation.SimulationReporter;
 
 public interface SimulationInterface {
@@ -20,7 +21,7 @@ public interface SimulationInterface {
 
 
     //Assist
-    AssistFrame getAssist();
+    LaunchAssist getAssist();
 
     void initAssist();
 
@@ -30,7 +31,7 @@ public interface SimulationInterface {
     //System
     SystemInterface getSystem();
 
-    void setAssist(AssistFrame assist);
+    void setAssist(DialogWindow assist);
 
     void initSystem();
 
@@ -61,7 +62,7 @@ public interface SimulationInterface {
 
     void setRunning();
 
-    boolean waiting();  // waiting for assist to start
+    boolean waiting();  // waiting for userDialog to start
 
     void setWaiting(boolean isWaiting);
 

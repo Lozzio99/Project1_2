@@ -6,7 +6,7 @@
  * @since 19/02/2021
  */
 
-package group17.Graphics;
+package group17.Graphics.Assist;
 
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
@@ -14,6 +14,7 @@ import group17.Math.Vector3D;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicReference;
@@ -49,7 +50,7 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     protected final JSlider yVelSlider = new JSlider(-30000, 30000);
     protected final JSlider zVelSlider = new JSlider(-30000, 30000);
 
-    protected JPanel parentPanel;
+    protected Component parentPanel;
 
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
@@ -59,7 +60,7 @@ public abstract class DialogFrame extends JPanel implements Runnable {
         //this.setFrame();
     }
 
-    public DialogFrame(JPanel panel) {
+    public DialogFrame(Component panel) {
         this.parentPanel = panel;
     }
 

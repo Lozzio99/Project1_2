@@ -1,18 +1,15 @@
-package group17.Graphics;
-
-import group17.Graphics.Assist.Assist2;
+package group17.Graphics.Assist;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AssistFrame extends DialogFrame {
+public class LaunchAssist extends DialogFrame {
 
-
-    public AssistFrame() {
+    public LaunchAssist() {
         super();
     }
 
-    public AssistFrame(Assist2.Card card) {
+    public LaunchAssist(Component card) {
         super(card);
     }
 
