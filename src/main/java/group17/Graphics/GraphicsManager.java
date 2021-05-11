@@ -12,9 +12,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.Config.*;
+import static group17.Config.DEBUG;
+import static group17.Config.FPS;
 import static group17.Main.simulationInstance;
-import static group17.Main.userDialog;
 
 
 public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {
@@ -92,10 +92,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.currentScene.addMouseMotionListener(this.mouse);
         this.frame.add(this.currentScene);
         this.frame.setVisible(true);
+        this.frame.repaint();
 
-        if (ENABLE_ASSIST && currentScene instanceof StartingScene) {
-            userDialog.getMainPane().setSelectedIndex(4);
-        }
         //optional
     }
 

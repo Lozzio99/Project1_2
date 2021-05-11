@@ -35,7 +35,7 @@ public class SimulationUpdater implements UpdaterInterface {
             }
         }
 
-        if (!ENABLE_ASSIST) {
+        if (!LAUNCH_ASSIST) {
             if (ENABLE_GRAPHICS)
                 simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
             if (REPORT)
