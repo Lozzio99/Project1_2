@@ -11,8 +11,8 @@ public class Config {
     public static final int PARTICLES_SIMULATION = 1;
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
 
-    public static boolean ENABLE_ASSIST = true;
-    public static boolean ENABLE_GRAPHICS = true;
+    public static Boolean LAUNCH_ASSIST = true;
+    public static Boolean ENABLE_GRAPHICS = false;
     public static final double FPS = 80;
 
 
@@ -30,19 +30,22 @@ public class Config {
     public static int CPU_LEVEL = 1;
 
 
-    public static boolean REPORT = true;
-    public static boolean DEBUG = false;
+    public static Boolean REPORT = true;
+    public static Boolean DEBUG = false;
     //which simulationInstance is going to run
     public static int SIMULATION_LEVEL = 0;
-    public static boolean INSERT_ROCKET = true;
-
+    public static Boolean INSERT_ROCKET = true;
+    public static Boolean ROCKET_INFO = true;
+    public static Boolean PERFORMANCE = true;
+    public static Boolean ERROR_EVALUATION = true;
+    public static Boolean PLOT = false;
     public static double STEP_SIZE = 600;
 
 
     //TODO : set this to be updated for particles simulationInstance
-    public static boolean DRAW_TRAJECTORIES = true;
+    public static Boolean DRAW_TRAJECTORIES = true;
     //TODO : set this to be updated for particles simulationInstance
-    public static boolean NAMES = true;
+    public static Boolean NAMES = true;
 
 
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 500 : 50;

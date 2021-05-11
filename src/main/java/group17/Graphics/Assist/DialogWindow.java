@@ -11,6 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static group17.Config.ENABLE_GRAPHICS;
 import static group17.Config.SOLVER;
 import static group17.Main.simulationInstance;
 
@@ -69,7 +70,18 @@ public class DialogWindow {
     public DialogWindow() {
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+
+           /*
             UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+            MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+             */
+            //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            //
+
+
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException ex) {
             ex.printStackTrace();
         }
@@ -96,6 +108,8 @@ public class DialogWindow {
         for (int i = 0; i < tabs.size(); i++) {
             this.mainPane.addTab(tabs.get(i), configCard(i));
             this.mainPane.setIconAt(i, icons.get(i));
+            this.mainPane.setEnabledAt(i, false);
+            this.mainPane.getComponentAt(i).setBackground(backGrounds.get(i));
             this.mainPane.setToolTipTextAt(i, tips.get(i));
         }
         this.config();
@@ -103,12 +117,21 @@ public class DialogWindow {
     }
 
     private void config() {
+        this.enable(0, 7);
         Color c = new Color(11, 255, 3), w = new Color(135, 0, 255), c2 = new Color(0, 255, 255);
         Border b = new CompoundBorder(new StrokeBorder(new BasicStroke(8.f), w), new BevelBorder(BevelBorder.RAISED, c, c2, w.darker(), c2.darker()));
         this.mainPane.setBorder(b);
         this.mainPane.setTabPlacement(JTabbedPane.TOP);
         this.mainPane.setRequestFocusEnabled(true);
         this.mainPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+    }
+
+    public void enable(int... i) {
+        for (int j : i) this.mainPane.setEnabledAt(j, true);
+    }
+
+    public void disable(int... i) {
+        for (int j : i) this.mainPane.setEnabledAt(j, false);
     }
 
 
@@ -130,12 +153,11 @@ public class DialogWindow {
     }
 
     private Component initSettings(int index) {
-        return new JPanel();
+        return new ConfigWindow();
     }
 
     private Component initLaunch(int index) {
-        this.assist = new LaunchAssist(this.mainPane);
-        this.assist.setBackground(backGrounds.get(index));
+        this.assist = new LaunchAssist();
         return this.assist;
     }
 
@@ -145,12 +167,14 @@ public class DialogWindow {
             @Override
             public void startSimulation() {
                 SOLVER = currentSolver;
+                System.out.println(ENABLE_GRAPHICS);
                 if (simulationInstance == null) {
                     simulationInstance = new Simulation();
                     simulationInstance.setAssist(d);
                     simulationInstance.init();
                     simulationInstance.start();
                 }
+                enable(1, 2, 4, 5, 8);
             }
         };
         return this.menu.configFrame(new JPanel());

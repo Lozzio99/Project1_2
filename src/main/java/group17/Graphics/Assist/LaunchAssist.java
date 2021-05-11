@@ -3,15 +3,12 @@ package group17.Graphics.Assist;
 import javax.swing.*;
 import java.awt.*;
 
-public class LaunchAssist extends DialogFrame {
+public class LaunchAssist extends AbstractLaunchAssist {
 
     public LaunchAssist() {
         super();
     }
 
-    public LaunchAssist(Component card) {
-        super(card);
-    }
 
     @Override
     public void init() {
@@ -20,10 +17,7 @@ public class LaunchAssist extends DialogFrame {
         this.add(createSetUpPanel());
         JScrollPane scrollPane = new JScrollPane(textArea);
         this.add(scrollPane);
-        //this.frame.add(wrapperPanel);
-        //this.frame.setVisible(true);
         this.setFocusable(true);
-        //this.parentPanel.add(this);
     }
 
     @Override

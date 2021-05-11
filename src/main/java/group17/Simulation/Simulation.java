@@ -14,7 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static group17.Config.*;
-import static group17.Main.userDialog;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
@@ -33,7 +32,7 @@ public class Simulation implements SimulationInterface {
 
         this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
 
-        if (ENABLE_ASSIST)
+        if (LAUNCH_ASSIST)
             this.initAssist();
         if (ENABLE_GRAPHICS)
             this.initGraphics();
@@ -46,9 +45,8 @@ public class Simulation implements SimulationInterface {
     public void start() {
         if (!this.stopped) {  // there may be some errors in the initialisation
             this.setRunning();
-            if (ENABLE_ASSIST) {
+            if (LAUNCH_ASSIST) {
                 this.getAssist().showAssistParameters();
-                userDialog.getMainPane().setSelectedIndex(1);
             }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
             service.scheduleWithFixedDelay(this::loop, 30, 13, MILLISECONDS);
@@ -62,7 +60,6 @@ public class Simulation implements SimulationInterface {
     public void reset() {
         this.setWaiting(true);   //first of all
         this.system.reset();
-
     }
 
     @Override
@@ -81,7 +78,7 @@ public class Simulation implements SimulationInterface {
                 this.startGraphics();
             if (REPORT)
                 this.startReport();
-            if (ENABLE_ASSIST)
+            if (LAUNCH_ASSIST)
                 this.startAssist();
             if (!waiting()) {
                 this.startUpdater();

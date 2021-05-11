@@ -23,11 +23,12 @@ import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Graphics.Scenes.Scene.SceneType.STARTING_SCENE;
 import static group17.Main.simulationInstance;
+import static group17.Main.userDialog;
 
 /**
  * DialogFrame
  */
-public abstract class DialogFrame extends JPanel implements Runnable {
+public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
     protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
     protected JFrame frame;
@@ -56,12 +57,8 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     private final double velocitySliderW = 1.0;
 
 
-    public DialogFrame() {
+    public AbstractLaunchAssist() {
         //this.setFrame();
-    }
-
-    public DialogFrame(Component panel) {
-        this.parentPanel = panel;
     }
 
     private void setFrame() {
@@ -376,12 +373,15 @@ public abstract class DialogFrame extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (simulationInstance.waiting())
+                return;
             if (REPORT)
                 simulationInstance.getReporter().report("RESET SIMULATION");
             if (ENABLE_GRAPHICS)
                 simulationInstance.getGraphics().changeScene(STARTING_SCENE);
+            if (LAUNCH_ASSIST)
+                userDialog.getMainPane().setSelectedIndex(1);
             simulationInstance.reset();
-
         }
 
     }
@@ -397,9 +397,14 @@ public abstract class DialogFrame extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (!simulationInstance.waiting())
+                return;
+            userDialog.enable(3, 6);
+
             // TODO Auto-generated method stub
-            if (ENABLE_GRAPHICS)
+            if (ENABLE_GRAPHICS) {
                 simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+            }
             if (REPORT)
                 simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
