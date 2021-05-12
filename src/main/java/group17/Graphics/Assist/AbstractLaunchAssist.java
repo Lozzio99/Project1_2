@@ -408,6 +408,9 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
             if (REPORT)
                 simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
+
+            simulationInstance.getSystem(); /* lock will make it wait */
+
             simulationInstance.setWaiting(false);
         }
     }

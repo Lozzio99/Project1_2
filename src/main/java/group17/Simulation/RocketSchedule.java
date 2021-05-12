@@ -60,15 +60,22 @@ public class RocketSchedule {
     }
 
     public Vector3dInterface getDesiredVelocity(Clock clock) {
+        if (clock == null)
+            return new Vector3D();
         return shiftAtTime.getOrDefault(clock, new Vector3D());
     }
 
     public Vector3dInterface getDesiredVelocity(StateInterface thisState) {
+        if (thisState == null)
+            return new Vector3D();
         return shiftAtLocation.getOrDefault(thisState, new Vector3D());
     }
 
     public Vector3dInterface getDesiredVelocity(Vector3dInterface distanceToSomething) {
-        return shiftAtDistance.getOrDefault(distanceToSomething, new Vector3D());
+        if (distanceToSomething == null)
+            return new Vector3D();
+        Vector3dInterface v = shiftAtDistance.remove(distanceToSomething);
+        return v == null ? new Vector3D() : v;
     }
 
 

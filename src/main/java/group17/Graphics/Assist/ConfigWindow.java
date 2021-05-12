@@ -1,7 +1,5 @@
 package group17.Graphics.Assist;
 
-import group17.Graphics.Scenes.Scene;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -60,8 +58,7 @@ public class ConfigWindow extends JPanel {
 
 
     /**
-     * DO NOT TELL ME THAT I COULD HAVE DONE THIS IN A BETTER WAY BECAUSE
-     * IT WAS IMPOSSIBLE and i can get mad for it:
+     * THIS IS THE ONLY WAY I KNOW TO DO THIS:
      * METHODS (JAVA CREATES COPIES)
      * LISTS( JAVA CREATES COPIES)
      * STATIC BLOCKS( JAVA CREATES COPIES)
@@ -79,13 +76,16 @@ public class ConfigWindow extends JPanel {
                 texts[i].setText(ENABLE_GRAPHICS ? s[0] : s[1]);
                 texts[i].setForeground(ENABLE_GRAPHICS ? g : r);
                 j.addActionListener(e -> {
+                    //this is necessary
+
                     if (ENABLE_GRAPHICS) {
                         if (simulationInstance.getGraphics() != null && REPORT)
                             simulationInstance.getReporter().report(Thread.currentThread(), new UnsupportedOperationException("CAN't SHUT DOWN GRAPHICS WHILE RUNNING"));
                     } else {
                         if (simulationInstance.getGraphics() == null) {
                             simulationInstance.initGraphics();
-                            simulationInstance.getGraphics().changeScene(Scene.SceneType.STARTING_SCENE);
+                            simulationInstance.reset();
+                            //simulationInstance.getGraphics().changeScene(Scene.SceneType.STARTING_SCENE);
                         }
                     }
                     ENABLE_GRAPHICS = !ENABLE_GRAPHICS;
