@@ -70,7 +70,7 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
         if (!s.equals("EXCEPTION"))
             this.exceptions.put(LocalDateTime.now(), s);
         else
-            this.exceptions.put(LocalDateTime.now(), e.getMessage());
+            this.exceptions.put(LocalDateTime.now(), e.getMessage() + " from Thread :" + t.getName());
     }
 
 
