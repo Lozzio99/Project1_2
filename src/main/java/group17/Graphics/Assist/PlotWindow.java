@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.Arrays;
 
-import static java.lang.Math.sin;
+import static java.lang.StrictMath.sin;
 
 public class PlotWindow extends JPanel {
 
