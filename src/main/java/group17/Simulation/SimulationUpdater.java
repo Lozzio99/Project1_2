@@ -55,15 +55,20 @@ public class SimulationUpdater implements UpdaterInterface {
     @Override
     public synchronized void run() {
         // ROCKET DECISION
-        if (INSERT_ROCKET) {
-            Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
-            if (DEBUG && !decision.isZero())
-                System.out.println(decision);
-            simulationInstance.getSystem().getRocket().addAcceleration(decision);
-            simulationInstance.getSystem().getRocket().update();
+        try {
+            if (INSERT_ROCKET) {
+                Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
+                if (DEBUG && !decision.isZero() && REPORT)
+                    simulationInstance.getReporter().report("DECISION -> " + decision);
+                simulationInstance.getSystem().getRocket().addAcceleration(decision);
+                simulationInstance.getSystem().getRocket().update();
+            }
+            simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
+            simulationInstance.getSystem().getClock().step(STEP_SIZE);
+        } catch (Exception e) {
+            if (REPORT)
+                simulationInstance.getReporter().report(Thread.currentThread(), e);
         }
-        simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
-        simulationInstance.getSystem().getClock().step(STEP_SIZE);
     }
 
     @Override
