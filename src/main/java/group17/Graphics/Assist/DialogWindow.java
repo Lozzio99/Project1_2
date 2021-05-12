@@ -33,7 +33,7 @@ public class DialogWindow {
         icons.add(loadIcon("stats.png"));
         tips.add("Stats and evaluations");
         tabs.add("PLOT");
-        backGrounds.add(new Color(184, 255, 184, 211));
+        backGrounds.add(new Color(114, 184, 255, 211));
         icons.add(loadIcon("plot.png"));
         tips.add("Visual plot");
         tabs.add("ROCKET");
@@ -59,7 +59,7 @@ public class DialogWindow {
 
     }
 
-    Color c = new Color(76, 77, 78, 211);
+    Color c = new Color(114, 184, 255, 211);
 
     private final JFrame frame;
     private JTabbedPane mainPane;
@@ -137,13 +137,16 @@ public class DialogWindow {
     public Component configCard(int index) {
         switch (index) {
             case 0 -> {
-                return initMenu(index);
+                return initMenu();
             }
             case 1 -> {
-                return initLaunch(index);
+                return this.assist = new LaunchAssist();
+            }
+            case 3 -> {
+                return new PlotWindow().init().test();
             }
             case 8 -> {
-                return initSettings(index);
+                return new ConfigWindow();
             }
             default -> {
                 return new JPanel();
@@ -151,16 +154,8 @@ public class DialogWindow {
         }
     }
 
-    private Component initSettings(int index) {
-        return new ConfigWindow();
-    }
 
-    private Component initLaunch(int index) {
-        this.assist = new LaunchAssist();
-        return this.assist;
-    }
-
-    private Component initMenu(int index) {
+    private Component initMenu() {
         DialogWindow d = this;
         this.menu = new MainMenu() {
             @Override
@@ -172,7 +167,7 @@ public class DialogWindow {
                     simulationInstance.init();
                     simulationInstance.start();
                 }
-                enable(1, 2, 4, 5, 8);
+                enable(1, 2, 3, 4, 5, 8);
                 mainPane.setSelectedIndex(1);
             }
         };

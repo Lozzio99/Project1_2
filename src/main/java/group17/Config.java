@@ -29,7 +29,6 @@ public class Config {
     public static int SOLVER = RUNGE_KUTTA_SOLVER;
     public static int CPU_LEVEL = 1;
 
-
     public static Boolean REPORT = true;
     public static Boolean DEBUG = false;
     //which simulationInstance is going to run
