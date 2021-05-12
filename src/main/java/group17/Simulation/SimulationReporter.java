@@ -67,7 +67,10 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
     @Override
     public void report(Thread t, Throwable e) {
         final String s = this.parseException(e.getMessage() + " from Thread :" + t.getName());
-        this.exceptions.put(LocalDateTime.now(), s);
+        if (!s.equals("EXCEPTION"))
+            this.exceptions.put(LocalDateTime.now(), s);
+        else
+            this.exceptions.put(LocalDateTime.now(), e.getMessage());
     }
 
 

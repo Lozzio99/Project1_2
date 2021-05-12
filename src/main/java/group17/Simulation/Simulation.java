@@ -59,7 +59,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public void reset() {
         this.setWaiting(true);   //first of all
-        this.system.reset();
+        this.getSystem().reset();
     }
 
     @Override

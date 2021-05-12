@@ -11,7 +11,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.ENABLE_GRAPHICS;
 import static group17.Config.SOLVER;
 import static group17.Main.simulationInstance;
 
@@ -167,7 +166,6 @@ public class DialogWindow {
             @Override
             public void startSimulation() {
                 SOLVER = currentSolver;
-                System.out.println(ENABLE_GRAPHICS);
                 if (simulationInstance == null) {
                     simulationInstance = new Simulation();
                     simulationInstance.setAssist(d);
@@ -175,6 +173,7 @@ public class DialogWindow {
                     simulationInstance.start();
                 }
                 enable(1, 2, 4, 5, 8);
+                mainPane.setSelectedIndex(1);
             }
         };
         return this.menu.configFrame(new JPanel());

@@ -92,8 +92,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.currentScene.addMouseMotionListener(this.mouse);
         this.frame.add(this.currentScene);
         this.frame.setVisible(true);
-        this.frame.repaint();
-
+        this.frame.repaint();  //call fast the ui
         //optional
     }
 
