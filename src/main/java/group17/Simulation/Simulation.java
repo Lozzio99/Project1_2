@@ -29,14 +29,11 @@ public class Simulation implements SimulationInterface {
     public void init() {
         if (REPORT)
             this.initReporter();   //first thing, will check all exceptions
-
         this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
-
         if (LAUNCH_ASSIST)
             this.initAssist();
         if (ENABLE_GRAPHICS)
             this.initGraphics();
-
         this.initUpdater();  //last thing, will start the simulation if it's the only one running
 
     }
