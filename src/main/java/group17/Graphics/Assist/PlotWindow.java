@@ -133,6 +133,7 @@ public class PlotWindow extends JPanel {
                     g.draw(new Line2D.Double(p1[i + 1].getX(), p1[i + 1].getY(), p1[i].getX(), p1[i].getY()));
                 }
             }
+            g.setClip(0, 0, getWidth(), getHeight());
         }
 
 

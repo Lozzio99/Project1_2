@@ -37,7 +37,7 @@ public class DialogWindow {
         icons.add(loadIcon("plot.png"));
         tips.add("Visual plot");
         tabs.add("ROCKET");
-        backGrounds.add(new Color(255, 85, 85, 211));
+        backGrounds.add(new Color(181, 252, 233, 211));
         icons.add(loadIcon("rocket.png"));
         tips.add("Rocket flight and mission infos");
         tabs.add("PERFORMANCE");
@@ -59,7 +59,7 @@ public class DialogWindow {
 
     }
 
-    Color c = new Color(114, 184, 255, 211);
+    Color c = new Color(181, 252, 233, 211);
 
     private final JFrame frame;
     private JTabbedPane mainPane;
@@ -82,9 +82,8 @@ public class DialogWindow {
 
 
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
         }
-        /* Turn off metal's use of bold fonts */
 
         this.frame = new JFrame();
         this.frame.setSize(new Dimension(1080, 620));
@@ -92,6 +91,11 @@ public class DialogWindow {
         this.frame.getContentPane().add(makeTabs(), BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.frame.setVisible(true);
+    }
+
+    public void reset() {
+        //TODO : implement all changes here
+        ((RocketWindow) this.mainPane.getComponentAt(4)).reset(); // rocket fuel
     }
 
     private static ImageIcon loadIcon(String path) {
@@ -144,6 +148,9 @@ public class DialogWindow {
             }
             case 3 -> {
                 return new PlotWindow().init().test();
+            }
+            case 4 -> {
+                return new RocketWindow();
             }
             case 8 -> {
                 return new ConfigWindow();
