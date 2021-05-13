@@ -102,6 +102,7 @@ public class ConfigWindow extends JPanel {
                     LAUNCH_ASSIST = !LAUNCH_ASSIST;
                     texts[i].setText(LAUNCH_ASSIST ? s[0] : s[1]);
                     texts[i].setForeground(LAUNCH_ASSIST ? g : r);
+                    simulationInstance.reset();
                 });
                 j.addChangeListener(e -> {
                     if (LAUNCH_ASSIST)
@@ -192,12 +193,13 @@ public class ConfigWindow extends JPanel {
                     INSERT_ROCKET = !INSERT_ROCKET;
                     texts[i].setText(INSERT_ROCKET ? s[0] : s[1]);
                     texts[i].setForeground(INSERT_ROCKET ? g : r);
+                    simulationInstance.reset();
                 });
                 j.addChangeListener(e -> {
-                    if (INSERT_ROCKET)
-                        userDialog.enable(1, 4);
-                    else
-                        userDialog.disable(1, 4);
+                    if (INSERT_ROCKET) {
+                        userDialog.enable(4);
+                    } else
+                        userDialog.disable(4);
                 });
             }
             case 8 -> {

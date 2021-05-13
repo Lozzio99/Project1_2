@@ -11,7 +11,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.SOLVER;
+import static group17.Config.*;
 import static group17.Main.simulationInstance;
 
 public class UserDialogWindow {
@@ -57,6 +57,16 @@ public class UserDialogWindow {
         icons.add(loadIcon("settings.png"));
         tips.add("Configure settings");
 
+    }
+
+    public void enableTabs() {
+        if (LAUNCH_ASSIST) enable(1);
+        if (REPORT) enable(2);
+        if (PLOT) enable(3);
+        if (ROCKET_INFO) enable(4);
+        if (PERFORMANCE) enable(5);
+        if (ERROR_EVALUATION) enable(6);
+        enable(8);
     }
 
     Color c = new Color(181, 252, 233, 211);
@@ -180,12 +190,13 @@ public class UserDialogWindow {
                     simulationInstance.init();
                     simulationInstance.start();
                 }
-                enable(1, 2, 3, 4, 5, 8);
+                enableTabs();
                 mainPane.setSelectedIndex(1);
             }
         };
         return this.menu.configFrame(new JPanel());
     }
+
 
     public MainMenu getMainMenu() {
         return menu;
