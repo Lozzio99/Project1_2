@@ -14,7 +14,6 @@ import group17.Math.Vector3D;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicReference;
@@ -53,7 +52,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
     protected JFrame frame;
-    protected Component parentPanel;
 
     public AbstractLaunchAssist() {
         //this.setFrame();
@@ -115,11 +113,11 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
         if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
-            Vector3dInterface v = new Vector3D(getLaunchVelocityX(),
-                    getLaunchVelocityY(),
-                    getLaunchVelocityZ());
-            if (!v.isZero())
+            Vector3dInterface v = new Vector3D(getLaunchVelocityX(), getLaunchVelocityY(), getLaunchVelocityZ());
+            if (!v.isZero()) {
                 simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
+                System.out.println(v);
+            }
         }
     }
 

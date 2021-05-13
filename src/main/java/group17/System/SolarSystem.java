@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static group17.Config.INSERT_ROCKET;
+import static group17.Config.LAUNCH_DATE;
 import static group17.System.Bodies.Planet.PlanetsEnum.*;
 import static group17.System.Bodies.Satellite.SatellitesEnum.MOON;
 import static group17.System.Bodies.Satellite.SatellitesEnum.TITAN;
@@ -73,7 +74,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initClock() {
-        this.clock = new Clock().setLaunchDay();
+        this.clock = LAUNCH_DATE = new Clock().setLaunchDay();
     }
 
     @Override

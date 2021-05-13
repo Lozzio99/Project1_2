@@ -48,7 +48,6 @@ public class RocketSchedule {
         //once we know them we just plan them here
 
         this.set(LAUNCH_DATE, new Vector3D(490, -838, -710));
-
     }
 
 
@@ -60,20 +59,17 @@ public class RocketSchedule {
     }
 
     public Vector3dInterface getDesiredVelocity(Clock clock) {
-        if (clock == null)
-            return new Vector3D();
+        if (clock == null) return new Vector3D();
         return shiftAtTime.getOrDefault(clock, new Vector3D());
     }
 
     public Vector3dInterface getDesiredVelocity(StateInterface thisState) {
-        if (thisState == null)
-            return new Vector3D();
+        if (thisState == null) return new Vector3D();
         return shiftAtLocation.getOrDefault(thisState, new Vector3D());
     }
 
     public Vector3dInterface getDesiredVelocity(Vector3dInterface distanceToSomething) {
-        if (distanceToSomething == null)
-            return new Vector3D();
+        if (distanceToSomething == null) return new Vector3D();
         Vector3dInterface v = shiftAtDistance.remove(distanceToSomething);
         return v == null ? new Vector3D() : v;
     }

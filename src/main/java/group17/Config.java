@@ -22,7 +22,7 @@ public class Config {
     public static final int MAX_CPU = 5;
     public static final double G = 6.67408e-11;
     public static Boolean LAUNCH_ASSIST = true;
-    public static Boolean ENABLE_GRAPHICS = false;
+    public static Boolean ENABLE_GRAPHICS = true;
     public static int SOLVER = RUNGE_KUTTA_SOLVER;
     public static int CPU_LEVEL = 1;
 
