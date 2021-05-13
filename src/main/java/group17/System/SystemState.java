@@ -68,6 +68,8 @@ public class SystemState implements StateInterface {
                 s.append(simulationInstance.getSystem().getCelestialBodies().get(i).toString());
                 s.append("\tPV:\t");
                 s.append(this.positions.get(i).toString()).append("\n");
+                s.append("\tVV:\t");
+                s.append(this.rateOfChange.getVelocities().get(i).toString()).append("\n");
             }
         }
         s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

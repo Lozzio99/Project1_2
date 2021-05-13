@@ -61,9 +61,9 @@ public class SimulationUpdater implements UpdaterInterface {
                 Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
                 if (!DEBUG && !decision.isZero() && REPORT) {
                     simulationInstance.getReporter().report("DECISION -> " + decision);
+                    simulationInstance.getSystem().getRocket().evaluateLoss(decision,
+                            simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().get(11));
                 }
-                simulationInstance.getSystem().getRocket().addAcceleration(decision);
-                simulationInstance.getSystem().getRocket().update();
             }
             simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
             simulationInstance.getSystem().getClock().step(STEP_SIZE);

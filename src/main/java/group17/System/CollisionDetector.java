@@ -4,6 +4,7 @@ import group17.Interfaces.ReporterInterface;
 import group17.Interfaces.SystemInterface;
 import group17.System.Bodies.CelestialBody;
 
+import static group17.Config.CHECK_COLLISIONS;
 import static group17.Config.REPORT;
 import static group17.Main.simulationInstance;
 
@@ -15,17 +16,16 @@ public class CollisionDetector {
 
 
     public static void checkCollided(CelestialBody a, CelestialBody b, double distm) {
+        if (!CHECK_COLLISIONS) return;
         collision = false;
         output = "";
         if (distm < (b.getRADIUS() + a.getRADIUS())) {
             if (a.isCollided() || b.isCollided())
                 return;
-
             collision = true;
             output += "[ " + a + " - " + b + " ]";
             if (b.getMASS() < a.getMASS()) {
                 b.setCollided(true);
-
                 a.setMASS(a.getMASS() + b.getMASS()); // conservation of mass
                 a.setRADIUS(a.getRADIUS() + b.getRADIUS());  //very very stupid
             } else {

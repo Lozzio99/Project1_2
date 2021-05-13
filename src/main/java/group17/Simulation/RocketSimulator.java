@@ -11,40 +11,17 @@ import static group17.Main.simulationInstance;
 public class RocketSimulator extends ProbeSimulator implements RocketInterface {
 
     // Variables
+    double startFuel = 2e4;
     double fuelMass;
-    double burnRate;
-    double specificImpulse;
-    boolean burning = false;
-    double burnPercentage;
+    double totalMass;
+    double exhaustVelocity = 2e4;
+    double maxThrust = 3e7;
+
     Vector3dInterface localAcceleration;
 
 
     public RocketSimulator() {
         this.localAcceleration = new Vector3D();
-    }
-
-
-    @Override
-    public void startBurn(Vector3dInterface direction, double percentage) {
-        burning = true;
-        burnPercentage = percentage;
-    }
-
-    @Override
-    public void startBurn(Vector3dInterface direction, double percentage, int duration) {
-        burning = true;
-    }
-
-
-    @Override
-    public void stopBurn() {
-        burning = false;
-        burnPercentage = 0;
-    }
-
-    @Override
-    public void updateDV() {
-        this.getVectorVelocity().add(this.localAcceleration);
     }
 
     public void addAcceleration(Vector3dInterface toAdd) {
@@ -59,12 +36,27 @@ public class RocketSimulator extends ProbeSimulator implements RocketInterface {
         this.localAcceleration = localAcceleration;
     }
 
-    public void updateMass(double currBurnPercentage) {
-        double burnAmount = this.burnRate * currBurnPercentage;
+    /*
+         desiredVelocity - obtain from Newton-Raphson method
+         stepSize used to determine if m_dot * Ve > maxThrust
+         y for getting currentVelocity of Rocket
+    */
+    public double evaluateLoss(Vector3dInterface desiredVelocity, Vector3dInterface actualVelocity) {
+        double deltaV = desiredVelocity.sub(actualVelocity).norm();
+        double propellantConsumed = (fuelMass * deltaV) / (this.exhaustVelocity + deltaV);
+        if (exhaustVelocity * (propellantConsumed / STEP_SIZE) > maxThrust) {
+            System.out.println("Max Thrust exceeded!!!");
+        }
+        simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().set(11, desiredVelocity);
+        updateMass(propellantConsumed);
+        return propellantConsumed;
+    }
 
-        if (this.getFuelMass() - burnAmount < 0) {
-            this.setMASS(this.getMASS() - burnAmount);
-            this.setFuelMass(this.getFuelMass() - burnAmount);
+
+    public void updateMass(double propellantConsumed) {
+        if (this.getFuelMass() - propellantConsumed > 0) {
+            this.setMASS(this.totalMass - propellantConsumed);
+            this.setFuelMass(this.fuelMass - propellantConsumed);
         } else {
             System.out.println("Out of fuel!");
         }
@@ -85,6 +77,11 @@ public class RocketSimulator extends ProbeSimulator implements RocketInterface {
         return "ROCKET";
     }
 
+    public String info() {
+        return "Dry Mass: " + this.getMASS() + "\n" +
+                "Fuel Mass: " + this.fuelMass + "\n";
+    }
+
     @Override
     public void update() {
         if (!this.isCollided()) {
@@ -93,10 +90,14 @@ public class RocketSimulator extends ProbeSimulator implements RocketInterface {
         }
     }
 
+
     @Override
     public void initProperties() {
         super.initProperties();
         this.localAcceleration = new Vector3D();
+        this.fuelMass = this.startFuel;
+        this.totalMass = this.startFuel + this.getMASS();
+        this.setMASS(this.totalMass);
     }
 
 }

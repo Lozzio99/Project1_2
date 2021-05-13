@@ -23,7 +23,7 @@ public class Config {
     public static final double G = 6.67408e-11;
     public static Boolean LAUNCH_ASSIST = true;
     public static Boolean ENABLE_GRAPHICS = true;
-    public static int SOLVER = RUNGE_KUTTA_SOLVER;
+    public static int SOLVER = EULER_SOLVER;
     public static int CPU_LEVEL = 1;
 
     public static Boolean REPORT = true;
@@ -34,8 +34,9 @@ public class Config {
     public static Boolean ROCKET_INFO = true;
     public static Boolean PERFORMANCE = true;
     public static Boolean ERROR_EVALUATION = true;
+    public static Boolean CHECK_COLLISIONS = false;
     public static Boolean PLOT = false;
-    public static double STEP_SIZE = 600;
+    public static double STEP_SIZE = 200;
 
 
     //TODO : set this to be updated for particles simulationInstance

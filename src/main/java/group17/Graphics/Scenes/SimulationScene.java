@@ -50,7 +50,7 @@ public class SimulationScene extends Scene {
                 }
 
             }
-        } catch (NullPointerException e) {
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
             if (REPORT)
                 simulationInstance.getReporter().report("Removed body from graphics");
             this.init();
@@ -96,7 +96,8 @@ public class SimulationScene extends Scene {
             Point3DConverter.rotateAxisX(this.planetsPositions[i], false, y);
 
             if (DRAW_TRAJECTORIES) {
-                this.trajectories[i].add(this.planetsPositions[i]);
+                if (!simulationInstance.waiting())
+                    this.trajectories[i].add(this.planetsPositions[i]);
                 for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
                     if (this.trajectories[i].getTrajectories()[k] == null)
                         break;

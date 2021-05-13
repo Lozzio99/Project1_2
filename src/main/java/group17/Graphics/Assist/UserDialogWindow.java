@@ -63,6 +63,7 @@ public class UserDialogWindow {
     Color c = new Color(181, 252, 233, 211);
     private JTabbedPane mainPane;
     private LaunchAssist assist;
+    private SimulationDataWindow dataWindow;
     private MainMenu menu;
     public UserDialogWindow() {
         try {
@@ -74,10 +75,10 @@ public class UserDialogWindow {
             MetalLookAndFeel.setCurrentTheme(new OceanTheme());
              */
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             //
-
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException ex) {
             //ex.printStackTrace();
@@ -154,6 +155,9 @@ public class UserDialogWindow {
             case 1 -> {
                 return this.assist = new LaunchAssist();
             }
+            case 2 -> {
+                return this.dataWindow = new SimulationDataWindow();
+            }
             case 3 -> {
                 return new PlotWindow().init().test();
             }
@@ -206,5 +210,9 @@ public class UserDialogWindow {
 
     public JTabbedPane getMainPane() {
         return mainPane;
+    }
+
+    public SimulationDataWindow getOutputWindow() {
+        return this.dataWindow;
     }
 }

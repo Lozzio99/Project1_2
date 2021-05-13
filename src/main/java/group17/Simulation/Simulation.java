@@ -1,6 +1,7 @@
 package group17.Simulation;
 
 import group17.Graphics.Assist.LaunchAssist;
+import group17.Graphics.Assist.SimulationDataWindow;
 import group17.Graphics.Assist.UserDialogWindow;
 import group17.Graphics.GraphicsManager;
 import group17.Interfaces.GraphicsInterface;
@@ -20,6 +21,7 @@ public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
     private LaunchAssist assist;
+    private SimulationDataWindow outputWindow;
     private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
@@ -29,6 +31,7 @@ public class Simulation implements SimulationInterface {
     public void init() {
         if (REPORT)
             this.initReporter();   //first thing, will check all exceptions
+
         this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
         if (LAUNCH_ASSIST)
             this.initAssist();
@@ -63,6 +66,7 @@ public class Simulation implements SimulationInterface {
             if (REPORT)
                 this.getReporter().report("START SIMULATION");
         }
+        this.getUpdater().getSchedule().init();
     }
 
     @Override
@@ -144,6 +148,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public void setAssist(UserDialogWindow assist) {
         this.assist = assist.getLaunchAssist();
+        this.assist.setOutputWindow(assist.getOutputWindow());
     }
 
     @Override

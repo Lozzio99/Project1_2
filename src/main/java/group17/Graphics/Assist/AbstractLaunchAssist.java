@@ -52,6 +52,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
     protected JFrame frame;
+    protected SimulationDataWindow outputWindow;
 
     public AbstractLaunchAssist() {
         //this.setFrame();
@@ -75,6 +76,10 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      * @return
      */
     protected abstract JPanel createSetUpPanel();
+
+    public void setOutputWindow(SimulationDataWindow w) {
+        this.outputWindow = w;
+    }
 
     public void setDate() {
         this.setSsField("" + simulationInstance.getSystem().getClock().getSec());
@@ -313,7 +318,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
             this.setDate();
             if (t > 50) {
                 try {
-                    this.setOutput(simulationInstance.getSystem().toString());
+                    this.outputWindow.setOutput(simulationInstance.getSystem().toString());
                 } catch (NullPointerException | IndexOutOfBoundsException ignored) {
                 }
                 t = 0;
@@ -363,7 +368,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      * @since 19/02/2021
      */
 
-    class clearBtnListener implements ActionListener {
+    class resetBtnListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -391,21 +396,27 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!simulationInstance.waiting())
-                return;
+            if (!simulationInstance.waiting()) return;
             userDialog.enable(3, 6);
-
-            // TODO Auto-generated method stub
-            if (ENABLE_GRAPHICS) {
-                simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
-            }
-            if (REPORT)
-                simulationInstance.getReporter().report("START SIMULATION");
+            if (ENABLE_GRAPHICS) simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+            if (REPORT) simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
-
             simulationInstance.getSystem(); /* lock will make it wait */
-
             simulationInstance.setWaiting(false);
+        }
+    }
+
+
+    class pauseBtnListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (!simulationInstance.waiting()) {
+                ((JButton) e.getSource()).setText("RESUME");
+                simulationInstance.setWaiting(true);
+            } else {
+                ((JButton) e.getSource()).setText("PAUSE");
+                simulationInstance.setWaiting(false);
+            }
         }
     }
 
