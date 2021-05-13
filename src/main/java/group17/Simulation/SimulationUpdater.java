@@ -46,7 +46,7 @@ public class SimulationUpdater implements UpdaterInterface {
     }
 
     public void start() {
-        this.updaterThread = new Thread(Thread.currentThread().getThreadGroup(), this, "Simulation Updater", 40);
+        this.updaterThread = new Thread(Thread.currentThread().getThreadGroup(), this, "Simulation Updater", 10);
         this.updaterThread.setDaemon(true);
         this.updaterThread.setPriority(8);
         this.updaterThread.start();

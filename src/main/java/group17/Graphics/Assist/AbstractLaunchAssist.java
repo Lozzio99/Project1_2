@@ -329,7 +329,8 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     }
 
     public void start() {
-        this.dialogThread.set(new Thread(this, "Dialog Thread"));
+        this.dialogThread.set(new Thread(Thread.currentThread().getThreadGroup(), this, "Dialog Thread", 10));
+        this.dialogThread.get().setPriority(4);
         this.dialogThread.get().setDaemon(true);
         this.dialogThread.get().start();
     }
