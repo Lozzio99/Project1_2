@@ -10,12 +10,7 @@ public class Config {
     public static final int NUMERICAL_SIMULATION = 2;
     public static final int PARTICLES_SIMULATION = 1;
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
-
-    public static Boolean LAUNCH_ASSIST = true;
-    public static Boolean ENABLE_GRAPHICS = false;
     public static final double FPS = 80;
-
-
     public static final int EULER_SOLVER = 1;
     public static final int RUNGE_KUTTA_SOLVER = 2;
     public static final int VERLET_VEL_SOLVER = 3;
@@ -26,6 +21,8 @@ public class Config {
     public static final int CPU_LEVEL4 = 4;
     public static final int MAX_CPU = 5;
     public static final double G = 6.67408e-11;
+    public static Boolean LAUNCH_ASSIST = true;
+    public static Boolean ENABLE_GRAPHICS = false;
     public static int SOLVER = RUNGE_KUTTA_SOLVER;
     public static int CPU_LEVEL = 1;
 

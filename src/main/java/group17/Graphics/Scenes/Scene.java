@@ -223,7 +223,7 @@ public abstract class Scene extends JPanel {
          */
         SIMULATION_SCENE,
         /**
-         * @// TODO: 19/04/2021 implement this back
+         * TODO: 19/04/2021 implement this back
          */
         TRAJECTORIES
     }

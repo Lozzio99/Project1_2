@@ -14,10 +14,9 @@ public abstract class MainMenu {
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 600;
     static protected int currentSolver = SOLVER;
+    static JFrame frame;
     protected int currentSimulationType = SIMULATION_LEVEL;
     protected int currentCPULevel = CPU_LEVEL;
-
-    static JFrame frame;
     JLabel titleLabel;
 
 
@@ -78,8 +77,6 @@ public abstract class MainMenu {
         );
 
 
-
-
         JSlider trajectoryLengthSlider = new JSlider();
         trajectoryLengthSlider.setMinimum(0);
         trajectoryLengthSlider.setMaximum(10000);
@@ -118,7 +115,6 @@ public abstract class MainMenu {
 
 
         controlPanel.setBounds(10, 50, FRAME_WIDTH - 67, FRAME_HEIGHT - 97);
-
 
 
         // --- Horizontal Groups ---

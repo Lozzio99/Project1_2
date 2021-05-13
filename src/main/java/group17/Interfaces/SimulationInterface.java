@@ -10,28 +10,31 @@ public interface SimulationInterface {
 
     // Updater
     UpdaterInterface getUpdater();
+
     void initUpdater();
+
     void startUpdater();
 
 
     //Graphics
     GraphicsInterface getGraphics();
+
     void initGraphics();
+
     void startGraphics();
 
 
     //Assist
     LaunchAssist getAssist();
 
+    void setAssist(UserDialogWindow assist);
+
     void initAssist();
 
     void startAssist();
 
-
     //System
     SystemInterface getSystem();
-
-    void setAssist(UserDialogWindow assist);
 
     void initSystem();
 

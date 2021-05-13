@@ -1,4 +1,3 @@
-
 /**
  * This class handles the mouse input for the GUI.
  *

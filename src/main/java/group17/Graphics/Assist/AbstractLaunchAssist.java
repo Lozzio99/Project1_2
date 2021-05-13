@@ -30,8 +30,8 @@ import static group17.Main.userDialog;
  */
 public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
+    private static int t = 0;
     protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
-    protected JFrame frame;
     protected final JTextArea textArea = new JTextArea(10, 30);
     protected final JTextField stSizeField = new JTextField();
     protected final JTextField massSizeField = new JTextField();
@@ -50,12 +50,10 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     protected final JSlider xVelSlider = new JSlider(-30000, 30000);
     protected final JSlider yVelSlider = new JSlider(-30000, 30000);
     protected final JSlider zVelSlider = new JSlider(-30000, 30000);
-
-    protected Component parentPanel;
-
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
-
+    protected JFrame frame;
+    protected Component parentPanel;
 
     public AbstractLaunchAssist() {
         //this.setFrame();
@@ -79,7 +77,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      * @return
      */
     protected abstract JPanel createSetUpPanel();
-
 
     public void setDate() {
         this.setSsField("" + simulationInstance.getSystem().getClock().getSec());
@@ -125,7 +122,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
                 simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
         }
     }
-
 
     public void setMonthField(String mmField) {
         this.mmField.setText(mmField);
@@ -313,7 +309,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.massSizeField.setText(ssField);
     }
 
-    private static int t = 0;
     @Override
     public synchronized void run() {
         if (!simulationInstance.waiting()) {

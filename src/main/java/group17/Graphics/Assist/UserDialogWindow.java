@@ -59,23 +59,11 @@ public class UserDialogWindow {
 
     }
 
-    public void enableTabs() {
-        if (LAUNCH_ASSIST) enable(1);
-        if (REPORT) enable(2);
-        if (PLOT) enable(3);
-        if (ROCKET_INFO) enable(4);
-        if (PERFORMANCE) enable(5);
-        if (ERROR_EVALUATION) enable(6);
-        enable(8);
-    }
-
-    Color c = new Color(181, 252, 233, 211);
-
     private final JFrame frame;
+    Color c = new Color(181, 252, 233, 211);
     private JTabbedPane mainPane;
     private LaunchAssist assist;
     private MainMenu menu;
-
     public UserDialogWindow() {
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -103,16 +91,26 @@ public class UserDialogWindow {
         this.frame.setVisible(true);
     }
 
-    public void reset() {
-        //TODO : implement all changes here
-        ((RocketWindow) this.mainPane.getComponentAt(4)).reset(); // rocket fuel
-    }
-
     private static ImageIcon loadIcon(String path) {
         ImageIcon i = new ImageIcon(UserDialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
         Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         i.setImage(scaled);
         return i;
+    }
+
+    public void enableTabs() {
+        if (LAUNCH_ASSIST) enable(1);
+        if (REPORT) enable(2);
+        if (PLOT) enable(3);
+        if (ROCKET_INFO) enable(4);
+        if (PERFORMANCE) enable(5);
+        if (ERROR_EVALUATION) enable(6);
+        enable(8);
+    }
+
+    public void reset() {
+        //TODO : implement all changes here
+        ((RocketWindow) this.mainPane.getComponentAt(4)).reset(); // rocket fuel
     }
 
     private Component makeTabs() {

@@ -22,6 +22,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     protected final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
     protected MouseInput mouse;
     protected Scene currentScene;
+    int frames = 0;
+    double t = System.currentTimeMillis();
     private JFrame frame;
     private WindowEvent listen;
 
@@ -116,8 +118,6 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         }
     }
 
-    int frames = 0;
-    double t = System.currentTimeMillis();
     @Override
     public synchronized void run() {
 

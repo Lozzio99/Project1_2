@@ -169,7 +169,7 @@ public class PerformanceWindow extends JPanel {
         runtimeMemory.addActionListener(x -> {
             start(1);
         });
-        JButton physicalMemory = new JButton("physicalMemory memory");
+        JButton physicalMemory = new JButton("physical memory");
         physicalMemory.addActionListener(x -> {
             start(2);
         });

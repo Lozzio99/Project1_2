@@ -35,6 +35,14 @@ public class SystemState implements StateInterface {
         positions.add(positionsVector);
     }
 
+    public static void main(String[] args) {
+        System.out.println(
+                new SystemState()
+                        .state0(
+                                List.of(new Star(), new Planet(EARTH), new Satellite(ASTEROID))).hashCode());
+
+    }
+
     @Override
     public List<Vector3dInterface> getPositions() {
         return this.positions;
@@ -68,18 +76,9 @@ public class SystemState implements StateInterface {
         return s.toString().trim();
     }
 
-
     @Override
     public RateInterface getRateOfChange() {
         return this.rateOfChange;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(
-                new SystemState()
-                        .state0(
-                                List.of(new Star(), new Planet(EARTH), new Satellite(ASTEROID))).hashCode());
-
     }
 
     @Override

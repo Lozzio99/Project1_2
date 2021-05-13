@@ -13,6 +13,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
     private ODEFunctionInterface singleCoreF;
     private boolean checked;
+
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) ->
         {

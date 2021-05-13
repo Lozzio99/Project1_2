@@ -11,9 +11,9 @@ public class Vector3D implements Vector3dInterface {
 
     /* TODO : think if we need to create new objects or if we can just modify the current vector */
 
+    static double epsilon = 1e-8;
     double x, y, z;
     boolean marked;
-    static double epsilon = 1e-8;
 
     public Vector3D() {
         this.x = this.y = this.z = 0;

@@ -2,7 +2,6 @@ package group17.System;
 
 import group17.Interfaces.ReporterInterface;
 import group17.Interfaces.SystemInterface;
-
 import group17.System.Bodies.CelestialBody;
 
 import static group17.Config.REPORT;

@@ -59,7 +59,6 @@ public class EulerSolver implements ODESolverInterface {
     };
 
 
-
     //x1 = x0 + h*v0;
     //x2 = x1 + h*v1;
     //v1 = v0 + h* f(position)
