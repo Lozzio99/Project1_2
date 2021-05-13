@@ -11,6 +11,7 @@ import group17.System.Bodies.Star;
 import java.util.ArrayList;
 import java.util.List;
 
+import static group17.Config.INSERT_ROCKET;
 import static group17.System.Bodies.Planet.PlanetsEnum.*;
 import static group17.System.Bodies.Satellite.SatellitesEnum.MOON;
 import static group17.System.Bodies.Satellite.SatellitesEnum.TITAN;
@@ -83,7 +84,8 @@ public class SolarSystem implements SystemInterface {
     @Override
     public void reset() {
         this.initPlanets();
-        this.initRocket();
+        if (INSERT_ROCKET)
+            this.initRocket();
         this.initClock();
         this.initialState();
     }

@@ -34,6 +34,7 @@ public class Simulation implements SimulationInterface {
             this.initAssist();
         if (ENABLE_GRAPHICS)
             this.initGraphics();
+
         this.initUpdater();  //last thing, will start the simulation if it's the only one running
 
     }
@@ -57,6 +58,11 @@ public class Simulation implements SimulationInterface {
     public void reset() {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
+        if (!LAUNCH_ASSIST) {
+            this.setWaiting(false);
+            if (REPORT)
+                this.getReporter().report("START SIMULATION");
+        }
     }
 
     @Override
