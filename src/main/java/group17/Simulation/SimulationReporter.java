@@ -29,7 +29,7 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
 
     @Override
     public void start() {
-        this.thread = new Thread(this, "Simulation Reporter");
+        this.thread = new Thread(Thread.currentThread().getThreadGroup(), this, "Simulation Reporter", 10);
         this.thread.setDaemon(true);
         this.thread.setUncaughtExceptionHandler(this);
         this.thread.start();
@@ -67,7 +67,10 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
     @Override
     public void report(Thread t, Throwable e) {
         final String s = this.parseException(e.getMessage() + " from Thread :" + t.getName());
-        this.exceptions.put(LocalDateTime.now(), s);
+        if (!s.equals("EXCEPTION"))
+            this.exceptions.put(LocalDateTime.now(), s);
+        else
+            this.exceptions.put(LocalDateTime.now(), e.getMessage() + " from Thread :" + t.getName());
     }
 
 

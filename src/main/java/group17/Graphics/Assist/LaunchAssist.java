@@ -1,27 +1,32 @@
-package group17.Graphics;
+package group17.Graphics.Assist;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class AssistFrame extends DialogFrame {
+public class LaunchAssist extends AbstractLaunchAssist {
+
+    public LaunchAssist() {
+        super();
+    }
 
 
     @Override
     public void init() {
-        JPanel wrapperPanel = this;
-        wrapperPanel.setLayout(new GridLayout(1, 2));
-        wrapperPanel.add(createSetUpPanel());
+        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.setPreferredSize(new Dimension(1000, 500));
+        this.setLayout(new GridLayout(1, 2, 20, 20));
+        this.add(createSetUpPanel());
         JScrollPane scrollPane = new JScrollPane(textArea);
-        wrapperPanel.add(scrollPane);
-        this.frame.add(wrapperPanel);
-        this.frame.setVisible(true);
-        this.frame.setFocusable(true);
+        this.add(scrollPane);
+        this.setFocusable(true);
     }
 
     @Override
     public JPanel createSetUpPanel() {
         JPanel inputPanel = new JPanel();
-        inputPanel.setLayout(new GridLayout(7, 1));
+        inputPanel.setBackground(new Color(101, 101, 101, 226));
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        inputPanel.setLayout(new GridLayout(7, 1, 10, 20));
         inputPanel.add(stepSizePanel());
         inputPanel.add(massPanel());
         inputPanel.add(launchVelocityPanel());
@@ -104,10 +109,12 @@ public class AssistFrame extends DialogFrame {
 
     public JPanel buttonsPanel() {
         JPanel btnPanel = new JPanel();
-        JButton startButton = new JButton("Start simulationInstance");
+        btnPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnPanel.setLayout(new GridLayout(1, 2, 30, 0));
+        JButton startButton = new JButton("LAUNCH");
         startButton.addActionListener(new startBtnListener());
         btnPanel.add(startButton);
-        JButton clearButton = new JButton("Reset Simulation");
+        JButton clearButton = new JButton("RESET");
         //to be implemented
         clearButton.addActionListener(new clearBtnListener());
         btnPanel.add(clearButton);

@@ -1,6 +1,7 @@
 package group17.Simulation;
 
-import group17.Graphics.AssistFrame;
+import group17.Graphics.Assist.LaunchAssist;
+import group17.Graphics.Assist.UserDialogWindow;
 import group17.Graphics.GraphicsManager;
 import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
@@ -18,7 +19,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
-    private AssistFrame assist;
+    private LaunchAssist assist;
     private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
@@ -28,10 +29,8 @@ public class Simulation implements SimulationInterface {
     public void init() {
         if (REPORT)
             this.initReporter();   //first thing, will check all exceptions
-
-        this.initSystem();  // before graphics and assist (clock, positions init, ...)
-
-        if (ENABLE_ASSIST)
+        this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
+        if (LAUNCH_ASSIST)
             this.initAssist();
         if (ENABLE_GRAPHICS)
             this.initGraphics();
@@ -44,10 +43,11 @@ public class Simulation implements SimulationInterface {
     public void start() {
         if (!this.stopped) {  // there may be some errors in the initialisation
             this.setRunning();
-            if (ENABLE_ASSIST)
+            if (LAUNCH_ASSIST) {
                 this.getAssist().showAssistParameters();
+            }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
-            service.scheduleWithFixedDelay(this::loop, 30, 13, MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 30, 11, MILLISECONDS);
         } else {
             if (DEBUG || REPORT)
                 this.getReporter().report(new RuntimeException("STOP"));
@@ -57,8 +57,12 @@ public class Simulation implements SimulationInterface {
     @Override
     public void reset() {
         this.setWaiting(true);   //first of all
-        this.system.reset();
-
+        this.getSystem().reset();
+        if (!LAUNCH_ASSIST) {
+            this.setWaiting(false);
+            if (REPORT)
+                this.getReporter().report("START SIMULATION");
+        }
     }
 
     @Override
@@ -73,15 +77,16 @@ public class Simulation implements SimulationInterface {
     public synchronized void loop() {
         if (this.running) {
             this.updateState();
-            if (REPORT)
-                this.startReport();
-            if (ENABLE_ASSIST)
-                this.startAssist();
             if (ENABLE_GRAPHICS)
                 this.startGraphics();
+            if (REPORT)
+                this.startReport();
+            if (LAUNCH_ASSIST)
+                this.startAssist();
             if (!waiting()) {
                 this.startUpdater();
                 this.startSystem();
+                this.getSystem().getClock().step(STEP_SIZE);
             }
         }
     }
@@ -122,7 +127,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void initAssist() {
-        this.assist = new AssistFrame();
+        //this.userDialog = new AssistFrame();
         this.assist.init();
     }
 
@@ -133,10 +138,14 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public AssistFrame getAssist() {
+    public LaunchAssist getAssist() {
         return this.assist;
     }
 
+    @Override
+    public void setAssist(UserDialogWindow assist) {
+        this.assist = assist.getLaunchAssist();
+    }
 
     @Override
     public void initSystem() {

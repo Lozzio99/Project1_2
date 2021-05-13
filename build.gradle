@@ -2,7 +2,6 @@ plugins {
     id 'application'
     id 'java'
     id 'jacoco'
-    id 'org.openjfx.javafxplugin' version '0.0.9'
 }
 
 repositories {
@@ -26,6 +25,6 @@ test {
 }
 
 application {
-    mainClass.set("src/main/java/group17/phase1/Titan/Main.java")
+    mainClass.set("src/main/java/group17/Main.java")
 }
 

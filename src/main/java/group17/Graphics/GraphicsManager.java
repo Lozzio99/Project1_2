@@ -12,7 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.Config.*;
+import static group17.Config.DEBUG;
+import static group17.Config.FPS;
 import static group17.Main.simulationInstance;
 
 
@@ -31,6 +32,10 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.frame.add(this);
         this.setWindowProperties();
         this.frame.setVisible(true);
+        Cursor c = new Cursor(Cursor.MOVE_CURSOR);
+        this.frame.setCursor(c);
+        //this.frame.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+        //this.frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
 
     private void setWindowProperties() {
@@ -53,8 +58,9 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
 
     @Override
     public void start() {
-        this.mainGraphicsTh.set(new Thread(this, "Main Graphics"));
+        this.mainGraphicsTh.set(new Thread(Thread.currentThread().getThreadGroup(), this, "Main Graphics", 10));
         this.mainGraphicsTh.get().setDaemon(true);
+        this.mainGraphicsTh.get().setPriority(7);
         this.mainGraphicsTh.get().start();
     }
 
@@ -87,9 +93,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         this.currentScene.addMouseMotionListener(this.mouse);
         this.frame.add(this.currentScene);
         this.frame.setVisible(true);
+        this.frame.repaint();  //call fast the ui
         //optional
-        if (ENABLE_ASSIST)
-            simulationInstance.getAssist().getFrame().setVisible(true);
     }
 
     @Override

@@ -55,7 +55,7 @@ class ProbeSimulatorTest {
 
     @BeforeEach
     void setUp() {
-        ENABLE_GRAPHICS = ENABLE_ASSIST = false;
+        ENABLE_GRAPHICS = LAUNCH_ASSIST = false;
         REPORT = DEBUG = false;
         simulationInstance = new Simulation();
         simulationInstance.init();

@@ -3,6 +3,8 @@ package group17.Math;
 
 import group17.Interfaces.Vector3dInterface;
 
+import static java.lang.StrictMath.*;
+
 
 public class Vector3D implements Vector3dInterface {
 
@@ -11,6 +13,7 @@ public class Vector3D implements Vector3dInterface {
 
     double x, y, z;
     boolean marked;
+    static double epsilon = 1e-8;
 
     public Vector3D() {
         this.x = this.y = this.z = 0;
@@ -46,10 +49,10 @@ public class Vector3D implements Vector3dInterface {
      * @return
      */
     public static double dist(Vector3dInterface first, Vector3dInterface other) {
-        double v1 = Math.pow(other.getX() - first.getX(), 2);
-        double v2 = Math.pow(other.getY() - first.getY(), 2);
-        double v3 = Math.pow(other.getZ() - first.getZ(), 2);
-        return Math.sqrt(v1 + v2 + v3);
+        double v1 = pow(other.getX() - first.getX(), 2);
+        double v2 = pow(other.getY() - first.getY(), 2);
+        double v3 = pow(other.getZ() - first.getZ(), 2);
+        return sqrt(v1 + v2 + v3);
     }
 
     /**
@@ -99,7 +102,7 @@ public class Vector3D implements Vector3dInterface {
      */
     public static Vector3dInterface normalize(Vector3dInterface v) {
         Vector3dInterface v2 = new Vector3D();
-        double magnitude = Math.sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());
+        double magnitude = sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());
         v2.setX(v.getX() / magnitude);
         v2.setY(v.getY() / magnitude);
         v2.setZ(v.getZ() / magnitude);
@@ -172,10 +175,10 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public double norm() {
-        double x = Math.pow(this.getX(), 2);
-        double y = Math.pow(this.getY(), 2);
-        double z = Math.pow(this.getZ(), 2);
-        return Math.sqrt(x + y + z);
+        double x = pow(this.getX(), 2);
+        double y = pow(this.getY(), 2);
+        double z = pow(this.getZ(), 2);
+        return sqrt(x + y + z);
     }
 
     /**
@@ -183,10 +186,10 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public double dist(Vector3dInterface other) {
-        double v1 = Math.pow(other.getX() - this.getX(), 2);
-        double v2 = Math.pow(other.getY() - this.getY(), 2);
-        double v3 = Math.pow(other.getZ() - this.getZ(), 2);
-        return Math.sqrt(v1 + v2 + v3);
+        double v1 = pow(other.getX() - this.getX(), 2);
+        double v2 = pow(other.getY() - this.getY(), 2);
+        double v3 = pow(other.getZ() - this.getZ(), 2);
+        return sqrt(v1 + v2 + v3);
     }
 
     /**
@@ -269,7 +272,42 @@ public class Vector3D implements Vector3dInterface {
         return this.x == 0 && this.y == 0 && this.z == 0;
     }
 
+    @Override
     public void mark() {
         this.marked = true;
+    }
+
+    /**
+     * Implementation of the equals and HashCode methods for the scheduling purpose.
+     * Vector decisions are stored in an hashmap linked to a Clock as a key or a StateInterface,
+     * we therefore want the key to be mapped and retrieved in an approximate situation, to avoid
+     * such an uniqueness in the hashcode of the Vectors there we therefore
+     * decided to hash the first 8 significant figures and to compare vectors by an accuracy of 10^-8
+     */
+    @Override
+    public int hashCode() {
+        int hash = 11;
+        hash = 31 * hash + Long.hashCode(round(this.x / epsilon));
+        hash = 31 * hash + Long.hashCode(round(this.y / epsilon));
+        hash = 31 * hash + Long.hashCode(round(this.z / epsilon));
+        return hash;
+    }
+
+    /**
+     * Actual accuracy is 10^-8 here too
+     *
+     * @param o the object to be compared to
+     * @return true if the vector is equal up to a certain accuracy
+     */
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Vector3dInterface) {
+            Vector3dInterface v = (Vector3dInterface) o;
+            return (abs(v.getX() - x) < epsilon) &&
+                    (abs(v.getY() - y) < epsilon) &&
+                    (abs(v.getZ() - z) < epsilon);
+        }
+        return false;
     }
 }

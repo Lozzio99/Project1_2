@@ -6,7 +6,7 @@
  * @since 19/02/2021
  */
 
-package group17.Graphics;
+package group17.Graphics.Assist;
 
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
@@ -14,6 +14,7 @@ import group17.Math.Vector3D;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicReference;
@@ -22,14 +23,15 @@ import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Graphics.Scenes.Scene.SceneType.STARTING_SCENE;
 import static group17.Main.simulationInstance;
+import static group17.Main.userDialog;
 
 /**
  * DialogFrame
  */
-public abstract class DialogFrame extends JPanel implements Runnable {
+public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
     protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
-    protected final JFrame frame;
+    protected JFrame frame;
     protected final JTextArea textArea = new JTextArea(10, 30);
     protected final JTextField stSizeField = new JTextField();
     protected final JTextField massSizeField = new JTextField();
@@ -49,12 +51,17 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     protected final JSlider yVelSlider = new JSlider(-30000, 30000);
     protected final JSlider zVelSlider = new JSlider(-30000, 30000);
 
+    protected Component parentPanel;
 
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
 
 
-    public DialogFrame() {
+    public AbstractLaunchAssist() {
+        //this.setFrame();
+    }
+
+    private void setFrame() {
         this.frame = new JFrame();
         this.frame.setSize(700, 300);
         this.frame.setTitle("Dialog window");
@@ -111,14 +118,11 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
         if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
-            Vector3dInterface v = new Vector3D();
-            if (getLaunchVelocityX() != 0)
-                v.setX(getLaunchVelocityX());
-            if (getLaunchVelocityY() != 0)
-                v.setY(getLaunchVelocityY());
-            if (getLaunchVelocityZ() != 0)
-                v.setY(getLaunchVelocityY());
-            simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
+            Vector3dInterface v = new Vector3D(getLaunchVelocityX(),
+                    getLaunchVelocityY(),
+                    getLaunchVelocityZ());
+            if (!v.isZero())
+                simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
         }
     }
 
@@ -325,7 +329,8 @@ public abstract class DialogFrame extends JPanel implements Runnable {
     }
 
     public void start() {
-        this.dialogThread.set(new Thread(this, "Dialog Thread"));
+        this.dialogThread.set(new Thread(Thread.currentThread().getThreadGroup(), this, "Dialog Thread", 10));
+        this.dialogThread.get().setPriority(4);
         this.dialogThread.get().setDaemon(true);
         this.dialogThread.get().start();
     }
@@ -369,12 +374,15 @@ public abstract class DialogFrame extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (simulationInstance.waiting())
+                return;
             if (REPORT)
                 simulationInstance.getReporter().report("RESET SIMULATION");
             if (ENABLE_GRAPHICS)
                 simulationInstance.getGraphics().changeScene(STARTING_SCENE);
+            if (LAUNCH_ASSIST)
+                userDialog.getMainPane().setSelectedIndex(1);
             simulationInstance.reset();
-
         }
 
     }
@@ -390,12 +398,20 @@ public abstract class DialogFrame extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            if (!simulationInstance.waiting())
+                return;
+            userDialog.enable(3, 6);
+
             // TODO Auto-generated method stub
-            if (ENABLE_GRAPHICS)
+            if (ENABLE_GRAPHICS) {
                 simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+            }
             if (REPORT)
                 simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
+
+            simulationInstance.getSystem(); /* lock will make it wait */
+
             simulationInstance.setWaiting(false);
         }
     }

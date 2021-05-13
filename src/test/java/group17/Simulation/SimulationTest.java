@@ -14,6 +14,13 @@ class SimulationTest {
     @DisplayName("InitUpdater")
     void InitUpdater() {
         simulation.initUpdater();
+
+        simulation.initSystem();
+        simulation.getSystem().initRocket();
+        simulation.getSystem().getCelestialBodies().get(11).getVectorLocation();
+        simulation.getSystem().systemState().getPositions().get(11).getX();
+        simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11).getX();
+
         assertNotNull(simulation.getUpdater());
         assertNotEquals("null", simulation.getUpdater().toString());
     }

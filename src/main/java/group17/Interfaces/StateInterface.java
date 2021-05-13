@@ -8,6 +8,7 @@ package group17.Interfaces;
 
 
 import group17.Math.Vector3D;
+import group17.Simulation.RocketSimulator;
 import group17.System.Bodies.CelestialBody;
 import group17.System.SystemState;
 
@@ -41,8 +42,12 @@ public interface StateInterface {
     default StateInterface state0(List<CelestialBody> bodies) {
         StateInterface state = this;
         for (CelestialBody b : bodies) {
+            b.initProperties();
             state.getPositions().add(b.getVectorLocation().clone());
-            state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());
+            if (b instanceof RocketSimulator)
+                state.getRateOfChange().getVelocities().add(((RocketSimulator) b).getLocalAcceleration().add(b.getVectorVelocity()));
+            else
+                state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());
         }
         return state;
     }
@@ -140,5 +145,8 @@ public interface StateInterface {
         this.setPositions(step.getPositions());
         this.getRateOfChange().setVel(step.getRateOfChange().getVelocities());
     }
+
+    @Override
+    int hashCode();
 }
 

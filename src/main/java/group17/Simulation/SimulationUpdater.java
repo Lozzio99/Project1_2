@@ -9,6 +9,7 @@ import group17.Math.Solvers.StandardVerletSolver;
 import group17.Math.Solvers.VerletVelocitySolver;
 
 import static group17.Config.*;
+import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulationInstance;
 
 public class SimulationUpdater implements UpdaterInterface {
@@ -34,14 +35,20 @@ public class SimulationUpdater implements UpdaterInterface {
             }
         }
 
-        if (!ENABLE_ASSIST)
+        if (!LAUNCH_ASSIST) {
+            if (ENABLE_GRAPHICS)
+                simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+            if (REPORT)
+                simulationInstance.getReporter().report("START SIMULATION");
             simulationInstance.setWaiting(false);
+        }
 
     }
 
     public void start() {
-        this.updaterThread = new Thread(this, "Simulation Updater");
+        this.updaterThread = new Thread(Thread.currentThread().getThreadGroup(), this, "Simulation Updater", 10);
         this.updaterThread.setDaemon(true);
+        this.updaterThread.setPriority(8);
         this.updaterThread.start();
     }
 
@@ -49,15 +56,20 @@ public class SimulationUpdater implements UpdaterInterface {
     @Override
     public synchronized void run() {
         // ROCKET DECISION
-        if (INSERT_ROCKET) {
-            Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
-            if (DEBUG && !decision.isZero())
-                System.out.println(decision);
-            simulationInstance.getSystem().getRocket().setLocalAcceleration(decision);
-            simulationInstance.getSystem().getRocket().update();
+        try {
+            if (INSERT_ROCKET) {
+                Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
+                if (DEBUG && !decision.isZero() && REPORT)
+                    simulationInstance.getReporter().report("DECISION -> " + decision);
+                simulationInstance.getSystem().getRocket().addAcceleration(decision);
+                simulationInstance.getSystem().getRocket().update();
+            }
+            simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
+            simulationInstance.getSystem().getClock().step(STEP_SIZE);
+        } catch (Exception e) {
+            if (REPORT)
+                simulationInstance.getReporter().report(Thread.currentThread(), e);
         }
-        simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
-        simulationInstance.getSystem().getClock().step(STEP_SIZE);
     }
 
     @Override

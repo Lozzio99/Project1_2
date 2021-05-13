@@ -47,7 +47,8 @@ public class RocketSchedule {
         //put all things here, even if they are later in the simulation
         //once we know them we just plan them here
 
-        this.plan(LAUNCH_DATE, new Vector3D(100, 20, 100));
+        this.set(LAUNCH_DATE, new Vector3D(490, -838, -710));
+
     }
 
 
@@ -59,16 +60,34 @@ public class RocketSchedule {
     }
 
     public Vector3dInterface getDesiredVelocity(Clock clock) {
+        if (clock == null)
+            return new Vector3D();
         return shiftAtTime.getOrDefault(clock, new Vector3D());
     }
 
     public Vector3dInterface getDesiredVelocity(StateInterface thisState) {
+        if (thisState == null)
+            return new Vector3D();
         return shiftAtLocation.getOrDefault(thisState, new Vector3D());
     }
 
     public Vector3dInterface getDesiredVelocity(Vector3dInterface distanceToSomething) {
-        return shiftAtDistance.getOrDefault(distanceToSomething, new Vector3D());
+        if (distanceToSomething == null)
+            return new Vector3D();
+        Vector3dInterface v = shiftAtDistance.remove(distanceToSomething);
+        return v == null ? new Vector3D() : v;
     }
 
 
+    public void set(Clock launchDate, Vector3dInterface v) {
+        this.shiftAtTime.put(launchDate, v);
+    }
+
+    public void set(StateInterface s, Vector3dInterface v) {
+        this.shiftAtLocation.put(s, v);
+    }
+
+    public void set(Vector3dInterface d, Vector3dInterface v) {
+        this.shiftAtDistance.put(d, v);
+    }
 }

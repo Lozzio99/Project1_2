@@ -11,18 +11,22 @@ public class Point {
     double x, y;
     double xOff, yOff;
 
-    Point(double x, double y) {
+    public Point(double x, double y) {
         this.x = ORIGIN.getX() + (x * scale);
         this.y = ORIGIN.getY() - (y * scale);
     }
 
-    Point() {
+    public Point() {
         this.x = screen.width / 2. + xOff;
         this.y = screen.height / 2. - yOff;
     }
 
     public static void setScreen(Dimension s) {
         screen = s;
+    }
+
+    public static void setOrigin(Point p) {
+        ORIGIN = p;
     }
 
     public double getX() {
