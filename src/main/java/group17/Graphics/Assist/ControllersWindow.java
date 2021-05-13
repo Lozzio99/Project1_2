@@ -7,6 +7,9 @@ import static java.awt.BorderLayout.SOUTH;
 import static java.awt.BorderLayout.WEST;
 
 public class ControllersWindow extends JDesktopPane {
+
+    //TODO : Maybe this will be HELP / INFO / DEMO
+
     private final String text = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
     Color c = new Color(77, 142, 255);
 
@@ -42,8 +45,10 @@ public class ControllersWindow extends JDesktopPane {
         panel.setLayout(new BorderLayout());
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridLayout(1, 2));
+        southPanel.add(new JButton("<<"));
         southPanel.add(new JButton("<"));
         southPanel.add(new JButton(">"));
+        southPanel.add(new JButton(">>"));
         panel.add(southPanel, SOUTH);
         Image image1 = new ImageIcon(this.getClass().getClassLoader().getResource("icons/death.png").getFile()).getImage();
 
