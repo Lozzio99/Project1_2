@@ -12,7 +12,7 @@ public abstract class MainMenu {
     static final String[] CPU_LEVELS = {"Min CPU", "Max CPU"};
     static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)"};
     static private final int FRAME_WIDTH = 1000;
-    static private final int FRAME_HEIGHT = 300;
+    static private final int FRAME_HEIGHT = 600;
     static protected int currentSolver = SOLVER;
     protected int currentSimulationType = SIMULATION_LEVEL;
     protected int currentCPULevel = CPU_LEVEL;
@@ -53,25 +53,18 @@ public abstract class MainMenu {
         controlPanel.setLayout(groupLayout);
         controlPanel.setBackground(new Color(150, 150, 200));
 
-        JLabel simulationTypeLabel, cpuLevelLabel, solverLabel,
-                printLogLabel, consoleDebugLabel, trajectoryLengthLabel, stepSizeLabel,
-                particleLabel;
+        JLabel simulationTypeLabel, cpuLevelLabel, solverLabel;
 
 
         simulationTypeLabel = new JLabel("Simulation Type");
         cpuLevelLabel = new JLabel("CPU Level");
         solverLabel = new JLabel("Solver");
-        printLogLabel = new JLabel("Print Log");
-        consoleDebugLabel = new JLabel("Console Debug");
-        trajectoryLengthLabel = new JLabel("Trajectory Length");
-        stepSizeLabel = new JLabel("Step Size");
-        particleLabel = new JLabel("Particles");
 
 
         JComboBox simulationTypeDropdown, cpuLevelDropdown, solverDropdown;
 
         simulationTypeDropdown = new JComboBox<>(SIMULATION_TYPES);
-        simulationTypeDropdown.setSelectedIndex(0);
+        simulationTypeDropdown.setSelectedIndex(SIMULATION_LEVEL);
         cpuLevelDropdown = new JComboBox<>(CPU_LEVELS);
         cpuLevelDropdown.setSelectedIndex(CPU_LEVEL == MIN_CPU ? 0 : 1);
         solverDropdown = new JComboBox<>(SOLVERS);
@@ -85,15 +78,6 @@ public abstract class MainMenu {
         );
 
 
-        JCheckBox printLogCheckBox, consoleDebugCheckBox;
-
-        printLogCheckBox = new JCheckBox();
-        if (REPORT)
-            printLogCheckBox.setSelected(true);
-
-        consoleDebugCheckBox = new JCheckBox();
-        if (DEBUG)
-            consoleDebugCheckBox.setSelected(true);
 
 
         JSlider trajectoryLengthSlider = new JSlider();
@@ -101,13 +85,10 @@ public abstract class MainMenu {
         trajectoryLengthSlider.setMaximum(10000);
         trajectoryLengthSlider.setToolTipText("Length");
 
-        JTextField stepSizeText, particlesText;
-        stepSizeText = new JTextField(String.valueOf(STEP_SIZE));
-        particlesText = new JTextField();
 
         JButton startButton = new JButton("Start Simulation");
-        startButton.addActionListener(e -> {
 
+        startButton.addActionListener(e -> {
             // --- Select the correct simulationInstance ---
             int currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {
                 case ("Rocket Simulation") -> ROCKET_SIMULATION;
@@ -117,7 +98,6 @@ public abstract class MainMenu {
                 case ("Solar System Simulation") -> SOLAR_SYSTEM_SIMULATION;
                 default -> SOLAR_SYSTEM_SIMULATION;
             };
-
             // --- Select the correct CPU type ---
             int currentCPULevel = switch (cpuLevelDropdown.getSelectedItem().toString()) {
                 case ("Max CPU") -> MAX_CPU;
@@ -132,58 +112,36 @@ public abstract class MainMenu {
                 default -> EULER_SOLVER;
             };
 
-            // --- Select the step size ---
-            STEP_SIZE = Double.valueOf(stepSizeText.getText());
-            if (DEBUG || REPORT)
-                System.out.println("Step size: " + STEP_SIZE);
-
-
-            DEBUG = consoleDebugCheckBox.isSelected();
-
-
-            REPORT = printLogCheckBox.isSelected();
-
-
-            if (!particlesText.getText().equals("")) {
-                PARTICLES = Integer.valueOf(particlesText.getText());
-            }
-
-            // TRAJECTORY_LENGTH = trajectoryLengthSlider.getValue();
             startSimulation();
 
         });
 
 
-        controlPanel.setBounds(10, 50, FRAME_WIDTH - 37, FRAME_HEIGHT - 97);
+        controlPanel.setBounds(10, 50, FRAME_WIDTH - 67, FRAME_HEIGHT - 97);
 
-        //placer.add(titleLabel);
-        //placer.add(controlPanel);
 
 
         // --- Horizontal Groups ---
         groupLayout.setHorizontalGroup(
                 groupLayout.createSequentialGroup()
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(simulationTypeLabel)
+                                .addGap(400)
                                 .addComponent(cpuLevelLabel)
+                                .addGap(400)
                                 .addComponent(solverLabel)
-                                .addComponent(printLogLabel)
-                                .addComponent(consoleDebugLabel)
-                                .addComponent(startButton))
+                                .addGap(400))
                         .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(simulationTypeDropdown)
+                                .addGap(200)
                                 .addComponent(cpuLevelDropdown)
+                                .addGap(200)
                                 .addComponent(solverDropdown)
-                                .addComponent(printLogCheckBox)
-                                .addComponent(consoleDebugCheckBox))
-                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(trajectoryLengthLabel)
-                                .addComponent(stepSizeLabel)
-                                .addComponent(particleLabel))
-                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                .addComponent(trajectoryLengthSlider)
-                                .addComponent(stepSizeText)
-                                .addComponent(particlesText))
+                                .addGap(300)
+                                .addComponent(startButton)
+                                .addGap(300))
+                        .addContainerGap()
         );
 
         // --- Vertical Groups ---
@@ -191,25 +149,17 @@ public abstract class MainMenu {
                 groupLayout.createSequentialGroup()
                         .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(simulationTypeLabel)
-                                .addComponent(simulationTypeDropdown)
-                                .addComponent(trajectoryLengthLabel)
-                                .addComponent(trajectoryLengthSlider))
+                                .addGap(20)
+                                .addComponent(simulationTypeDropdown))
                         .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(cpuLevelLabel)
-                                .addComponent(cpuLevelDropdown)
-                                .addComponent(stepSizeLabel)
-                                .addComponent(stepSizeText))
+                                .addGap(20)
+                                .addComponent(cpuLevelDropdown))
                         .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(solverLabel)
+                                .addGap(20)
                                 .addComponent(solverDropdown)
-                                .addComponent(particleLabel)
-                                .addComponent(particlesText))
-                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(printLogLabel)
-                                .addComponent(printLogCheckBox))
-                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(consoleDebugLabel)
-                                .addComponent(consoleDebugCheckBox))
+                                .addGap(300))
                         .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                                 .addComponent(startButton))
         );

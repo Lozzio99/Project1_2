@@ -77,15 +77,17 @@ public class ConfigWindow extends JPanel {
                 texts[i].setForeground(ENABLE_GRAPHICS ? g : r);
                 j.addActionListener(e -> {
                     //this is necessary
-
                     if (ENABLE_GRAPHICS) {
-                        if (simulationInstance.getGraphics() != null && REPORT)
-                            simulationInstance.getReporter().report(Thread.currentThread(), new UnsupportedOperationException("CAN't SHUT DOWN GRAPHICS WHILE RUNNING"));
+                        if (simulationInstance.getGraphics() != null && REPORT) {
+                            simulationInstance.getReporter().report(Thread.currentThread(), new UnsupportedOperationException("GRAPHICS WILL BE SET NOT VISIBLE"));
+                            simulationInstance.getGraphics().getFrame().setVisible(false);
+                        }
                     } else {
                         if (simulationInstance.getGraphics() == null) {
                             simulationInstance.initGraphics();
                             simulationInstance.reset();
-                            //simulationInstance.getGraphics().changeScene(Scene.SceneType.STARTING_SCENE);
+                        } else {
+                            simulationInstance.getGraphics().getFrame().setVisible(true);
                         }
                     }
                     ENABLE_GRAPHICS = !ENABLE_GRAPHICS;

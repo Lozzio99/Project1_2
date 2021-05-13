@@ -1,7 +1,7 @@
 package group17.Simulation;
 
-import group17.Graphics.Assist.DialogWindow;
 import group17.Graphics.Assist.LaunchAssist;
+import group17.Graphics.Assist.UserDialogWindow;
 import group17.Graphics.GraphicsManager;
 import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
@@ -46,7 +46,7 @@ public class Simulation implements SimulationInterface {
                 this.getAssist().showAssistParameters();
             }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
-            service.scheduleWithFixedDelay(this::loop, 30, 13, MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 30, 11, MILLISECONDS);
         } else {
             if (DEBUG || REPORT)
                 this.getReporter().report(new RuntimeException("STOP"));
@@ -137,7 +137,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void setAssist(DialogWindow assist) {
+    public void setAssist(UserDialogWindow assist) {
         this.assist = assist.getLaunchAssist();
     }
 
