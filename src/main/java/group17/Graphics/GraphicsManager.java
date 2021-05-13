@@ -60,6 +60,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     public void start() {
         this.mainGraphicsTh.set(new Thread(this, "Main Graphics"));
         this.mainGraphicsTh.get().setDaemon(true);
+        this.mainGraphicsTh.get().setPriority(7);
         this.mainGraphicsTh.get().start();
     }
 

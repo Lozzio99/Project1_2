@@ -1,8 +1,8 @@
 package group17.Interfaces;
 
 
-import group17.Graphics.Assist.DialogWindow;
 import group17.Graphics.Assist.LaunchAssist;
+import group17.Graphics.Assist.UserDialogWindow;
 import group17.Simulation.SimulationReporter;
 
 public interface SimulationInterface {
@@ -31,7 +31,7 @@ public interface SimulationInterface {
     //System
     SystemInterface getSystem();
 
-    void setAssist(DialogWindow assist);
+    void setAssist(UserDialogWindow assist);
 
     void initSystem();
 

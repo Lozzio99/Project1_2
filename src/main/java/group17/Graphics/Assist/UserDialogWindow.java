@@ -14,7 +14,7 @@ import java.util.List;
 import static group17.Config.SOLVER;
 import static group17.Main.simulationInstance;
 
-public class DialogWindow {
+public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
     private static final List<Color> backGrounds = new ArrayList<>();
     private static final List<ImageIcon> icons = new ArrayList<>();
@@ -66,7 +66,7 @@ public class DialogWindow {
     private LaunchAssist assist;
     private MainMenu menu;
 
-    public DialogWindow() {
+    public UserDialogWindow() {
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 
@@ -99,7 +99,7 @@ public class DialogWindow {
     }
 
     private static ImageIcon loadIcon(String path) {
-        ImageIcon i = new ImageIcon(DialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
+        ImageIcon i = new ImageIcon(UserDialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
         Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         i.setImage(scaled);
         return i;
@@ -152,6 +152,12 @@ public class DialogWindow {
             case 4 -> {
                 return new RocketWindow();
             }
+            case 5 -> {
+                return new PerformanceWindow();
+            }
+            case 7 -> {
+                return new ControllersWindow();
+            }
             case 8 -> {
                 return new ConfigWindow();
             }
@@ -163,7 +169,7 @@ public class DialogWindow {
 
 
     private Component initMenu() {
-        DialogWindow d = this;
+        UserDialogWindow d = this;
         this.menu = new MainMenu() {
             @Override
             public void startSimulation() {
