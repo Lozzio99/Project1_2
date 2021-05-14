@@ -10,7 +10,7 @@ public class Config {
     public static final int NUMERICAL_SIMULATION = 2;
     public static final int PARTICLES_SIMULATION = 1;
     public static final int SOLAR_SYSTEM_SIMULATION = 0;
-    public static final double FPS = 80;
+    public static double FPS = 80;
     public static final int EULER_SOLVER = 1;
     public static final int RUNGE_KUTTA_SOLVER = 2;
     public static final int VERLET_VEL_SOLVER = 3;

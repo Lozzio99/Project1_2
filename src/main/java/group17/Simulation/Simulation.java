@@ -1,7 +1,6 @@
 package group17.Simulation;
 
 import group17.Graphics.Assist.LaunchAssist;
-import group17.Graphics.Assist.SimulationDataWindow;
 import group17.Graphics.Assist.UserDialogWindow;
 import group17.Graphics.GraphicsManager;
 import group17.Interfaces.GraphicsInterface;
@@ -15,13 +14,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static group17.Config.*;
+import static group17.Main.simulationInstance;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
     private LaunchAssist assist;
-    private SimulationDataWindow outputWindow;
     private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
@@ -62,9 +61,13 @@ public class Simulation implements SimulationInterface {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         if (!LAUNCH_ASSIST) {
+            if (REPORT) this.getReporter().report("START SIMULATION");
+            try {
+                Thread.sleep(3000);  /* will wait 3 sec */
+            } catch (InterruptedException ex) {
+                if (REPORT) simulationInstance.getReporter().report(Thread.currentThread(), ex);
+            }
             this.setWaiting(false);
-            if (REPORT)
-                this.getReporter().report("START SIMULATION");
         }
         this.getUpdater().getSchedule().init();
         this.getUpdater().getSchedule().prepare();

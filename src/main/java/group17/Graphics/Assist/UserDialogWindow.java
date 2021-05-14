@@ -85,7 +85,7 @@ public class UserDialogWindow {
         }
 
         this.frame = new JFrame();
-        this.frame.setSize(new Dimension(1080, 620));
+        this.frame.setSize(new Dimension(1280, 620));
         this.frame.setIconImage(loadIcon("death.png").getImage());
         this.frame.getContentPane().add(makeTabs(), BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -166,6 +166,9 @@ public class UserDialogWindow {
             }
             case 5 -> {
                 return new PerformanceWindow();
+            }
+            case 6 -> {
+                return new ErrorWindow();
             }
             case 7 -> {
                 return new ControllersWindow();

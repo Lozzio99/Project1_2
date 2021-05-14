@@ -60,12 +60,18 @@ public class SimulationUpdater implements UpdaterInterface {
         try {
             if (INSERT_ROCKET) {
                 Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
-                if (!DEBUG && !decision.isZero() && REPORT) {
+                if (!decision.isZero() && REPORT) {
                     simulationInstance.getReporter().report("DECISION -> " + decision);
                     simulationInstance.getSystem().getRocket().evaluateLoss(decision,
                             simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().get(11));
                 }
             }
+            /*
+             * Technically here in systemState.update we could also pass the result of a more complex evaluation
+             * like the last state of the solve method (with new stepsize = prevStepsize / size of solution)
+             * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
+             * better to do that in system (in main thread from executor) and then pass it in here once solved
+             */
             simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
             simulationInstance.getSystem().getClock().step(STEP_SIZE);
         } catch (Exception e) {

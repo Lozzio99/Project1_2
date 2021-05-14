@@ -125,7 +125,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
             frames++;
             double v = System.currentTimeMillis();
             if (v - t > 1000) {
-                System.out.println("FPS :: " + frames);
+                FPS = frames;
+                System.out.println("FPS :: " + FPS);
                 t = v;
                 frames = 0;
             }

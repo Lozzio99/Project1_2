@@ -401,7 +401,12 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
             if (ENABLE_GRAPHICS) simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
             if (REPORT) simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
-            simulationInstance.getSystem(); /* lock will make it wait */
+            //simulationInstance.getSystem(); /* lock will make it wait */
+            try {
+                Thread.sleep(3000);  // will wait 3 sec
+            } catch (InterruptedException ex) {
+                if (REPORT) simulationInstance.getReporter().report(Thread.currentThread(), ex);
+            }
             simulationInstance.setWaiting(false);
         }
     }

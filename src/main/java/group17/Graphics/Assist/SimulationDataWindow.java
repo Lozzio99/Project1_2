@@ -31,6 +31,7 @@ public class SimulationDataWindow extends JPanel {
         for (CelestialBody c : simulationInstance.getSystem().getCelestialBodies()) {
             this.planetBox.addItem(c);
         }
+        this.text.setText(simulationInstance.getSystem().toString());
     }
 
     public void setOutput(String message) {
