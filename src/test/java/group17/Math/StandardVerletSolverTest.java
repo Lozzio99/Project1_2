@@ -3,7 +3,6 @@ package group17.Math;
 import group17.Interfaces.StateInterface;
 import group17.Math.Solvers.StandardVerletSolver;
 import group17.System.SystemState;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +12,6 @@ public class StandardVerletSolverTest {
 
     @Test
     @DisplayName("SolveODE")
-    @Disabled("Doesn't work")
         //FIXME: check this why it's giving such an high error
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();

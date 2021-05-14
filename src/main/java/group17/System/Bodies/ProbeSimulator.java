@@ -48,7 +48,7 @@ public class ProbeSimulator extends CelestialBody implements ProbeSimulatorInter
           */
         this.setVectorLocation(new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06)); //earth
         this.getVectorLocation().add(new Vector3D(6.372e6, 0, 0));
-        this.setVectorVelocity(new Vector3D());
+        this.setVectorVelocity(new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
 
     }
 

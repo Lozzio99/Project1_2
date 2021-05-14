@@ -125,10 +125,6 @@ public interface Vector3dInterface {
 
     double heading();
 
-    void mark();
-
-    boolean isMarked();
-
     boolean isZero();
 
     @Override

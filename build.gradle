@@ -1,9 +1,13 @@
 
+plugins {
+    id 'java'
+    id 'application'
+    id 'jacoco'
+}
+
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'jacoco'
-
-
 
 repositories {
     mavenCentral()
@@ -26,7 +30,13 @@ test {
     finalizedBy jacocoTestReport // report is always generated after tests run
 }
 
+
+
+ext {
+    javaMainClass = 'src/main/java/group17/Main.java'
+}
+
 application {
-    mainClass.set('src/main/java/group17/Main.java')
+    mainClassName = javaMainClass
 }
 

@@ -120,7 +120,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
             Vector3dInterface v = new Vector3D(getLaunchVelocityX(), getLaunchVelocityY(), getLaunchVelocityZ());
             if (!v.isZero()) {
-                simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
+                simulationInstance.getUpdater().getSchedule().addToPlan(LAUNCH_DATE, v);
                 System.out.println(v);
             }
         }

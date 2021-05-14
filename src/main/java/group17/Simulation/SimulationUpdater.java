@@ -22,6 +22,7 @@ public class SimulationUpdater implements UpdaterInterface {
     public void init() {
         this.schedule = new RocketSchedule();
         this.schedule.init();
+        this.schedule.prepare();
         //make all tha planning
         switch (SOLVER) {
             case EULER_SOLVER -> this.solver = new EulerSolver();

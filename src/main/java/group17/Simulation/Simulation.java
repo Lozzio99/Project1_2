@@ -67,6 +67,7 @@ public class Simulation implements SimulationInterface {
                 this.getReporter().report("START SIMULATION");
         }
         this.getUpdater().getSchedule().init();
+        this.getUpdater().getSchedule().prepare();
     }
 
     @Override

@@ -3,21 +3,19 @@ package group17.Math;
 
 import group17.Interfaces.Vector3dInterface;
 
-import static java.lang.StrictMath.*;
+import static java.lang.StrictMath.pow;
+import static java.lang.StrictMath.sqrt;
 
 
 public class Vector3D implements Vector3dInterface {
 
 
     /* TODO : think if we need to create new objects or if we can just modify the current vector */
-
-    static double epsilon = 1e-8;
-    double x, y, z;
-    boolean marked;
+    public static double epsilon = 0;
+    protected double x, y, z;
 
     public Vector3D() {
         this.x = this.y = this.z = 0;
-        this.marked = true;
     }
 
 
@@ -25,7 +23,6 @@ public class Vector3D implements Vector3dInterface {
         this.x = x;
         this.y = y;
         this.z = z;
-        this.marked = false;
     }
 
 
@@ -263,19 +260,11 @@ public class Vector3D implements Vector3dInterface {
         this.z = z;
     }
 
-    public boolean isMarked() {
-        return marked;
-    }
-
     @Override
     public boolean isZero() {
         return this.x == 0 && this.y == 0 && this.z == 0;
     }
 
-    @Override
-    public void mark() {
-        this.marked = true;
-    }
 
     /**
      * Implementation of the equals and HashCode methods for the scheduling purpose.
@@ -287,9 +276,9 @@ public class Vector3D implements Vector3dInterface {
     @Override
     public int hashCode() {
         int hash = 11;
-        hash = 31 * hash + Long.hashCode(round(this.x / epsilon));
-        hash = 31 * hash + Long.hashCode(round(this.y / epsilon));
-        hash = 31 * hash + Long.hashCode(round(this.z / epsilon));
+        hash = 31 * hash + Double.hashCode(this.x);
+        hash = 31 * hash + Double.hashCode(this.y);
+        hash = 31 * hash + Double.hashCode(this.z);
         return hash;
     }
 
@@ -304,9 +293,9 @@ public class Vector3D implements Vector3dInterface {
     public boolean equals(Object o) {
         if (o instanceof Vector3dInterface) {
             Vector3dInterface v = (Vector3dInterface) o;
-            return (abs(v.getX() - x) < epsilon) &&
-                    (abs(v.getY() - y) < epsilon) &&
-                    (abs(v.getZ() - z) < epsilon);
+            return v.getX() == this.x &&
+                    v.getY() == this.y &&
+                    v.getZ() == this.z;
         }
         return false;
     }
