@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.*;
 
 import static group17.Config.ORIGINAL_DATA;
+import static group17.Config.REPORT;
+import static group17.Main.simulation;
+
 
 public class ErrorWindow extends JPanel {
 
@@ -34,7 +37,7 @@ public class ErrorWindow extends JPanel {
         this.setBorder(titledBorder);
         this.setLayout(new GridLayout(2, 1));
         this.parseOriginal();
-        this.makeTable();
+
     }
 
     @Deprecated(forRemoval = true)
@@ -128,14 +131,13 @@ public class ErrorWindow extends JPanel {
                 }
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);
         }
         originalDataTable.setModel(csv_model);
         originalDataTable.setDragEnabled(true);
         originalDataTable.setDropMode(DropMode.ON_OR_INSERT);
         dataTableScrollPane.getViewport().add(originalDataTable);
         this.add(dataTableScrollPane, 0);
-        this.repaint();
     }
 
     @Contract(pure = true)
