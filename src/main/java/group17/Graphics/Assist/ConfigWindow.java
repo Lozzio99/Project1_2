@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static group17.Main.userDialog;
 
 public class ConfigWindow extends JPanel {
@@ -78,16 +78,16 @@ public class ConfigWindow extends JPanel {
                 j.addActionListener(e -> {
                     //this is necessary
                     if (ENABLE_GRAPHICS) {
-                        if (simulationInstance.getGraphics() != null && REPORT) {
-                            simulationInstance.getReporter().report(Thread.currentThread(), new UnsupportedOperationException("GRAPHICS WILL BE SET NOT VISIBLE"));
-                            simulationInstance.getGraphics().getFrame().setVisible(false);
+                        if (simulation.getGraphics() != null && REPORT) {
+                            simulation.getReporter().report(Thread.currentThread(), new UnsupportedOperationException("GRAPHICS WILL BE SET NOT VISIBLE"));
+                            simulation.getGraphics().getFrame().setVisible(false);
                         }
                     } else {
-                        if (simulationInstance.getGraphics() == null) {
-                            simulationInstance.initGraphics();
-                            simulationInstance.reset();
+                        if (simulation.getGraphics() == null) {
+                            simulation.initGraphics();
+                            simulation.reset();
                         } else {
-                            simulationInstance.getGraphics().getFrame().setVisible(true);
+                            simulation.getGraphics().getFrame().setVisible(true);
                         }
                     }
                     ENABLE_GRAPHICS = !ENABLE_GRAPHICS;
@@ -102,7 +102,7 @@ public class ConfigWindow extends JPanel {
                     LAUNCH_ASSIST = !LAUNCH_ASSIST;
                     texts[i].setText(LAUNCH_ASSIST ? s[0] : s[1]);
                     texts[i].setForeground(LAUNCH_ASSIST ? g : r);
-                    simulationInstance.reset();
+                    simulation.reset();
                 });
                 j.addChangeListener(e -> {
                     if (LAUNCH_ASSIST)
@@ -193,7 +193,7 @@ public class ConfigWindow extends JPanel {
                     INSERT_ROCKET = !INSERT_ROCKET;
                     texts[i].setText(INSERT_ROCKET ? s[0] : s[1]);
                     texts[i].setForeground(INSERT_ROCKET ? g : r);
-                    simulationInstance.reset();
+                    simulation.reset();
                 });
                 j.addChangeListener(e -> {
                     if (INSERT_ROCKET) {

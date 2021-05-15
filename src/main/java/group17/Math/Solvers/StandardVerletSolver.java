@@ -10,7 +10,7 @@ import group17.System.CollisionDetector;
 import org.jetbrains.annotations.Contract;
 
 import static group17.Config.G;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static java.lang.Double.NaN;
 
 public class StandardVerletSolver implements ODESolverInterface {
@@ -34,8 +34,8 @@ public class StandardVerletSolver implements ODESolverInterface {
                         acc = y.getPositions().get(k).sub(acc); // Get the force vector
                         double den = Math.sqrt(squareDist);
                         if (!checked) {
-                            CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
-                                    simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                            CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
+                                    simulation.getSystem().getCelestialBodies().get(k), den);
                         }
                     /*
                         ! Important !
@@ -44,7 +44,7 @@ public class StandardVerletSolver implements ODESolverInterface {
                         the same in all the system
                     */
                         acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                        acc = acc.mul((G * Main.simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                        acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                         totalAcc = totalAcc.addMul(h, acc);
                         // p = h*acc(derivative of velocity)
                     }

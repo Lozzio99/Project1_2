@@ -13,7 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Disabled
@@ -58,10 +58,10 @@ class ProbeSimulatorTest {
     void setUp() {
         ENABLE_GRAPHICS = LAUNCH_ASSIST = false;
         REPORT = DEBUG = false;
-        simulationInstance = new Simulation();
-        simulationInstance.init();
-        simulationInstance.setRunning();
-        //simulationInstance.start();
+        simulation = new Simulation();
+        simulation.init();
+        simulation.setRunning();
+        //simulation.start();
     }
 
     @Test

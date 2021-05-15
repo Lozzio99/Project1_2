@@ -44,7 +44,7 @@ public class Config {
      **/
     //EDITABLE
     public static double FPS = 0;
-    public static int SIMULATION_LEVEL = 0;//which simulationInstance is going to run
+    public static int SIMULATION_LEVEL = 0;//which simulation is going to run
     public static double STEP_SIZE = 360;
 
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 500 : 50;

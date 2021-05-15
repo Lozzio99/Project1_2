@@ -12,7 +12,7 @@ import group17.System.ErrorReport;
 
 import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class SimulationUpdater implements UpdaterInterface {
 
@@ -35,14 +35,14 @@ public class SimulationUpdater implements UpdaterInterface {
             default -> {
                 this.solver = new EulerSolver();
                 if (REPORT)
-                    simulationInstance.getReporter().report(new IllegalStateException("UPDATER/SOLVER/" + EULER_SOLVER));
+                    simulation.getReporter().report(new IllegalStateException("UPDATER/SOLVER/" + EULER_SOLVER));
             }
         }
 
         if (!LAUNCH_ASSIST) {
-            if (ENABLE_GRAPHICS) simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
-            if (REPORT) simulationInstance.getReporter().report("START SIMULATION");
-            simulationInstance.setWaiting(false);
+            if (ENABLE_GRAPHICS) simulation.getGraphics().changeScene(SIMULATION_SCENE);
+            if (REPORT) simulation.getReporter().report("START SIMULATION");
+            simulation.setWaiting(false);
         }
 
     }
@@ -60,25 +60,25 @@ public class SimulationUpdater implements UpdaterInterface {
         // ROCKET DECISION
         try {
             if (INSERT_ROCKET) {
-                Vector3dInterface decision = this.schedule.shift(simulationInstance.getSystem());
+                Vector3dInterface decision = this.schedule.shift(simulation.getSystem());
                 if (!decision.isZero() && REPORT) {
-                    simulationInstance.getReporter().report("DECISION -> " + decision);
-                    simulationInstance.getSystem().getRocket().evaluateLoss(decision,
-                            simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().get(11));
+                    simulation.getReporter().report("DECISION -> " + decision);
+                    simulation.getSystem().getRocket().evaluateLoss(decision,
+                            simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11));
                 }
             }
-            ErrorData prev = new ErrorData(simulationInstance.getSystem().systemState());
+            ErrorData prev = new ErrorData(simulation.getSystem().systemState());
             /*
              * Technically here in systemState.update we could also pass the result of a more complex evaluation
              * like the last state of the solve method (with new stepsize = prevStepsize / size of solution)
              * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
              * better to do that in system (in main thread from executor) and then pass it in here once solved
              */
-            simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
-            if (simulationInstance.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)
-                new ErrorReport(prev, new ErrorData(simulationInstance.getSystem().systemState()));
+            simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulation.getSystem().systemState(), STEP_SIZE));
+            if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)
+                new ErrorReport(prev, new ErrorData(simulation.getSystem().systemState()));
         } catch (Exception e) {
-            if (REPORT) simulationInstance.getReporter().report(Thread.currentThread(), e);
+            if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);
         }
     }
 

@@ -89,7 +89,7 @@ public abstract class MainMenu {
         JButton startButton = new JButton("Start Simulation");
 
         startButton.addActionListener(e -> {
-            // --- Select the correct simulationInstance ---
+            // --- Select the correct simulation ---
             int currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {
                 case ("Rocket Simulation") -> ROCKET_SIMULATION;
                 case ("Pendulum Simulation") -> PENDULUM_SIMULATION;

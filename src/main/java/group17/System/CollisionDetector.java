@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static group17.Config.CHECK_COLLISIONS;
 import static group17.Config.REPORT;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 
 public class CollisionDetector {
@@ -37,7 +37,7 @@ public class CollisionDetector {
             }
         }
         if (REPORT && collision)
-            simulationInstance.getReporter().report("COLLISION " + output);
+            simulation.getReporter().report("COLLISION " + output);
     }
 
     @Contract("_, _ -> param1")

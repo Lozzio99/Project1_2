@@ -48,7 +48,7 @@ public interface SimulationInterface {
     void startReport();
 
 
-    // simulationInstance actions
+    // simulation actions
     //cpu level
     //configs
     void init();

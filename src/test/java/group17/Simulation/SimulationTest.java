@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {
 
-    static SimulationInterface simulation = new Simulation();
+    static SimulationInterface simulationTest = new Simulation();
 
     static {
         ERROR_EVALUATION = false;
@@ -20,45 +20,45 @@ class SimulationTest {
     @Test
     @DisplayName("InitUpdater")
     void InitUpdater() {
-        simulation.initUpdater();
+        simulationTest.initUpdater();
 
-        simulation.initSystem();
-        simulation.getSystem().initRocket();
-        simulation.getSystem().getCelestialBodies().get(11).getVectorLocation();
-        simulation.getSystem().systemState().getPositions().get(11).getX();
-        simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11).getX();
+        simulationTest.initSystem();
+        simulationTest.getSystem().initRocket();
+        simulationTest.getSystem().getCelestialBodies().get(11).getVectorLocation();
+        simulationTest.getSystem().systemState().getPositions().get(11).getX();
+        simulationTest.getSystem().systemState().getRateOfChange().getVelocities().get(11).getX();
 
-        assertNotNull(simulation.getUpdater());
-        assertNotEquals("null", simulation.getUpdater().toString());
+        assertNotNull(simulationTest.getUpdater());
+        assertNotEquals("null", simulationTest.getUpdater().toString());
     }
 
     @Test
     @DisplayName("InitGraphics")
     void InitGraphics() {
-        simulation.initGraphics();
-        assertNotNull(simulation.getGraphics());
-        assertNotEquals("null", simulation.getGraphics().toString());
+        simulationTest.initGraphics();
+        assertNotNull(simulationTest.getGraphics());
+        assertNotEquals("null", simulationTest.getGraphics().toString());
     }
 
     @Test
     @DisplayName("InitAssist")
     void InitAssist() {
-        simulation.setAssist(new UserDialogWindow());
-        assertThrows(NullPointerException.class, () -> simulation.initAssist());
-        assertNotNull(simulation.getAssist());
-        simulation.initSystem();
-        Main.simulationInstance = simulation;
-        simulation.initSystem();
-        assertDoesNotThrow(() -> simulation.initAssist());
-        assertNotNull(simulation.getAssist());
+        simulationTest.setAssist(new UserDialogWindow());
+        assertThrows(NullPointerException.class, () -> simulationTest.initAssist());
+        assertNotNull(simulationTest.getAssist());
+        simulationTest.initSystem();
+        Main.simulation = simulationTest;
+        simulationTest.initSystem();
+        assertDoesNotThrow(() -> simulationTest.initAssist());
+        assertNotNull(simulationTest.getAssist());
     }
 
     @Test
     @DisplayName("InitSystem")
     void InitSystem() {
-        simulation.initSystem();
-        assertNotNull(simulation.getSystem());
-        assertNotEquals("null", simulation.getSystem().toString());
+        simulationTest.initSystem();
+        assertNotNull(simulationTest.getSystem());
+        assertNotEquals("null", simulationTest.getSystem().toString());
         assertEquals("SOLAR SYSTEM\tClock { [ 00 : 00 : 00 ]     01 / 04 / 2020  },\n" +
                 "\tSTATE\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
@@ -77,15 +77,15 @@ class SimulationTest {
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "\tROCKET\n" +
                 "Dry Mass: 98000.0\n" +
-                "Fuel Mass: 20000.0\n", simulation.getSystem().toString());
+                "Fuel Mass: 20000.0\n", simulationTest.getSystem().toString());
     }
 
     @Test
     @DisplayName("InitReporter")
     void InitReporter() {
-        simulation.initReporter();
-        assertNotNull(simulation.getReporter());
-        assertNotEquals("null", simulation.getReporter().toString());
+        simulationTest.initReporter();
+        assertNotNull(simulationTest.getReporter());
+        assertNotEquals("null", simulationTest.getReporter().toString());
     }
 
 }

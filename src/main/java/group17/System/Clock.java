@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Contract;
 
 import static group17.Config.ERROR_EVALUATION;
 import static group17.Config.REPORT;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class Clock {
 
@@ -72,7 +72,7 @@ public class Clock {
 
     private boolean checkFirst() {
         if (this.days == 1 && this.hour == 0 && this.min == 0 && this.sec == 0) {
-            if (REPORT) simulationInstance.getReporter().report("FIRST OF MONTH - EVALUATING ERRORS");
+            if (REPORT) simulation.getReporter().report("FIRST OF MONTH - EVALUATING ERRORS");
             return true;
         }
         return false;

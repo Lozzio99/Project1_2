@@ -55,8 +55,6 @@ public class SolarSystem implements SystemInterface {
         this.bodies.add(new Satellite(TITAN));
         this.bodies.add(new Planet(URANUS));
         this.bodies.add(new Planet(NEPTUNE));
-
-
     }
 
     @Override

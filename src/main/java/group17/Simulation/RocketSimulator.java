@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 import static group17.Config.STEP_SIZE;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static java.lang.Double.NaN;
 
 public class RocketSimulator extends CelestialBody implements RocketInterface {
@@ -52,7 +52,7 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
         if (exhaustVelocity * (propellantConsumed / STEP_SIZE) > maxThrust) {
             System.out.println("Max Thrust exceeded!!!");
         }
-        simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().set(11, desiredVelocity);
+        simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11, desiredVelocity);
         updateMass(propellantConsumed);
         return propellantConsumed;
     }
@@ -90,8 +90,8 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
     @Override
     public void update() {
         if (!this.isCollided()) {
-            simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().set(11,
-                    simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().get(11).addMul(STEP_SIZE, localAcceleration));
+            simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11,
+                    simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11).addMul(STEP_SIZE, localAcceleration));
         }
     }
 
@@ -111,10 +111,10 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
 
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
-        assert (simulationInstance.getSystem() != null);
-        StateInterface[] seq = simulationInstance.getUpdater().getSolver().solve(
-                simulationInstance.getUpdater().getSolver().getFunction(),
-                simulationInstance.getSystem().systemState(),
+        assert (simulation.getSystem() != null);
+        StateInterface[] seq = simulation.getUpdater().getSolver().solve(
+                simulation.getUpdater().getSolver().getFunction(),
+                simulation.getSystem().systemState(),
                 ts);
 
         return getSequence(seq);
@@ -133,10 +133,10 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
 
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
-        assert (simulationInstance.getSystem() != null);
-        StateInterface[] seq = simulationInstance.getUpdater().getSolver().solve(
-                simulationInstance.getUpdater().getSolver().getFunction(),
-                simulationInstance.getSystem().systemState(),
+        assert (simulation.getSystem() != null);
+        StateInterface[] seq = simulation.getUpdater().getSolver().solve(
+                simulation.getUpdater().getSolver().getFunction(),
+                simulation.getSystem().systemState(),
                 tf, h);
 
         return getSequence(seq);

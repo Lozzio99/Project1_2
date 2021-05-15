@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import static group17.Config.PARTICLES_SIMULATION;
 import static group17.Config.SIMULATION_LEVEL;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 /**
  * Abstract class to Render a scene
@@ -61,13 +61,13 @@ public abstract class Scene extends JPanel {
                 create();
                 setHints(g);
             } else {
-                g.drawImage(image, 0, 0, simulationInstance.getGraphics().getFrame().getWidth(),
-                        simulationInstance.getGraphics().getFrame().getHeight(), 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
+                g.drawImage(image, 0, 0, simulation.getGraphics().getFrame().getWidth(),
+                        simulation.getGraphics().getFrame().getHeight(), 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
             }
         } else {
             g.setColor(Color.BLACK);
-            g.fillRect(0, 0, simulationInstance.getGraphics().getFrame().getWidth(),
-                    simulationInstance.getGraphics().getFrame().getHeight());
+            g.fillRect(0, 0, simulation.getGraphics().getFrame().getWidth(),
+                    simulation.getGraphics().getFrame().getHeight());
         }
 
     }

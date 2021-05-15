@@ -11,7 +11,7 @@ import java.awt.geom.Line2D;
 import java.util.Arrays;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class SimulationScene extends Scene {
     volatile Point3D[] planetsPositions;
@@ -29,9 +29,9 @@ public class SimulationScene extends Scene {
                 if (NAMES) {
                     g.setColor(Color.WHITE);
                     g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-                    g.drawString(simulationInstance.getSystem().getCelestialBodies().get(i).toString(), p.x, p.y);
+                    g.drawString(simulation.getSystem().getCelestialBodies().get(i).toString(), p.x, p.y);
                 }
-                g.setColor(simulationInstance.getSystem().getCelestialBodies().get(i).getColour());
+                g.setColor(simulation.getSystem().getCelestialBodies().get(i).getColour());
                 g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
                 if (DRAW_TRAJECTORIES) {
                     for (int k = this.trajectories[i].insert; k < this.trajectories[i].getTrajectories().length - 1; k++) {
@@ -53,22 +53,22 @@ public class SimulationScene extends Scene {
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             if (REPORT)
-                simulationInstance.getReporter().report("Removed body from graphics");
+                simulation.getReporter().report("Removed body from graphics");
             this.init();
         }
     }
 
     @Override
     public void init() {
-        this.planetsPositions = new Point3D[simulationInstance.getSystem().getCelestialBodies().size()];
-        this.radius = new double[simulationInstance.getSystem().getCelestialBodies().size()];
+        this.planetsPositions = new Point3D[simulation.getSystem().getCelestialBodies().size()];
+        this.radius = new double[simulation.getSystem().getCelestialBodies().size()];
         this.trajectories = new Bag[this.planetsPositions.length];
         for (int i = 0; i < this.planetsPositions.length; i++) {
             if (DRAW_TRAJECTORIES)
                 this.trajectories[i] = new Bag();
-            this.planetsPositions[i] = simulationInstance.getSystem().systemState().getPositions().get(i).fromVector();
+            this.planetsPositions[i] = simulation.getSystem().systemState().getPositions().get(i).fromVector();
             this.planetsPositions[i].scale(scale);
-            radius[i] = (simulationInstance.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;
+            radius[i] = (simulation.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;
         }
     }
 
@@ -92,14 +92,14 @@ public class SimulationScene extends Scene {
         //TODO : try translate planetPositions points by Vector.sub(oldPosition)
         double x = totalXDif / mouseSensitivity, y = totalYDif / mouseSensitivity, dx = deltaX / mouseSensitivity, dy = deltaY / mouseSensitivity;
         for (int i = 0; i < this.planetsPositions.length; i++) {
-            this.planetsPositions[i] = simulationInstance.getSystem().systemState().getPositions().get(i).fromVector();
+            this.planetsPositions[i] = simulation.getSystem().systemState().getPositions().get(i).fromVector();
             this.planetsPositions[i].scale(scale);
-            radius[i] = (simulationInstance.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;
+            radius[i] = (simulation.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;
             Point3DConverter.rotateAxisY(this.planetsPositions[i], false, x);
             Point3DConverter.rotateAxisX(this.planetsPositions[i], false, y);
 
             if (DRAW_TRAJECTORIES) {
-                if (!simulationInstance.waiting())
+                if (!simulation.waiting())
                     this.trajectories[i].add(this.planetsPositions[i]);
                 for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
                     if (this.trajectories[i].getTrajectories()[k] == null)

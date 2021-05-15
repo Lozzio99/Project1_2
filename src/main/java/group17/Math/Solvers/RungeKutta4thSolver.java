@@ -8,7 +8,7 @@ import org.jetbrains.annotations.Contract;
 
 import static group17.Config.DEBUG;
 import static group17.Config.G;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class RungeKutta4thSolver implements ODESolverInterface {
 
@@ -28,8 +28,8 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         acc = y.getPositions().get(k).sub(acc); // Get the force vector
                         double den = Math.sqrt(squareDist);
                         if (!checked) {
-                            CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
-                                    simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                            CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
+                                    simulation.getSystem().getCelestialBodies().get(k), den);
                         }
                         /*
                             ! Important !
@@ -41,7 +41,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         */
                         if (den > 0) {
                             acc = acc.mul(1 / den); // Normalise to length 1
-                            acc = acc.mul((G * simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
+                            acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
                         }
                         totalAcc = totalAcc.addMul(t, acc);
                         // p = h*acc(derivative of velocity)

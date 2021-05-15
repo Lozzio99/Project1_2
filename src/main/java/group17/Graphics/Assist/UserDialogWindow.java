@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
@@ -162,11 +162,11 @@ public class UserDialogWindow {
             @Override
             public void startSimulation() {
                 SOLVER = currentSolver;
-                if (simulationInstance == null) {
-                    simulationInstance = new Simulation();
-                    simulationInstance.setAssist(d);
-                    simulationInstance.init();
-                    simulationInstance.start();
+                if (simulation == null) {
+                    simulation = new Simulation();
+                    simulation.setAssist(d);
+                    simulation.init();
+                    simulation.start();
                 }
                 enableTabs();
                 mainPane.setSelectedIndex(1);

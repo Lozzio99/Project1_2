@@ -5,7 +5,7 @@ import group17.System.Bodies.CelestialBody;
 import javax.swing.*;
 import java.awt.*;
 
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class SimulationDataWindow extends JPanel {
     private JTextArea text;
@@ -28,10 +28,10 @@ public class SimulationDataWindow extends JPanel {
     }
 
     public void init() {
-        for (CelestialBody c : simulationInstance.getSystem().getCelestialBodies()) {
+        for (CelestialBody c : simulation.getSystem().getCelestialBodies()) {
             this.planetBox.addItem(c);
         }
-        this.text.setText(simulationInstance.getSystem().toString());
+        this.text.setText(simulation.getSystem().toString());
     }
 
     public void setOutput(String message) {

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.*;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class MaxCPUSolver implements ODEFunctionInterface {
 
@@ -47,7 +47,7 @@ public class MaxCPUSolver implements ODEFunctionInterface {
                         the same in all the system
                      */
                 acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                acc = acc.mul((G * simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                 totalAcc = totalAcc.addMul(t, acc);
             }
         }

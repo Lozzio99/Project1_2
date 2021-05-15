@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
@@ -65,7 +65,7 @@ public class Simulation implements SimulationInterface {
             try {
                 Thread.sleep(3000);  /* will wait 3 sec */
             } catch (InterruptedException ex) {
-                if (REPORT) simulationInstance.getReporter().report(Thread.currentThread(), ex);
+                if (REPORT) simulation.getReporter().report(Thread.currentThread(), ex);
             }
             this.setWaiting(false);
         }

@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Config.DEBUG;
 import static group17.Config.FPS;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 
 public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {
@@ -46,7 +46,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
             public void windowClosing(WindowEvent e) {
                 listen = new WindowEvent(frame, 201);
                 Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(listen);
-                simulationInstance.stop();
+                simulation.stop();
                 System.out.println("System closed by user");
                 System.exit(0);
             }

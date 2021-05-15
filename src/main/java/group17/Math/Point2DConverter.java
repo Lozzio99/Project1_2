@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class Point2DConverter {
     private static final double zoomFactor = 1.05;
@@ -40,7 +40,7 @@ public class Point2DConverter {
     }
 
     public static void resize() {
-        ORIGIN = new Point(simulationInstance.getGraphics().getFrame().getWidth() / 2, simulationInstance.getGraphics().getFrame().getHeight() / 2);
+        ORIGIN = new Point(simulation.getGraphics().getFrame().getWidth() / 2, simulation.getGraphics().getFrame().getHeight() / 2);
         translate(xMoved, yMoved);
     }
 }
