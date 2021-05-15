@@ -5,11 +5,12 @@ import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Main;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
+import org.jetbrains.annotations.Contract;
 
 import static group17.Config.G;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static java.lang.Double.NaN;
 
 public class StandardVerletSolver implements ODESolverInterface {
@@ -21,6 +22,7 @@ public class StandardVerletSolver implements ODESolverInterface {
     private boolean first = true;
     private ODEFunctionInterface singleCoreF;
 
+    @Contract(pure = true)
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
             for (int i = 0; i < y.getPositions().size(); i++) {
@@ -32,8 +34,8 @@ public class StandardVerletSolver implements ODESolverInterface {
                         acc = y.getPositions().get(k).sub(acc); // Get the force vector
                         double den = Math.sqrt(squareDist);
                         if (!checked) {
-                            CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
-                                    simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                            CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
+                                    simulation.getSystem().getCelestialBodies().get(k), den);
                         }
                     /*
                         ! Important !
@@ -42,7 +44,7 @@ public class StandardVerletSolver implements ODESolverInterface {
                         the same in all the system
                     */
                         acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                        acc = acc.mul((G * Main.simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                        acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                         totalAcc = totalAcc.addMul(h, acc);
                         // p = h*acc(derivative of velocity)
                     }
@@ -77,16 +79,16 @@ public class StandardVerletSolver implements ODESolverInterface {
         StateInterface diff;
         if (first) {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
-            diff = rk4.step(f, t, y, h);
+            diff = rk4.step(f, t, StateInterface.clone(y), h);
             first = false;
         } else {
             StateInterface subPrev = StateInterface.clone(prevState).multiply(-1);
-            diff = (StateInterface.clone(y).rateMul(h * h, f.call(1, StateInterface.clone(y)))).add(subPrev).add(StateInterface.clone(y)).add(y);
+            StateInterface twiceY = StateInterface.clone(y).multiply(2.0);
+            StateInterface rateMulPart = StateInterface.clone(y).rateMul(h * h, f.call(1, StateInterface.clone(y)));
+            diff = subPrev.add(twiceY).add(rateMulPart);
         }
-
-        prevState = StateInterface.clone(diff);
-        y = diff;
-        return y;
+        prevState = StateInterface.clone(y);
+        return diff;
     }
 
     @Override

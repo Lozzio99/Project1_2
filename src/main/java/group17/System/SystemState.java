@@ -4,16 +4,11 @@ import group17.Interfaces.RateInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.System.Bodies.Planet;
-import group17.System.Bodies.Satellite;
-import group17.System.Bodies.Star;
+import group17.Main;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static group17.Main.simulationInstance;
-import static group17.System.Bodies.Planet.PlanetsEnum.EARTH;
-import static group17.System.Bodies.Satellite.SatellitesEnum.ASTEROID;
 
 
 public class SystemState implements StateInterface {
@@ -26,14 +21,13 @@ public class SystemState implements StateInterface {
         this.rateOfChange = new RateOfChange();
     }
 
-    public SystemState(List<Vector3dInterface> positions) {
+    @Contract(pure = true)
+    public SystemState(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
         this.positions = positions;
+        this.rateOfChange = new RateOfChange();
+        rateOfChange.setVel(velocities);
     }
 
-    public SystemState(Vector3dInterface positionsVector) {
-        this.positions = new ArrayList<>();
-        positions.add(positionsVector);
-    }
 
     @Override
     public List<Vector3dInterface> getPositions() {
@@ -41,13 +35,13 @@ public class SystemState implements StateInterface {
     }
 
     @Override
-    public void setPositions(List<Vector3dInterface> positions) {
-        this.positions = positions;
+    public void setPositions(List<Vector3dInterface> pos) {
+        this.positions = pos;
     }
 
     @Override
     public String toString() {
-        SimulationInterface simulation = simulationInstance;
+        SimulationInterface simulation = Main.simulation;
         StringBuilder s = new StringBuilder();
         s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         if (simulation == null) {
@@ -57,29 +51,20 @@ public class SystemState implements StateInterface {
             }
         } else {
             for (int i = 0; i < this.positions.size(); i++) {
-                s.append(simulationInstance.getSystem().getCelestialBodies().get(i).toString());
+                s.append(Main.simulation.getSystem().getCelestialBodies().get(i).toString());
                 s.append("\tPV:\t");
                 s.append(this.positions.get(i).toString()).append("\n");
+                s.append("\tVV:\t");
+                s.append(this.rateOfChange.getVelocities().get(i).toString()).append("\n");
             }
         }
         s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-
         return s.toString().trim();
     }
-
 
     @Override
     public RateInterface getRateOfChange() {
         return this.rateOfChange;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(
-                new SystemState()
-                        .state0(
-                                List.of(new Star(), new Planet(EARTH), new Satellite(ASTEROID))).hashCode());
-
     }
 
     @Override
@@ -90,6 +75,7 @@ public class SystemState implements StateInterface {
         return hash;
     }
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof StateInterface) {

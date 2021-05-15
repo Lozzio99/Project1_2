@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static group17.Config.*;
+import static group17.Main.simulation;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
@@ -29,6 +30,7 @@ public class Simulation implements SimulationInterface {
     public void init() {
         if (REPORT)
             this.initReporter();   //first thing, will check all exceptions
+
         this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
         if (LAUNCH_ASSIST)
             this.initAssist();
@@ -59,10 +61,16 @@ public class Simulation implements SimulationInterface {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         if (!LAUNCH_ASSIST) {
+            if (REPORT) this.getReporter().report("START SIMULATION");
+            try {
+                Thread.sleep(3000);  /* will wait 3 sec */
+            } catch (InterruptedException ex) {
+                if (REPORT) simulation.getReporter().report(Thread.currentThread(), ex);
+            }
             this.setWaiting(false);
-            if (REPORT)
-                this.getReporter().report("START SIMULATION");
         }
+        this.getUpdater().getSchedule().init();
+        this.getUpdater().getSchedule().prepare();
     }
 
     @Override
@@ -86,7 +94,6 @@ public class Simulation implements SimulationInterface {
             if (!waiting()) {
                 this.startUpdater();
                 this.startSystem();
-                this.getSystem().getClock().step(STEP_SIZE);
             }
         }
     }
@@ -145,6 +152,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public void setAssist(UserDialogWindow assist) {
         this.assist = assist.getLaunchAssist();
+        this.assist.setOutputWindow(assist.getOutputWindow());
     }
 
     @Override

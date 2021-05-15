@@ -1,6 +1,6 @@
 package group17.System;
 
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Bodies.Particle;
 import group17.System.Bodies.Star;
@@ -93,7 +93,7 @@ class CelestialBodyTest {
         assertEquals(-6.806783239281648e+08, planet.getVectorLocation().getX());
         assertEquals(1.080005533878725e+09, planet.getVectorLocation().getY());
         assertEquals(6.564012751690170e+06, planet.getVectorLocation().getZ());
-        assertEquals(1.420511669610689e+01, planet.getVectorVelocity().getX());
+        assertEquals(-1.420511669610689e+01, planet.getVectorVelocity().getX());
         assertEquals(-4.954714716629277e+00, planet.getVectorVelocity().getY());
         assertEquals(3.994237625449041e-01, planet.getVectorVelocity().getZ());
     }

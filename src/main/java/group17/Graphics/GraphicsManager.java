@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Config.DEBUG;
 import static group17.Config.FPS;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 
 public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {
@@ -22,6 +22,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
     protected final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
     protected MouseInput mouse;
     protected Scene currentScene;
+    int frames = 0;
+    double t = System.currentTimeMillis();
     private JFrame frame;
     private WindowEvent listen;
 
@@ -38,13 +40,13 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         //this.frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
 
-    private void setWindowProperties() {
+    protected void setWindowProperties() {
         final var closed = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 listen = new WindowEvent(frame, 201);
                 Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(listen);
-                simulationInstance.stop();
+                simulation.stop();
                 System.out.println("System closed by user");
                 System.exit(0);
             }
@@ -116,8 +118,6 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         }
     }
 
-    int frames = 0;
-    double t = System.currentTimeMillis();
     @Override
     public synchronized void run() {
 
@@ -125,7 +125,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
             frames++;
             double v = System.currentTimeMillis();
             if (v - t > 1000) {
-                System.out.println("FPS :: " + frames);
+                FPS = frames;
+                System.out.println("FPS :: " + FPS);
                 t = v;
                 frames = 0;
             }

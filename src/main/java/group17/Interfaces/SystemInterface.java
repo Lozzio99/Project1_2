@@ -29,7 +29,7 @@ public interface SystemInterface {
     void initRocket();
 
 
-    // simulationInstance actions
+    // simulation actions
     void start();
 
     void reset();

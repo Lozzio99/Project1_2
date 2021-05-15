@@ -11,6 +11,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ClockTest {
 
+    static {
+        Config.ERROR_EVALUATION = false;
+    }
+
     @Test
     @DisplayName("StepSize1000")
     void StepSize1000() {

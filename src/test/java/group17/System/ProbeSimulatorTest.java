@@ -2,20 +2,21 @@ package group17.System;
 
 import group17.Interfaces.ProbeSimulatorInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
+import group17.Simulation.RocketSimulator;
 import group17.Simulation.Simulation;
-import group17.System.Bodies.ProbeSimulator;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
 import java.io.IOException;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+@Disabled
 class ProbeSimulatorTest {
 
     static final double ACCURACY = 1; // 1 meter (might need to tweak that)
@@ -36,7 +37,7 @@ class ProbeSimulatorTest {
          * @param   h       the size of step to be taken
          * @return  an array of size  <<<<<round(tf/h)+1>>>>>  including all intermediate states along the path
          */
-        ProbeSimulatorInterface simulator = new ProbeSimulator();
+        ProbeSimulatorInterface simulator = new RocketSimulator();
         Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, year, day);
         return trajectory;
 
@@ -47,7 +48,7 @@ class ProbeSimulatorTest {
         Vector3dInterface probe_relative_position = new Vector3D(6371e3, 0, 0);
         Vector3dInterface probe_relative_velocity = new Vector3D(52500.0, -27000.0, 0); // 12.0 months
         double day = 24 * 60 * 60;
-        ProbeSimulatorInterface simulator = new ProbeSimulator();
+        ProbeSimulatorInterface simulator = new RocketSimulator();
         Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, day, day);
         return trajectory;
 
@@ -57,10 +58,10 @@ class ProbeSimulatorTest {
     void setUp() {
         ENABLE_GRAPHICS = LAUNCH_ASSIST = false;
         REPORT = DEBUG = false;
-        simulationInstance = new Simulation();
-        simulationInstance.init();
-        simulationInstance.setRunning();
-        //simulationInstance.start();
+        simulation = new Simulation();
+        simulation.init();
+        simulation.setRunning();
+        //simulation.start();
     }
 
     @Test

@@ -1,7 +1,7 @@
 package group17.Graphics.Assist;
 
-import group17.Math.Graph.Point;
-import group17.Math.Graph.fX;
+import group17.Interfaces.Function;
+import group17.Math.Utils.Point;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,13 +29,13 @@ public class PlotWindow extends JPanel {
     }
 
     public PlotWindow test() {
-        fX f = x -> 80 * sin(x / 17);
+        Function<Double> f = x -> 80 * sin(x / 17);
         double[] xs = new double[1000], ys = new double[1000];
         int x_ = GraphPane.graphSize.width / 2;
         double k = -x_;
         for (int i = 0; i < xs.length; i++) {
             xs[i] = k;
-            ys[i] = f.f_x(k);
+            ys[i] = f.apply(k);
             k += 0.5;
         }
         this.evaluate(xs, ys, 0);
@@ -68,8 +68,7 @@ public class PlotWindow extends JPanel {
         public GraphPane() {
             this.setSize(graphSize);
             Point.setScreen(graphSize);
-            ORIGIN = new Point();
-            Point.setOrigin(ORIGIN);
+            Point.setOrigin(new Point());
             if (drawAxis) this.makeAxis();
         }
 

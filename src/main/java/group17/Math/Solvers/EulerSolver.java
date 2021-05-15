@@ -6,11 +6,11 @@ import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Main;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
 
 import static group17.Config.G;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static java.lang.Double.NaN;
 
 
@@ -35,8 +35,8 @@ public class EulerSolver implements ODESolverInterface {
                     acc = y.getPositions().get(k).sub(acc); // Get the force vector
                     double den = Math.sqrt(squareDist);
                     if (!checked) {
-                        CollisionDetector.checkCollided(simulationInstance.getSystem().getCelestialBodies().get(i),
-                                simulationInstance.getSystem().getCelestialBodies().get(k), den);
+                        CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
+                                simulation.getSystem().getCelestialBodies().get(k), den);
                     }
                 /*
                     ! Important !
@@ -45,7 +45,7 @@ public class EulerSolver implements ODESolverInterface {
                     the same in all the system
                 */
                     acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                    acc = acc.mul((G * Main.simulationInstance.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                    acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                     totalAcc = totalAcc.addMul(t, acc);
                     // p = h*acc(derivative of velocity)
                 }
@@ -57,7 +57,6 @@ public class EulerSolver implements ODESolverInterface {
         checked = true;
         return y.getRateOfChange();
     };
-
 
 
     //x1 = x0 + h*v0;

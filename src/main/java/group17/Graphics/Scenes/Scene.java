@@ -1,8 +1,8 @@
 package group17.Graphics.Scenes;
 
 
-import group17.Math.Point3D;
-import group17.Math.Point3DConverter;
+import group17.Math.Utils.Point3D;
+import group17.Math.Utils.Point3DConverter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import static group17.Config.PARTICLES_SIMULATION;
 import static group17.Config.SIMULATION_LEVEL;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 /**
  * Abstract class to Render a scene
@@ -61,13 +61,13 @@ public abstract class Scene extends JPanel {
                 create();
                 setHints(g);
             } else {
-                g.drawImage(image, 0, 0, simulationInstance.getGraphics().getFrame().getWidth(),
-                        simulationInstance.getGraphics().getFrame().getHeight(), 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
+                g.drawImage(image, 0, 0, simulation.getGraphics().getFrame().getWidth(),
+                        simulation.getGraphics().getFrame().getHeight(), 0, 0, image.getWidth(), image.getHeight(), new Color(0, 0, 0, 111), null);
             }
         } else {
             g.setColor(Color.BLACK);
-            g.fillRect(0, 0, simulationInstance.getGraphics().getFrame().getWidth(),
-                    simulationInstance.getGraphics().getFrame().getHeight());
+            g.fillRect(0, 0, simulation.getGraphics().getFrame().getWidth(),
+                    simulation.getGraphics().getFrame().getHeight());
         }
 
     }
@@ -223,7 +223,7 @@ public abstract class Scene extends JPanel {
          */
         SIMULATION_SCENE,
         /**
-         * @// TODO: 19/04/2021 implement this back
+         * TODO: 19/04/2021 implement this back
          */
         TRAJECTORIES
     }

@@ -1,5 +1,6 @@
 package group17.Math;
 
+import group17.Math.Utils.Point3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +52,9 @@ class Point3DTest {
     @Test
     @DisplayName("Scale")
     void Scale() {
-
+        p = new Point3D(30.0, 40.0, 80.0);
+        p.scale(10);
+        assertEquals(new Point3D(3, 4, 8), p);
     }
 
     @Test

@@ -12,13 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static group17.Config.*;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
     private static final List<Color> backGrounds = new ArrayList<>();
     private static final List<ImageIcon> icons = new ArrayList<>();
-
     static {
         tabs.add("MENU");
         backGrounds.add(new Color(204, 122, 255, 211));
@@ -58,24 +57,12 @@ public class UserDialogWindow {
         tips.add("Configure settings");
 
     }
-
-    public void enableTabs() {
-        if (LAUNCH_ASSIST) enable(1);
-        if (REPORT) enable(2);
-        if (PLOT) enable(3);
-        if (ROCKET_INFO) enable(4);
-        if (PERFORMANCE) enable(5);
-        if (ERROR_EVALUATION) enable(6);
-        enable(8);
-    }
-
-    Color c = new Color(181, 252, 233, 211);
-
     private final JFrame frame;
     private JTabbedPane mainPane;
     private LaunchAssist assist;
+    private SimulationDataWindow dataWindow;
+    private ErrorWindow errorWindow;
     private MainMenu menu;
-
     public UserDialogWindow() {
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -86,34 +73,23 @@ public class UserDialogWindow {
             MetalLookAndFeel.setCurrentTheme(new OceanTheme());
              */
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
             //
-
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 
         } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException ex) {
             //ex.printStackTrace();
         }
 
         this.frame = new JFrame();
-        this.frame.setSize(new Dimension(1080, 620));
+        this.frame.setSize(new Dimension(1280, 620));
         this.frame.setIconImage(loadIcon("death.png").getImage());
         this.frame.getContentPane().add(makeTabs(), BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.frame.setVisible(true);
     }
 
-    public void reset() {
-        //TODO : implement all changes here
-        ((RocketWindow) this.mainPane.getComponentAt(4)).reset(); // rocket fuel
-    }
-
-    private static ImageIcon loadIcon(String path) {
-        ImageIcon i = new ImageIcon(UserDialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
-        Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        i.setImage(scaled);
-        return i;
-    }
 
     private Component makeTabs() {
         this.mainPane = new JTabbedPane();
@@ -129,6 +105,13 @@ public class UserDialogWindow {
         return this.mainPane;
     }
 
+    private static ImageIcon loadIcon(String path) {
+        ImageIcon i = new ImageIcon(UserDialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
+        Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        i.setImage(scaled);
+        return i;
+    }
+
     private void config() {
         this.enable(0, 7);
         Color c = new Color(11, 255, 3), w = new Color(135, 0, 255), c2 = new Color(0, 255, 255);
@@ -139,15 +122,6 @@ public class UserDialogWindow {
         this.mainPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 
-    public void enable(int... i) {
-        for (int j : i) this.mainPane.setEnabledAt(j, true);
-    }
-
-    public void disable(int... i) {
-        for (int j : i) this.mainPane.setEnabledAt(j, false);
-    }
-
-
     public Component configCard(int index) {
         switch (index) {
             case 0 -> {
@@ -155,6 +129,9 @@ public class UserDialogWindow {
             }
             case 1 -> {
                 return this.assist = new LaunchAssist();
+            }
+            case 2 -> {
+                return this.dataWindow = new SimulationDataWindow();
             }
             case 3 -> {
                 return new PlotWindow().init().test();
@@ -164,6 +141,9 @@ public class UserDialogWindow {
             }
             case 5 -> {
                 return new PerformanceWindow();
+            }
+            case 6 -> {
+                return this.errorWindow = new ErrorWindow();
             }
             case 7 -> {
                 return new ControllersWindow();
@@ -177,24 +157,39 @@ public class UserDialogWindow {
         }
     }
 
-
     private Component initMenu() {
         UserDialogWindow d = this;
         this.menu = new MainMenu() {
             @Override
             public void startSimulation() {
                 SOLVER = currentSolver;
-                if (simulationInstance == null) {
-                    simulationInstance = new Simulation();
-                    simulationInstance.setAssist(d);
-                    simulationInstance.init();
-                    simulationInstance.start();
+                if (simulation == null) {
+                    simulation = new Simulation();
+                    simulation.setAssist(d);
+                    simulation.init();
+                    simulation.start();
                 }
                 enableTabs();
                 mainPane.setSelectedIndex(1);
             }
         };
         return this.menu.configFrame(new JPanel());
+    }
+
+    public void enable(int... i) {
+        for (int j : i) this.mainPane.setEnabledAt(j, true);
+    }
+    public void disable(int... i) {
+        for (int j : i) this.mainPane.setEnabledAt(j, false);
+    }
+    public void enableTabs() {
+        if (LAUNCH_ASSIST) enable(1);
+        if (REPORT) enable(2);
+        if (PLOT) enable(3);
+        if (ROCKET_INFO) enable(4);
+        if (PERFORMANCE) enable(5);
+        if (ERROR_EVALUATION) enable(6);
+        enable(8);
     }
 
 
@@ -208,5 +203,13 @@ public class UserDialogWindow {
 
     public JTabbedPane getMainPane() {
         return mainPane;
+    }
+
+    public SimulationDataWindow getOutputWindow() {
+        return this.dataWindow;
+    }
+
+    public ErrorWindow getErrorWindow() {
+        return errorWindow;
     }
 }

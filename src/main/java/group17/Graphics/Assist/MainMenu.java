@@ -1,5 +1,7 @@
 package group17.Graphics.Assist;
 
+import org.jetbrains.annotations.Contract;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,16 +16,16 @@ public abstract class MainMenu {
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 600;
     static protected int currentSolver = SOLVER;
+    static JFrame frame;
     protected int currentSimulationType = SIMULATION_LEVEL;
     protected int currentCPULevel = CPU_LEVEL;
-
-    static JFrame frame;
     JLabel titleLabel;
 
 
     /**
      * Constructor
      */
+    @Contract(pure = true)
     public MainMenu() {
         //this.setFrame();
     }
@@ -78,8 +80,6 @@ public abstract class MainMenu {
         );
 
 
-
-
         JSlider trajectoryLengthSlider = new JSlider();
         trajectoryLengthSlider.setMinimum(0);
         trajectoryLengthSlider.setMaximum(10000);
@@ -89,7 +89,7 @@ public abstract class MainMenu {
         JButton startButton = new JButton("Start Simulation");
 
         startButton.addActionListener(e -> {
-            // --- Select the correct simulationInstance ---
+            // --- Select the correct simulation ---
             int currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {
                 case ("Rocket Simulation") -> ROCKET_SIMULATION;
                 case ("Pendulum Simulation") -> PENDULUM_SIMULATION;
@@ -118,7 +118,6 @@ public abstract class MainMenu {
 
 
         controlPanel.setBounds(10, 50, FRAME_WIDTH - 67, FRAME_HEIGHT - 97);
-
 
 
         // --- Horizontal Groups ---

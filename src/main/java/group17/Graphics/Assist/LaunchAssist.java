@@ -19,6 +19,7 @@ public class LaunchAssist extends AbstractLaunchAssist {
         JScrollPane scrollPane = new JScrollPane(textArea);
         this.add(scrollPane);
         this.setFocusable(true);
+        this.outputWindow.init();
     }
 
     @Override
@@ -110,14 +111,16 @@ public class LaunchAssist extends AbstractLaunchAssist {
     public JPanel buttonsPanel() {
         JPanel btnPanel = new JPanel();
         btnPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        btnPanel.setLayout(new GridLayout(1, 2, 30, 0));
+        btnPanel.setLayout(new GridLayout(1, 3, 30, 0));
         JButton startButton = new JButton("LAUNCH");
         startButton.addActionListener(new startBtnListener());
         btnPanel.add(startButton);
         JButton clearButton = new JButton("RESET");
-        //to be implemented
-        clearButton.addActionListener(new clearBtnListener());
+        clearButton.addActionListener(new resetBtnListener());
         btnPanel.add(clearButton);
+        JButton pauseButton = new JButton("PAUSE");
+        pauseButton.addActionListener(new pauseBtnListener());
+        btnPanel.add(pauseButton);
         return btnPanel;
     }
 

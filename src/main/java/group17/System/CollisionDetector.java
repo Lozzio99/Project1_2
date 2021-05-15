@@ -2,11 +2,13 @@ package group17.System;
 
 import group17.Interfaces.ReporterInterface;
 import group17.Interfaces.SystemInterface;
-
 import group17.System.Bodies.CelestialBody;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
+import static group17.Config.CHECK_COLLISIONS;
 import static group17.Config.REPORT;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 
 public class CollisionDetector {
@@ -16,17 +18,16 @@ public class CollisionDetector {
 
 
     public static void checkCollided(CelestialBody a, CelestialBody b, double distm) {
+        if (!CHECK_COLLISIONS) return;
         collision = false;
         output = "";
         if (distm < (b.getRADIUS() + a.getRADIUS())) {
             if (a.isCollided() || b.isCollided())
                 return;
-
             collision = true;
             output += "[ " + a + " - " + b + " ]";
             if (b.getMASS() < a.getMASS()) {
                 b.setCollided(true);
-
                 a.setMASS(a.getMASS() + b.getMASS()); // conservation of mass
                 a.setRADIUS(a.getRADIUS() + b.getRADIUS());  //very very stupid
             } else {
@@ -36,10 +37,11 @@ public class CollisionDetector {
             }
         }
         if (REPORT && collision)
-            simulationInstance.getReporter().report("COLLISION " + output);
+            simulation.getReporter().report("COLLISION " + output);
     }
 
-    public static SystemInterface checkCollisions(final SystemInterface system, ReporterInterface reporter) {
+    @Contract("_, _ -> param1")
+    public static SystemInterface checkCollisions(final @NotNull SystemInterface system, ReporterInterface reporter) {
 
         collision = false;
         output = "";
@@ -47,7 +49,6 @@ public class CollisionDetector {
             for (int k = 0; k < system.getCelestialBodies().size(); k++) {
                 if (i != k) {
                     checkCollided(system.getCelestialBodies().get(i),
-
                             system.getCelestialBodies().get(k),
                             system.systemState().getPositions().get(i).dist(system.systemState().getPositions().get(k)));
 

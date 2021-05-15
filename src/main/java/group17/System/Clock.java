@@ -1,5 +1,11 @@
 package group17.System;
 
+import org.jetbrains.annotations.Contract;
+
+import static group17.Config.ERROR_EVALUATION;
+import static group17.Config.REPORT;
+import static group17.Main.simulation;
+
 public class Clock {
 
 
@@ -37,6 +43,7 @@ public class Clock {
         setInitialDay(1, 4, 2020);
         setInitialTime(0, 0, 0);
         checkLeap();
+        if (ERROR_EVALUATION) checkFirst();
         return this;
     }
 
@@ -54,11 +61,21 @@ public class Clock {
         return this;
     }
 
-    public synchronized void step(double secStep) {
+    public synchronized boolean step(double secStep) {
         int step = (int) secStep;
         if (step != 0)
             secStep(step);
         checkLeap();
+        if (!ERROR_EVALUATION) return false;
+        return checkFirst();
+    }
+
+    private boolean checkFirst() {
+        if (this.days == 1 && this.hour == 0 && this.min == 0 && this.sec == 0) {
+            if (REPORT) simulation.getReporter().report("FIRST OF MONTH - EVALUATING ERRORS");
+            return true;
+        }
+        return false;
     }
 
     private synchronized void secStep(int secStep) {
@@ -200,6 +217,7 @@ public class Clock {
         return hash;
     }
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Clock) {

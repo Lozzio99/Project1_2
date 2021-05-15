@@ -1,24 +1,21 @@
 package group17.Interfaces;
-/*
- * @author Pieter Collins, Christof Seiler, Katerina Stankova, Nico Roos, Katharina Schueller
- * @version 0.99.0
- *
- * This interface serves as the API for students in phase 1.
- */
 
-
-import group17.Math.Vector3D;
-import group17.Simulation.RocketSimulator;
+import group17.Math.Utils.Vector3D;
 import group17.System.Bodies.CelestialBody;
 import group17.System.SystemState;
 
 import java.util.List;
 
-/**
- * An interface representing the state of a system described by a differential equation.
- */
-
 public interface StateInterface {
+
+    static StateInterface clone(StateInterface tobeCloned) {
+        StateInterface s = new SystemState();
+        for (int i = 0; i < tobeCloned.getPositions().size(); i++) {
+            s.getPositions().add(tobeCloned.getPositions().get(i).clone());
+            s.getRateOfChange().getVelocities().add(tobeCloned.getRateOfChange().getVelocities().get(i).clone());
+        }
+        return s;
+    }
 
     String toString();
 
@@ -33,7 +30,6 @@ public interface StateInterface {
 
     void setPositions(List<Vector3dInterface> v);
 
-
     /**
      * Initialises the system state to be the initial value at the launch day
      *
@@ -44,21 +40,9 @@ public interface StateInterface {
         for (CelestialBody b : bodies) {
             b.initProperties();
             state.getPositions().add(b.getVectorLocation().clone());
-            if (b instanceof RocketSimulator)
-                state.getRateOfChange().getVelocities().add(((RocketSimulator) b).getLocalAcceleration().add(b.getVectorVelocity()));
-            else
-                state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());
+            state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());
         }
         return state;
-    }
-
-    static StateInterface clone(StateInterface tobeCloned) {
-        StateInterface s = new SystemState();
-        for (int i = 0; i < tobeCloned.getPositions().size(); i++) {
-            s.getPositions().add(tobeCloned.getPositions().get(i).clone());
-            s.getRateOfChange().getVelocities().add(tobeCloned.getRateOfChange().getVelocities().get(i).clone());
-        }
-        return s;
     }
 
     /**
@@ -77,6 +61,7 @@ public interface StateInterface {
         }
         return newState;
     }
+
     default StateInterface rateMul(double step, RateInterface rate) { //!!
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
@@ -85,6 +70,7 @@ public interface StateInterface {
         }
         return newState;
     }
+
     /**
      * @return a String containing the state of the system
      */
@@ -95,6 +81,7 @@ public interface StateInterface {
         }
         return s;
     }
+
     default StateInterface multiply(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
@@ -105,6 +92,7 @@ public interface StateInterface {
         }
         return this;
     }
+
     default StateInterface div(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to divide ");
@@ -115,6 +103,7 @@ public interface StateInterface {
         }
         return this;
     }
+
     default StateInterface add(StateInterface tobeAdded) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to add ");
@@ -125,6 +114,7 @@ public interface StateInterface {
         }
         return this;
     }
+
     default StateInterface sumOf(StateInterface... rates) {
 
         for (int i = 0; i < rates[0].getPositions().size(); i++) {
@@ -149,4 +139,3 @@ public interface StateInterface {
     @Override
     int hashCode();
 }
-

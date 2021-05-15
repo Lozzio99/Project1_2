@@ -9,7 +9,7 @@
 package group17.Graphics.Assist;
 
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Graphics.Scenes.Scene.SceneType.STARTING_SCENE;
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 import static group17.Main.userDialog;
 
 /**
@@ -30,8 +30,8 @@ import static group17.Main.userDialog;
  */
 public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
+    private static int t = 0;
     protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
-    protected JFrame frame;
     protected final JTextArea textArea = new JTextArea(10, 30);
     protected final JTextField stSizeField = new JTextField();
     protected final JTextField massSizeField = new JTextField();
@@ -50,12 +50,10 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     protected final JSlider xVelSlider = new JSlider(-30000, 30000);
     protected final JSlider yVelSlider = new JSlider(-30000, 30000);
     protected final JSlider zVelSlider = new JSlider(-30000, 30000);
-
-    protected Component parentPanel;
-
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
-
+    protected JFrame frame;
+    protected SimulationDataWindow outputWindow;
 
     public AbstractLaunchAssist() {
         //this.setFrame();
@@ -80,29 +78,32 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      */
     protected abstract JPanel createSetUpPanel();
 
+    public void setOutputWindow(SimulationDataWindow w) {
+        this.outputWindow = w;
+    }
 
     public void setDate() {
-        this.setSsField("" + simulationInstance.getSystem().getClock().getSec());
-        this.setMinuteField("" + simulationInstance.getSystem().getClock().getMin());
-        this.setHhField("" + simulationInstance.getSystem().getClock().getHour());
-        this.setDdField("" + simulationInstance.getSystem().getClock().getDays());
-        this.setMonthField("" + simulationInstance.getSystem().getClock().getMonths());
-        this.setYyField("" + simulationInstance.getSystem().getClock().getYears());
+        this.setSsField("" + simulation.getSystem().getClock().getSec());
+        this.setMinuteField("" + simulation.getSystem().getClock().getMin());
+        this.setHhField("" + simulation.getSystem().getClock().getHour());
+        this.setDdField("" + simulation.getSystem().getClock().getDays());
+        this.setMonthField("" + simulation.getSystem().getClock().getMonths());
+        this.setYyField("" + simulation.getSystem().getClock().getYears());
     }
 
     public void showAssistParameters() {
         this.setStepField("" + STEP_SIZE);
         this.setDate();
         if (INSERT_ROCKET) {
-            this.setProbeField("" + simulationInstance.getSystem().getCelestialBodies().get(11).getMASS());
-            lXCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getX());
-            lYCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getY());
-            lZCoordField.setText("" + simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().getZ());
+            this.setProbeField("" + simulation.getSystem().getCelestialBodies().get(11).getMASS());
+            lXCoordField.setText("" + simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().getX());
+            lYCoordField.setText("" + simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().getY());
+            lZCoordField.setText("" + simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().getZ());
             String ready = ("READY TO START\n") +
                     ("Those are the starting coordinates : ") +
-                    (simulationInstance.getSystem().getCelestialBodies().get(11).getVectorLocation().toString()) +
+                    (simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().toString()) +
                     ("\nThis is the starting velocity:\n") +
-                    (simulationInstance.getSystem().getCelestialBodies().get(11).getVectorVelocity().toString()) +
+                    (simulation.getSystem().getCelestialBodies().get(11).getVectorVelocity().toString()) +
                     ("\nIf you want to change the starting velocity\n" +
                             "   > you can increase / decrease the sliders\n") +
                     ("If you want to change the starting position\n" +
@@ -110,22 +111,21 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
                     ("If you want to change step size or probe mass\n" +
                             "   > you can plug in the desired value") +
                     ("If you trust our shoot then just START SIMULATION :=)");
-            ready += "\n" + simulationInstance.toString() + "\n";
+            ready += "\n" + simulation.toString() + "\n";
             this.setOutput(ready);
         }
     }
 
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
-        if (INSERT_ROCKET && !simulationInstance.getSystem().getRocket().isCollided()) {
-            Vector3dInterface v = new Vector3D(getLaunchVelocityX(),
-                    getLaunchVelocityY(),
-                    getLaunchVelocityZ());
-            if (!v.isZero())
-                simulationInstance.getUpdater().getSchedule().plan(LAUNCH_DATE, v);
+        if (INSERT_ROCKET && !simulation.getSystem().getRocket().isCollided()) {
+            Vector3dInterface v = new Vector3D(getLaunchVelocityX(), getLaunchVelocityY(), getLaunchVelocityZ());
+            if (!v.isZero()) {
+                simulation.getUpdater().getSchedule().addToPlan(LAUNCH_DATE, v);
+                System.out.println(v);
+            }
         }
     }
-
 
     public void setMonthField(String mmField) {
         this.mmField.setText(mmField);
@@ -313,14 +313,13 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.massSizeField.setText(ssField);
     }
 
-    private static int t = 0;
     @Override
     public synchronized void run() {
-        if (!simulationInstance.waiting()) {
+        if (!simulation.waiting()) {
             this.setDate();
             if (t > 50) {
                 try {
-                    this.setOutput(simulationInstance.getSystem().toString());
+                    this.outputWindow.setOutput(simulation.getSystem().toString());
                 } catch (NullPointerException | IndexOutOfBoundsException ignored) {
                 }
                 t = 0;
@@ -370,19 +369,19 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      * @since 19/02/2021
      */
 
-    class clearBtnListener implements ActionListener {
+    class resetBtnListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (simulationInstance.waiting())
+            if (simulation.waiting())
                 return;
             if (REPORT)
-                simulationInstance.getReporter().report("RESET SIMULATION");
+                simulation.getReporter().report("RESET SIMULATION");
             if (ENABLE_GRAPHICS)
-                simulationInstance.getGraphics().changeScene(STARTING_SCENE);
+                simulation.getGraphics().changeScene(STARTING_SCENE);
             if (LAUNCH_ASSIST)
                 userDialog.getMainPane().setSelectedIndex(1);
-            simulationInstance.reset();
+            simulation.reset();
         }
 
     }
@@ -398,21 +397,37 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!simulationInstance.waiting())
-                return;
-            userDialog.enable(3, 6);
-
-            // TODO Auto-generated method stub
+            if (!simulation.waiting()) return;
             if (ENABLE_GRAPHICS) {
-                simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+                simulation.getGraphics().changeScene(SIMULATION_SCENE);
+                simulation.getGraphics().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             }
-            if (REPORT)
-                simulationInstance.getReporter().report("START SIMULATION");
+            if (REPORT) simulation.getReporter().report("START SIMULATION");
             acquireData();
+            new Thread(() -> {       // wait 3 sec without stopping AWT event queue
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException ex) {
+                    if (REPORT) simulation.getReporter().report(Thread.currentThread(), ex);
+                }
+                if (ENABLE_GRAPHICS)
+                    simulation.getGraphics().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                simulation.setWaiting(false);
+            }, "CountDown").start();
+        }
+    }
 
-            simulationInstance.getSystem(); /* lock will make it wait */
 
-            simulationInstance.setWaiting(false);
+    class pauseBtnListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (!simulation.waiting()) {
+                ((JButton) e.getSource()).setText("RESUME");
+                simulation.setWaiting(true);
+            } else {
+                ((JButton) e.getSource()).setText("PAUSE");
+                simulation.setWaiting(false);
+            }
         }
     }
 

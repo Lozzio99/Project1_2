@@ -12,16 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static group17.Config.INSERT_ROCKET;
+import static group17.Config.LAUNCH_DATE;
 import static group17.System.Bodies.Planet.PlanetsEnum.*;
 import static group17.System.Bodies.Satellite.SatellitesEnum.MOON;
 import static group17.System.Bodies.Satellite.SatellitesEnum.TITAN;
 
 public class SolarSystem implements SystemInterface {
 
-    private Clock clock;
-    private List<CelestialBody> bodies;
-    private volatile StateInterface systemState;
-    private RocketSimulator rocket;
+    protected Clock clock;
+    protected List<CelestialBody> bodies;
+    protected volatile StateInterface systemState;
+    protected RocketSimulator rocket;
 
     @Override
     public List<CelestialBody> getCelestialBodies() {
@@ -47,14 +48,13 @@ public class SolarSystem implements SystemInterface {
         this.bodies.add(new Planet(MERCURY));
         this.bodies.add(new Planet(VENUS));
         this.bodies.add(new Planet(EARTH));
+        this.bodies.add(new Satellite(MOON));
         this.bodies.add(new Planet(MARS));
         this.bodies.add(new Planet(JUPITER));
         this.bodies.add(new Planet(SATURN));
         this.bodies.add(new Satellite(TITAN));
         this.bodies.add(new Planet(URANUS));
         this.bodies.add(new Planet(NEPTUNE));
-        this.bodies.add(new Satellite(MOON));
-
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public void initClock() {
-        this.clock = new Clock().setLaunchDay();
+        this.clock = LAUNCH_DATE = new Clock().setLaunchDay();
     }
 
     @Override
@@ -109,6 +109,7 @@ public class SolarSystem implements SystemInterface {
         return "SOLAR SYSTEM\t"
                 + clock +
                 ",\n\tSTATE\n" + systemState +
-                "\n\tROCKET\n" + rocket;
+                "\n\t" + rocket +
+                "\n" + rocket.info();
     }
 }

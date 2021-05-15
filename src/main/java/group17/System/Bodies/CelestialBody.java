@@ -2,6 +2,7 @@ package group17.System.Bodies;
 
 
 import group17.Interfaces.Vector3dInterface;
+import org.jetbrains.annotations.Contract;
 
 import java.awt.*;
 
@@ -18,7 +19,9 @@ public abstract class CelestialBody {
 
     private boolean collided;
 
+    @Contract(pure = true)
     public CelestialBody() {
+        collided = false;
     }
 
     // --- Set-Methods ---
@@ -100,9 +103,7 @@ public abstract class CelestialBody {
      */
     public abstract String toString();
 
-    public void initProperties() {
-        this.setCollided(false);
-    }
+    public abstract void initProperties();
 
     public boolean isCollided() {
         return collided;

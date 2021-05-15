@@ -2,16 +2,18 @@ package group17.System;
 
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Main.simulationInstance;
+import static group17.Main.simulation;
 
 public class RateOfChange implements RateInterface {
     List<Vector3dInterface> vel;
 
+    @Contract(pure = true)
     public RateOfChange() {
         this.vel = new ArrayList<>();
     }
@@ -19,8 +21,8 @@ public class RateOfChange implements RateInterface {
     public RateInterface state0() {
         if (this.vel.size() != 0)
             this.vel = new ArrayList<>();
-        for (int i = 0; i < simulationInstance.getSystem().systemState().getPositions().size(); i++) {
-            this.vel.add(simulationInstance.getSystem().getCelestialBodies().get(i).getVectorVelocity());
+        for (int i = 0; i < simulation.getSystem().systemState().getPositions().size(); i++) {
+            this.vel.add(simulation.getSystem().getCelestialBodies().get(i).getVectorVelocity());
         }
         return this;
     }
@@ -115,7 +117,7 @@ public class RateOfChange implements RateInterface {
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < vel.size(); i++) {
-            s.append(simulationInstance.getSystem().getCelestialBodies().get(i).toString());
+            s.append(simulation.getSystem().getCelestialBodies().get(i).toString());
             s.append(" : ");
             s.append(this.vel.get(i).toString()).append("\n");
         }
