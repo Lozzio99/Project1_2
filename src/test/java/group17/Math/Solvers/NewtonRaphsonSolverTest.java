@@ -6,9 +6,14 @@ import group17.Math.Utils.Vector3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static group17.Config.CHECK_COLLISIONS;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NewtonRaphsonSolverTest {
+    static {
+
+    }
+
     @Test
     @DisplayName("Newton-Raphson solver")
     void NewtRaphSolve() {
@@ -29,8 +34,8 @@ class NewtonRaphsonSolverTest {
             }
         };
 
-        NewtonRaphsonSolver testNR = new NewtonRaphsonSolver(testFx);
-        Vector3dInterface testRes = testNR.NewtRhapSolution(new Vector3D(1, 1, 1), new Vector3D(0, 0, 0));
+        CHECK_COLLISIONS = false;
+        Vector3dInterface testRes = new NewtonRaphsonSolver(testFx).NewtRhapSolution(new Vector3D(1, 1, 1), new Vector3D(0, 0, 0));
         Vector3dInterface testFxSol = new Vector3D(0.0, 0.0, 0.0);
         Vector3dInterface testFxRes = testFx.modelFx(testRes);
         System.out.println(testRes.toString());

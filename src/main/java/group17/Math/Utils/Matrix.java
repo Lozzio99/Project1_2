@@ -1,5 +1,7 @@
 package group17.Math.Utils;
 
+import group17.Interfaces.Vector3dInterface;
+
 import java.io.Serializable;
 import java.util.Random;
 
@@ -546,7 +548,7 @@ public class Matrix implements Serializable {
      * @param v right side vector
      * @return vector as a result of product
      */
-    public Vector3D multiplyVector(Vector3D v) {
+    public Vector3dInterface multiplyVector(Vector3dInterface v) {
         Matrix n = new Matrix(
                 new double[][]{{v.getX()}, {v.getY()}, {v.getZ()}}
         );
