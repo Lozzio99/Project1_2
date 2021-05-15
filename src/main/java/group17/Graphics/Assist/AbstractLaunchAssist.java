@@ -9,7 +9,7 @@
 package group17.Graphics.Assist;
 
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

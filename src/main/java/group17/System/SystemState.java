@@ -35,8 +35,8 @@ public class SystemState implements StateInterface {
     }
 
     @Override
-    public void setPositions(List<Vector3dInterface> positions) {
-        this.positions = positions;
+    public void setPositions(List<Vector3dInterface> pos) {
+        this.positions = pos;
     }
 
     @Override

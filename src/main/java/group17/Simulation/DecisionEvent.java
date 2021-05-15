@@ -1,7 +1,7 @@
 package group17.Simulation;
 
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import org.jetbrains.annotations.Contract;
 
 import static java.lang.StrictMath.abs;

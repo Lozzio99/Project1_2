@@ -2,7 +2,7 @@ package group17.Simulation;
 
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Clock;
 import group17.System.SystemState;

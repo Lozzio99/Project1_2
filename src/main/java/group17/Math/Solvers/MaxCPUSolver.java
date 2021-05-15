@@ -4,7 +4,7 @@ import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,5 +1,6 @@
 package group17.Math;
 
+import group17.Math.Utils.Point3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

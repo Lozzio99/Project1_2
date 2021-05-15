@@ -1,8 +1,8 @@
 package group17.Graphics.Scenes;
 
 
-import group17.Math.Point3D;
-import group17.Math.Point3DConverter;
+import group17.Math.Utils.Point3D;
+import group17.Math.Utils.Point3DConverter;
 import org.jetbrains.annotations.Contract;
 
 import java.awt.*;

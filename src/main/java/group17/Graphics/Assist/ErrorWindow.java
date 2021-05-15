@@ -2,7 +2,7 @@ package group17.Graphics.Assist;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.System.ErrorData;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -87,8 +87,6 @@ public class ErrorWindow extends JPanel {
             fr.close();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            System.out.println("done");
         }
     }
 

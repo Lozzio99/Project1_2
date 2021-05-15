@@ -5,7 +5,7 @@ import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Main;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
 import org.jetbrains.annotations.Contract;
 
@@ -79,16 +79,16 @@ public class StandardVerletSolver implements ODESolverInterface {
         StateInterface diff;
         if (first) {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
-            diff = rk4.step(f, t, y, h);
+            diff = rk4.step(f, t, StateInterface.clone(y), h);
             first = false;
         } else {
             StateInterface subPrev = StateInterface.clone(prevState).multiply(-1);
-            diff = (StateInterface.clone(y).rateMul(h * h, f.call(1, StateInterface.clone(y)))).add(subPrev).add(StateInterface.clone(y)).add(y);
+            StateInterface twiceY = StateInterface.clone(y).multiply(2.0);
+            StateInterface rateMulPart = StateInterface.clone(y).rateMul(h * h, f.call(1, StateInterface.clone(y)));
+            diff = subPrev.add(twiceY).add(rateMulPart);
         }
-
-        prevState = StateInterface.clone(diff);
-        y = diff;
-        return y;
+        prevState = StateInterface.clone(y);
+        return diff;
     }
 
     @Override

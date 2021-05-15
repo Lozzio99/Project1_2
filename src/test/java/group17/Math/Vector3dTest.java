@@ -1,6 +1,7 @@
 package group17.Math;
 
 import group17.Interfaces.Vector3dInterface;
+import group17.Math.Utils.Vector3D;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

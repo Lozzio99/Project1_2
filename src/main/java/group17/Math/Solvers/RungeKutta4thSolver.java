@@ -1,7 +1,7 @@
 package group17.Math.Solvers;
 
 import group17.Interfaces.*;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
 import group17.System.RateOfChange;
 import org.jetbrains.annotations.Contract;

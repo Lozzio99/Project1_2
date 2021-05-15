@@ -2,7 +2,7 @@ package group17.System;
 
 import group17.Interfaces.ProbeSimulatorInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Vector3D;
+import group17.Math.Utils.Vector3D;
 import group17.Simulation.RocketSimulator;
 import group17.Simulation.Simulation;
 import org.junit.jupiter.api.BeforeEach;

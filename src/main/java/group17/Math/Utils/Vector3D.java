@@ -1,4 +1,4 @@
-package group17.Math;
+package group17.Math.Utils;
 
 
 import group17.Interfaces.Vector3dInterface;
