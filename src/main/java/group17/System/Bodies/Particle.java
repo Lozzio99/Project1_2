@@ -9,9 +9,7 @@ public class Particle extends CelestialBody {
     int id;
 
     public Particle(int id) {
-        this.id
-
-                = id;
+        this.id = id;
     }
 
     @Override

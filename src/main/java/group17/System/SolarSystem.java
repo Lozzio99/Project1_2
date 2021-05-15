@@ -19,10 +19,10 @@ import static group17.System.Bodies.Satellite.SatellitesEnum.TITAN;
 
 public class SolarSystem implements SystemInterface {
 
-    private Clock clock;
-    private List<CelestialBody> bodies;
-    private volatile StateInterface systemState;
-    private RocketSimulator rocket;
+    protected Clock clock;
+    protected List<CelestialBody> bodies;
+    protected volatile StateInterface systemState;
+    protected RocketSimulator rocket;
 
     @Override
     public List<CelestialBody> getCelestialBodies() {

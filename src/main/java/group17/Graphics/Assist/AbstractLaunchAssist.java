@@ -14,6 +14,7 @@ import group17.Math.Vector3D;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicReference;
@@ -397,17 +398,22 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!simulationInstance.waiting()) return;
-            userDialog.enable(3, 6);
-            if (ENABLE_GRAPHICS) simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+            if (ENABLE_GRAPHICS) {
+                simulationInstance.getGraphics().changeScene(SIMULATION_SCENE);
+                simulationInstance.getGraphics().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            }
             if (REPORT) simulationInstance.getReporter().report("START SIMULATION");
             acquireData();
-            //simulationInstance.getSystem(); /* lock will make it wait */
-            try {
-                Thread.sleep(3000);  // will wait 3 sec
-            } catch (InterruptedException ex) {
-                if (REPORT) simulationInstance.getReporter().report(Thread.currentThread(), ex);
-            }
-            simulationInstance.setWaiting(false);
+            new Thread(() -> {       // wait 3 sec without stopping AWT event queue
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException ex) {
+                    if (REPORT) simulationInstance.getReporter().report(Thread.currentThread(), ex);
+                }
+                if (ENABLE_GRAPHICS)
+                    simulationInstance.getGraphics().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+                simulationInstance.setWaiting(false);
+            }).start();
         }
     }
 

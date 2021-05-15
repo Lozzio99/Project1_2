@@ -1,7 +1,6 @@
 package group17.Interfaces;
 
 import group17.Math.Vector3D;
-import group17.Simulation.RocketSimulator;
 import group17.System.Bodies.CelestialBody;
 import group17.System.SystemState;
 
@@ -41,10 +40,7 @@ public interface StateInterface {
         for (CelestialBody b : bodies) {
             b.initProperties();
             state.getPositions().add(b.getVectorLocation().clone());
-            if (b instanceof RocketSimulator)
-                state.getRateOfChange().getVelocities().add(((RocketSimulator) b).getLocalAcceleration().add(b.getVectorVelocity()));
-            else
-                state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());
+            state.getRateOfChange().getVelocities().add(b.getVectorVelocity().clone());
         }
         return state;
     }

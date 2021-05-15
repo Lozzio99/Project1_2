@@ -46,7 +46,6 @@ public class CollisionDetector {
             for (int k = 0; k < system.getCelestialBodies().size(); k++) {
                 if (i != k) {
                     checkCollided(system.getCelestialBodies().get(i),
-
                             system.getCelestialBodies().get(k),
                             system.systemState().getPositions().get(i).dist(system.systemState().getPositions().get(k)));
 
