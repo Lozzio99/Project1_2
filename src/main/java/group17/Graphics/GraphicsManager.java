@@ -40,7 +40,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         //this.frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
 
-    private void setWindowProperties() {
+    protected void setWindowProperties() {
         final var closed = new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

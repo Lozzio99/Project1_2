@@ -8,7 +8,6 @@ public class ErrorReport implements Runnable {
         //make a copy of the references
         this.prevState = prevState;
         this.state = state;
-
         //this.start();
     }
 
