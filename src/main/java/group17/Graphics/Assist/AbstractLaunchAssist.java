@@ -413,7 +413,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
                 if (ENABLE_GRAPHICS)
                     simulationInstance.getGraphics().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
                 simulationInstance.setWaiting(false);
-            }).start();
+            }, "CountDown").start();
         }
     }
 

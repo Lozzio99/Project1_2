@@ -14,12 +14,15 @@ import java.util.Vector;
 
 public class ErrorWindow extends JPanel {
     public ErrorWindow() {
-        this.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        this.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
+        this.setLayout(new GridLayout(1, 1));
         this.init();
     }
 
     private void init() {
         JTable jTable = new JTable();
+        jTable.setPreferredSize(new Dimension(700, 800));
+        jTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         DefaultTableModel csv_model = new DefaultTableModel();
         File csv = new File("trajectory.csv");
         try {
@@ -33,9 +36,15 @@ public class ErrorWindow extends JPanel {
                     csv_model.addColumn(c.get(1));
                     csv_model.addColumn(c.get(2));
                     csv_model.addColumn(c.get(3));
+                    csv_model.addColumn(c.get(1));
+                    csv_model.addColumn(c.get(2));
+                    csv_model.addColumn(c.get(3));
                 } else {
                     Vector<String> row = new Vector<>();
                     row.add(c.get(0));
+                    row.add(c.get(1));
+                    row.add(c.get(2));
+                    row.add(c.get(3));
                     row.add(c.get(1));
                     row.add(c.get(2));
                     row.add(c.get(3));
@@ -46,13 +55,13 @@ public class ErrorWindow extends JPanel {
             System.err.println(e.getMessage());
         }
 
+
         jTable.setModel(csv_model);
-        jTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         jTable.setDragEnabled(true);
         jTable.setDropMode(DropMode.ON_OR_INSERT);
-        jTable.setSize(new Dimension(1000, 700));
         JScrollPane pane = new JScrollPane();
+        jTable.setPreferredSize(new Dimension(800, 700));
         pane.getViewport().add(jTable);
-        this.add(pane, BorderLayout.CENTER);
+        this.add(pane, 0);
     }
 }

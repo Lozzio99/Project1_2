@@ -1,5 +1,8 @@
 package group17.System;
 
+import static group17.Config.REPORT;
+import static group17.Main.simulationInstance;
+
 public class Clock {
 
 
@@ -37,6 +40,7 @@ public class Clock {
         setInitialDay(1, 4, 2020);
         setInitialTime(0, 0, 0);
         checkLeap();
+        checkFirst();
         return this;
     }
 
@@ -54,11 +58,20 @@ public class Clock {
         return this;
     }
 
-    public synchronized void step(double secStep) {
+    public synchronized boolean step(double secStep) {
         int step = (int) secStep;
         if (step != 0)
             secStep(step);
         checkLeap();
+        return checkFirst();
+    }
+
+    private boolean checkFirst() {
+        if (this.days == 1 && this.hour == 0 && this.min == 0 && this.sec == 0) {
+            if (REPORT) simulationInstance.getReporter().report("FIRST OF MONTH - EVALUATING ERRORS");
+            return true;
+        }
+        return false;
     }
 
     private synchronized void secStep(int secStep) {

@@ -36,7 +36,7 @@ public class Config {
     public static Boolean ERROR_EVALUATION = true;
     public static Boolean CHECK_COLLISIONS = false;
     public static Boolean PLOT = false;
-    public static double STEP_SIZE = 200;
+    public static double STEP_SIZE = 360;
 
 
     //TODO : set this to be updated for particles simulationInstance

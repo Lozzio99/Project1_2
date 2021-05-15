@@ -7,6 +7,8 @@ import group17.Math.Solvers.EulerSolver;
 import group17.Math.Solvers.RungeKutta4thSolver;
 import group17.Math.Solvers.StandardVerletSolver;
 import group17.Math.Solvers.VerletVelocitySolver;
+import group17.System.Data;
+import group17.System.ErrorReport;
 
 import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
@@ -72,8 +74,10 @@ public class SimulationUpdater implements UpdaterInterface {
              * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
              * better to do that in system (in main thread from executor) and then pass it in here once solved
              */
+            Data prev = new Data(simulationInstance.getSystem().systemState());
             simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
-            simulationInstance.getSystem().getClock().step(STEP_SIZE);
+            if (simulationInstance.getSystem().getClock().step(STEP_SIZE))
+                new ErrorReport(prev, new Data(simulationInstance.getSystem().systemState()));
         } catch (Exception e) {
             if (REPORT)
                 simulationInstance.getReporter().report(Thread.currentThread(), e);
