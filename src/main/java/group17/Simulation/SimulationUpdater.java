@@ -75,8 +75,9 @@ public class SimulationUpdater implements UpdaterInterface {
              * better to do that in system (in main thread from executor) and then pass it in here once solved
              */
             simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulation.getSystem().systemState(), STEP_SIZE));
-            if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)
-                new ErrorReport(prev, new ErrorData(simulation.getSystem().systemState()));
+            if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION) {
+                new ErrorReport(new ErrorData(simulation.getSystem().systemState()));
+            }
         } catch (Exception e) {
             if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);
         }

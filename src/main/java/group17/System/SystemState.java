@@ -22,13 +22,10 @@ public class SystemState implements StateInterface {
     }
 
     @Contract(pure = true)
-    public SystemState(List<Vector3dInterface> positions) {
+    public SystemState(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
         this.positions = positions;
-    }
-
-    public SystemState(Vector3dInterface positionsVector) {
-        this.positions = new ArrayList<>();
-        positions.add(positionsVector);
+        this.rateOfChange = new RateOfChange();
+        rateOfChange.setVel(velocities);
     }
 
 

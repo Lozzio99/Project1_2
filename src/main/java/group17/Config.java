@@ -1,6 +1,7 @@
 package group17;
 
 import group17.System.Clock;
+import group17.System.ErrorData;
 
 public class Config {
     /**
@@ -53,6 +54,8 @@ public class Config {
     public static int CPU_LEVEL = 1;
 
     public static double G = 6.67408e-11;
+
+    public static final ErrorData[] ORIGINAL_DATA = new ErrorData[13];
 
 
 }

@@ -1,14 +1,17 @@
 package group17.System;
 
+import org.jetbrains.annotations.Contract;
+
 public class ErrorReport implements Runnable {
 
-    private final ErrorData prevState, state;
+    private static int monthIndex = 0;
+    private final ErrorData state;
 
-    public ErrorReport(final ErrorData prevState, final ErrorData state) {
+    @Contract(pure = true)
+    public ErrorReport(final ErrorData state) {
         //make a copy of the references
-        this.prevState = prevState;
         this.state = state;
-        //this.start();
+        this.start();
     }
 
     public void start() {
@@ -17,6 +20,7 @@ public class ErrorReport implements Runnable {
 
     @Override
     public void run() {
+        monthIndex++;
 
     }
 

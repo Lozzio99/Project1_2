@@ -61,6 +61,7 @@ public class UserDialogWindow {
     private JTabbedPane mainPane;
     private LaunchAssist assist;
     private SimulationDataWindow dataWindow;
+    private ErrorWindow errorWindow;
     private MainMenu menu;
     public UserDialogWindow() {
         try {
@@ -142,7 +143,7 @@ public class UserDialogWindow {
                 return new PerformanceWindow();
             }
             case 6 -> {
-                return new ErrorWindow();
+                return this.errorWindow = new ErrorWindow();
             }
             case 7 -> {
                 return new ControllersWindow();
@@ -195,13 +196,20 @@ public class UserDialogWindow {
     public MainMenu getMainMenu() {
         return menu;
     }
+
     public LaunchAssist getLaunchAssist() {
         return assist;
     }
+
     public JTabbedPane getMainPane() {
         return mainPane;
     }
+
     public SimulationDataWindow getOutputWindow() {
         return this.dataWindow;
+    }
+
+    public ErrorWindow getErrorWindow() {
+        return errorWindow;
     }
 }
