@@ -87,6 +87,8 @@ public class SimulationScene extends Scene {
     }
 
     public void updateBodies() {
+
+        //TODO : try translate planetPositions points by Vector.sub(oldPosition)
         double x = totalXDif / mouseSensitivity, y = totalYDif / mouseSensitivity, dx = deltaX / mouseSensitivity, dy = deltaY / mouseSensitivity;
         for (int i = 0; i < this.planetsPositions.length; i++) {
             this.planetsPositions[i] = simulationInstance.getSystem().systemState().getPositions().get(i).fromVector();

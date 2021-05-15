@@ -1,8 +1,6 @@
 package group17.Math;
 
 public class Point3D {
-    public final static Point3D origin = new Point3D(0, 0, 0);
-
     public double x, y, z;
     public double xOffset, yOffset, zOffset;
 
@@ -61,5 +59,16 @@ public class Point3D {
 
     public double heading() {
         return Math.atan2(this.getYCoordinate(), this.getZCoordinate());
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Point3D) {
+            Point3D p = (Point3D) o;
+            return this.x == p.x && this.y == p.y && this.z == p.z &&
+                    this.xOffset == p.xOffset && this.yOffset == p.yOffset && this.zOffset == p.zOffset;
+        }
+        return false;
     }
 }

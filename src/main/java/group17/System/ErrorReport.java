@@ -2,9 +2,9 @@ package group17.System;
 
 public class ErrorReport implements Runnable {
 
-    private final Data prevState, state;
+    private final ErrorData prevState, state;
 
-    public ErrorReport(final Data prevState, final Data state) {
+    public ErrorReport(final ErrorData prevState, final ErrorData state) {
         //make a copy of the references
         this.prevState = prevState;
         this.state = state;

@@ -7,7 +7,7 @@ import group17.Math.Solvers.EulerSolver;
 import group17.Math.Solvers.RungeKutta4thSolver;
 import group17.Math.Solvers.StandardVerletSolver;
 import group17.Math.Solvers.VerletVelocitySolver;
-import group17.System.Data;
+import group17.System.ErrorData;
 import group17.System.ErrorReport;
 
 import static group17.Config.*;
@@ -67,7 +67,7 @@ public class SimulationUpdater implements UpdaterInterface {
                             simulationInstance.getSystem().systemState().getRateOfChange().getVelocities().get(11));
                 }
             }
-            Data prev = new Data(simulationInstance.getSystem().systemState());
+            ErrorData prev = new ErrorData(simulationInstance.getSystem().systemState());
             /*
              * Technically here in systemState.update we could also pass the result of a more complex evaluation
              * like the last state of the solve method (with new stepsize = prevStepsize / size of solution)
@@ -76,7 +76,7 @@ public class SimulationUpdater implements UpdaterInterface {
              */
             simulationInstance.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulationInstance.getSystem().systemState(), STEP_SIZE));
             if (simulationInstance.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)
-                new ErrorReport(prev, new Data(simulationInstance.getSystem().systemState()));
+                new ErrorReport(prev, new ErrorData(simulationInstance.getSystem().systemState()));
         } catch (Exception e) {
             if (REPORT) simulationInstance.getReporter().report(Thread.currentThread(), e);
         }

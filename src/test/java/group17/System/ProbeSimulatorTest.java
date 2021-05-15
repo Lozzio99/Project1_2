@@ -3,8 +3,8 @@ package group17.System;
 import group17.Interfaces.ProbeSimulatorInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
+import group17.Simulation.RocketSimulator;
 import group17.Simulation.Simulation;
-import group17.System.Bodies.ProbeSimulator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class ProbeSimulatorTest {
          * @param   h       the size of step to be taken
          * @return  an array of size  <<<<<round(tf/h)+1>>>>>  including all intermediate states along the path
          */
-        ProbeSimulatorInterface simulator = new ProbeSimulator();
+        ProbeSimulatorInterface simulator = new RocketSimulator();
         Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, year, day);
         return trajectory;
 
@@ -48,7 +48,7 @@ class ProbeSimulatorTest {
         Vector3dInterface probe_relative_position = new Vector3D(6371e3, 0, 0);
         Vector3dInterface probe_relative_velocity = new Vector3D(52500.0, -27000.0, 0); // 12.0 months
         double day = 24 * 60 * 60;
-        ProbeSimulatorInterface simulator = new ProbeSimulator();
+        ProbeSimulatorInterface simulator = new RocketSimulator();
         Vector3dInterface[] trajectory = simulator.trajectory(probe_relative_position, probe_relative_velocity, day, day);
         return trajectory;
 

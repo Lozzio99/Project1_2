@@ -51,7 +51,9 @@ class Point3DTest {
     @Test
     @DisplayName("Scale")
     void Scale() {
-
+        p = new Point3D(30.0, 40.0, 80.0);
+        p.scale(10);
+        assertEquals(new Point3D(3, 4, 8), p);
     }
 
     @Test

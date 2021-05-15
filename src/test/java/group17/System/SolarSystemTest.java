@@ -46,6 +46,8 @@ class SolarSystemTest {
     void InitRocket() {
         solarSystem.initRocket();
         assertNull(solarSystem.getRocket().getVectorLocation());
+        solarSystem.getRocket().initProperties();
+        assertNotNull(solarSystem.getRocket().getVectorLocation());
     }
 
     @Test
