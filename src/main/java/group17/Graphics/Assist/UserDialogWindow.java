@@ -178,11 +178,9 @@ public class UserDialogWindow {
     public void enable(int... i) {
         for (int j : i) this.mainPane.setEnabledAt(j, true);
     }
-
     public void disable(int... i) {
         for (int j : i) this.mainPane.setEnabledAt(j, false);
     }
-
     public void enableTabs() {
         if (LAUNCH_ASSIST) enable(1);
         if (REPORT) enable(2);
@@ -197,11 +195,9 @@ public class UserDialogWindow {
     public MainMenu getMainMenu() {
         return menu;
     }
-
     public LaunchAssist getLaunchAssist() {
         return assist;
     }
-
     public JTabbedPane getMainPane() {
         return mainPane;
     }

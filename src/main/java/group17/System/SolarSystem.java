@@ -48,13 +48,14 @@ public class SolarSystem implements SystemInterface {
         this.bodies.add(new Planet(MERCURY));
         this.bodies.add(new Planet(VENUS));
         this.bodies.add(new Planet(EARTH));
+        this.bodies.add(new Satellite(MOON));
         this.bodies.add(new Planet(MARS));
         this.bodies.add(new Planet(JUPITER));
         this.bodies.add(new Planet(SATURN));
         this.bodies.add(new Satellite(TITAN));
         this.bodies.add(new Planet(URANUS));
         this.bodies.add(new Planet(NEPTUNE));
-        this.bodies.add(new Satellite(MOON));
+
 
     }
 

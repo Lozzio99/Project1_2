@@ -1,5 +1,6 @@
 package group17.Graphics.Assist;
 
+import group17.System.ErrorData;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -13,10 +14,18 @@ import java.io.InputStreamReader;
 import java.util.Vector;
 
 public class ErrorWindow extends JPanel {
+
+    private ErrorData[] originalData;
+
     public ErrorWindow() {
         this.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
         this.setLayout(new GridLayout(1, 1));
+        this.parseOriginal();
         this.init();
+    }
+
+    private void parseOriginal() {
+
     }
 
     private void init() {

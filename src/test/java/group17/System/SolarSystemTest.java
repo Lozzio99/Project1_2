@@ -40,7 +40,7 @@ class SolarSystemTest {
     @DisplayName("InitPlanets")
     void InitPlanets() {
         solarSystem.initPlanets();
-        assertEquals("[SUN, MERCURY, VENUS, EARTH, MARS, JUPITER, SATURN, TITAN, URANUS, NEPTUNE, MOON]", solarSystem.getCelestialBodies().toString());
+        assertEquals("[SUN, MERCURY, VENUS, EARTH, MOON, MARS, JUPITER, SATURN, TITAN, URANUS, NEPTUNE]", solarSystem.getCelestialBodies().toString());
     }
 
     @Test
