@@ -4,6 +4,7 @@ import group17.Interfaces.*;
 import group17.Math.Vector3D;
 import group17.System.CollisionDetector;
 import group17.System.RateOfChange;
+import org.jetbrains.annotations.Contract;
 
 import static group17.Config.DEBUG;
 import static group17.Config.G;
@@ -14,6 +15,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     private ODEFunctionInterface singleCoreF;
     private boolean checked;
 
+    @Contract(pure = true)
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) ->
         {

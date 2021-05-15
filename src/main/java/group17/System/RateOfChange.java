@@ -3,6 +3,7 @@ package group17.System;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,7 @@ import static group17.Main.simulationInstance;
 public class RateOfChange implements RateInterface {
     List<Vector3dInterface> vel;
 
+    @Contract(pure = true)
     public RateOfChange() {
         this.vel = new ArrayList<>();
     }

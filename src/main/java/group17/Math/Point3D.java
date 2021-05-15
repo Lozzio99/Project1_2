@@ -1,5 +1,7 @@
 package group17.Math;
 
+import org.jetbrains.annotations.Contract;
+
 public class Point3D {
     public double x, y, z;
     public double xOffset, yOffset, zOffset;
@@ -62,6 +64,7 @@ public class Point3D {
     }
 
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object o) {
         if (o instanceof Point3D) {

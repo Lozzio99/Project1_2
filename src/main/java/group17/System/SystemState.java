@@ -4,6 +4,7 @@ import group17.Interfaces.RateInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
+import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class SystemState implements StateInterface {
         this.rateOfChange = new RateOfChange();
     }
 
+    @Contract(pure = true)
     public SystemState(List<Vector3dInterface> positions) {
         this.positions = positions;
     }
@@ -77,6 +79,7 @@ public class SystemState implements StateInterface {
         return hash;
     }
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof StateInterface) {

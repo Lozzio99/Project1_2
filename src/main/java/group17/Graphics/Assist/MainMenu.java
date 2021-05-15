@@ -1,5 +1,7 @@
 package group17.Graphics.Assist;
 
+import org.jetbrains.annotations.Contract;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -23,6 +25,7 @@ public abstract class MainMenu {
     /**
      * Constructor
      */
+    @Contract(pure = true)
     public MainMenu() {
         //this.setFrame();
     }

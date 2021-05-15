@@ -5,6 +5,7 @@ import group17.Main;
 import group17.Math.Vector3D;
 import group17.System.CollisionDetector;
 import group17.System.RateOfChange;
+import org.jetbrains.annotations.Contract;
 
 import static group17.Config.G;
 import static group17.Main.simulationInstance;
@@ -20,6 +21,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
     private ODEFunctionInterface singleCoreF;
     private boolean checked;
 
+    @Contract(pure = true)
     public VerletVelocitySolver() {
         this.singleCoreF = (h, y) -> {
             for (int i = 0; i < y.getPositions().size(); i++) {

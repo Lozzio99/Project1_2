@@ -1,5 +1,7 @@
 package group17.Math.Graph;
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.Arrays;
 
 import static java.lang.Double.NaN;
@@ -11,6 +13,7 @@ public class DividedDifferences {
     //P(X)  var
     double px;
 
+    @Contract(pure = true)
     public DividedDifferences(double[] xs, double[] ys) {
         this.xs = xs;
         this.ys = ys;
@@ -63,6 +66,7 @@ public class DividedDifferences {
      * @param i  the starting point
      * @return recursively the p(xs)
      */
+    @Contract(mutates = "this")
     private double p(int xk, int i) {
         if (i == 0)
             px = 0;
@@ -79,6 +83,7 @@ public class DividedDifferences {
      * @param i  the index of the starting point
      * @return recursively the p(xs)
      */
+    @Contract(mutates = "this")
     private double p(double x_, int i) {
         if (i == 0)
             px = 0;
@@ -93,6 +98,7 @@ public class DividedDifferences {
      * @param xk the index of the xs to evaluate (from given xs)
      * @return the polynomial evaluated at xs
      */
+    @Contract(mutates = "this")
     private double p(double[] xs, int xk, int start) {
         if (start == 0)
             px = 0;
@@ -107,6 +113,7 @@ public class DividedDifferences {
      * @param x_ the value of the xs to evaluate (from non - given xs too)
      * @return the polynomial evaluated at xs
      */
+    @Contract(mutates = "this")
     private double p(double[] xs, double x_, int start) {
         if (start == 0)
             px = 0;

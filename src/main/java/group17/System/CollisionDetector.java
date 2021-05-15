@@ -3,6 +3,8 @@ package group17.System;
 import group17.Interfaces.ReporterInterface;
 import group17.Interfaces.SystemInterface;
 import group17.System.Bodies.CelestialBody;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import static group17.Config.CHECK_COLLISIONS;
 import static group17.Config.REPORT;
@@ -38,7 +40,8 @@ public class CollisionDetector {
             simulationInstance.getReporter().report("COLLISION " + output);
     }
 
-    public static SystemInterface checkCollisions(final SystemInterface system, ReporterInterface reporter) {
+    @Contract("_, _ -> param1")
+    public static SystemInterface checkCollisions(final @NotNull SystemInterface system, ReporterInterface reporter) {
 
         collision = false;
         output = "";

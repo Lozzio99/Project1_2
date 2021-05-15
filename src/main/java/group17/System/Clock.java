@@ -1,5 +1,7 @@
 package group17.System;
 
+import org.jetbrains.annotations.Contract;
+
 import static group17.Config.ERROR_EVALUATION;
 import static group17.Config.REPORT;
 import static group17.Main.simulationInstance;
@@ -215,6 +217,7 @@ public class Clock {
         return hash;
     }
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Clock) {

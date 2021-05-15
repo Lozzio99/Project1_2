@@ -3,6 +3,7 @@ package group17.Graphics.Scenes;
 
 import group17.Math.Point3D;
 import group17.Math.Point3DConverter;
+import org.jetbrains.annotations.Contract;
 
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
@@ -131,6 +132,7 @@ public class SimulationScene extends Scene {
         int insert;
         boolean loop;
 
+        @Contract(pure = true)
         Bag() {
             this.trajectories = new Point3D[TRAJECTORY_LENGTH];
             this.insert = 0;

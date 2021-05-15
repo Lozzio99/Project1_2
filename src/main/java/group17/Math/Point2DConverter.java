@@ -1,6 +1,8 @@
 package group17.Math;
 
 import group17.Graphics.GraphicsManager;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -21,11 +23,13 @@ public class Point2DConverter {
         scale /= zoomFactor;
     }
 
+    @Contract(pure = true)
     public static double getScale() {
         return scale;
     }
 
-    public static Point convertPoint(Point3D point3D) {
+    @Contract("_ -> new")
+    public static @NotNull Point convertPoint(@NotNull Point3D point3D) {
         return new Point((int) (ORIGIN.getX() + point3D.getXCoordinate()), (int) (ORIGIN.getY() - point3D.getYCoordinate()));
     }
 

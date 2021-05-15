@@ -5,6 +5,8 @@ import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.*;
 
@@ -15,10 +17,12 @@ public class MaxCPUSolver implements ODEFunctionInterface {
 
     ExecutorService service;
 
+    @Contract(pure = true)
     public MaxCPUSolver() {
 
     }
 
+    @Contract("_, _, _ -> param3")
     public static Vector3dInterface set(int i, StateInterface state, Vector3dInterface acc) {
         if (SOLVER == EULER_SOLVER)
             state.getRateOfChange().getVelocities().set(i, state.getRateOfChange().getVelocities().get(i).add(acc));
@@ -27,7 +31,8 @@ public class MaxCPUSolver implements ODEFunctionInterface {
         return acc;
     }
 
-    public final StateInterface evaluate(double t, int i, StateInterface y) {
+    @Contract("_, _, _ -> param3")
+    public final StateInterface evaluate(double t, int i, @NotNull StateInterface y) {
         Vector3dInterface totalAcc = new Vector3D();
         for (int k = 0; k < y.getPositions().size(); k++) {
             if (i != k) {

@@ -2,6 +2,8 @@ package group17.Math;
 
 
 import group17.Interfaces.Vector3dInterface;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
@@ -84,7 +86,8 @@ public class Vector3D implements Vector3dInterface {
      * @param v2
      * @return
      */
-    public static Vector3dInterface cross(Vector3dInterface v1, Vector3dInterface v2) {
+    @Contract("_, _ -> new")
+    public static @NotNull Vector3dInterface cross(Vector3dInterface v1, Vector3dInterface v2) {
         return new Vector3D(
                 v1.getY() * v2.getZ() - v1.getZ() * v2.getY(),
                 v1.getZ() * v2.getX() - v1.getX() * v2.getZ(),
@@ -289,6 +292,7 @@ public class Vector3D implements Vector3dInterface {
      * @return true if the vector is equal up to a certain accuracy
      */
 
+    @Contract(value = "null -> false", pure = true)
     @Override
     public boolean equals(Object o) {
         if (o instanceof Vector3dInterface) {

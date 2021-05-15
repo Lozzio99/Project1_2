@@ -7,6 +7,7 @@ import group17.Interfaces.Vector3dInterface;
 import group17.Main;
 import group17.Math.Vector3D;
 import group17.System.CollisionDetector;
+import org.jetbrains.annotations.Contract;
 
 import static group17.Config.G;
 import static group17.Main.simulationInstance;
@@ -21,6 +22,7 @@ public class StandardVerletSolver implements ODESolverInterface {
     private boolean first = true;
     private ODEFunctionInterface singleCoreF;
 
+    @Contract(pure = true)
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
             for (int i = 0; i < y.getPositions().size(); i++) {

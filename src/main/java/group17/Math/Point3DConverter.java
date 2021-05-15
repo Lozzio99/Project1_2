@@ -1,6 +1,7 @@
 package group17.Math;
 
 import group17.Graphics.GraphicsManager;
+import org.jetbrains.annotations.Contract;
 
 import java.awt.*;
 
@@ -28,6 +29,7 @@ public class Point3DConverter {
      *
      * @return
      */
+    @Contract(pure = true)
     public static double getScale() {
         return scale;
     }

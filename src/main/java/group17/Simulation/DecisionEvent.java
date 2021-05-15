@@ -2,6 +2,7 @@ package group17.Simulation;
 
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Vector3D;
+import org.jetbrains.annotations.Contract;
 
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.round;
@@ -38,6 +39,7 @@ public class DecisionEvent {
             return hash;
         }
 
+        @Contract(value = "null -> false", pure = true)
         @Override
         public boolean equals(Object o) {
             if (o instanceof Vector3dInterface) {
