@@ -1,5 +1,6 @@
 package group17.Simulation;
 
+import group17.Graphics.Assist.ErrorWindow;
 import group17.Graphics.Assist.LaunchAssist;
 import group17.Graphics.Assist.UserDialogWindow;
 import group17.Graphics.GraphicsManager;
@@ -21,6 +22,7 @@ public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
     private LaunchAssist assist;
+    private ErrorWindow errorUI;
     private volatile SystemInterface system;
     private SimulationReporter reporter;
     private volatile boolean running, paused = true, stopped = false;
@@ -136,6 +138,7 @@ public class Simulation implements SimulationInterface {
     public void initAssist() {
         //this.userDialog = new AssistFrame();
         this.assist.init();
+        this.errorUI.makeTable();
     }
 
 
@@ -153,6 +156,7 @@ public class Simulation implements SimulationInterface {
     public void setAssist(UserDialogWindow assist) {
         this.assist = assist.getLaunchAssist();
         this.assist.setOutputWindow(assist.getOutputWindow());
+        this.errorUI = assist.getErrorWindow();
     }
 
     @Override
