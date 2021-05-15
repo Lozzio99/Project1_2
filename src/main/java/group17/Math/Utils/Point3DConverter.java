@@ -3,8 +3,6 @@ package group17.Math.Utils;
 import group17.Graphics.GraphicsManager;
 import org.jetbrains.annotations.Contract;
 
-import java.awt.*;
-
 public class Point3DConverter {
     private static final double ZoomFactor = 1.05;
     private static final int SCREEN_WIDTH = GraphicsManager.screen.width, SCREEN_HEIGHT = GraphicsManager.screen.height;
@@ -40,14 +38,14 @@ public class Point3DConverter {
      * @param point3D
      * @return
      */
-    public static Point convertPoint(Point3D point3D) {
+    public static java.awt.Point convertPoint(Point3D point3D) {
         double x3d = point3D.getXCoordinate() * scale;
         double y3d = point3D.getYCoordinate() * scale;
         double depth = point3D.getZCoordinate() * scale;
         double[] newVal = scale(x3d, y3d, depth);
         int x2d = (int) (SCREEN_WIDTH / 2 + newVal[0]);
         int y2d = (int) (SCREEN_HEIGHT / 2 - newVal[1]);
-        Point point2D = new Point(x2d, y2d);
+        java.awt.Point point2D = new java.awt.Point(x2d, y2d);
         return point2D;
     }
 

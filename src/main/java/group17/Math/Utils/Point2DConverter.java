@@ -4,14 +4,14 @@ import group17.Graphics.GraphicsManager;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
+import java.awt.Point;
 
 import static group17.Main.simulation;
 
 public class Point2DConverter {
     private static final double zoomFactor = 1.05;
     private static final int WIDTH = GraphicsManager.screen.width, HEIGHT = GraphicsManager.screen.height;
-    private static Point ORIGIN = new Point(WIDTH / 2, HEIGHT / 2);
+    private static java.awt.Point ORIGIN = new java.awt.Point(WIDTH / 2, HEIGHT / 2);
     private static double scale = 1.5d;
     private static double xMoved, yMoved;
 
@@ -40,7 +40,7 @@ public class Point2DConverter {
     }
 
     public static void resize() {
-        ORIGIN = new Point(simulation.getGraphics().getFrame().getWidth() / 2, simulation.getGraphics().getFrame().getHeight() / 2);
+        ORIGIN = new java.awt.Point(simulation.getGraphics().getFrame().getWidth() / 2, simulation.getGraphics().getFrame().getHeight() / 2);
         translate(xMoved, yMoved);
     }
 }

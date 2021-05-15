@@ -1,5 +1,6 @@
 package group17.Math.Solvers;
 
+import group17.Interfaces.Function;
 import group17.Interfaces.NewtRaphFunction;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Utils.Matrix;
@@ -9,12 +10,11 @@ import org.jetbrains.annotations.Contract;
 
 import static group17.Config.INSERT_ROCKET;
 import static group17.Config.STEP_SIZE;
-import static group17.Math.Solvers.RocketSimModel.pF;
-import static group17.Math.Solvers.RocketSimModel.targetPosition;
+import static group17.Math.Solvers.RocketSimModel.*;
 
 public class NewtonRaphsonSolver {
 
-    final boolean LOG_ITERATION = true;
+    public final boolean LOG_ITERATION = false;
     private int i = 0;
     public static Vector3dInterface initPos;
     public static double endTime;
@@ -25,6 +25,7 @@ public class NewtonRaphsonSolver {
 
     final double STOPPING_CRITERION = 100;
     private final NewtRaphFunction fX;
+    private Function<Vector3dInterface> f;
     public Vector3dInterface initSol;
     public Vector3dInterface targetSol;
 
@@ -38,13 +39,21 @@ public class NewtonRaphsonSolver {
         this.fX = fX;
     }
 
+    @Contract(pure = true)
+    public NewtonRaphsonSolver(NewtRaphFunction fX, Function<Vector3dInterface> f) {
+        this.fX = fX;
+        this.f = f;
+    }
+
     /**
      * Constructor of Newton-Raphson solver for the rocket-simulation problem
+     *
      * @param initPos initial position of a rocket
      * @param endTime fixed time at which rocket must reach its target
      */
     public NewtonRaphsonSolver(Vector3dInterface initPos, double endTime) {
         this.fX = pF;
+        this.f = modelFx;
         NewtonRaphsonSolver.initPos = initPos;
         NewtonRaphsonSolver.endTime = endTime;
     }
@@ -100,9 +109,9 @@ public class NewtonRaphsonSolver {
      * @return approximated velocity
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector) {
-        double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), STEP_SIZE); // Compute matrix of partial derivatives D
+        double[][] D = PartialDerivative.getJacobianMatrix(f, (Vector3D) vector.clone(), STEP_SIZE); // Compute matrix of partial derivatives D
         Matrix DI = new Matrix(Matrix.invert(D)); // Compute DI inverse of D
-        Vector3dInterface modelVector = fX.modelFx(vector);
+        Vector3dInterface modelVector = f.apply(vector);
         Vector3dInterface DIProd = DI.multiplyVector(modelVector);
         return vector.sub(DIProd); // V1 = velocity - DI * function(velocity)
     }

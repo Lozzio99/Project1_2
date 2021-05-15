@@ -1,6 +1,7 @@
 package group17.Math.Utils;
 
-import group17.Interfaces.NewtRaphFunction;
+import group17.Interfaces.Function;
+import group17.Interfaces.Vector3dInterface;
 
 public class PartialDerivative {
 
@@ -15,9 +16,10 @@ public class PartialDerivative {
      * @param n  number of variable, regarding which partial derivatives are computed (e.g. df1/dx, dfn/dx)
      * @return vector of partial derivatives
      */
-    public static Vector3D getPartialDerivatives(NewtRaphFunction fX, Vector3D v, double h, int n) {
-        return (Vector3D) (fX.modelFx(new Vector3D(v.getX() + H[n][0] * h, v.getY() + H[n][1] * h, v.getZ() + H[n][2] * h))
-                .sub(fX.modelFx(new Vector3D(v.getX() - H[n][0] * h, v.getY() - H[n][1] * h, v.getZ() - H[n][2] * h)))).div(2 * h);
+
+    public static Vector3dInterface getPartialDerivatives(Function<Vector3dInterface> fX, Vector3D v, double h, int n) {
+        return (fX.apply(new Vector3D(v.getX() + H[n][0] * h, v.getY() + H[n][1] * h, v.getZ() + H[n][2] * h))
+                .sub(fX.apply(new Vector3D(v.getX() - H[n][0] * h, v.getY() - H[n][1] * h, v.getZ() - H[n][2] * h)))).div(2 * h);
     }
 
     /**
@@ -26,10 +28,10 @@ public class PartialDerivative {
      * @param v vector value
      * @return Jacobian matrix
      */
-    public static double[][] getJacobianMatrix(NewtRaphFunction fX, Vector3D v, double h) {
+    public static double[][] getJacobianMatrix(Function<Vector3dInterface> fX, Vector3D v, double h) {
         double[][] m = new double[3][3];
         for (int i = 0; i < m.length; i++) {
-            Vector3D res = getPartialDerivatives(fX, v, h, i);
+            Vector3dInterface res = getPartialDerivatives(fX, v, h, i);
             m[0][i] = res.getX();
             m[1][i] = res.getY();
             m[2][i] = res.getZ();

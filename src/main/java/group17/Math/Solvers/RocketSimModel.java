@@ -32,11 +32,11 @@ public class RocketSimModel {
             return solution[solution.length - 1].getPositions().get(11);
         }
 
-        @Override
-        public Vector3dInterface modelFx(Vector3dInterface vector) {
-            Vector3D aprxPos = (Vector3D) pF.stateFX(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
-            return targetPosition.sub(aprxPos);
-        }
+
+    };
+    public static Function<Vector3dInterface> modelFx = x -> {
+        Vector3D aprxPos = (Vector3D) pF.stateFX(NewtonRaphsonSolver.initPos, x, NewtonRaphsonSolver.endTime);
+        return targetPosition.sub(aprxPos);
     };
 
     static {
