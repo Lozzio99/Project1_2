@@ -18,7 +18,6 @@ public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
     private static final List<Color> backGrounds = new ArrayList<>();
     private static final List<ImageIcon> icons = new ArrayList<>();
-
     static {
         tabs.add("MENU");
         backGrounds.add(new Color(204, 122, 255, 211));
@@ -58,9 +57,7 @@ public class UserDialogWindow {
         tips.add("Configure settings");
 
     }
-
     private final JFrame frame;
-    Color c = new Color(181, 252, 233, 211);
     private JTabbedPane mainPane;
     private LaunchAssist assist;
     private SimulationDataWindow dataWindow;
@@ -92,27 +89,6 @@ public class UserDialogWindow {
         this.frame.setVisible(true);
     }
 
-    private static ImageIcon loadIcon(String path) {
-        ImageIcon i = new ImageIcon(UserDialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
-        Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-        i.setImage(scaled);
-        return i;
-    }
-
-    public void enableTabs() {
-        if (LAUNCH_ASSIST) enable(1);
-        if (REPORT) enable(2);
-        if (PLOT) enable(3);
-        if (ROCKET_INFO) enable(4);
-        if (PERFORMANCE) enable(5);
-        if (ERROR_EVALUATION) enable(6);
-        enable(8);
-    }
-
-    public void reset() {
-        //TODO : implement all changes here
-        ((RocketWindow) this.mainPane.getComponentAt(4)).reset(); // rocket fuel
-    }
 
     private Component makeTabs() {
         this.mainPane = new JTabbedPane();
@@ -128,6 +104,13 @@ public class UserDialogWindow {
         return this.mainPane;
     }
 
+    private static ImageIcon loadIcon(String path) {
+        ImageIcon i = new ImageIcon(UserDialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
+        Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+        i.setImage(scaled);
+        return i;
+    }
+
     private void config() {
         this.enable(0, 7);
         Color c = new Color(11, 255, 3), w = new Color(135, 0, 255), c2 = new Color(0, 255, 255);
@@ -137,15 +120,6 @@ public class UserDialogWindow {
         this.mainPane.setRequestFocusEnabled(true);
         this.mainPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
-
-    public void enable(int... i) {
-        for (int j : i) this.mainPane.setEnabledAt(j, true);
-    }
-
-    public void disable(int... i) {
-        for (int j : i) this.mainPane.setEnabledAt(j, false);
-    }
-
 
     public Component configCard(int index) {
         switch (index) {
@@ -182,7 +156,6 @@ public class UserDialogWindow {
         }
     }
 
-
     private Component initMenu() {
         UserDialogWindow d = this;
         this.menu = new MainMenu() {
@@ -202,6 +175,24 @@ public class UserDialogWindow {
         return this.menu.configFrame(new JPanel());
     }
 
+    public void enable(int... i) {
+        for (int j : i) this.mainPane.setEnabledAt(j, true);
+    }
+
+    public void disable(int... i) {
+        for (int j : i) this.mainPane.setEnabledAt(j, false);
+    }
+
+    public void enableTabs() {
+        if (LAUNCH_ASSIST) enable(1);
+        if (REPORT) enable(2);
+        if (PLOT) enable(3);
+        if (ROCKET_INFO) enable(4);
+        if (PERFORMANCE) enable(5);
+        if (ERROR_EVALUATION) enable(6);
+        enable(8);
+    }
+
 
     public MainMenu getMainMenu() {
         return menu;
@@ -214,7 +205,6 @@ public class UserDialogWindow {
     public JTabbedPane getMainPane() {
         return mainPane;
     }
-
     public SimulationDataWindow getOutputWindow() {
         return this.dataWindow;
     }
