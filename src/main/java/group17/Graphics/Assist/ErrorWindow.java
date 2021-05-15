@@ -38,7 +38,7 @@ public class ErrorWindow extends JPanel {
     }
 
     @Deprecated(forRemoval = true)
-    /* Makin csv from txt file  + creating error data */
+    /* Making csv from txt file  + creating error data array */
     private void parseOriginal() {
         FileReader fr = null;
         FileWriter fw = null;
@@ -77,8 +77,7 @@ public class ErrorWindow extends JPanel {
                     monthRecord[i][6] = vectorVel[1];
                     monthRecord[i][7] = vectorVel[2];
                 }
-                if (scan.hasNextLine())
-                    whiteLine = scan.nextLine();
+                if (scan.hasNextLine()) whiteLine = scan.nextLine();
                 ORIGINAL_DATA[monthIndex] = new ErrorData().setData(pos, vel);
                 monthIndex++;
                 all.addAll(Arrays.asList(monthRecord));
@@ -118,7 +117,6 @@ public class ErrorWindow extends JPanel {
                     csv_model.addColumn(c.get(6));
                     csv_model.addColumn(c.get(7));
                 } else {
-
                     Vector<String> row = new Vector<>();
                     row.add(c.get(0));
                     row.add(c.get(1));
