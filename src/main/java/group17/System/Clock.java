@@ -1,5 +1,6 @@
 package group17.System;
 
+import static group17.Config.ERROR_EVALUATION;
 import static group17.Config.REPORT;
 import static group17.Main.simulationInstance;
 
@@ -40,7 +41,7 @@ public class Clock {
         setInitialDay(1, 4, 2020);
         setInitialTime(0, 0, 0);
         checkLeap();
-        checkFirst();
+        if (ERROR_EVALUATION) checkFirst();
         return this;
     }
 
@@ -63,6 +64,7 @@ public class Clock {
         if (step != 0)
             secStep(step);
         checkLeap();
+        if (!ERROR_EVALUATION) return false;
         return checkFirst();
     }
 

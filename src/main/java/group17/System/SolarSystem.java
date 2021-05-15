@@ -110,7 +110,7 @@ public class SolarSystem implements SystemInterface {
         return "SOLAR SYSTEM\t"
                 + clock +
                 ",\n\tSTATE\n" + systemState +
-                "\n\tROCKET\n" + rocket +
+                "\n\t" + rocket +
                 "\n" + rocket.info();
     }
 }

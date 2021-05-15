@@ -6,6 +6,7 @@ import group17.Math.Vector3D;
 import group17.Simulation.Simulation;
 import group17.System.Bodies.ProbeSimulator;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.FileWriter;
@@ -15,7 +16,7 @@ import static group17.Config.*;
 import static group17.Main.simulationInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+@Disabled
 class ProbeSimulatorTest {
 
     static final double ACCURACY = 1; // 1 meter (might need to tweak that)

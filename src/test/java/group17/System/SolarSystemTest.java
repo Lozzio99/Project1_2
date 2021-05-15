@@ -45,7 +45,7 @@ class SolarSystemTest {
     @DisplayName("InitRocket")
     void InitRocket() {
         solarSystem.initRocket();
-        assertEquals("(-7485730.186,6281273.438,-8172135.798)", solarSystem.getRocket().getVectorLocation().toString());
+        assertNull(solarSystem.getRocket().getVectorLocation());
     }
 
     @Test

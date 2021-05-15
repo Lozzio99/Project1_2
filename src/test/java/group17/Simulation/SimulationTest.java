@@ -1,14 +1,21 @@
 package group17.Simulation;
 
+import group17.Graphics.Assist.UserDialogWindow;
 import group17.Interfaces.SimulationInterface;
+import group17.Main;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static group17.Config.ERROR_EVALUATION;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {
 
     static SimulationInterface simulation = new Simulation();
+
+    static {
+        ERROR_EVALUATION = false;
+    }
 
     @Test
     @DisplayName("InitUpdater")
@@ -36,9 +43,14 @@ class SimulationTest {
     @Test
     @DisplayName("InitAssist")
     void InitAssist() {
-        simulation.initAssist();
+        simulation.setAssist(new UserDialogWindow());
+        assertThrows(NullPointerException.class, () -> simulation.initAssist());
         assertNotNull(simulation.getAssist());
-        assertNotEquals("null", simulation.getAssist().toString());
+        simulation.initSystem();
+        Main.simulationInstance = simulation;
+        simulation.initSystem();
+        assertDoesNotThrow(() -> simulation.initAssist());
+        assertNotNull(simulation.getAssist());
     }
 
     @Test
@@ -61,9 +73,11 @@ class SimulationTest {
                 "PV:\t(2.395195786685187E12,1.744450959214586E12,-2.455116324031639E10)\n" +
                 "PV:\t(4.382692942729203E12,-9.093501655486243E11,-8.227728929479486E10)\n" +
                 "PV:\t(-1.472343904597218E11,-2.822578361503422E10,1.052790970065631E7)\n" +
+                "PV:\t(-1.471922101663588E11,-2.860995816266412E10,8278183.19359608)\n" +
                 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
                 "\tROCKET\n" +
-                "null", simulation.getSystem().toString());
+                "Dry Mass: 98000.0\n" +
+                "Fuel Mass: 20000.0\n", simulation.getSystem().toString());
     }
 
     @Test
@@ -73,6 +87,5 @@ class SimulationTest {
         assertNotNull(simulation.getReporter());
         assertNotEquals("null", simulation.getReporter().toString());
     }
-
 
 }

@@ -4,16 +4,11 @@ import group17.Interfaces.RateInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.System.Bodies.Planet;
-import group17.System.Bodies.Satellite;
-import group17.System.Bodies.Star;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static group17.Main.simulationInstance;
-import static group17.System.Bodies.Planet.PlanetsEnum.EARTH;
-import static group17.System.Bodies.Satellite.SatellitesEnum.ASTEROID;
 
 
 public class SystemState implements StateInterface {
@@ -35,13 +30,6 @@ public class SystemState implements StateInterface {
         positions.add(positionsVector);
     }
 
-    public static void main(String[] args) {
-        System.out.println(
-                new SystemState()
-                        .state0(
-                                List.of(new Star(), new Planet(EARTH), new Satellite(ASTEROID))).hashCode());
-
-    }
 
     @Override
     public List<Vector3dInterface> getPositions() {
@@ -73,8 +61,6 @@ public class SystemState implements StateInterface {
             }
         }
         s.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-
         return s.toString().trim();
     }
 
