@@ -13,6 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
+import static group17.Config.ERROR_EVALUATION;
+import static group17.Config.LAUNCH_DATE;
 import static java.lang.Double.NaN;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -104,8 +106,10 @@ class RocketScheduleTest {
     @Test
     @DisplayName("Plan")
     void addPlanByClock() {
+
+        ERROR_EVALUATION = false;
+        Clock clock = LAUNCH_DATE = new Clock().setLaunchDay();
         scheduler.prepare();
-        Clock clock = new Clock().setLaunchDay();
         Vector3dInterface v = scheduler.getDesiredVelocity(clock);
         assertFalse(v.isZero());
         Vector3dInterface h = new Vector3D(100, 100, 100);

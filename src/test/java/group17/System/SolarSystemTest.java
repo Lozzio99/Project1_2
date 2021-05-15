@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static group17.Config.ERROR_EVALUATION;
+import static group17.Config.LAUNCH_DATE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SolarSystemTest {
@@ -53,14 +55,17 @@ class SolarSystemTest {
     @Test
     @DisplayName("GetClock")
     void GetClock() {
+        ERROR_EVALUATION = false;
         assertNull(solarSystem.getClock());
         solarSystem.initClock();
         assertNotNull(solarSystem.getClock());
+        assertEquals(LAUNCH_DATE, solarSystem.getClock());
     }
 
     @Test
     @DisplayName("InitClock")
     void InitClock() {
+        ERROR_EVALUATION = false;
         solarSystem.initClock();
         assertNotNull(solarSystem.getClock());
         assertNotEquals("null", solarSystem.getClock().toString());
