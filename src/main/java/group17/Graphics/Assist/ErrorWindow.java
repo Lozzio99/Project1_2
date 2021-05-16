@@ -43,6 +43,7 @@ public class ErrorWindow extends JPanel {
         this.setBorder(titledBorder);
         this.setLayout(new GridLayout(2, 1));
         this.parseOriginal();
+
     }
 
     @Deprecated(forRemoval = true)
