@@ -3,7 +3,9 @@ package group17.Graphics.Assist;
 import au.com.bytecode.opencsv.CSVWriter;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Utils.Vector3D;
+import group17.System.Bodies.CelestialBody;
 import group17.System.ErrorData;
+import group17.System.ErrorReport;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -12,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.*;
@@ -27,9 +30,12 @@ public class ErrorWindow extends JPanel {
 
     private final JTable originalDataTable = new JTable();
     private final JScrollPane dataTableScrollPane = new JScrollPane();
-    private ErrorData[] originalData;
     private final String dir = "trajectoryData/";
-    private DefaultTableModel tableModel;
+    private String DateOfOriginalDataProvided;
+    private JComboBox<CelestialBody> planetBox;
+    private static final int WINDOWS = 0, MAC = 1, LINUX = 2;
+    private final JTextArea[] planetViewValues = new JTextArea[4];
+    private ErrorData ERROR_DATA_CURRENT_MONTH;
 
     public ErrorWindow() {
         TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40), "Horizon Original Data");
@@ -57,6 +63,7 @@ public class ErrorWindow extends JPanel {
             String[] planets = new String[]{"SUN", "MERCURY", "VENUS", "EARTH", "MOON", "MARS", "JUPITER", "SATURN", "TITAN", "URANUS", "NEPTUNE"};
             all.add(columns);
             int monthIndex = 0;
+            if (scan.hasNextLine()) this.DateOfOriginalDataProvided = scan.nextLine();
             while (scan.hasNextLine()) {
                 String[][] monthRecord = new String[11][8]; //11 planets, 8 data values
                 List<Vector3dInterface> pos = new ArrayList<>(11), vel = new ArrayList<>(11);
@@ -140,6 +147,21 @@ public class ErrorWindow extends JPanel {
         this.add(dataTableScrollPane, 0);
     }
 
+    public void initButtons() {
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new GridLayout(6, 1, 5, 5));
+        createEditorPane(bottomPanel);
+        createComboSelect(bottomPanel);
+        for (int i = 0; i < 4; i++)
+            createVectorTextArea(bottomPanel, i);
+        this.add(bottomPanel);
+    }
+
+    private void createVectorTextArea(JPanel bottomPanel, int i) {
+        bottomPanel.add(planetViewValues[i] = new JTextArea());
+    }
+
+
     @Contract(pure = true)
     private String[] removeSpaces(String @NotNull [] vec) {
         String[] t = new String[3];
@@ -153,5 +175,82 @@ public class ErrorWindow extends JPanel {
         return t;
     }
 
+    private void createComboSelect(JPanel bottomPanel) {
+        this.planetBox = new JComboBox<>();
+        for (CelestialBody c : simulation.getSystem().getCelestialBodies()) {
+            if (!c.toString().equals("ROCKET")) this.planetBox.addItem(c);
+        }
+        this.planetBox.addActionListener(e -> {
+            if (ErrorReport.monthIndex >= 13) return;  //no data after april '22
+            int planetBoxSelectedIndex = this.planetBox.getSelectedIndex();
+            int monthIndex = ErrorReport.monthIndex;
+            this.originalDataTable.setAutoscrolls(true);
+            this.originalDataTable.setRowSelectionInterval((monthIndex * 11) + planetBoxSelectedIndex,
+                    (monthIndex * 11) + planetBoxSelectedIndex);
+            originalDataTable.scrollRectToVisible(new Rectangle(originalDataTable.getCellRect(((monthIndex * 11) +
+                    planetBoxSelectedIndex) + 3, 0, true)));
+            showValues(planetBoxSelectedIndex);
+        });
+        bottomPanel.add(this.planetBox);
+    }
+
+    private void createEditorPane(JPanel bottomPanel) {
+        JEditorPane textPane = null;
+        textPane = new JEditorPane();
+        textPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+        textPane.setEditable(false);
+        textPane.setText("<a href=\"https://ssd.jpl.nasa.gov/horizons.cgi:C\">ORIGINAL SOURCE LINK</a>" +
+                "\tfor the error evaluation (last update  " + DateOfOriginalDataProvided + ")");
+        textPane.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                try {
+                    Runtime rt = Runtime.getRuntime();
+                    String url = "https://ssd.jpl.nasa.gov/horizons.cgi";
+                    switch (getPlatform()) {
+                        case WINDOWS -> rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+                        case MAC -> rt.exec("open " + url);
+                        case LINUX -> {
+                            String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape", "opera", "links", "lynx"};
+                            StringBuffer cmd = new StringBuffer();
+                            for (int i = 0; i < browsers.length; i++) {
+                                if (i == 0) cmd.append(String.format("%s \"%s\"", browsers[i], url));
+                                else cmd.append(String.format(" || %s \"%s\"", browsers[i], url));
+                            }
+                            rt.exec(new String[]{"sh", "-c", cmd.toString()});
+                        }
+                        default -> {
+                            if (REPORT) simulation.getReporter().report("System OS not recognised");
+                        }
+                    }
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
+        bottomPanel.add(textPane);
+    }
+
+
+    private int getPlatform() {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) return 0;
+        if (os.contains("mac")) return 1;
+        if (os.contains("nix") || os.contains("nux")) return 2;
+        return -1;
+    }
+
+    private void showValues(int planetIndex) {
+        if (ERROR_DATA_CURRENT_MONTH == null) {
+            return;
+        }
+        planetViewValues[0].setText("Error with original position " + ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
+        planetViewValues[1].setText("Error with original velocity " + ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
+        planetViewValues[2].setText("Mean Position error : ");
+        planetViewValues[3].setText("Mean Velocity error : ");
+    }
+
+    public void updateLabels(ErrorData data) {
+        this.ERROR_DATA_CURRENT_MONTH = data;
+    }
 
 }

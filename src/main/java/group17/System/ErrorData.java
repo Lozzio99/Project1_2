@@ -7,18 +7,18 @@ import org.jetbrains.annotations.Contract;
 import java.util.List;
 
 public class ErrorData {
-    List<Vector3dInterface> positions, velocities;
+    private List<Vector3dInterface> positions, velocities;
 
     @Contract(pure = true)
     public ErrorData() {
     }
 
-    public ErrorData setData(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
-        this.positions = positions;
-        this.velocities = velocities;
-        this.positions.remove(this.positions.size() - 1);
-        this.velocities.remove(this.velocities.size() - 1);//removing rocket , no data to compare for it
-        return this;
+    public ErrorData(StateInterface state) {
+        StateInterface copy = StateInterface.clone(state);
+        this.positions = copy.getPositions();
+        if (this.positions.size() >= 12) this.positions.remove(11);
+        this.velocities = copy.getRateOfChange().getVelocities();
+        if (this.velocities.size() >= 12) this.velocities.remove(11);
     }
 
     public ErrorData(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
@@ -26,9 +26,21 @@ public class ErrorData {
         this.velocities = List.copyOf(velocities);
     }
 
-    public ErrorData(StateInterface state) {
-        this.positions = List.copyOf(state.getPositions());
-        this.velocities = List.copyOf(state.getRateOfChange().getVelocities());
+    public ErrorData setData(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
+        this.positions = positions;
+        this.velocities = velocities;
+        if (this.positions.size() >= 12) {
+            this.positions.remove(11);
+            this.velocities.remove(11);//removing rocket , no data to compare for it
+        }
+        return this;
     }
 
+    public List<Vector3dInterface> getPositions() {
+        return positions;
+    }
+
+    public List<Vector3dInterface> getVelocities() {
+        return velocities;
+    }
 }
