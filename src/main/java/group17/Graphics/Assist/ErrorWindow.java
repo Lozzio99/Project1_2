@@ -167,7 +167,7 @@ public class ErrorWindow extends JPanel {
         this.planetBox.addActionListener(e -> {
             CelestialBody selectedItem = (CelestialBody) this.planetBox.getSelectedItem();
             int planetBoxSelectedIndex = this.planetBox.getSelectedIndex();
-            int indexInCsv = ErrorReport.monthIndex + 2;
+            int indexInCsv = ErrorReport.monthIndex;
             this.originalDataTable.setAutoscrolls(true);
             this.originalDataTable.setRowSelectionInterval(
                     (indexInCsv * 11) +
