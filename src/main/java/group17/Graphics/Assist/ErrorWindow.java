@@ -31,6 +31,7 @@ public class ErrorWindow extends JPanel {
     private final JTable originalDataTable = new JTable();
     private final JScrollPane dataTableScrollPane = new JScrollPane();
     private final String dir = "trajectoryData/";
+    private String DateOfOriginalDataProvided;
     private JComboBox<CelestialBody> planetBox;
     private static final int WINDOWS = 0, MAC = 1, LINUX = 2;
     private final JTextArea[] planetViewValues = new JTextArea[4];
@@ -61,6 +62,7 @@ public class ErrorWindow extends JPanel {
             String[] planets = new String[]{"SUN", "MERCURY", "VENUS", "EARTH", "MOON", "MARS", "JUPITER", "SATURN", "TITAN", "URANUS", "NEPTUNE"};
             all.add(columns);
             int monthIndex = 0;
+            if (scan.hasNextLine()) this.DateOfOriginalDataProvided = scan.nextLine();
             while (scan.hasNextLine()) {
                 String[][] monthRecord = new String[11][8]; //11 planets, 8 data values
                 List<Vector3dInterface> pos = new ArrayList<>(11), vel = new ArrayList<>(11);
@@ -196,7 +198,8 @@ public class ErrorWindow extends JPanel {
         textPane = new JEditorPane();
         textPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
         textPane.setEditable(false);
-        textPane.setText("<a href=\"https://ssd.jpl.nasa.gov/horizons.cgi:C\">ORIGINAL SOURCE LINK</a>");
+        textPane.setText("<a href=\"https://ssd.jpl.nasa.gov/horizons.cgi:C\">ORIGINAL SOURCE LINK</a>" +
+                "\tfor the error evaluation (last update  " + DateOfOriginalDataProvided + ")");
         textPane.addHyperlinkListener(e -> {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 try {
