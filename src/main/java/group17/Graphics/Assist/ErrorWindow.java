@@ -177,16 +177,15 @@ public class ErrorWindow extends JPanel {
 
     private void createComboSelect(JPanel bottomPanel) {
         this.planetBox = new JComboBox<>();
-        for (CelestialBody c : simulation.getSystem().getCelestialBodies()) {
+        for (CelestialBody c : simulation.getSystem().getCelestialBodies())
             if (!c.toString().equals("ROCKET")) this.planetBox.addItem(c);
-        }
+
         this.planetBox.addActionListener(e -> {
             if (ErrorReport.monthIndex >= 13) return;  //no data after april '22
             int planetBoxSelectedIndex = this.planetBox.getSelectedIndex();
             int monthIndex = ErrorReport.monthIndex;
             this.originalDataTable.setAutoscrolls(true);
-            this.originalDataTable.setRowSelectionInterval((monthIndex * 11) + planetBoxSelectedIndex,
-                    (monthIndex * 11) + planetBoxSelectedIndex);
+            this.originalDataTable.setRowSelectionInterval((monthIndex * 11) + planetBoxSelectedIndex, (monthIndex * 11) + planetBoxSelectedIndex);
             originalDataTable.scrollRectToVisible(new Rectangle(originalDataTable.getCellRect(((monthIndex * 11) +
                     planetBoxSelectedIndex) + 3, 0, true)));
             showValues(planetBoxSelectedIndex);
@@ -200,15 +199,15 @@ public class ErrorWindow extends JPanel {
         textPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
         textPane.setEditable(false);
         textPane.setText("<a href=\"https://ssd.jpl.nasa.gov/horizons.cgi:C\">ORIGINAL SOURCE LINK</a>" +
-                "\tfor the error evaluation (last update  " + DateOfOriginalDataProvided + ")");
+                "\tfor the error evaluation (last update  " + DateOfOriginalDataProvided + ") ... more info about this here ...");
         textPane.addHyperlinkListener(e -> {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 try {
-                    Runtime rt = Runtime.getRuntime();
+                    Runtime runtime = Runtime.getRuntime();
                     String url = "https://ssd.jpl.nasa.gov/horizons.cgi";
                     switch (getPlatform()) {
-                        case WINDOWS -> rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
-                        case MAC -> rt.exec("open " + url);
+                        case WINDOWS -> runtime.exec("rundll32 url.dll,FileProtocolHandler " + url);
+                        case MAC -> runtime.exec("open " + url);
                         case LINUX -> {
                             String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape", "opera", "links", "lynx"};
                             StringBuffer cmd = new StringBuffer();
@@ -216,14 +215,14 @@ public class ErrorWindow extends JPanel {
                                 if (i == 0) cmd.append(String.format("%s \"%s\"", browsers[i], url));
                                 else cmd.append(String.format(" || %s \"%s\"", browsers[i], url));
                             }
-                            rt.exec(new String[]{"sh", "-c", cmd.toString()});
+                            runtime.exec(new String[]{"sh", "-c", cmd.toString()});
                         }
                         default -> {
                             if (REPORT) simulation.getReporter().report("System OS not recognised");
                         }
                     }
                 } catch (IOException ioException) {
-                    ioException.printStackTrace();
+                    if (REPORT) simulation.getReporter().report(Thread.currentThread(), ioException);
                 }
             }
         });
@@ -240,9 +239,7 @@ public class ErrorWindow extends JPanel {
     }
 
     private void showValues(int planetIndex) {
-        if (ERROR_DATA_CURRENT_MONTH == null) {
-            return;
-        }
+        if (ERROR_DATA_CURRENT_MONTH == null) return;
         planetViewValues[0].setText("Error with original position " + ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
         planetViewValues[1].setText("Error with original velocity " + ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
         planetViewValues[2].setText("Mean Position error : ");
