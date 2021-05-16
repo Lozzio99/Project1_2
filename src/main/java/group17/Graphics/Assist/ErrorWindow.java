@@ -208,6 +208,7 @@ public class ErrorWindow extends JPanel {
                     switch (getPlatform()) {
                         case WINDOWS -> runtime.exec("rundll32 url.dll,FileProtocolHandler " + url);
                         case MAC -> runtime.exec("open " + url);
+
                         case LINUX -> {
                             String[] browsers = {"epiphany", "firefox", "mozilla", "konqueror", "netscape", "opera", "links", "lynx"};
                             StringBuffer cmd = new StringBuffer();
@@ -215,7 +216,9 @@ public class ErrorWindow extends JPanel {
                                 if (i == 0) cmd.append(String.format("%s \"%s\"", browsers[i], url));
                                 else cmd.append(String.format(" || %s \"%s\"", browsers[i], url));
                             }
+
                             runtime.exec(new String[]{"sh", "-c", cmd.toString()});
+
                         }
                         default -> {
                             if (REPORT) simulation.getReporter().report("System OS not recognised");
@@ -223,6 +226,7 @@ public class ErrorWindow extends JPanel {
                     }
                 } catch (IOException ioException) {
                     if (REPORT) simulation.getReporter().report(Thread.currentThread(), ioException);
+
                 }
             }
         });
@@ -240,6 +244,7 @@ public class ErrorWindow extends JPanel {
 
     private void showValues(int planetIndex) {
         if (ERROR_DATA_CURRENT_MONTH == null) return;
+
         planetViewValues[0].setText("Error with original position " + ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
         planetViewValues[1].setText("Error with original velocity " + ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
         planetViewValues[2].setText("Mean Position error : ");
