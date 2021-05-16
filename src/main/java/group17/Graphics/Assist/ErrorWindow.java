@@ -24,6 +24,7 @@ import static group17.Config.ORIGINAL_DATA;
 import static group17.Config.REPORT;
 import static group17.Main.simulation;
 
+
 public class ErrorWindow extends JPanel {
 
     private final JTable originalDataTable = new JTable();
@@ -38,6 +39,7 @@ public class ErrorWindow extends JPanel {
         this.setBorder(titledBorder);
         this.setLayout(new GridLayout(2, 1));
         this.parseOriginal();
+
     }
 
     @Deprecated(forRemoval = true)
