@@ -18,9 +18,10 @@ public class PartialDerivative {
      * @return vector of partial derivatives
      */
 
-    public static Vector3dInterface getPartialDerivatives(NewtRaphFunction fX, Vector3D v, double h, int n) {
-        return (fX.modelFx(new Vector3D(v.getX() + H[n][0] * h, v.getY() + H[n][1] * h, v.getZ() + H[n][2] * h))
-                .sub(fX.modelFx(new Vector3D(v.getX() - H[n][0] * h, v.getY() - H[n][1] * h, v.getZ() - H[n][2] * h)))).div(2 * h);
+    public static Vector3D getPartialDerivatives(NewtRaphFunction fX, Vector3D v, double h, int n) {
+        Vector3dInterface diff = fX.modelFx(new Vector3D(v.getX()+H[n][0]*h, v.getY()+H[n][1]*h, v.getZ()+H[n][2]*h))
+                .sub(fX.modelFx(new Vector3D(v.getX()-H[n][0]*h, v.getY()-H[n][1]*h, v.getZ()-H[n][2]*h)));
+        return (Vector3D) diff.div(2*h);
     }
 
     /**

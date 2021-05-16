@@ -37,7 +37,7 @@ public class RocketSimModel {
 
     static {
         SOLVER = VERLET_VEL_SOLVER; // put here the best solver
-        STEP_SIZE = 100;
+        STEP_SIZE = 1;
         INSERT_ROCKET = true;
     }
 
