@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface StateInterface {
 
-    static StateInterface clone(StateInterface tobeCloned) {
+    default StateInterface clone(StateInterface tobeCloned) {
         StateInterface s = new SystemState();
         for (int i = 0; i < tobeCloned.getPositions().size(); i++) {
             s.getPositions().add(tobeCloned.getPositions().get(i).clone());

@@ -10,7 +10,7 @@ import static group17.Main.simulation;
 
 public interface RateInterface {
 
-    static RateInterface clone(RateInterface tobeCloned) {
+    default RateInterface clone(RateInterface tobeCloned) {
         RateInterface s = new RateOfChange();
         for (int i = 0; i < tobeCloned.getVelocities().size(); i++) {
             s.getVelocities().add(tobeCloned.getVelocities().get(i).clone());
@@ -90,7 +90,6 @@ public interface RateInterface {
     default RateInterface div(int scalar) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
-
         for (int i = 0; i < this.getVelocities().size(); i++) {
             this.getVelocities().set(i, this.getVelocities().get(i).div(scalar));
         }

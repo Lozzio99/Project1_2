@@ -1,6 +1,7 @@
 package group17.Math.Solvers;
 
 import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 
 import java.util.List;
@@ -34,6 +35,54 @@ public class StateTestClass implements StateTest {
     public RateTest getRateOfChange() {
         if (testDy == null) testDy = new RateTestClass();
         return testDy;
+    }
+
+    @Override
+    public StateInterface rateMul(double step, RateInterface rate) {
+        StateTest newState = new StateTestClass();
+        double dy = ((RateTest) rate).getDy();
+        newState.setY(dy * step);
+        newState.getRateOfChange().setDy(0);
+        return newState;
+    }
+
+    @Override
+    public StateInterface clone(StateInterface y) {
+        StateTest state = new StateTestClass();
+        state.setY(((StateTest) y).getY());
+        state.getRateOfChange().setDy(((RateTest) y.getRateOfChange()).getDy());
+        return state;
+    }
+
+    @Override
+    public StateInterface multiply(double scalar) {
+        StateTestClass state = new StateTestClass();
+        state.setY(this.getY() * scalar);
+        return state;
+    }
+
+    @Override
+    public StateInterface div(double scalar) {
+        StateTestClass state = new StateTestClass();
+        state.setY(this.getY() / scalar);
+        return state;
+    }
+
+    @Override
+    public StateInterface add(StateInterface scalar) {
+        StateTestClass state = new StateTestClass();
+        state.setY(this.getY() + ((StateTest) scalar).getY());
+        return state;
+    }
+
+    @Override
+    public StateInterface sumOf(StateInterface... states) {
+        StateTest rate = new StateTestClass();
+        rate.setY(0);
+        for (StateInterface r : states) {
+            rate.setY(rate.getY() + ((StateTest) r).getY());
+        }
+        return rate;
     }
 
     @Override

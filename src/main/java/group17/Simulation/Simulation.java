@@ -62,6 +62,7 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void reset() {
+        ErrorReport.monthIndex = 0;
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         if (!LAUNCH_ASSIST) {

@@ -3,7 +3,7 @@ package group17.Math.Solvers;
 import group17.Interfaces.*;
 import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
-import group17.System.RateOfChange;
+import group17.System.SystemState;
 import org.jetbrains.annotations.Contract;
 
 import static group17.Config.DEBUG;
@@ -73,17 +73,15 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         double k4 = h * f.f_y(t+h,w + k3);
         return  w + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));
          */
-
-        RateInterface velocity = new RateOfChange();
-        velocity.setVel(y.getRateOfChange().getVelocities());
+        RateInterface velocity = y.getRateOfChange();
         k11 = y.rateMul(h, velocity);
-        v21 = f.call(1, StateInterface.clone(y)).multiply(h);
-        k12 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(v21).multiply(0.5))); //!!
-        v22 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k11).multiply(0.5))).multiply(h);
-        k13 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(v22).multiply(0.5)));
-        v23 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k12).multiply(0.5))).multiply(h);
-        k14 = StateInterface.clone(y).rateMul(h, RateInterface.clone(velocity).add(RateInterface.clone(v23)));
-        v24 = f.call(1, StateInterface.clone(y).add(StateInterface.clone(k13))).multiply(h);
+        v21 = f.call(1, y.clone(y)).multiply(h);
+        k12 = y.clone(y).rateMul(h, velocity.clone(velocity).add(velocity.clone(v21).multiply(0.5))); //!!
+        v22 = f.call(1, y.clone(y).add(y.clone(k11).multiply(0.5))).multiply(h);
+        k13 = y.clone(y).rateMul(h, velocity.clone(velocity).add(velocity.clone(v22).multiply(0.5)));
+        v23 = f.call(1, y.clone(y).add(y.clone(k12).multiply(0.5))).multiply(h);
+        k14 = y.clone(y).rateMul(h, velocity.clone(velocity).add(velocity.clone(v23)));
+        v24 = f.call(1, y.clone(y).add(y.clone(k13))).multiply(h);
 
         //rate   -> y.add(rate).mul(h)   -> y.addMul(h,rate)
         if (DEBUG) {
@@ -101,16 +99,16 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         v22 = v22.multiply(2);
         v23 = v23.multiply(2);
 
-        kk = (k11.sumOf(k12, k13, k14)).div(6);
+        kk = k11.sumOf(k12, k13, k14).div(6);
 
-        kv = (v21.sumOf(v22, v23, v24)).div(6);
+        kv = v21.sumOf(v22, v23, v24).div(6);
 
         //-6.80564659829616E8
         //-6.806783239281648E8
 
-
-        y.getRateOfChange().setVel(y.getRateOfChange().add(kv).getVelocities());
-        return y.add(kk);
+        return new SystemState(y.add(kk).getPositions(), y.getRateOfChange().add(kv).getVelocities());
+        //y.getRateOfChange().setVel(y.getRateOfChange().add(kv).getVelocities());
+        //return y.add(kk);
     }
 
     @Override
