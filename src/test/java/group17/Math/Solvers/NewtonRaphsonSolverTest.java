@@ -11,16 +11,12 @@ import static group17.Config.CHECK_COLLISIONS;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NewtonRaphsonSolverTest {
-    static {
-
-    }
 
     @Test
     @DisplayName("Newton-Raphson solver")
     void NewtRaphSolve() {
-
-        NewtRaphFunction testFx = (pos, vel, time) -> null;
-        Function<Vector3dInterface> testF = vector -> {
+        // Example from: http://fourier.eng.hmc.edu/e176/lectures/NM/node21.html
+        NewtRaphFunction testFx = vector -> {
             double x = vector.getX(), y = vector.getY(), z = vector.getZ();
             return new Vector3D(
                     3.0 * x - Math.cos(y * z) - 3.0 / 2.0,
@@ -30,11 +26,9 @@ class NewtonRaphsonSolverTest {
         };
 
         CHECK_COLLISIONS = false;
-        Vector3dInterface testRes = new NewtonRaphsonSolver(testFx, testF).NewtRhapSolution(new Vector3D(1, 1, 1), new Vector3D(0, 0, 0));
+        Vector3dInterface testRes = (new NewtonRaphsonSolver(testFx)).NewtRhapSolution(new Vector3D(1, 1, 1), new Vector3D(0, 0, 0));
         Vector3dInterface testFxSol = new Vector3D(0.0, 0.0, 0.0);
-        Vector3dInterface testFxRes = testF.apply(testRes);
-        System.out.println(testRes.toString());
-        System.out.println(testFxRes);
+        Vector3dInterface testFxRes = testFx.modelFx(testRes);
         assertTrue(Math.abs(testFxRes.getX() - testFxSol.getX()) < 0.001
                 && Math.abs(testFxRes.getY() - testFxSol.getY()) < 0.001
                 && Math.abs(testFxRes.getZ() - testFxSol.getZ()) < 0.001);

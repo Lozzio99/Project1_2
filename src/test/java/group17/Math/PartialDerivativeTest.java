@@ -15,9 +15,7 @@ public class PartialDerivativeTest {
     @Test
     @DisplayName("Solve partial derivatives")
     void SolvePD() {
-        NewtRaphFunction testFx = (p, v, t) -> null;
-
-        Function<Vector3dInterface> f = vector -> {
+        NewtRaphFunction testFx = vector -> {
             return new Vector3D(
                     3 * vector.getX() + 4 * vector.getY() + 5 * vector.getZ(),
                     7 * vector.getX() + 8 * Math.pow(vector.getY(), 2) + 2 * vector.getZ(),
@@ -25,7 +23,7 @@ public class PartialDerivativeTest {
             );
         };
 
-        Vector3dInterface testRes = PartialDerivative.getPartialDerivatives(f, new Vector3D(1, 2, 3), 0.1, 0);
+        Vector3dInterface testRes = PartialDerivative.getPartialDerivatives(testFx, new Vector3D(1, 2, 3), 0.1, 0);
         Vector3dInterface testSol = new Vector3D(3, 7, 0);
         assertTrue(Math.abs(testRes.getX() - testSol.getX()) < 0.1
                 && Math.abs(testRes.getY() - testSol.getY()) < 0.1
@@ -35,14 +33,8 @@ public class PartialDerivativeTest {
     @Test
     @DisplayName("Solve Jacobian matrix")
     void SolveJacobian() {
-        NewtRaphFunction testFx = new NewtRaphFunction() {
-            @Override
-            public Vector3dInterface stateFX(Vector3dInterface initPos, Vector3dInterface initVelocity, double time) {
-                return null;
-            }
-        };
 
-        Function<Vector3dInterface> testF = vector -> {
+        NewtRaphFunction testFx = vector -> {
             return new Vector3D(
                     3 * vector.getX() + 4 * vector.getY() + 5 * vector.getZ(),
                     7 * vector.getX() + 8 * Math.pow(vector.getY(), 2) + 2 * vector.getZ(),
@@ -50,7 +42,7 @@ public class PartialDerivativeTest {
             );
         };
 
-        double[][] testRes = PartialDerivative.getJacobianMatrix(testF, new Vector3D(1, 2, 3), 0.01);
+        double[][] testRes = PartialDerivative.getJacobianMatrix(testFx, new Vector3D(1, 2, 3), 0.01);
         double[][] testSol = new double[][]{{3, 4, 5}, {7, 32, 2}, {0, 16, 27}};
         boolean valid = true;
         for (int i = 0; i < testSol.length; i++) {
