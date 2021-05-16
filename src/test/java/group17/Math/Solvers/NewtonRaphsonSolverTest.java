@@ -25,10 +25,11 @@ class NewtonRaphsonSolverTest {
             );
         };
 
-        CHECK_COLLISIONS = false;
         Vector3dInterface testRes = (new NewtonRaphsonSolver(testFx)).NewtRhapSolution(new Vector3D(1, 1, 1), new Vector3D(0, 0, 0));
+        System.out.println(testRes.toString());
         Vector3dInterface testFxSol = new Vector3D(0.0, 0.0, 0.0);
         Vector3dInterface testFxRes = testFx.modelFx(testRes);
+        System.out.println(testFxRes.toString());
         assertTrue(Math.abs(testFxRes.getX() - testFxSol.getX()) < 0.001
                 && Math.abs(testFxRes.getY() - testFxSol.getY()) < 0.001
                 && Math.abs(testFxRes.getZ() - testFxSol.getZ()) < 0.001);

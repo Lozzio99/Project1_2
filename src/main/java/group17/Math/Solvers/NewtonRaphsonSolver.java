@@ -8,6 +8,8 @@ import group17.Math.Utils.PartialDerivative;
 import group17.Math.Utils.Vector3D;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Arrays;
+
 import static group17.Config.INSERT_ROCKET;
 import static group17.Config.STEP_SIZE;
 import static group17.Math.Solvers.RocketSimModel.*;
@@ -43,6 +45,7 @@ public class NewtonRaphsonSolver {
      * Constructor of Newton-Raphson solver for the rocket-simulation problem
      *
      * @param initPos initial position of a rocket
+     * @param targetPos target position of a rocket
      * @param endTime fixed time at which rocket must reach its target
      */
     public NewtonRaphsonSolver(Vector3dInterface initPos, Vector3dInterface targetPos ,double endTime) {
@@ -71,7 +74,7 @@ public class NewtonRaphsonSolver {
     /**
      * Approximation of a solution to a function using Newton-Rhapson method
      * @param initSol initial solution
-     * @param targetSol target function solution
+     * @param targetSol target solution of the model function
      * @return approximated solution i.e. fX(aprxSol) ~ targetSol
      */
     public Vector3dInterface NewtRhapSolution(Vector3dInterface initSol, Vector3dInterface targetSol) {
@@ -96,6 +99,7 @@ public class NewtonRaphsonSolver {
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector) {
         double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), STEP_SIZE); // Compute matrix of partial derivatives D
+        System.out.println(Arrays.deepToString(D));
         Matrix DI = new Matrix(Matrix.invert(D)); // Compute DI inverse of D
         Vector3dInterface modelVector = fX.modelFx(vector);
         Vector3dInterface DIProd = DI.multiplyVector(modelVector);
