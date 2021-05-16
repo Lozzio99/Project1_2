@@ -1,14 +1,17 @@
 package group17.Interfaces;
 
+import group17.Math.Utils.Vector3D;
 import group17.System.RateOfChange;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static group17.Main.simulation;
 
 public interface RateInterface {
 
     static RateInterface clone(RateInterface tobeCloned) {
         RateInterface s = new RateOfChange();
-
         for (int i = 0; i < tobeCloned.getVelocities().size(); i++) {
             s.getVelocities().add(tobeCloned.getVelocities().get(i).clone());
         }
@@ -23,22 +26,84 @@ public interface RateInterface {
      */
     List<Vector3dInterface> getVelocities();
 
-    void setVel(List<Vector3dInterface> vel); // !!
+    void setVel(List<Vector3dInterface> vel);
 
-    RateInterface sub(int i);
+    default RateInterface sub(int scalar) {
+        if (this.getVelocities().size() == 0)
+            throw new RuntimeException(" Nothing to multiply ");
 
-    RateInterface copy(RateInterface tobeCloned);
+        for (int i = 0; i < this.getVelocities().size(); i++) {
+            this.getVelocities().set(i, this.getVelocities().get(i).sub(new Vector3D(scalar, scalar, scalar)));
+        }
+        return this;
+    }
 
-    RateInterface multiply(double scalar);
+    default RateInterface copy(RateInterface tobeCloned) {
+        RateInterface s = new RateOfChange();
+        for (Vector3dInterface v : tobeCloned.getVelocities()) {
+            s.getVelocities().add(v.clone());
+        }
+        return s;
+    }
 
-    RateInterface sub(double scalar);
+    default RateInterface multiply(double scalar) {
+        if (this.getVelocities().size() == 0)
+            throw new RuntimeException(" Nothing to multiply ");
+
+        for (int i = 0; i < this.getVelocities().size(); i++) {
+            this.getVelocities().set(i, this.getVelocities().get(i).mul(scalar));
+        }
+        return this;
+    }
+
+    default RateInterface sub(double scalar) {
+        if (this.getVelocities().size() == 0)
+            throw new RuntimeException(" Nothing to multiply ");
+        for (int i = 0; i < this.getVelocities().size(); i++) {
+            this.getVelocities().set(i, this.getVelocities().get(i).add(new Vector3D(-scalar, -scalar, -scalar)));
+        }
+        return this;
+    }
 
 
-    RateInterface add(RateInterface tobeAdded);
+    default RateInterface add(RateInterface tobeAdded) {
+        if (this.getVelocities().size() == 0)
+            throw new RuntimeException(" Nothing to add ");
 
-    RateInterface sumOf(RateInterface... states);
+        for (int i = 0; i < this.getVelocities().size(); i++) {
+            this.getVelocities().set(i, this.getVelocities().get(i).add(tobeAdded.getVelocities().get(i)));
+        }
+        return this;
+    }
 
-    RateInterface div(int i);
+    default RateInterface sumOf(RateInterface... states) {
+        for (int i = 0; i < states[0].getVelocities().size(); i++) {
+            Vector3dInterface velsum = this.getVelocities().get(i);
+            for (RateInterface r : states) {
+                velsum = velsum.add(r.getVelocities().get(i));
+            }
+            this.getVelocities().set(i, velsum);
+        }
+        return this;
+    }
 
+    default RateInterface div(int scalar) {
+        if (this.getVelocities().size() == 0)
+            throw new RuntimeException(" Nothing to multiply ");
+
+        for (int i = 0; i < this.getVelocities().size(); i++) {
+            this.getVelocities().set(i, this.getVelocities().get(i).div(scalar));
+        }
+        return this;
+    }
+
+    default RateInterface state0() {
+        if (this.getVelocities().size() != 0)
+            this.setVel(new ArrayList<>(11));
+        for (int i = 0; i < simulation.getSystem().systemState().getPositions().size(); i++) {
+            this.getVelocities().add(simulation.getSystem().getCelestialBodies().get(i).getVectorVelocity());
+        }
+        return this;
+    }
 
 }

@@ -10,6 +10,7 @@ import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
 
 import static group17.Config.G;
+import static group17.Config.STEP_SIZE;
 import static group17.Main.simulation;
 import static java.lang.Double.NaN;
 
@@ -46,7 +47,7 @@ public class EulerSolver implements ODESolverInterface {
                 */
                     acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
                     acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
-                    totalAcc = totalAcc.addMul(t, acc);
+                    totalAcc = totalAcc.addMul(STEP_SIZE, acc);
                     // p = h*acc(derivative of velocity)
                 }
             }  // y1 =y0 + h*acc
@@ -71,7 +72,7 @@ public class EulerSolver implements ODESolverInterface {
         // y1 = y0 +f(x,y0);
         checked = false;
         currTime = currentTime;
-        return y.addMul(stepSize, f.call(stepSize, y));
+        return y.addMul(stepSize, f.call(currentTime, y));
         //       y0  +  (y * h      dy(rate of change))
 
         // add (y * h) to y
