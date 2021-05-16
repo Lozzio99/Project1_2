@@ -5,8 +5,7 @@ import group17.Interfaces.Vector3dInterface;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static java.lang.StrictMath.pow;
-import static java.lang.StrictMath.sqrt;
+import static java.lang.StrictMath.*;
 
 
 public class Vector3D implements Vector3dInterface {
@@ -133,6 +132,15 @@ public class Vector3D implements Vector3dInterface {
         return new Vector3D(this.getX() - other.getX(),
                 this.getY() - other.getY(),
                 this.getZ() - other.getZ());
+    }
+
+    /**
+     * @return the result of |this-other|
+     */
+    public Vector3dInterface absSub(Vector3dInterface other) {
+        return new Vector3D(abs(this.getX() - other.getX()),
+                abs(this.getY() - other.getY()),
+                abs(this.getZ() - other.getZ()));
     }
 
     /**

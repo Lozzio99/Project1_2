@@ -9,6 +9,8 @@ import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.System.Bodies.CelestialBody;
+import group17.System.ErrorData;
+import group17.System.ErrorReport;
 import group17.System.SolarSystem;
 
 import java.util.concurrent.Executors;
@@ -139,6 +141,9 @@ public class Simulation implements SimulationInterface {
         //this.userDialog = new AssistFrame();
         this.assist.init();
         this.errorUI.makeTable();
+        this.errorUI.initButtons();
+        //making the first report to check if positions are correct
+        new ErrorReport(new ErrorData(this.system.systemState())).start();
     }
 
 

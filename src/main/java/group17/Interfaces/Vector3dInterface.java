@@ -64,6 +64,8 @@ public interface Vector3dInterface {
      */
     Vector3dInterface sub(Vector3dInterface other);
 
+    Vector3dInterface absSub(Vector3dInterface other);
+
     /**
      * Multiply the current vector by a scalar
      *

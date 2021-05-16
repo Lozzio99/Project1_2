@@ -76,7 +76,7 @@ public class SimulationUpdater implements UpdaterInterface {
              */
             simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulation.getSystem().systemState(), STEP_SIZE));
             if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION) {
-                new ErrorReport(new ErrorData(simulation.getSystem().systemState()));
+                new ErrorReport(new ErrorData(simulation.getSystem().systemState())).start();
             }
         } catch (Exception e) {
             if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);
