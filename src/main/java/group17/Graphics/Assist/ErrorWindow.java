@@ -239,8 +239,10 @@ public class ErrorWindow extends JPanel {
         if (ERROR_DATA_CURRENT_MONTH == null) {
             return;
         }
-        planetViewValues[0].setText(ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
-        planetViewValues[1].setText(ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
+        planetViewValues[0].setText("Error with original position " + ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
+        planetViewValues[1].setText("Error with original velocity " + ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
+        planetViewValues[2].setText("Mean Position error : ");
+        planetViewValues[3].setText("Mean Velocity error : ");
     }
 
     public void updateLabels(ErrorData data) {

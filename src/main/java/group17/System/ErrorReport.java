@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Contract;
 import java.util.ArrayList;
 import java.util.List;
 
+import static group17.Config.DEBUG;
 import static group17.Config.ORIGINAL_DATA;
 import static group17.Main.simulation;
 import static group17.Main.userDialog;
@@ -28,21 +29,17 @@ public class ErrorReport implements Runnable {
 
     @Override
     public void run() {
+        userDialog.disable(6);
         //ASSUMING [ NO ] ROCKET HERE
         diff_from_original_position = new ArrayList<>(11);
         diff_from_original_velocities = new ArrayList<>(11);
 
         for (int i = 0; i < state.getPositions().size(); i++) {
-
-            diff_from_original_position.add(
-                    ORIGINAL_DATA[monthIndex]
-                            .getPositions().get(i)
-                            .absSub(state.getPositions().get(i)));
-            diff_from_original_velocities.add(
-                    ORIGINAL_DATA[monthIndex]
-                            .getVelocities().get(i)
-                            .absSub(state.getVelocities().get(i)));
-            if (true) {
+            diff_from_original_position.add(ORIGINAL_DATA[monthIndex].getPositions().get(i)
+                    .absSub(state.getPositions().get(i)));
+            diff_from_original_velocities.add(ORIGINAL_DATA[monthIndex].getVelocities().get(i)
+                    .absSub(state.getVelocities().get(i)));
+            if (DEBUG) {
                 System.out.println("PLANET " + simulation.getSystem().getCelestialBodies().get(i).toString() + "~~~~~~~~");
                 System.out.println("ORIGINAL PV : " + ORIGINAL_DATA[monthIndex].getPositions().get(i));
                 System.out.println("SIMULATED PV: " + state.getPositions().get(i));
@@ -56,6 +53,8 @@ public class ErrorReport implements Runnable {
         }
 
         userDialog.getErrorWindow().updateLabels(new ErrorData(diff_from_original_position, diff_from_original_velocities));
+        userDialog.enable(6);
+
     }
 
 
