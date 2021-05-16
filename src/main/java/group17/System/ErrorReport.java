@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Contract;
 
 public class ErrorReport implements Runnable {
 
-    private static int monthIndex = 0;
+    public static int monthIndex = 0;
     private final ErrorData state;
 
     @Contract(pure = true)

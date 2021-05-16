@@ -3,7 +3,9 @@ package group17.Graphics.Assist;
 import au.com.bytecode.opencsv.CSVWriter;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Utils.Vector3D;
+import group17.System.Bodies.CelestialBody;
 import group17.System.ErrorData;
+import group17.System.ErrorReport;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -26,9 +28,9 @@ public class ErrorWindow extends JPanel {
 
     private final JTable originalDataTable = new JTable();
     private final JScrollPane dataTableScrollPane = new JScrollPane();
-    private ErrorData[] originalData;
     private final String dir = "trajectoryData/";
-    private DefaultTableModel tableModel;
+    private DefaultTableModel csv_model;
+    private JComboBox<CelestialBody> planetBox;
 
     public ErrorWindow() {
         TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40), "Horizon Original Data");
@@ -98,7 +100,7 @@ public class ErrorWindow extends JPanel {
 
     public void makeTable() {
         originalDataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        DefaultTableModel csv_model = new DefaultTableModel();
+        csv_model = new DefaultTableModel();
         File csv = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("trajectoryData/ORIGINAL_MONTHS.csv")).getFile());
         try {
             InputStreamReader isr = new InputStreamReader(new FileInputStream(csv));
@@ -136,6 +138,7 @@ public class ErrorWindow extends JPanel {
         originalDataTable.setDropMode(DropMode.ON_OR_INSERT);
         dataTableScrollPane.getViewport().add(originalDataTable);
         this.add(dataTableScrollPane, 0);
+        this.initButtons();
     }
 
     @Contract(pure = true)
@@ -151,5 +154,30 @@ public class ErrorWindow extends JPanel {
         return t;
     }
 
+
+    private void initButtons() {
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(new BorderLayout());
+        this.planetBox = new JComboBox<>();
+        for (CelestialBody c : simulation.getSystem().getCelestialBodies()) {
+            if (!c.toString().equals("ROCKET")) this.planetBox.addItem(c);
+        }
+        this.planetBox.addActionListener(e -> {
+            CelestialBody selectedItem = (CelestialBody) this.planetBox.getSelectedItem();
+            int planetBoxSelectedIndex = this.planetBox.getSelectedIndex();
+            int indexInCsv = ErrorReport.monthIndex + 2;
+            this.originalDataTable.setAutoscrolls(true);
+            this.originalDataTable.setRowSelectionInterval(
+                    (indexInCsv * 11) +
+                            planetBoxSelectedIndex,
+                    (indexInCsv * 11) +
+                            planetBoxSelectedIndex);
+            originalDataTable.scrollRectToVisible(
+                    new Rectangle(originalDataTable.getCellRect(((indexInCsv * 11) +
+                            planetBoxSelectedIndex) + 3, 0, true)));
+        });
+        bottomPanel.add(this.planetBox, BorderLayout.NORTH);
+        this.add(bottomPanel);
+    }
 
 }
