@@ -17,8 +17,10 @@ public class StandardVerletSolverTest {
     @DisplayName("SolveODE")
         //FIXME: check this why it's giving such an high error
     void SolveODE() {
+        DEBUG = true;
         FreeFallFunction yd = new FreeFallFunction();
         StandardVerletSolver solver = new StandardVerletSolver();
+        solver.setFirst();
         // init parameters
         Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0
         Vector3D initVelocity = new Vector3D(0, 0, 0);

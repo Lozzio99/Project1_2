@@ -25,21 +25,23 @@ class RungeKutta4thSolverTest {
 
     @BeforeEach
     void setup() {
-        stepSize = 0.0001;
+        stepSize = 0.00001;
         t = 0;
         tf = 1;
         double y0 = 0;
         y = new StateTestClass();
         y.setY(y0);
         rk = new RungeKutta4thSolver();
+        System.out.println(rk.step(dydx, t, y, 1));
     }
 
     @Test
     @DisplayName("Solve")
     void Solve() {
-        assertTrue(() -> abs(1.0 - ((StateTest) rk.step(dydx, t, y, 1)).getY()) < 1e-4);
-        assertTrue(() -> abs(1.0 - ((RateTest) rk.step(dydx, t, y, 1).getRateOfChange()).getDy()) < 1e-4);
-        StateInterface[] solution = rk.solve(dydx, y, tf, stepSize);
+        //assertTrue(() -> abs(1.0 - ((StateTest) rk.step(dydx, t, y, 1)).getY()) < 1e-4);
+        // assertTrue(() -> abs(1.0 - ((RateTest) rk.step(dydx, t, y, 1).getRateOfChange()).getDy()) < 1e-4);
+        StateInterface[] solution = rk.solve(dydx, y, tf, 0.5);
+        System.out.println(((StateTest) solution[solution.length - 1]).getY());
         assertTrue(() -> abs(exactValue - ((StateTest) solution[solution.length - 1]).getY()) < stepSize); //1e-4
 
     }

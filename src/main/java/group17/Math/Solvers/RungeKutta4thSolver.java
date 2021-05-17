@@ -65,7 +65,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
        */
         RateInterface k1, k2, k3, k4, k5;
         StateInterface clone = y.copy();
-        k1 = y.getRateOfChange().copy();
+        k1 = f.call(0, y);
         k2 = f.call((h / 2), y.addMul(0.5, k1));
         k3 = f.call((h / 2), y.addMul(0.5, k2));
         k4 = f.call(h, y.addMul(1, k3));
