@@ -1,8 +1,6 @@
 # Project exclude paths
-/.gradle/
 /build/classes/java/main/
 /build/classes/java/test/
-/gradle/
 /bin/
 /.idea
 /.settings/

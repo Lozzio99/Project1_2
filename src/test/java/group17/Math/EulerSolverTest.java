@@ -41,7 +41,7 @@ class EulerSolverTest {
         assertTrue(() -> abs(1.0 - ((StateTest) euler.step(dydx, t, y, 1)).getY()) < 1e-4);
         assertTrue(() -> abs(1.0 - ((RateTest) euler.step(dydx, t, y, 1).getRateOfChange()).getDy()) < 1e-4);
         StateInterface[] solution = euler.solve(dydx, y, tf, stepSize);
-        assertTrue(() -> abs(exactValue - ((StateTest) solution[solution.length - 1]).getY()) < stepSize); //1e-4
+        assertTrue(() -> abs(exactValue - ((StateTest) solution[solution.length - 1]).getY()) < 1e-4); //1e-4
 
     }
 

@@ -71,7 +71,8 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         k4 = f.call(h, y.addMul(1, k3));
         k5 = k1.sumOf(k2.multiply(2), k3.multiply(2), k4);
 
-        return clone.addMul(h, k5.div(6));
+        StateInterface result = clone.addMul(h, k5.div(6));
+        return result;
     }
 
     public StateInterface old(ODEFunctionInterface f, double t, final StateInterface y, double h) {
@@ -88,6 +89,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         v23 = f.call(h, y.add(s12.div(2)));
         s14 = y.rateMul(h, velocity.add(v23));
         v24 = f.call(h, y.add(s13));
+
         if (DEBUG) {
             System.out.println("k11");
             System.out.println(s11);
