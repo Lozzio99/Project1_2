@@ -57,23 +57,21 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
        /*
-        state k1 = h * this.f.f_y(this.t,w);
-        state k2 = h * this.f.f_y(this.t + (h/2), w + (k1/2));
-        state k3 = h * this.f.f_y(this.t + (h/2), w + (k2/2));
-        state k4 = h * this.f.f_y(this.t+h,w + k3);
-        state1 = state0 + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));
+        state k1 = h * this.f.f_y(this.t,w);                      rate t0     , y0        -> current rate
+        state k2 = h * this.f.f_y(this.t + (h/2), w + (k1/2));    rate t0+h/2 , y0+rate0/2-> some diff rate
+        state k3 = h * this.f.f_y(this.t + (h/2), w + (k2/2));    rate t0+h/2 , y0+rate1/2-> some diff rate
+        state k4 = h * this.f.f_y(this.t+h,w + k3);               rate t0+h   , y0+rate2  -> some diff rate
+        state1 = state0 + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));     state t0+h  , y0+rate   -> a new state
        */
-
         RateInterface k1, k2, k3, k4, k5;
-        StateInterface newState = null, clone = y.copy();
+        StateInterface clone = y.copy();
         k1 = y.getRateOfChange().copy();
         k2 = f.call((h / 2), y.addMul(0.5, k1));
         k3 = f.call((h / 2), y.addMul(0.5, k2));
         k4 = f.call(h, y.addMul(1, k3));
         k5 = k1.sumOf(k2.multiply(2), k3.multiply(2), k4);
-        newState = clone.addMul(h, k5.div(6));
 
-        return newState;
+        return clone.addMul(h, k5.div(6));
     }
 
     public StateInterface old(ODEFunctionInterface f, double t, final StateInterface y, double h) {
