@@ -21,6 +21,7 @@ public class StandardVerletSolver implements ODESolverInterface {
     private StateInterface prevState, oldP;
     private ODEFunctionInterface singleCoreF;
 
+
     @Contract(pure = true)
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
@@ -75,19 +76,19 @@ public class StandardVerletSolver implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         // next position
         checked = false;
-        StateInterface diff;
+        StateInterface nextState;
         if (first) {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
-            diff = rk4.step(f, t, y, h);
+            nextState = rk4.step(f, t, y, h);
             first = false;
         } else {
             StateInterface subPrev = prevState.multiply(-1);
             StateInterface twiceY = y.multiply(2.0);
-            StateInterface rateMulPart = y.rateMul(h * h, f.call(1, y));
-            diff = subPrev.add(twiceY).add(rateMulPart);
+            nextState = twiceY.add(subPrev);
+            nextState = nextState.addMul(h * h, y.getRateOfChange());
         }
         prevState = y.copy();
-        return diff;
+        return nextState;
     }
 
 
@@ -101,4 +102,7 @@ public class StandardVerletSolver implements ODESolverInterface {
         this.singleCoreF = f;
     }
 
+    public void setFirst() {
+        this.first = true;
+    }
 }

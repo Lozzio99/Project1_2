@@ -8,6 +8,7 @@ import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
+import group17.Math.Solvers.StandardVerletSolver;
 import group17.System.Bodies.CelestialBody;
 import group17.System.ErrorData;
 import group17.System.ErrorReport;
@@ -62,7 +63,6 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void reset() {
-        ErrorReport.monthIndex = 0;
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         if (!LAUNCH_ASSIST) {
@@ -74,6 +74,8 @@ public class Simulation implements SimulationInterface {
             }
             this.setWaiting(false);
         }
+        ErrorReport.monthIndex = 0;
+        if (SOLVER == VERLET_STD_SOLVER) ((StandardVerletSolver) this.getUpdater().getSolver()).setFirst();
         this.getUpdater().getSchedule().init();
         this.getUpdater().getSchedule().prepare();
     }
@@ -170,8 +172,7 @@ public class Simulation implements SimulationInterface {
         this.system = new SolarSystem();
         this.system.initClock();
         this.system.initPlanets();
-        if (INSERT_ROCKET)
-            this.system.initRocket();
+        if (INSERT_ROCKET) this.system.initRocket();
         this.system.initialState();
     }
 
