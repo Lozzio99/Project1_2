@@ -69,7 +69,7 @@ public class EulerSolver implements ODESolverInterface {
 
     @Override
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
-        // y1 = y0 +f(x,y0);
+        // y1 = y0 + h*f(t,y0);
         checked = false;
         currTime = currentTime;
         return y.addMul(stepSize, f.call(currentTime, y));

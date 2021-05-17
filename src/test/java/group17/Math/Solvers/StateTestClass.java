@@ -47,10 +47,10 @@ public class StateTestClass implements StateTest {
     }
 
     @Override
-    public StateInterface clone(StateInterface y) {
+    public StateInterface copy() {
         StateTest state = new StateTestClass();
-        state.setY(((StateTest) y).getY());
-        state.getRateOfChange().setDy(((RateTest) y.getRateOfChange()).getDy());
+        state.setY(this.getY());
+        state.getRateOfChange().setDy(this.getRateOfChange().getDy());
         return state;
     }
 

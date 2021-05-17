@@ -106,6 +106,11 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public String toString() {
+        if (!INSERT_ROCKET)
+            return "SOLAR SYSTEM\t"
+                    + clock +
+                    ",\n\tSTATE\n" + systemState +
+                    "\n\t" + rocket;
         return "SOLAR SYSTEM\t"
                 + clock +
                 ",\n\tSTATE\n" + systemState +

@@ -34,7 +34,7 @@ public class RateTestClass implements RateTest {
 
 
     @Override
-    public RateInterface div(int div) {
+    public RateInterface div(double div) {
         RateTestClass rate = new RateTestClass();
         rate.setDy(this.getDy() / div);
         return rate;
@@ -53,9 +53,9 @@ public class RateTestClass implements RateTest {
 
 
     @Override
-    public RateInterface clone(RateInterface rate) {
+    public RateInterface copy() {
         RateTest clone = new RateTestClass();
-        clone.setDy(((RateTest) rate).getDy());
+        clone.setDy(((RateTest) this).getDy());
         return clone;
     }
 

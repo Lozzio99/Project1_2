@@ -29,7 +29,7 @@ public class Config {
     public static Boolean ENABLE_GRAPHICS = true;
     public static Boolean REPORT = true;
     public static Boolean DEBUG = false;
-    public static Boolean INSERT_ROCKET = true;
+    public static Boolean INSERT_ROCKET = false;
     public static Boolean ROCKET_INFO = true;
     public static Boolean PERFORMANCE = true;
     public static Boolean ERROR_EVALUATION = true;
@@ -50,7 +50,7 @@ public class Config {
 
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 500 : 50;
     public static int PARTICLES = 700;
-    public static int SOLVER = EULER_SOLVER;
+    public static int SOLVER = RUNGE_KUTTA_SOLVER;
     public static int CPU_LEVEL = 1;
 
     public static double G = 6.67408e-11;

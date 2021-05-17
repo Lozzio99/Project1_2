@@ -21,6 +21,21 @@ public class SystemState implements StateInterface {
         this.rateOfChange = new RateOfChange();
     }
 
+    public SystemState(StateInterface copy) {
+        this.positions = new ArrayList<>();
+        this.rateOfChange = new RateOfChange();
+        for (int i = 0; i < copy.getPositions().size(); i++) {
+            this.positions.add(copy.getPositions().get(i).clone());
+            this.rateOfChange.getVelocities().add(copy.getRateOfChange().getVelocities().get(i).clone());
+        }
+    }
+
+    public SystemState(StateInterface copy, RateInterface rate) {
+        this.positions = copy.getPositions();
+        this.rateOfChange = new RateOfChange();
+        this.rateOfChange.setVel(rate.getVelocities());
+    }
+
     @Contract(pure = true)
     public SystemState(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
         this.positions = positions;

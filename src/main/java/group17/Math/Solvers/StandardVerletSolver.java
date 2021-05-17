@@ -1,12 +1,10 @@
 package group17.Math.Solvers;
 
-import group17.Interfaces.ODEFunctionInterface;
-import group17.Interfaces.ODESolverInterface;
-import group17.Interfaces.StateInterface;
-import group17.Interfaces.Vector3dInterface;
+import group17.Interfaces.*;
 import group17.Main;
 import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
+import group17.System.RateOfChange;
 import org.jetbrains.annotations.Contract;
 
 import static group17.Config.G;
@@ -18,13 +16,15 @@ public class StandardVerletSolver implements ODESolverInterface {
     public static double currTime = 0;
     public static double endTime = NaN;
     private boolean checked;
-    private StateInterface prevState;
+    private final boolean oldF = true;
     private boolean first = true;
+    private StateInterface prevState, oldP;
     private ODEFunctionInterface singleCoreF;
 
     @Contract(pure = true)
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
+            RateInterface rate = new RateOfChange();
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -51,11 +51,10 @@ public class StandardVerletSolver implements ODESolverInterface {
                 }  // y1 =y0 + h*acc
                 // y1 = y0 + p
                 //FIXME : why did we had to change this?
-                y.getRateOfChange().getVelocities()
-                        .set(i, totalAcc.clone());
+                rate.getVelocities().add(totalAcc);
             }
             checked = true;
-            return y.getRateOfChange();
+            return rate;
         };
     }
 
@@ -79,17 +78,18 @@ public class StandardVerletSolver implements ODESolverInterface {
         StateInterface diff;
         if (first) {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
-            diff = rk4.step(f, t, y.clone(y), h);
+            diff = rk4.step(f, t, y, h);
             first = false;
         } else {
-            StateInterface subPrev = y.clone(prevState).multiply(-1);
-            StateInterface twiceY = y.clone(y).multiply(2.0);
-            StateInterface rateMulPart = y.clone(y).rateMul(h * h, f.call(1, y.clone(y)));
+            StateInterface subPrev = prevState.multiply(-1);
+            StateInterface twiceY = y.multiply(2.0);
+            StateInterface rateMulPart = y.rateMul(h * h, f.call(1, y));
             diff = subPrev.add(twiceY).add(rateMulPart);
         }
-        prevState = y.clone(y);
+        prevState = y.copy();
         return diff;
     }
+
 
     @Override
     public ODEFunctionInterface getFunction() {

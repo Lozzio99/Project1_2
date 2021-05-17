@@ -3,6 +3,7 @@ package group17.Math.Solvers;
 import group17.Interfaces.*;
 import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
+import group17.System.RateOfChange;
 import group17.System.SystemState;
 import org.jetbrains.annotations.Contract;
 
@@ -17,8 +18,8 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
     @Contract(pure = true)
     public RungeKutta4thSolver() {
-        this.singleCoreF = (t, y) ->
-        {
+        this.singleCoreF = (t, y) -> {
+            RateInterface state = new RateOfChange();
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -36,7 +37,6 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                             if two bodies collapses into the same point
                             that would crash to NaN and consequently
                             the same in all the system
-
                             UPDATE :::: Mark BODIES AS COLLIDED
                         */
                         if (den > 0) {
@@ -46,70 +46,87 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         totalAcc = totalAcc.addMul(t, acc);
                         // p = h*acc(derivative of velocity)
                     }
-                }  // y1 =y0 + h*acc
-                // y1 = y0 + p
-                //FIXME : why did we had to change this?
-                y.getRateOfChange().getVelocities()
-                        .set(i, totalAcc.clone());
+                }
+                state.getVelocities().add(y.getRateOfChange().getVelocities().get(i).add(totalAcc));
             }
             checked = true;
-            return y.getRateOfChange();
+            return state;
         };
     }
 
-
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
+       /*
+        state k1 = h * this.f.f_y(this.t,w);
+        state k2 = h * this.f.f_y(this.t + (h/2), w + (k1/2));
+        state k3 = h * this.f.f_y(this.t + (h/2), w + (k2/2));
+        state k4 = h * this.f.f_y(this.t+h,w + k3);
+        state1 = state0 + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));
+       */
 
+        RateInterface k1, k2, k3, k4, k5;
+        StateInterface newState = null, clone = y.copy();
+        k1 = y.getRateOfChange().copy();
+        k2 = f.call((h / 2), y.addMul(0.5, k1));
+        k3 = f.call((h / 2), y.addMul(0.5, k2));
+        k4 = f.call(h, y.addMul(1, k3));
+        k5 = k1.sumOf(k2.multiply(2), k3.multiply(2), k4);
+        newState = clone.addMul(h, k5.div(6));
+
+        return newState;
+    }
+
+    public StateInterface old(ODEFunctionInterface f, double t, final StateInterface y, double h) {
         RateInterface v21, v22, v23, v24, kv;
-        StateInterface k11, k12, k13, k14, kk;
+        StateInterface s11, s12, s13, s14, kk;
         checked = false;
 
-        /*  f (has method f.calL) same as f2
-        double RKStep (f, w, t, h )
-        double k1 = h * f.f_y(t,w);
-        double k2 = h * f.f_y(t + (h/2), w + (k1/2));
-        double k3 = h * f.f_y(t + (h/2), w + (k2/2));
-        double k4 = h * f.f_y(t+h,w + k3);
-        return  w + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));
-         */
         RateInterface velocity = y.getRateOfChange();
-        k11 = y.rateMul(h, velocity);
-        v21 = f.call(1, y.clone(y)).multiply(h);
-        k12 = y.clone(y).rateMul(h, velocity.clone(velocity).add(velocity.clone(v21).multiply(0.5))); //!!
-        v22 = f.call(1, y.clone(y).add(y.clone(k11).multiply(0.5))).multiply(h);
-        k13 = y.clone(y).rateMul(h, velocity.clone(velocity).add(velocity.clone(v22).multiply(0.5)));
-        v23 = f.call(1, y.clone(y).add(y.clone(k12).multiply(0.5))).multiply(h);
-        k14 = y.clone(y).rateMul(h, velocity.clone(velocity).add(velocity.clone(v23)));
-        v24 = f.call(1, y.clone(y).add(y.clone(k13))).multiply(h);
-
-        //rate   -> y.add(rate).mul(h)   -> y.addMul(h,rate)
+        s11 = y.rateMul(h, velocity);
+        v21 = f.call(h, y);
+        s12 = y.rateMul(h, velocity.add(v21.div(2))); //!!
+        v22 = f.call(h, y.add(s11.div(2)));
+        s13 = y.rateMul(h, velocity.add(v22.div(2)));
+        v23 = f.call(h, y.add(s12.div(2)));
+        s14 = y.rateMul(h, velocity.add(v23));
+        v24 = f.call(h, y.add(s13));
         if (DEBUG) {
             System.out.println("k11");
-            System.out.println(k11);
+            System.out.println(s11);
             System.out.println("k12");
-            System.out.println(k12);
+            System.out.println(s12);
             System.out.println("k13");
-            System.out.println(k13);
+            System.out.println(s13);
             System.out.println("k14");
-            System.out.println(k14);
+            System.out.println(s14);
         }
-        k12 = k12.multiply(2);
-        k13 = k13.multiply(2);
+
+        s12 = s12.multiply(2);
+        s13 = s13.multiply(2);
         v22 = v22.multiply(2);
         v23 = v23.multiply(2);
-
-        kk = k11.sumOf(k12, k13, k14).div(6);
-
-        kv = v21.sumOf(v22, v23, v24).div(6);
+        kk = (s11.sumOf(s12, s13, s14)).div(6);
+        kv = (v21.sumOf(v22, v23, v24)).div(6);
 
         //-6.80564659829616E8
         //-6.806783239281648E8
 
-        return new SystemState(y.add(kk).getPositions(), y.getRateOfChange().add(kv).getVelocities());
-        //y.getRateOfChange().setVel(y.getRateOfChange().add(kv).getVelocities());
-        //return y.add(kk);
+        return new SystemState(y.add(kk), (y.getRateOfChange().add(kv)));
     }
+
+    private boolean checkDifferent(StateInterface a, StateInterface b) {
+        for (int i = 0; i < a.getPositions().size(); i++) {
+            if (!a.getPositions().get(i).equals(b.getPositions().get(i))) {
+                return false;
+            }
+        }
+        for (int i = 0; i < a.getRateOfChange().getVelocities().size(); i++) {
+            if (!a.getRateOfChange().getVelocities().get(i).equals(b.getRateOfChange().getVelocities().get(i)))
+                return false;
+        }
+        return true;
+    }
+
 
     @Override
     public ODEFunctionInterface getFunction() {

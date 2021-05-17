@@ -20,7 +20,7 @@ public class FreeFallFunction implements ODEFunctionInterface {
         next_vector.setX(y.getPositions().get(0).getX());
         next_vector.setY(y.getPositions().get(0).getY());
         next_vector.setZ(-CONSTANT_G);
-        RateInterface next_rate = y.clone(y).getRateOfChange();
+        RateInterface next_rate = y.copy().getRateOfChange();
         next_rate.getVelocities().set(0, next_vector);
         return next_rate;
     }

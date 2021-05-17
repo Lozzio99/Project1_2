@@ -24,6 +24,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
     @Contract(pure = true)
     public VerletVelocitySolver() {
         this.singleCoreF = (h, y) -> {
+            RateInterface rate = new RateOfChange();
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -47,14 +48,11 @@ public class VerletVelocitySolver implements ODESolverInterface {
                         totalAcc = totalAcc.addMul(h, acc);
                         // p = h*acc(derivative of velocity)
                     }
-                }  // y1 =y0 + h*acc
-                // y1 = y0 + p
-                //FIXME : why did we had to change this?
-                y.getRateOfChange().getVelocities()
-                        .set(i, totalAcc.clone());
+                }
+                rate.getVelocities().add(totalAcc);
             }
             checked = true;
-            return y.getRateOfChange();
+            return rate;
         };
     }
 
@@ -76,21 +74,18 @@ public class VerletVelocitySolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         checked = false;
-        RateInterface velocity = new RateOfChange();
-        velocity.setVel(y.getRateOfChange().getVelocities());
         // next position
-        StateInterface part2 = y.clone(y).rateMul(0.5 * h * h, f.call(1, y.clone(y))).add(y.clone(y));
-        StateInterface part3 = y.clone(y).rateMul(h, velocity);
-        StateInterface part4 = part2.add(part3);
 
-        RateInterface part5 = f.call(1, y.clone(part4)).add(f.call(1, y.clone(y)));
-        RateInterface part6 = part5.multiply(0.5 * h);
-        RateInterface part7 = velocity.clone(velocity).add(part6);
+        StateInterface part2 = y.rateMul(0.5 * h * h, f.call(1, y)).add(y);
+        StateInterface part4 = part2.addMul(h, y.getRateOfChange());
+        RateInterface part6 = f.call(1, y).multiply(h);
 
-        part4.getRateOfChange().setVel(part7.getVelocities());
-        y = part4;
-        return y;
+        part4.getRateOfChange().setVel(y.getRateOfChange().add(part6).getVelocities());
+
+
+        return part4;
     }
+
 
     @Override
     public ODEFunctionInterface getFunction() {

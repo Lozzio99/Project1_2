@@ -10,13 +10,6 @@ import static group17.Main.simulation;
 
 public interface RateInterface {
 
-    default RateInterface clone(RateInterface tobeCloned) {
-        RateInterface s = new RateOfChange();
-        for (int i = 0; i < tobeCloned.getVelocities().size(); i++) {
-            s.getVelocities().add(tobeCloned.getVelocities().get(i).clone());
-        }
-        return s;
-    }
 
     /**
      * List of velocity vectors for the next state up to be updated
@@ -32,15 +25,16 @@ public interface RateInterface {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
 
+        RateInterface rate = new RateOfChange();
         for (int i = 0; i < this.getVelocities().size(); i++) {
-            this.getVelocities().set(i, this.getVelocities().get(i).sub(new Vector3D(scalar, scalar, scalar)));
+            rate.getVelocities().add(this.getVelocities().get(i).sub(new Vector3D(scalar, scalar, scalar)));
         }
-        return this;
+        return rate;
     }
 
-    default RateInterface copy(RateInterface tobeCloned) {
+    default RateInterface copy() {
         RateInterface s = new RateOfChange();
-        for (Vector3dInterface v : tobeCloned.getVelocities()) {
+        for (Vector3dInterface v : this.getVelocities()) {
             s.getVelocities().add(v.clone());
         }
         return s;
@@ -50,50 +44,56 @@ public interface RateInterface {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
 
+        RateInterface rate = new RateOfChange();
         for (int i = 0; i < this.getVelocities().size(); i++) {
-            this.getVelocities().set(i, this.getVelocities().get(i).mul(scalar));
+            rate.getVelocities().add(this.getVelocities().get(i).mul(scalar));
         }
-        return this;
+        return rate;
     }
 
     default RateInterface sub(double scalar) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
+        RateInterface rate = new RateOfChange();
         for (int i = 0; i < this.getVelocities().size(); i++) {
-            this.getVelocities().set(i, this.getVelocities().get(i).add(new Vector3D(-scalar, -scalar, -scalar)));
+            rate.getVelocities().add(this.getVelocities().get(i).add(new Vector3D(-scalar, -scalar, -scalar)));
         }
-        return this;
+        return rate;
     }
 
 
     default RateInterface add(RateInterface tobeAdded) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to add ");
+        RateInterface rate = new RateOfChange();
 
         for (int i = 0; i < this.getVelocities().size(); i++) {
-            this.getVelocities().set(i, this.getVelocities().get(i).add(tobeAdded.getVelocities().get(i)));
+            rate.getVelocities().add(this.getVelocities().get(i).add(tobeAdded.getVelocities().get(i)));
         }
-        return this;
+        return rate;
     }
 
     default RateInterface sumOf(RateInterface... states) {
+        RateInterface rate = new RateOfChange();
         for (int i = 0; i < states[0].getVelocities().size(); i++) {
             Vector3dInterface velsum = this.getVelocities().get(i);
             for (RateInterface r : states) {
                 velsum = velsum.add(r.getVelocities().get(i));
             }
-            this.getVelocities().set(i, velsum);
+            rate.getVelocities().add(velsum);
         }
-        return this;
+        return rate;
     }
 
-    default RateInterface div(int scalar) {
+    default RateInterface div(double scalar) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
+        RateInterface rate = new RateOfChange();
+
         for (int i = 0; i < this.getVelocities().size(); i++) {
-            this.getVelocities().set(i, this.getVelocities().get(i).div(scalar));
+            rate.getVelocities().add(this.getVelocities().get(i).div(scalar));
         }
-        return this;
+        return rate;
     }
 
     default RateInterface state0() {
