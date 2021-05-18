@@ -24,7 +24,7 @@ public class ErrorReport implements Runnable {
     }
 
     public void start() {
-        new Thread(this, "Error Log").start();
+        if (monthIndex < 13) new Thread(this, "Error Log").start();
     }
 
     @Override
