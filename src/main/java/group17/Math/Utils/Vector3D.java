@@ -155,6 +155,13 @@ public class Vector3D implements Vector3dInterface {
                 this.z * scalar);
     }
 
+    @Override
+    public Vector3dInterface div(Vector3dInterface vector) {
+        return new Vector3D(this.x / vector.getX(),
+                this.y / vector.getY(),
+                this.z / vector.getZ());
+    }
+
     /**
      * Divides this vector by a scalar.
      *
@@ -174,7 +181,7 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public Vector3dInterface addMul(double scalar, Vector3dInterface other) {
-        Vector3dInterface newV = new Vector3D(other.getX() * scalar, other.getY() * scalar, other.getZ() * scalar);
+        Vector3dInterface newV = other.mul(scalar);
         return this.add(newV);
     }
 

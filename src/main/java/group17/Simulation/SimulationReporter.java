@@ -82,7 +82,7 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
             }
             if (message.startsWith("UPDATER"))
                 if (message.substring(8)  // there's a slash /
-                        .startsWith("SOLVER")) {
+                        .startsWith("DEFAULT_SOLVER")) {
                     int solver = Integer.parseInt(message.substring(message.length() - 1));
                     String s = switch (solver) {
                         case RUNGE_KUTTA_SOLVER -> "RUNGE_KUTTA4TH";

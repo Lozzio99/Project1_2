@@ -32,7 +32,7 @@ test {
 
 
 ext{
-    javaMainClass = 'src/main/java/group17/Main.java'
+    javaMainClass = "src/main/java/group17/Main.java"
 }
 
 application {

@@ -14,7 +14,7 @@ public class ErrorData {
     }
 
     public ErrorData(StateInterface state) {
-        StateInterface copy = StateInterface.clone(state);
+        StateInterface copy = state.copy();
         this.positions = copy.getPositions();
         if (this.positions.size() >= 12) this.positions.remove(11);
         this.velocities = copy.getRateOfChange().getVelocities();

@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface StateInterface {
 
-    static StateInterface clone(StateInterface tobeCloned) {
+    default StateInterface copy() {
         StateInterface s = new SystemState();
-        for (int i = 0; i < tobeCloned.getPositions().size(); i++) {
-            s.getPositions().add(tobeCloned.getPositions().get(i).clone());
-            s.getRateOfChange().getVelocities().add(tobeCloned.getRateOfChange().getVelocities().get(i).clone());
+        for (int i = 0; i < this.getPositions().size(); i++) {
+            s.getPositions().add(this.getPositions().get(i).clone());
+            s.getRateOfChange().getVelocities().add(this.getRateOfChange().getVelocities().get(i).clone());
         }
         return s;
     }
@@ -55,9 +55,8 @@ public interface StateInterface {
     default StateInterface addMul(double step, RateInterface rate) {
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
-            this.getPositions().set(i, this.getPositions().get(i).addMul(step, rate.getVelocities().get(i)));
-            newState.getPositions().add(this.getPositions().get(i).clone());
-            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i));
+            newState.getPositions().add(this.getPositions().get(i).addMul(step, rate.getVelocities().get(i)));
+            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i).clone());
         }
         return newState;
     }
@@ -85,38 +84,40 @@ public interface StateInterface {
     default StateInterface multiply(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
-
+        StateInterface state = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
-            this.getPositions().set(i, this.getPositions().get(i).mul(scalar));
-            this.getRateOfChange().getVelocities().set(i, this.getRateOfChange().getVelocities().get(i).mul(scalar));
+            state.getPositions().add(this.getPositions().get(i).mul(scalar));
+            state.getRateOfChange().getVelocities().add(this.getRateOfChange().getVelocities().get(i).mul(scalar));
         }
-        return this;
+        return state;
     }
 
     default StateInterface div(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to divide ");
 
+        StateInterface state = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
-            this.getPositions().set(i, this.getPositions().get(i).div(scalar));
-            this.getRateOfChange().getVelocities().set(i, this.getRateOfChange().getVelocities().get(i).div(scalar));
+            state.getPositions().add(this.getPositions().get(i).div(scalar));
+            state.getRateOfChange().getVelocities().add(this.getRateOfChange().getVelocities().get(i).div(scalar));
         }
-        return this;
+        return state;
     }
 
     default StateInterface add(StateInterface tobeAdded) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to add ");
+        StateInterface state = new SystemState();
 
         for (int i = 0; i < this.getPositions().size(); i++) {
-            this.getPositions().set(i, this.getPositions().get(i).add(tobeAdded.getPositions().get(i)));
-            this.getRateOfChange().getVelocities().set(i, this.getRateOfChange().getVelocities().get(i).add(tobeAdded.getRateOfChange().getVelocities().get(i)));
+            state.getPositions().add(this.getPositions().get(i).add(tobeAdded.getPositions().get(i)));
+            state.getRateOfChange().getVelocities().add(this.getRateOfChange().getVelocities().get(i).add(tobeAdded.getRateOfChange().getVelocities().get(i)));
         }
-        return this;
+        return state;
     }
 
     default StateInterface sumOf(StateInterface... rates) {
-
+        StateInterface state = new SystemState();
         for (int i = 0; i < rates[0].getPositions().size(); i++) {
             Vector3dInterface sum = this.getPositions().get(i);
             Vector3dInterface velsum = this.getRateOfChange().getVelocities().get(i);
@@ -124,11 +125,10 @@ public interface StateInterface {
                 sum = sum.add(r.getPositions().get(i));
                 velsum = velsum.add(r.getRateOfChange().getVelocities().get(i));
             }
-            this.getPositions().set(i, sum);
-            this.getRateOfChange().getVelocities().set(i, velsum);
+            state.getPositions().add(sum);
+            state.getRateOfChange().getVelocities().add(velsum);
         }
-        return this;
-
+        return state;
     }
 
     default void update(StateInterface step) {

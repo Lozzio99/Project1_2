@@ -132,4 +132,5 @@ public interface Vector3dInterface {
     @Override
     int hashCode();
 
+    Vector3dInterface div(Vector3dInterface vector3dInterface);
 }

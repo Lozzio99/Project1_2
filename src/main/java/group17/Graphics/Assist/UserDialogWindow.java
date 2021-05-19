@@ -162,7 +162,7 @@ public class UserDialogWindow {
         this.menu = new MainMenu() {
             @Override
             public void startSimulation() {
-                SOLVER = currentSolver;
+                DEFAULT_SOLVER = currentSolver;
                 if (simulation == null) {
                     simulation = new Simulation();
                     simulation.setAssist(d);

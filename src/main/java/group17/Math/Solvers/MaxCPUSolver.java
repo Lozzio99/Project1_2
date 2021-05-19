@@ -24,9 +24,9 @@ public class MaxCPUSolver implements ODEFunctionInterface {
 
     @Contract("_, _, _ -> param3")
     public static Vector3dInterface set(int i, StateInterface state, Vector3dInterface acc) {
-        if (SOLVER == EULER_SOLVER)
+        if (DEFAULT_SOLVER == EULER_SOLVER)
             state.getRateOfChange().getVelocities().set(i, state.getRateOfChange().getVelocities().get(i).add(acc));
-        if (SOLVER == RUNGE_KUTTA_SOLVER)
+        if (DEFAULT_SOLVER == RUNGE_KUTTA_SOLVER)
             state.getRateOfChange().getVelocities().set(i, acc.clone());
         return acc;
     }
