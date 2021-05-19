@@ -57,6 +57,8 @@ class ProbeSimulatorTest {
     void setUp() {
         ENABLE_GRAPHICS = false;
         REPORT = DEBUG = false;
+        INSERT_ROCKET = true;
+        CHECK_COLLISIONS = false;
         simulation = new Simulation();
         simulation.initSystem();
         simulation.initUpdater();
