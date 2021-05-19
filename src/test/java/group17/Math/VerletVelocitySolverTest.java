@@ -9,11 +9,11 @@ import group17.System.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static group17.Config.DEBUG;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VerletVelocitySolverTest {
 
-    private final boolean DEBUG = true;
 
     @Test
     @DisplayName("SolveODE")

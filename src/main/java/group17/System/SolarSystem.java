@@ -83,8 +83,7 @@ public class SolarSystem implements SystemInterface {
     @Override
     public void reset() {
         this.initPlanets();
-        if (INSERT_ROCKET)
-            this.initRocket();
+        if (INSERT_ROCKET) this.initRocket();
         this.initClock();
         this.initialState();
     }
@@ -106,7 +105,7 @@ public class SolarSystem implements SystemInterface {
 
     @Override
     public String toString() {
-        if (!INSERT_ROCKET)
+        if (!INSERT_ROCKET || rocket == null)
             return "SOLAR SYSTEM\t"
                     + clock +
                     ",\n\tSTATE\n" + systemState +

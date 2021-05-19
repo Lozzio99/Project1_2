@@ -44,7 +44,7 @@ public class RateTestClass implements RateTest {
     @Override
     public RateInterface sumOf(RateInterface... states) {
         RateTestClass rate = new RateTestClass();
-        rate.setDy(0);
+        rate.setDy(this.getDy());
         for (RateInterface r : states) {
             rate.setDy(rate.getDy() + ((RateTest) r).getDy());
         }

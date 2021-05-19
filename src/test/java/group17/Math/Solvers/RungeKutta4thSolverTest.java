@@ -5,9 +5,12 @@ import group17.Interfaces.StateInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RungeKutta4thSolverTest {
@@ -21,45 +24,76 @@ class RungeKutta4thSolverTest {
     };
     static StateTest y;
     static RateTest dy;
-    static double t, tf, stepSize;
+    static double t, tf;
 
     @BeforeEach
     void setup() {
-        stepSize = 0.00001;
         t = 0;
         tf = 1;
         double y0 = 0;
         y = new StateTestClass();
         y.setY(y0);
         rk = new RungeKutta4thSolver();
-        System.out.println(rk.step(dydx, t, y, 1));
     }
 
     @Test
     @DisplayName("Solve")
     void Solve() {
-        //assertTrue(() -> abs(1.0 - ((StateTest) rk.step(dydx, t, y, 1)).getY()) < 1e-4);
-        // assertTrue(() -> abs(1.0 - ((RateTest) rk.step(dydx, t, y, 1).getRateOfChange()).getDy()) < 1e-4);
-        StateInterface[] solution = rk.solve(dydx, y, tf, 0.5);
-        System.out.println(((StateTest) solution[solution.length - 1]).getY());
-        assertTrue(() -> abs(exactValue - ((StateTest) solution[solution.length - 1]).getY()) < stepSize); //1e-4
-
+        double step = 0.5;
+        StateInterface firstStep = rk.step(dydx, t, y, step);
+        assertTrue(() -> abs(0.36609962 - ((StateTest) firstStep).getY()) < 1e-4);
+        assertTrue(() -> abs(0.36609962 - ((StateTest) firstStep).getRateOfChange().getDy()) < 1e-4);
+        t += step;
+        StateInterface secondStep = rk.step(dydx, t, firstStep, step);
+        assertTrue(() -> abs(0.5025005 - ((StateTest) secondStep).getY()) < 1e-4);
+        assertTrue(() -> abs(0.1364009 - ((StateTest) secondStep).getRateOfChange().getDy()) < 1e-4);
+        assertTrue(() -> abs(exactValue - ((StateTest) secondStep).getY()) < 1e-2); //0.4 diff
     }
-    @Test
-    @DisplayName("TestSolve")
-    void TestSolve() {
+
+
+    @ParameterizedTest(name = "testing stepSize {0}")
+    @ValueSource(doubles = {1e-2, 1e-4, 1e-6})
+    void TestSolve(double step) {
+        StateInterface[] sol = rk.solve(dydx, y, 1, step);
+        assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < step);
     }
 
     @Test
     @DisplayName("Step")
     void Step() {
+        double step = 0.2, accuracy = 1e-5;
+        StateInterface step1, step2, step3, step4, step5;
+        step1 = rk.step(dydx, t, y, step);
+        t += step;
+        assertTrue(() -> abs(0.179 - ((StateTest) step1).getRateOfChange().getDy()) < accuracy); //from 0 to 0.17900
+        assertTrue(() -> abs(0.179 - ((StateTest) step1).getY()) < accuracy);
 
+        step2 = rk.step(dydx, t, step1, step);
+        t += step;
+        assertTrue(() -> abs(0.13556 - ((StateTest) step2).getRateOfChange().getDy()) < accuracy);
+        assertTrue(() -> abs(0.31456 - ((StateTest) step2).getY()) < accuracy);
+
+        step3 = rk.step(dydx, t, step2, step);
+        t += step;
+        assertTrue(() -> abs(0.09470 - ((StateTest) step3).getRateOfChange().getDy()) < accuracy);
+        assertTrue(() -> abs(0.40925 - ((StateTest) step3).getY()) < accuracy);
+
+
+        step4 = rk.step(dydx, t, step3, step);
+        t += step;
+        assertTrue(() -> abs(0.06035 - ((StateTest) step4).getRateOfChange().getDy()) < accuracy);
+        assertTrue(() -> abs(0.4696 - ((StateTest) step4).getY()) < accuracy);
+
+        step5 = rk.step(dydx, t, step4, step);
+        t += step;
+        assertTrue(() -> abs(0.03373 - ((StateTest) step5).getRateOfChange().getDy()) < accuracy);
+        assertTrue(() -> abs(0.50333 - ((StateTest) step5).getY()) < accuracy);
     }
 
     @Test
     @DisplayName("GetFunction")
     void GetFunction() {
-
+        assertDoesNotThrow(() -> rk.getFunction());
     }
 
 }

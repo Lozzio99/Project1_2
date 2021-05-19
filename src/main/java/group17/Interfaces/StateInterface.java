@@ -55,8 +55,7 @@ public interface StateInterface {
     default StateInterface addMul(double step, RateInterface rate) {
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
-            this.getPositions().set(i, this.getPositions().get(i).addMul(step, rate.getVelocities().get(i)));
-            newState.getPositions().add(this.getPositions().get(i));
+            newState.getPositions().add(this.getPositions().get(i).addMul(step, rate.getVelocities().get(i)));
             newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i).clone());
         }
         return newState;

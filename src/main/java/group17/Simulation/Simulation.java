@@ -33,14 +33,11 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void init() {
-        if (REPORT)
-            this.initReporter();   //first thing, will check all exceptions
+        if (REPORT) this.initReporter();   //first thing, will check all exceptions
 
         this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
-        if (LAUNCH_ASSIST)
-            this.initAssist();
-        if (ENABLE_GRAPHICS)
-            this.initGraphics();
+        if (LAUNCH_ASSIST) this.initAssist();
+        if (ENABLE_GRAPHICS) this.initGraphics();
 
         this.initUpdater();  //last thing, will start the simulation if it's the only one running
 
@@ -54,7 +51,7 @@ public class Simulation implements SimulationInterface {
                 this.getAssist().showAssistParameters();
             }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
-            service.scheduleWithFixedDelay(this::loop, 30, 11, MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 30, 8, MILLISECONDS);
         } else {
             if (DEBUG || REPORT)
                 this.getReporter().report(new RuntimeException("STOP"));
@@ -65,6 +62,8 @@ public class Simulation implements SimulationInterface {
     public void reset() {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
+        CURRENT_TIME = 0;
+        ErrorReport.monthIndex = 0;
         if (!LAUNCH_ASSIST) {
             if (REPORT) this.getReporter().report("START SIMULATION");
             try {
@@ -74,7 +73,6 @@ public class Simulation implements SimulationInterface {
             }
             this.setWaiting(false);
         }
-        ErrorReport.monthIndex = 0;
         if (SOLVER == VERLET_STD_SOLVER) ((StandardVerletSolver) this.getUpdater().getSolver()).setFirst();
         this.getUpdater().getSchedule().init();
         this.getUpdater().getSchedule().prepare();
