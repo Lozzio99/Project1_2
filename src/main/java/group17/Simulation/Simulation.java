@@ -73,7 +73,7 @@ public class Simulation implements SimulationInterface {
             }
             this.setWaiting(false);
         }
-        if (SOLVER == VERLET_STD_SOLVER) ((StandardVerletSolver) this.getUpdater().getSolver()).setFirst();
+        if (DEFAULT_SOLVER == VERLET_STD_SOLVER) ((StandardVerletSolver) this.getUpdater().getSolver()).setFirst();
         this.getUpdater().getSchedule().init();
         this.getUpdater().getSchedule().prepare();
     }

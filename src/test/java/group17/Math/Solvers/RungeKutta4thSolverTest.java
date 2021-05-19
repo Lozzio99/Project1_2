@@ -22,6 +22,7 @@ class RungeKutta4thSolverTest {
         rate.setDy(exp(-t) - (y_ * y_));
         return rate;
     };
+
     static StateTest y;
     static RateTest dy;
     static double t, tf;
@@ -54,8 +55,9 @@ class RungeKutta4thSolverTest {
     @ParameterizedTest(name = "testing stepSize {0}")
     @ValueSource(doubles = {1e-2, 1e-4, 1e-6})
     void TestSolve(double step) {
+        double accuracy = step;
         StateInterface[] sol = rk.solve(dydx, y, 1, step);
-        assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < step);
+        assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < accuracy);
     }
 
     @Test

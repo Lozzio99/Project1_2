@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Contract;
 import java.util.ArrayList;
 import java.util.List;
 
+import static group17.Config.DEBUG;
 import static group17.Config.ORIGINAL_DATA;
 import static group17.Main.simulation;
 import static group17.Main.userDialog;
@@ -46,7 +47,7 @@ public class ErrorReport implements Runnable {
                     .div(ORIGINAL_DATA[monthIndex].getPositions().get(i)));
             relVelocity.add(absVelocity.get(i)
                     .div(ORIGINAL_DATA[monthIndex].getVelocities().get(i)));
-            if (true) {
+            if (DEBUG) {
                 System.out.println("MONTH " + monthIndex);
                 System.out.println("PLANET " + simulation.getSystem().getCelestialBodies().get(i).toString() + "~~~~~~~~");
                 //System.out.println("ORIGINAL PV : " + ORIGINAL_DATA[monthIndex].getPositions().get(i));

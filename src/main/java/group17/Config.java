@@ -17,6 +17,7 @@ public class Config {
     public static final int RUNGE_KUTTA_SOLVER = 2;
     public static final int VERLET_VEL_SOLVER = 3;
     public static final int VERLET_STD_SOLVER = 4;
+    public static final int MIDPOINT_SOLVER = 5;
     public static final int MIN_CPU = 1;  //2 threads
     public static final int MAX_CPU = 5;
 
@@ -25,8 +26,8 @@ public class Config {
      * BOOLEAN CONFIGURATIONS
      **/
     // EDITABLE
-    public static Boolean LAUNCH_ASSIST = false;
-    public static Boolean ENABLE_GRAPHICS = false;
+    public static Boolean LAUNCH_ASSIST = true;
+    public static Boolean ENABLE_GRAPHICS = true;
     public static Boolean REPORT = true;
     public static Boolean DEBUG = false;
     public static Boolean INSERT_ROCKET = false;
@@ -46,11 +47,11 @@ public class Config {
     //EDITABLE
     public static double FPS = 0;
     public static int SIMULATION_LEVEL = 0;//which simulation is going to run
-    public static double STEP_SIZE = 20;
+    public static double STEP_SIZE = 360;
     public static double CURRENT_TIME = 0;
     public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 500 : 50;
     public static int PARTICLES = 700;
-    public static int SOLVER = RUNGE_KUTTA_SOLVER;
+    public static int DEFAULT_SOLVER = MIDPOINT_SOLVER;
     public static int CPU_LEVEL = 1;
 
     public static double G = 6.67408e-11;

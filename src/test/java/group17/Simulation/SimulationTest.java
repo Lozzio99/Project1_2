@@ -19,7 +19,7 @@ class SimulationTest {
     void setUp() {
         ERROR_EVALUATION = false;
         LAUNCH_ASSIST = true; //simulation otherwise would start the loop
-        INSERT_ROCKET = true;
+        INSERT_ROCKET = false;
     }
 
     @Test

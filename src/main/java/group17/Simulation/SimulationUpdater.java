@@ -3,10 +3,7 @@ package group17.Simulation;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Solvers.EulerSolver;
-import group17.Math.Solvers.RungeKutta4thSolver;
-import group17.Math.Solvers.StandardVerletSolver;
-import group17.Math.Solvers.VerletVelocitySolver;
+import group17.Math.Solvers.*;
 import group17.System.ErrorData;
 import group17.System.ErrorReport;
 
@@ -27,15 +24,16 @@ public class SimulationUpdater implements UpdaterInterface {
         this.schedule.init();
         this.schedule.prepare();
 
-        switch (SOLVER) {
+        switch (DEFAULT_SOLVER) {
             case EULER_SOLVER -> this.solver = new EulerSolver();
             case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKutta4thSolver();
             case VERLET_VEL_SOLVER -> this.solver = new VerletVelocitySolver();
             case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver();
+            case MIDPOINT_SOLVER -> this.solver = new MidPointSolver();
             default -> {
                 this.solver = new EulerSolver();
                 if (REPORT)
-                    simulation.getReporter().report(new IllegalStateException("UPDATER/SOLVER/" + EULER_SOLVER));
+                    simulation.getReporter().report(new IllegalStateException("UPDATER/DEFAULT_SOLVER/" + EULER_SOLVER));
             }
         }
 
@@ -78,7 +76,6 @@ public class SimulationUpdater implements UpdaterInterface {
             CURRENT_TIME += STEP_SIZE;
             if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)
                 new ErrorReport(new ErrorData(simulation.getSystem().systemState())).start();
-
 
         } catch (Exception e) {
             if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);

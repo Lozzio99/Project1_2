@@ -79,12 +79,12 @@ public class StandardVerletSolver implements ODESolverInterface {
         StateInterface diff;
         if (first) {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
-            diff = rk4.step(f, t, y, h);
+            diff = rk4.old(rk4.getOldF(), t, y, h);
             first = false;
         } else {
-            StateInterface subPrev = prevState.multiply(-1);
-            StateInterface twiceY = y.multiply(2.0);
-            StateInterface rateMulPart = y.rateMul(h * h, f.call(1, y));
+            StateInterface subPrev = prevState.copy().multiply(-1);
+            StateInterface twiceY = y.copy().multiply(2.0);
+            StateInterface rateMulPart = y.copy().rateMul(h * h, f.call(1, y));
             diff = subPrev.add(twiceY).add(rateMulPart);
         }
         prevState = y.copy();

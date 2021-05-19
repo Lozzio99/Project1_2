@@ -15,7 +15,7 @@ public abstract class MainMenu {
     static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)"};
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 600;
-    static protected int currentSolver = SOLVER;
+    static protected int currentSolver = DEFAULT_SOLVER;
     static JFrame frame;
     protected int currentSimulationType = SIMULATION_LEVEL;
     protected int currentCPULevel = CPU_LEVEL;
@@ -71,7 +71,7 @@ public abstract class MainMenu {
         cpuLevelDropdown.setSelectedIndex(CPU_LEVEL == MIN_CPU ? 0 : 1);
         solverDropdown = new JComboBox<>(SOLVERS);
         solverDropdown.setSelectedIndex(
-                switch (SOLVER) {
+                switch (DEFAULT_SOLVER) {
                     case RUNGE_KUTTA_SOLVER -> 1;
                     case VERLET_VEL_SOLVER -> 2;
                     case VERLET_STD_SOLVER -> 3;

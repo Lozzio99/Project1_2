@@ -1,13 +1,11 @@
 package group17.Math.Solvers;
 
 
-import group17.Interfaces.ODEFunctionInterface;
-import group17.Interfaces.ODESolverInterface;
-import group17.Interfaces.StateInterface;
-import group17.Interfaces.Vector3dInterface;
+import group17.Interfaces.*;
 import group17.Main;
 import group17.Math.Utils.Vector3D;
 import group17.System.CollisionDetector;
+import group17.System.RateOfChange;
 
 import static group17.Config.G;
 import static group17.Config.STEP_SIZE;
@@ -27,6 +25,7 @@ public class EulerSolver implements ODESolverInterface {
     //           dt          dt
     public ODEFunctionInterface singleCoreF = (t, y) ->
     {
+        RateInterface rate = new RateOfChange();
         for (int i = 0; i < y.getPositions().size(); i++) {
             Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
             for (int k = 0; k < y.getPositions().size(); k++) {
@@ -52,8 +51,7 @@ public class EulerSolver implements ODESolverInterface {
                 }
             }  // y1 =y0 + h*acc
             // y1 = y0 + p
-            y.getRateOfChange().getVelocities()
-                    .set(i, y.getRateOfChange().getVelocities().get(i).add(totalAcc));
+            rate.getVelocities().add(y.getRateOfChange().getVelocities().get(i).add(totalAcc));
         }
         checked = true;
         return y.getRateOfChange();

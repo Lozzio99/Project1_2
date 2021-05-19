@@ -7,8 +7,7 @@ import group17.System.RateOfChange;
 import group17.System.SystemState;
 import org.jetbrains.annotations.Contract;
 
-import static group17.Config.DEBUG;
-import static group17.Config.G;
+import static group17.Config.*;
 import static group17.Main.simulation;
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
@@ -34,7 +33,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         acc = acc.mul(1 / den); // Normalise to length 1
                         acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
                     }
-                    totalAcc = totalAcc.addMul(t - currentTime, acc);
+                    totalAcc = totalAcc.addMul(t, acc);
                     // p = h*acc(derivative of velocity)
                 }
             }
@@ -46,7 +45,8 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     @Contract(pure = true)
     public RungeKutta4thSolver() {
         this.singleCoreF = (t, y) -> {
-            RateInterface state = new RateOfChange();
+            RateInterface rate = new RateOfChange();
+            double dt = t - this.currentTime;  //get dt
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -55,7 +55,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         double squareDist = pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
                         acc = y.getPositions().get(k).sub(acc); // Get the force vector
                         double den = sqrt(squareDist);
-                        if (!checked) {
+                        if (!checked && CHECK_COLLISIONS) {
                             CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
                                     simulation.getSystem().getCelestialBodies().get(k), den);
                         }
@@ -70,18 +70,18 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                             acc = acc.mul(1 / den); // Normalise to length 1
                             acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
                         }
-                        totalAcc = totalAcc.addMul(t - currentTime, acc);
+                        totalAcc = totalAcc.addMul(STEP_SIZE, acc);
                         // p = h*acc(derivative of velocity)
                     }
                 }
-                state.getVelocities().add(y.getRateOfChange().getVelocities().get(i).add(totalAcc));
+                rate.getVelocities().add(y.getRateOfChange().getVelocities().get(i).add(totalAcc));
             }
             checked = true;
-            return state;
+            return rate;
         };
     }
 
-    @Override
+
     public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
        /*
         state k1 = h * this.f.f_y(this.t,w);                      rate t0     , y0        -> current rate
@@ -90,29 +90,18 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         state k4 = h * this.f.f_y(this.t+h,w + k3);               rate t0+h   , y0+rate2  -> some diff rate
         state1 = state0 + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));     state t0+h  , y0+rate   -> a new state
        */
-        currentTime = t;
+
+        this.currentTime = t;
         RateInterface k1, k2, k3, k4, k5;
         StateInterface clone = y.copy();
-        k1 = f.call(t, y).multiply(h);
+        k1 = f.call(t, clone).multiply(h);
         k2 = f.call(t + (h / 2), y.addMul(0.5, k1)).multiply(h);
         k3 = f.call(t + (h / 2), y.addMul(0.5, k2)).multiply(h);
         k4 = f.call(t + h, y.addMul(1, k3)).multiply(h);
         k5 = k1.sumOf(k2.multiply(2), k3.multiply(2), k4);
-        if (DEBUG) {
-            System.out.println(y + "    t :" + t + "   h : " + h);
-            System.out.println("k1");
-            System.out.println(k1);
-            System.out.println("k2");
-            System.out.println(k2);
-            System.out.println("k3");
-            System.out.println(k3);
-            System.out.println("k4");
-            System.out.println(k4);
-            System.out.println("k5");
-            System.out.println(k5);
-            System.out.println("____________________________");
-        }
         StateInterface result = y.addMul(1, k5.div(6));
+
+
         return result;
     }
 
@@ -153,6 +142,10 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         //-6.806783239281648E8
 
         return new SystemState(y.add(kk), (y.getRateOfChange().add(kv)));
+    }
+
+    public ODEFunctionInterface getOldF() {
+        return oldF;
     }
 
     private boolean checkDifferent(StateInterface a, StateInterface b) {
