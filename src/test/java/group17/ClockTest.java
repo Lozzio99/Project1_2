@@ -104,6 +104,19 @@ class ClockTest {
             }
     }
 
+    @Test
+    @DisplayName("GetDates")
+    void testDateEquals() {
+        Clock clock = new Clock().setLaunchDay();
+        assertEquals(1, clock.getDate().days);
+        assertEquals(4, clock.getDate().months);
+        assertEquals(2020, clock.getDate().years);
+        assertEquals(2020, clock.getYears());
+        assertEquals(0, clock.getMin());
+        assertEquals(0, clock.getHour());
+        assertEquals(0, clock.getSec());
+    }
+
     @ParameterizedTest(name = "testing {0} steps")
     @ValueSource(ints = {10, 20, 60, 120, 240, 1200, 2400})
     void testDifferentStepsIfGetsTheCorrectDay(int stepsToTake) {
