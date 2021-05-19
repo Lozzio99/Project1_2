@@ -12,7 +12,8 @@ import static java.lang.StrictMath.sqrt;
 
 public class MidPointSolver implements ODESolverInterface {
     private boolean checked;
-    ODEFunctionInterface singleCoreF = (t, y) -> {
+    private ODEFunctionInterface singleCoreF = (t, y) ->
+    {
         RateInterface rate = new RateOfChange();
         double dt = t - CURRENT_TIME;  //get dt
         for (int i = 0; i < y.getPositions().size(); i++) {
@@ -27,13 +28,13 @@ public class MidPointSolver implements ODESolverInterface {
                         CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
                                 simulation.getSystem().getCelestialBodies().get(k), den);
                     }
-                            /*
-                                ! Important !
-                                if two bodies collapses into the same point
-                                that would crash to NaN and consequently
-                                the same in all the system
-                                UPDATE :::: Mark BODIES AS COLLIDED
-                            */
+                    /*
+                        ! Important !
+                        if two bodies collapses into the same point
+                        that would crash to NaN and consequently
+                        the same in all the system
+                        UPDATE :::: Mark BODIES AS COLLIDED
+                    */
                     if (den != 0) {
                         acc = acc.mul(1 / den); // Normalise to length 1
                         acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
@@ -67,4 +68,6 @@ public class MidPointSolver implements ODESolverInterface {
     public void setF(ODEFunctionInterface f) {
         this.singleCoreF = f;
     }
+
+
 }

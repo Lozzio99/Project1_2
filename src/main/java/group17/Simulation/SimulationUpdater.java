@@ -24,6 +24,7 @@ public class SimulationUpdater implements UpdaterInterface {
         this.schedule.init();
         this.schedule.prepare();
 
+
         switch (DEFAULT_SOLVER) {
             case EULER_SOLVER -> this.solver = new EulerSolver();
             case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKutta4thSolver();

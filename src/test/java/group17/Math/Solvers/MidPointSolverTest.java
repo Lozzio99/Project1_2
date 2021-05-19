@@ -12,7 +12,9 @@ import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
+/**
+ * Source for the test is NM lecture on runge kutta methods for solving ODE systems
+ */
 class MidPointSolverTest {
 
     static final double exactValue = 0.503347;

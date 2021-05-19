@@ -11,6 +11,9 @@ import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Source for the test is NM lecture on euler method for solving ODE systems
+ */
 class EulerSolverTest {
     static final double exactValue = 0.503347;
     static ODESolverInterface euler;

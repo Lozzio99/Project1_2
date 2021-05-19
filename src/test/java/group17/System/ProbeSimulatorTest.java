@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ProbeSimulatorTest {
 
     static final double ACCURACY = 100; // 1 meter (might need to tweak that)
-
     public static Vector3dInterface[] simulateOneYear() {
 
         Vector3dInterface probe_relative_position = new Vector3D(6371e3, 0, 0);

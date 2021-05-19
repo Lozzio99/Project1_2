@@ -70,7 +70,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                             acc = acc.mul(1 / den); // Normalise to length 1
                             acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
                         }
-                        totalAcc = totalAcc.addMul(STEP_SIZE, acc);
+                        totalAcc = totalAcc.addMul(dt, acc);
                         // p = h*acc(derivative of velocity)
                     }
                 }
@@ -82,28 +82,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
     }
 
 
-    public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
-       /*
-        state k1 = h * this.f.f_y(this.t,w);                      rate t0     , y0        -> current rate
-        state k2 = h * this.f.f_y(this.t + (h/2), w + (k1/2));    rate t0+h/2 , y0+rate0/2-> some diff rate
-        state k3 = h * this.f.f_y(this.t + (h/2), w + (k2/2));    rate t0+h/2 , y0+rate1/2-> some diff rate
-        state k4 = h * this.f.f_y(this.t+h,w + k3);               rate t0+h   , y0+rate2  -> some diff rate
-        state1 = state0 + ((1/6.) * (k1 + 2*k2 + 2*k3 + k4));     state t0+h  , y0+rate   -> a new state
-       */
 
-        this.currentTime = t;
-        RateInterface k1, k2, k3, k4, k5;
-        StateInterface clone = y.copy();
-        k1 = f.call(t, clone).multiply(h);
-        k2 = f.call(t + (h / 2), y.addMul(0.5, k1)).multiply(h);
-        k3 = f.call(t + (h / 2), y.addMul(0.5, k2)).multiply(h);
-        k4 = f.call(t + h, y.addMul(1, k3)).multiply(h);
-        k5 = k1.sumOf(k2.multiply(2), k3.multiply(2), k4);
-        StateInterface result = y.addMul(1, k5.div(6));
-
-
-        return result;
-    }
 
     public StateInterface old(ODEFunctionInterface f, double t, final StateInterface y, double h) {
         RateInterface v21, v22, v23, v24, kv;
@@ -141,6 +120,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         //-6.80564659829616E8
         //-6.806783239281648E8
 
+
         return new SystemState(y.add(kk), (y.getRateOfChange().add(kv)));
     }
 
@@ -161,6 +141,27 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         return true;
     }
 
+    public StateInterface testingRK(ODEFunctionInterface f, double t, final StateInterface y, double h) {
+        this.currentTime = t;
+        RateInterface k1, k2, k3, k4, k5;
+        k1 = f.call(t, y).multiply(h);
+        k2 = f.call(t + (h / 2), y.addMul(0.5, k1)).multiply(h);
+        k3 = f.call(t + (h / 2), y.addMul(0.5, k2)).multiply(h);
+        k4 = f.call(t + h, y.addMul(1, k3)).multiply(h);
+        k5 = k1.sumOf(k2.multiply(2), k3.multiply(2), k4).div(6);
+        return y.addMul(1, k5);
+    }
+
+
+    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+        this.currentTime = t;
+        RateInterface k1 = f.call(t, y).div(6);
+        RateInterface k2 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k1)).div(3);
+        RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k2)).div(3);
+        RateInterface k4 = f.call(t + h, y.addMul(h, k3)).div(6);
+        RateInterface newRate = k1.sumOf(k2, k3, k4);
+        return y.addMul(h, newRate);
+    }
 
     @Override
     public ODEFunctionInterface getFunction() {
