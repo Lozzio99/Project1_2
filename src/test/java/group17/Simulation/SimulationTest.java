@@ -65,6 +65,7 @@ class SimulationTest {
                 "\tSTATE\n" +
                 "null\n" +
                 "\tnull\n", simulationTest.getSystem().toString());
+
     }
 
     @Test

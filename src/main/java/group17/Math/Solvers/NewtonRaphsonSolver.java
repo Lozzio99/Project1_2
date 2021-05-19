@@ -8,6 +8,8 @@ import group17.Math.Utils.PartialDerivative;
 import group17.Math.Utils.Vector3D;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Arrays;
+
 import static group17.Config.INSERT_ROCKET;
 import static group17.Config.STEP_SIZE;
 import static group17.Math.Solvers.RocketSimModel.*;
@@ -39,22 +41,17 @@ public class NewtonRaphsonSolver {
         this.fX = fX;
     }
 
-    @Contract(pure = true)
-    public NewtonRaphsonSolver(NewtRaphFunction fX, Function<Vector3dInterface> f) {
-        this.fX = fX;
-        this.f = f;
-    }
-
     /**
      * Constructor of Newton-Raphson solver for the rocket-simulation problem
      *
      * @param initPos initial position of a rocket
+     * @param targetPos target position of a rocket
      * @param endTime fixed time at which rocket must reach its target
      */
-    public NewtonRaphsonSolver(Vector3dInterface initPos, double endTime) {
+    public NewtonRaphsonSolver(Vector3dInterface initPos, Vector3dInterface targetPos ,double endTime) {
         this.fX = pF;
-        this.f = modelFx;
         NewtonRaphsonSolver.initPos = initPos;
+        targetPosition = targetPos.clone();
         NewtonRaphsonSolver.endTime = endTime;
     }
 
@@ -70,32 +67,25 @@ public class NewtonRaphsonSolver {
     }
 
     public static void main(String[] args) {
-        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(new Vector3D(), 2678400.0);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(-7485730.186, 6281273.438, -8172135.798), new Vector3D(-1.160685142387819E+00, 1.189131565321710E+00, 5.323467155528554E-02));
+        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(new Vector3D(), new Vector3D(-1.160685142387819E+00, 1.189131565321710E+00, 5.323467155528554E-02) ,2678400.0);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(-7485730.186, 6281273.438, -8172135.798), new Vector3D(0.0,0.0,0.0), STEP_SIZE);
     }
 
     /**
      * Approximation of a solution to a function using Newton-Rhapson method
      * @param initSol initial solution
-     * @param targetSol target function solution
+     * @param targetSol target solution of the model function
+     * @param h step-size
      * @return approximated solution i.e. fX(aprxSol) ~ targetSol
      */
-    public Vector3dInterface NewtRhapSolution(Vector3dInterface initSol, Vector3dInterface targetSol) {
+    public Vector3dInterface NewtRhapSolution(Vector3dInterface initSol, Vector3dInterface targetSol, double h) {
         this.initSol = initSol.clone();
         this.targetSol = targetSol.clone();
-        targetPosition = targetSol.clone();
         Vector3dInterface aprxSol = initSol.clone();
         // iteratively apply newton-raphson
         while (i < STOPPING_CRITERION) {
-            aprxSol = NewtRhapStep(aprxSol);
-            if (LOG_ITERATION) {
-                System.out.println("Iteration #" + (i++) + ": " + aprxSol.toString());
-                System.out.println("Velocity: " + aprxSol);
-                Vector3dInterface aprxPos = fX.stateFX(new Vector3D(), aprxSol, 2678400.0);
-                System.out.println("Position: " + aprxPos.toString());
-                double error = getRelativeError(aprxPos, new Vector3D(-1.160685142387819E+00, 1.189131565321710E+00, 5.323467155528554E-02));
-                System.out.println("Relative error: " + error);
-            }
+            aprxSol = NewtRhapStep(aprxSol, h);
+            if (LOG_ITERATION) System.out.println("Iteration #" + (i) + ": " + aprxSol.toString());
             i++;
         }
         i = 0;
@@ -104,14 +94,14 @@ public class NewtonRaphsonSolver {
 
     /**
      * Newton-raphson step to approximate the velocity
-     *
      * @param vector interim velocity value
+     * @param h step-size
      * @return approximated velocity
      */
-    public Vector3dInterface NewtRhapStep(Vector3dInterface vector) {
-        double[][] D = PartialDerivative.getJacobianMatrix(f, (Vector3D) vector.clone(), STEP_SIZE); // Compute matrix of partial derivatives D
+    public Vector3dInterface NewtRhapStep(Vector3dInterface vector, double h) {
+        double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), h); // Compute matrix of partial derivatives D
         Matrix DI = new Matrix(Matrix.invert(D)); // Compute DI inverse of D
-        Vector3dInterface modelVector = f.apply(vector);
+        Vector3dInterface modelVector = fX.modelFx(vector);
         Vector3dInterface DIProd = DI.multiplyVector(modelVector);
         return vector.sub(DIProd); // V1 = velocity - DI * function(velocity)
     }
