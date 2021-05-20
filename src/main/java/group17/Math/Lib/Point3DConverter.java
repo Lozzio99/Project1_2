@@ -76,7 +76,7 @@ public class Point3DConverter {
      * @param CW
      * @param degrees
      */
-    public static void rotateAxisX(Point3D p, boolean CW, double degrees) {
+    public static void rotateAxisX(final Point3D p, boolean CW, double degrees) {
         if (degrees == 0) return;
         double radius = Math.sqrt(p.y * p.y + p.z * p.z);
         double theta = Math.atan2(p.z, p.y);

@@ -195,7 +195,6 @@ class SystemStateTest {
         StateInterface test2 = new SystemState(test);
         assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test2.getPositions());
         assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test2.getRateOfChange().getVelocities());
-
         assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test.getPositions());
         assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test.getRateOfChange().getVelocities());
 
