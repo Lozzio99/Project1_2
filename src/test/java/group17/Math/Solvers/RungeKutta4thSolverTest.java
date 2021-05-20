@@ -55,11 +55,19 @@ class RungeKutta4thSolverTest {
 
 
     @ParameterizedTest(name = "testing stepSize {0}")
-    @ValueSource(doubles = {1e-2, 1e-4, 1e-6})
+    @ValueSource(doubles = {1e-2, 1e-3, 1e-4, 1e-5, 1e-6})
     void TestSolve(double step) {
         //this uses the step method
-        double accuracy = step;
-        StateInterface[] sol = rk.solve(dydx, y, 1, step);
+        double accuracy = step * 10;
+        StateInterface[] sol = new StateInterface[(int) (Math.round(tf / step)) + 2];
+        double currTime = 0;
+        sol[0] = y;
+        for (int i = 1; i < sol.length - 1; i++) {
+            sol[i] = rk.testingRK(dydx, currTime, y, step);
+            y = (StateTest) sol[i];
+            currTime += step;
+        }
+        sol[sol.length - 1] = rk.testingRK(dydx, tf - currTime, y, tf - currTime);
         assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < accuracy);
     }
 

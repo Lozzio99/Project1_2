@@ -56,7 +56,7 @@ public interface StateInterface {
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
             newState.getPositions().add(this.getPositions().get(i).addMul(step, rate.getVelocities().get(i)));
-            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i).clone());
+            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i));
         }
         return newState;
     }

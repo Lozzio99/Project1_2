@@ -53,13 +53,6 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
                                 simulation.getSystem().getCelestialBodies().get(k), den);
                     }
-                        /*
-                            ! Important !
-                            if two bodies collapses into the same point
-                            that would crash to NaN and consequently
-                            the same in all the system
-                            UPDATE :::: Mark BODIES AS COLLIDED
-                        */
                     if (den != 0) {
                         acc = acc.mul(1 / den); // Normalise to length 1
                         acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
@@ -138,6 +131,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
     public StateInterface testingRK(ODEFunctionInterface f, double t, final StateInterface y, double h) {
         this.currentTime = t;
+        checked = false;
         RateInterface k1, k2, k3, k4, k5;
         k1 = f.call(t, y).multiply(h);
         k2 = f.call(t + (h / 2), y.addMul(0.5, k1)).multiply(h);
@@ -150,11 +144,12 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         this.currentTime = t;
-        RateInterface k1 = f.call(t, y).div(6);
-        RateInterface k2 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k1)).div(3);
-        RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k2)).div(3);
-        RateInterface k4 = f.call(t + h, y.addMul(h, k3)).div(6);
-        RateInterface newRate = k1.sumOf(k2, k3, k4);
+        checked = false;
+        RateInterface k1 = f.call(t, y);
+        RateInterface k2 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k1));
+        RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k2));
+        RateInterface k4 = f.call(t + h, y.addMul(1, k3));
+        RateInterface newRate = k1.div(6).sumOf(k2.div(3), k3.div(3), k4.div(6));
         return y.addMul(h, newRate);
     }
 
