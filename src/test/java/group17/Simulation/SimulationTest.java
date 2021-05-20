@@ -3,6 +3,8 @@ package group17.Simulation;
 import group17.Graphics.Assist.UserDialogWindow;
 import group17.Interfaces.SimulationInterface;
 import group17.Main;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorReport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,12 +48,12 @@ class SimulationTest {
         simulationTest.setAssist(new UserDialogWindow());
         assertDoesNotThrow(() -> simulationTest.getAssist());
         assertNotNull(simulationTest.getAssist());
-        simulationTest.initSystem();
         Main.simulation = simulationTest;
         simulationTest.initSystem();
         assertDoesNotThrow(() -> simulationTest.initAssist());
         assertNotNull(simulationTest.getAssist());
     }
+
 
     @Test
     @DisplayName("InitSystem")
@@ -65,6 +67,7 @@ class SimulationTest {
                 "null\n" +
                 "\tnull\n", simulationTest.getSystem().toString());
 
+
     }
 
     @Test
@@ -75,4 +78,16 @@ class SimulationTest {
         assertNotEquals("null", simulationTest.getReporter().toString());
     }
 
+    @Test
+    @DisplayName("InitialErrorReport")
+    void InitialError() {
+        Main.simulation = simulationTest;
+        simulationTest.initSystem();
+        ERROR_EVALUATION = true;
+        DEBUG = true;
+        ErrorReport.monthIndex = 0;
+        ErrorData data = ORIGINAL_DATA[0] = new ErrorData(simulationTest.getSystem().systemState());
+        simulationTest.setAssist(new UserDialogWindow());
+        simulationTest.initAssist();  //should make automatically the first error report
+    }
 }
