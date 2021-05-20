@@ -6,8 +6,16 @@ import group17.System.State.SystemState;
 
 import java.util.List;
 
+/**
+ * The interface State interface.
+ */
 public interface StateInterface {
 
+    /**
+     * Copy state interface.
+     *
+     * @return the state interface
+     */
     default StateInterface copy() {
         StateInterface s = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
@@ -19,6 +27,11 @@ public interface StateInterface {
 
     String toString();
 
+    /**
+     * Gets rate of change.
+     *
+     * @return the rate of change
+     */
     RateInterface getRateOfChange();
 
     /**
@@ -28,11 +41,17 @@ public interface StateInterface {
      */
     List<Vector3dInterface> getPositions();
 
+    /**
+     * Sets positions.
+     *
+     * @param v the v
+     */
     void setPositions(List<Vector3dInterface> v);
 
     /**
      * Initialises the system state to be the initial value at the launch day
      *
+     * @param bodies the bodies
      * @return the StateInterface y(0)
      */
     default StateInterface state0(List<CelestialBody> bodies) {
@@ -61,6 +80,13 @@ public interface StateInterface {
         return newState;
     }
 
+    /**
+     * Rate mul state interface.
+     *
+     * @param step the step
+     * @param rate the rate
+     * @return the state interface
+     */
     default StateInterface rateMul(double step, RateInterface rate) { //!!
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
@@ -71,6 +97,12 @@ public interface StateInterface {
     }
 
 
+    /**
+     * Multiply state interface.
+     *
+     * @param scalar the scalar
+     * @return the state interface
+     */
     default StateInterface multiply(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
@@ -82,6 +114,12 @@ public interface StateInterface {
         return state;
     }
 
+    /**
+     * Div state interface.
+     *
+     * @param scalar the scalar
+     * @return the state interface
+     */
     default StateInterface div(double scalar) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to divide ");
@@ -94,6 +132,12 @@ public interface StateInterface {
         return state;
     }
 
+    /**
+     * Add state interface.
+     *
+     * @param tobeAdded the tobe added
+     * @return the state interface
+     */
     default StateInterface add(StateInterface tobeAdded) {
         if (this.getPositions().size() == 0)
             throw new RuntimeException(" Nothing to add ");
@@ -106,6 +150,12 @@ public interface StateInterface {
         return state;
     }
 
+    /**
+     * Sum of state interface.
+     *
+     * @param rates the rates
+     * @return the state interface
+     */
     default StateInterface sumOf(StateInterface... rates) {
         StateInterface state = new SystemState();
         for (int i = 0; i < rates[0].getPositions().size(); i++) {
@@ -121,6 +171,11 @@ public interface StateInterface {
         return state;
     }
 
+    /**
+     * Update.
+     *
+     * @param step the step
+     */
     default void update(StateInterface step) {
         this.setPositions(step.getPositions());
         this.getRateOfChange().setVelocities(step.getRateOfChange().getVelocities());

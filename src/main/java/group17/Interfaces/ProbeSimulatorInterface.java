@@ -7,7 +7,18 @@
 
 package group17.Interfaces;
 
+/**
+ * The interface Probe simulator interface.
+ */
 public interface ProbeSimulatorInterface {
+    /**
+     * Trajectory vector 3 d interface [ ].
+     *
+     * @param p0 the p 0
+     * @param v0 the v 0
+     * @param ts the ts
+     * @return the vector 3 d interface [ ]
+     */
     /*
      * Simulate the solar system, including a probe fired from Earth at 00:00h on 1 April 2020.
      *
@@ -29,5 +40,14 @@ public interface ProbeSimulatorInterface {
      *          taken relative to the Solar System barycentre
      */
 
+    /**
+     * Trajectory vector 3d interface [ ].
+     *
+     * @param p0 the p 0
+     * @param v0 the v 0
+     * @param tf the tf
+     * @param h  the h
+     * @return the vector 3 d interface [ ]
+     */
     Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h);
 }

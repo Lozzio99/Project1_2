@@ -12,6 +12,9 @@ import static group17.Utils.Config.*;
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
 
+/**
+ * The type Runge kutta 4 th solver.
+ */
 public class RungeKutta4thSolver implements ODESolverInterface {
     private boolean checked;
     private double currentTime;
@@ -67,11 +70,23 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         return rate;
     };
 
+    /**
+     * Instantiates a new Runge kutta 4 th solver.
+     */
     @Contract(pure = true)
     public RungeKutta4thSolver() {
     }
 
 
+    /**
+     * Old state interface.
+     *
+     * @param f the f
+     * @param t the t
+     * @param y the y
+     * @param h the h
+     * @return the state interface
+     */
     public StateInterface old(ODEFunctionInterface f, double t, final StateInterface y, double h) {
         RateInterface v21, v22, v23, v24, kv;
         StateInterface s11, s12, s13, s14, kk;
@@ -112,6 +127,11 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         return new SystemState(y.add(kk), (y.getRateOfChange().add(kv)));
     }
 
+    /**
+     * Gets old f.
+     *
+     * @return the old f
+     */
     public ODEFunctionInterface getOldF() {
         return oldF;
     }
@@ -129,6 +149,15 @@ public class RungeKutta4thSolver implements ODESolverInterface {
         return true;
     }
 
+    /**
+     * Testing rk state interface.
+     *
+     * @param f the f
+     * @param t the t
+     * @param y the y
+     * @param h the h
+     * @return the state interface
+     */
     public StateInterface testingRK(ODEFunctionInterface f, double t, final StateInterface y, double h) {
         this.currentTime = t;
         checked = false;

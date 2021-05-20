@@ -6,13 +6,24 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.List;
 
+/**
+ * The type Error data.
+ */
 public class ErrorData {
     private List<Vector3dInterface> positions, velocities;
 
+    /**
+     * Instantiates a new Error data.
+     */
     @Contract(pure = true)
     public ErrorData() {
     }
 
+    /**
+     * Instantiates a new Error data.
+     *
+     * @param state the state
+     */
     public ErrorData(StateInterface state) {
         StateInterface copy = state.copy();
         this.positions = copy.getPositions();
@@ -21,11 +32,24 @@ public class ErrorData {
         if (this.velocities.size() >= 12) this.velocities.remove(11);
     }
 
+    /**
+     * Instantiates a new Error data.
+     *
+     * @param positions  the positions
+     * @param velocities the velocities
+     */
     public ErrorData(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
         this.positions = List.copyOf(positions);
         this.velocities = List.copyOf(velocities);
     }
 
+    /**
+     * Sets data.
+     *
+     * @param positions  the positions
+     * @param velocities the velocities
+     * @return the data
+     */
     public ErrorData setData(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
         this.positions = positions;
         this.velocities = velocities;
@@ -36,10 +60,20 @@ public class ErrorData {
         return this;
     }
 
+    /**
+     * Gets positions.
+     *
+     * @return the positions
+     */
     public List<Vector3dInterface> getPositions() {
         return positions;
     }
 
+    /**
+     * Gets velocities.
+     *
+     * @return the velocities
+     */
     public List<Vector3dInterface> getVelocities() {
         return velocities;
     }

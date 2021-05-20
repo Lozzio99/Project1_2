@@ -5,9 +5,20 @@ import group17.Math.Lib.Vector3D;
 
 import java.awt.*;
 
+/**
+ * The type Satellite.
+ */
 public class Satellite extends CelestialBody {
+    /**
+     * The Name.
+     */
     SatellitesEnum name;
 
+    /**
+     * Instantiates a new Satellite.
+     *
+     * @param name the name
+     */
     public Satellite(SatellitesEnum name) {
         this.name = name;
     }
@@ -37,9 +48,21 @@ public class Satellite extends CelestialBody {
         }
     }
 
+    /**
+     * The enum Satellites enum.
+     */
     public enum SatellitesEnum {
+        /**
+         * Moon satellites enum.
+         */
         MOON,
+        /**
+         * Titan satellites enum.
+         */
         TITAN,
+        /**
+         * Asteroid satellites enum.
+         */
         ASTEROID
     }
 }

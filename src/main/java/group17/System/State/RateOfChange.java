@@ -9,8 +9,18 @@ import java.util.List;
 
 import static group17.Main.simulation;
 
+/**
+ * The type Rate of change.
+ */
 public class RateOfChange implements RateInterface {
+    /**
+     * The Vel.
+     */
     List<Vector3dInterface> vel;
+
+    /**
+     * Instantiates a new Rate of change.
+     */
     @Contract(pure = true)
     public RateOfChange() {
         this.vel = new ArrayList<>();
@@ -25,6 +35,7 @@ public class RateOfChange implements RateInterface {
     public List<Vector3dInterface> getVelocities() {
         return this.vel;
     }
+
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();

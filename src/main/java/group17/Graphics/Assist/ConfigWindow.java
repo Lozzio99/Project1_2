@@ -9,6 +9,9 @@ import static group17.Main.simulation;
 import static group17.Main.userDialog;
 import static group17.Utils.Config.*;
 
+/**
+ * The type Config window.
+ */
 public class ConfigWindow extends JPanel {
     //launch - stats - plot - rocket - performance - errors - controllers
     private static final String[] s = {"ENABLED", "DISABLED"};
@@ -33,6 +36,9 @@ public class ConfigWindow extends JPanel {
     private final Color r = new Color(255, 0, 0), g = new Color(0, 255, 35);
 
 
+    /**
+     * Instantiates a new Config window.
+     */
     public ConfigWindow() {
 
 

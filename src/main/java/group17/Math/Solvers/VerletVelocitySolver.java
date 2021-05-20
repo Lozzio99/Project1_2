@@ -16,11 +16,20 @@ import static java.lang.Double.NaN;
  */
 public class VerletVelocitySolver implements ODESolverInterface {
 
+    /**
+     * The constant currTime.
+     */
     public static double currTime = 0;
+    /**
+     * The constant endTime.
+     */
     public static double endTime = NaN;
     private ODEFunctionInterface singleCoreF;
     private boolean checked;
 
+    /**
+     * Instantiates a new Verlet velocity solver.
+     */
     @Contract(pure = true)
     public VerletVelocitySolver() {
         this.singleCoreF = (h, y) -> {
@@ -87,7 +96,6 @@ public class VerletVelocitySolver implements ODESolverInterface {
         RateInterface part7 = velocity.add(part6);
 
         part4.getRateOfChange().setVelocities(part7.getVelocities());
-        y = part4;
         return part4;
     }
 

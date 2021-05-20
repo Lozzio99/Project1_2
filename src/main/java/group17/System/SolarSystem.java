@@ -18,11 +18,26 @@ import static group17.System.Bodies.Satellite.SatellitesEnum.TITAN;
 import static group17.Utils.Config.INSERT_ROCKET;
 import static group17.Utils.Config.LAUNCH_DATE;
 
+/**
+ * The type Solar system.
+ */
 public class SolarSystem implements SystemInterface {
 
+    /**
+     * The Clock.
+     */
     protected Clock clock;
+    /**
+     * The Bodies.
+     */
     protected List<CelestialBody> bodies;
+    /**
+     * The System state.
+     */
     protected volatile StateInterface systemState;
+    /**
+     * The Rocket.
+     */
     protected RocketSimulator rocket;
 
     @Override

@@ -6,6 +6,9 @@ import org.jetbrains.annotations.Contract;
 
 import java.awt.*;
 
+/**
+ * The type Celestial body.
+ */
 public abstract class CelestialBody {
     private Color color;
 
@@ -19,6 +22,9 @@ public abstract class CelestialBody {
 
     private boolean collided;
 
+    /**
+     * Instantiates a new Celestial body.
+     */
     @Contract(pure = true)
     public CelestialBody() {
         collided = false;
@@ -29,7 +35,7 @@ public abstract class CelestialBody {
     /**
      * Sets the density.
      *
-     * @param DENSITY
+     * @param DENSITY the density
      */
     public void setDENSITY(double DENSITY) {
         this.DENSITY = DENSITY;
@@ -38,7 +44,7 @@ public abstract class CelestialBody {
     /**
      * Gets the mass.
      *
-     * @return
+     * @return mass mass
      */
     public double getMASS() {
         return this.MASS;
@@ -47,7 +53,7 @@ public abstract class CelestialBody {
     /**
      * Sets the mass.
      *
-     * @param mass
+     * @param mass the mass
      */
     public void setMASS(double mass) {
         this.MASS = mass;
@@ -56,7 +62,7 @@ public abstract class CelestialBody {
     /**
      * Gets the radius.
      *
-     * @return
+     * @return radius radius
      */
     public double getRADIUS() {
         return this.RADIUS;
@@ -67,7 +73,7 @@ public abstract class CelestialBody {
     /**
      * Sets the radius.
      *
-     * @param RADIUS
+     * @param RADIUS the radius
      */
     public void setRADIUS(double RADIUS) {
         this.RADIUS = RADIUS;
@@ -75,6 +81,8 @@ public abstract class CelestialBody {
 
     /**
      * Gets the density.
+     *
+     * @return the density
      */
     public double getDensity() {
         return this.DENSITY;
@@ -83,7 +91,7 @@ public abstract class CelestialBody {
     /**
      * Returns the colour of a body.
      *
-     * @return
+     * @return colour colour
      */
     public Color getColour() {
         return color;
@@ -92,7 +100,7 @@ public abstract class CelestialBody {
     /**
      * Sets the colour of a body.
      *
-     * @param col
+     * @param col the col
      */
     public void setColour(Color col) {
         this.color = col;
@@ -103,28 +111,61 @@ public abstract class CelestialBody {
      */
     public abstract String toString();
 
+    /**
+     * Init properties.
+     */
     public abstract void initProperties();
 
+    /**
+     * Is collided boolean.
+     *
+     * @return the boolean
+     */
     public boolean isCollided() {
         return collided;
     }
 
+    /**
+     * Sets collided.
+     *
+     * @param bool the bool
+     */
     public void setCollided(boolean bool) {
         this.collided = bool;
     }
 
+    /**
+     * Gets vector location.
+     *
+     * @return the vector location
+     */
     public Vector3dInterface getVectorLocation() {
         return this.vectorLocation;
     }
 
+    /**
+     * Sets vector location.
+     *
+     * @param vector3D the vector 3 d
+     */
     public void setVectorLocation(Vector3dInterface vector3D) {
         this.vectorLocation = vector3D;
     }
 
+    /**
+     * Gets vector velocity.
+     *
+     * @return the vector velocity
+     */
     public Vector3dInterface getVectorVelocity() {
         return this.vectorVelocity;
     }
 
+    /**
+     * Sets vector velocity.
+     *
+     * @param vector3D the vector 3 d
+     */
     public void setVectorVelocity(Vector3dInterface vector3D) {
         this.vectorVelocity = vector3D;
     }

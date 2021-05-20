@@ -6,15 +6,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.lang.management.ThreadInfo;
 import java.util.Set;
 //import java.lang.management.OperatingSystemMXBean;
 
 
+/**
+ * The type Performance window.
+ */
 public class PerformanceWindow extends JPanel {
     private static volatile JTextArea text;
 
+    /**
+     * Instantiates a new Performance window.
+     */
     public PerformanceWindow() {
         this.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
         this.setLayout(new GridLayout(2, 1, 20, 20));
@@ -23,6 +28,11 @@ public class PerformanceWindow extends JPanel {
         //this.add(new JPanel());
     }
 
+    /**
+     * Print usage.
+     *
+     * @param runtime the runtime
+     */
     public static void printUsage(Runtime runtime) {
         long total, free, used;
         int mb = 1024 * 1024;
@@ -36,10 +46,23 @@ public class PerformanceWindow extends JPanel {
         log("\tPercent Free: " + ((double) free / (double) total) * 100 + "%");
     }
 
+    /**
+     * Log.
+     *
+     * @param message the message
+     */
     public static void log(Object message) {
         text.append("\t\t" + message + "\n");
     }
 
+    /**
+     * Calc cpu int.
+     *
+     * @param cpuStartTime     the cpu start time
+     * @param elapsedStartTime the elapsed start time
+     * @param cpuCount         the cpu count
+     * @return the int
+     */
     public static int calcCPU(long cpuStartTime, long elapsedStartTime, int cpuCount) {
         long end = System.nanoTime();
         long totalAvailCPUTime = cpuCount * (end - elapsedStartTime);
@@ -51,12 +74,12 @@ public class PerformanceWindow extends JPanel {
         return (int) per;
     }
 
+    /**
+     * Test physical memory.
+     */
     public static void testPhysicalMemory() {
         /* PHYSICAL MEMORY USAGE */
         log("\n**** Sizes in Mega Bytes ****\n");
-        OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-        RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
-        operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
         OperatingSystemMXBean os = (OperatingSystemMXBean)
                 ManagementFactory.getOperatingSystemMXBean();
         long physicalMemorySize = os.getTotalMemorySize();
@@ -89,6 +112,9 @@ public class PerformanceWindow extends JPanel {
             log("no alert");
     }
 
+    /**
+     * Test mx bean threads.
+     */
     public static void testMXBeanThreads() {
         log("\n **THREADS DETAILS  ** \n");
         long[] ids = ManagementFactory.getThreadMXBean().getAllThreadIds();
@@ -111,6 +137,9 @@ public class PerformanceWindow extends JPanel {
         }
     }
 
+    /**
+     * Test runtime memory.
+     */
     public static void testRuntimeMemory() {
 
 
@@ -135,6 +164,9 @@ public class PerformanceWindow extends JPanel {
         }
     }
 
+    /**
+     * Test runtime garbage.
+     */
     public static void testRuntimeGarbage() {
         Runtime runtime;
         byte[] bytes;
@@ -156,31 +188,24 @@ public class PerformanceWindow extends JPanel {
         printUsage(runtime);
     }
 
+    /**
+     * Init.
+     */
     public void init() {
         JPanel top = new JPanel();
         text = new JTextArea(10, 30);
         JScrollPane pane = new JScrollPane(text);
         pane.setSize(600, 400);
         JButton testRuntime = new JButton("test garbage");
-        testRuntime.addActionListener(x -> {
-            start(0);
-        });
+        testRuntime.addActionListener(x -> start(0));
         JButton runtimeMemory = new JButton("runtimeMemory usage");
-        runtimeMemory.addActionListener(x -> {
-            start(1);
-        });
+        runtimeMemory.addActionListener(x -> start(1));
         JButton physicalMemory = new JButton("physical memory");
-        physicalMemory.addActionListener(x -> {
-            start(2);
-        });
+        physicalMemory.addActionListener(x -> start(2));
         JButton threadsInfo = new JButton("MXBean threads");
-        threadsInfo.addActionListener(x -> {
-            start(3);
-        });
+        threadsInfo.addActionListener(x -> start(3));
         JButton runtimeThreads = new JButton("Runtime threads");
-        runtimeThreads.addActionListener(x -> {
-            start(4);
-        });
+        runtimeThreads.addActionListener(x -> start(4));
         JPanel buttons = new JPanel();
         GroupLayout group = new GroupLayout(top);
         top.setLayout(group);
@@ -216,45 +241,40 @@ public class PerformanceWindow extends JPanel {
         this.add(top);
     }
 
+    /**
+     * Start.
+     *
+     * @param i the
+     */
     public void start(int i) {
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         Thread t = null;
         switch (i) {
-            case 0 -> {
-                t = new Thread(() -> {
-                    text.setText("");
-                    testRuntimeGarbage();
-                    this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                });
-            }
-            case 1 -> {
-                t = new Thread(() -> {
-                    text.setText("");
-                    testRuntimeMemory();
-                    this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                });
-            }
-            case 2 -> {
-                t = new Thread(() -> {
-                    text.setText("");
-                    testPhysicalMemory();
-                    this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                });
-            }
-            case 3 -> {
-                t = new Thread(() -> {
-                    text.setText("");
-                    testMXBeanThreads();
-                    this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                });
-            }
-            case 4 -> {
-                t = new Thread(() -> {
-                    text.setText("");
-                    testRuntimeThreads();
-                    this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                });
-            }
+            case 0 -> t = new Thread(() -> {
+                text.setText("");
+                testRuntimeGarbage();
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            });
+            case 1 -> t = new Thread(() -> {
+                text.setText("");
+                testRuntimeMemory();
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            });
+            case 2 -> t = new Thread(() -> {
+                text.setText("");
+                testPhysicalMemory();
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            });
+            case 3 -> t = new Thread(() -> {
+                text.setText("");
+                testMXBeanThreads();
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            });
+            case 4 -> t = new Thread(() -> {
+                text.setText("");
+                testRuntimeThreads();
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            });
         }
         assert t != null;
         t.start();

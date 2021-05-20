@@ -5,9 +5,21 @@ import group17.Math.Lib.Point3DConverter;
 import java.awt.*;
 import java.awt.geom.Line2D;
 
+/**
+ * The type Starting scene.
+ */
 public class StartingScene extends Scene {
 
-    Line2D.Double xAxis, yAxis, zAxis;
+    /**
+     * The X axis.
+     */
+    Line2D.Double xAxis, /**
+     * The Y axis.
+     */
+    yAxis, /**
+     * The Z axis.
+     */
+    zAxis;
 
     @Override
     public void paintComponent(Graphics graphics) {

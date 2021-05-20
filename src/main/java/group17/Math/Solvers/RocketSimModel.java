@@ -8,10 +8,27 @@ import group17.System.SolarSystem;
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
+/**
+ * The type Rocket sim model.
+ */
 public class RocketSimModel {
+    /**
+     * The constant targetPosition.
+     */
     public static Vector3dInterface targetPosition;
+    /**
+     * The Solver.
+     */
+
     static ODESolverInterface solver;
+    /**
+     * The Initial state.
+     */
     static StateInterface initialState;
+
+    /**
+     * The constant pF.
+     */
 
     public static NewtRaphFunction pF = vector -> {
         Vector3D aprxPos = (Vector3D) RocketSimModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
@@ -27,6 +44,13 @@ public class RocketSimModel {
         CHECK_COLLISIONS = false;
     }
 
+    /**
+     * Create system system interface.
+     *
+     * @param initLocation the init location
+     * @param initVelocity the init velocity
+     * @return the system interface
+     */
     public static SystemInterface createSystem(Vector3dInterface initLocation, Vector3dInterface initVelocity) {
         final SystemInterface[] system = new SystemInterface[1];
         simulation = new Simulation() {
@@ -51,6 +75,15 @@ public class RocketSimModel {
         return system[0];
     }
 
+
+    /**
+     * State fx vector 3 d interface.
+     *
+     * @param initPos      the init pos
+     * @param initVelocity the init velocity
+     * @param timeFinal    the time final
+     * @return the vector 3 d interface
+     */
     public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal) {
         // init parameters
         SystemInterface system = createSystem(initPos, initVelocity);
@@ -65,7 +98,11 @@ public class RocketSimModel {
     }
 
 
-
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         // FIXME: For some reason, simulation produces the same result every time no matter what :/
         Vector3D res1 = (Vector3D) stateFx(new Vector3D(-1.471922101663588E11, -2.860995816266412E10, 8278183.19359608), new Vector3D(10000, 1000000.0, 600000.0), 86700 * 1e2);

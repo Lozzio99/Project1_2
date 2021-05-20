@@ -12,6 +12,9 @@ import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
+/**
+ * The type Simulation updater.
+ */
 public class SimulationUpdater implements UpdaterInterface {
 
     private RocketSchedule schedule;

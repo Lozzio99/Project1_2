@@ -1,3 +1,8 @@
+
+package group17.Graphics.Scenes;
+
+import java.awt.event.*;
+
 /**
  * This class handles the mouse input for the GUI.
  *
@@ -5,10 +10,6 @@
  * @version 1.0
  * @since 19/02/2021
  */
-package group17.Graphics.Scenes;
-
-import java.awt.event.*;
-
 public class MouseInput extends MouseMotionAdapter implements MouseListener, MouseWheelListener {
 
     // Variables
@@ -20,7 +21,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Returns the X position of the mouse.
      *
-     * @return
+     * @return x x
      */
     public int getX() {
         return this.mouseX;
@@ -29,7 +30,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Returns the Y position of the mouse.
      *
-     * @return
+     * @return y y
      */
     public int getY() {
         return this.mouseY;
@@ -38,7 +39,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Returns the state, whether the user is currently scrolling up or not.
      *
-     * @return
+     * @return boolean boolean
      */
     public boolean isScrollingUp() {
         return this.scroll == -1;
@@ -47,7 +48,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Returns the state, whether the user is currently scrolling down or not.
      *
-     * @return
+     * @return boolean boolean
      */
     public boolean isScrollingDown() {
         return this.scroll == 1;
@@ -63,7 +64,7 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     /**
      * Returns the type of the button, which is pressed.
      *
-     * @return
+     * @return button button
      */
     public ClickType getButton() {
         switch (this.mouseB) {
@@ -89,68 +90,76 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
         this.mouseB = -1;
     }
 
-    @Override
+
     /**
      * Handles movement of the mouse wheel.
      */
+    @Override
     public void mouseWheelMoved(MouseWheelEvent event) {
         scroll = event.getWheelRotation();
     }
 
-    @Override
+
     /**
      * Handles dragged movement of the mouse.
      */
+    @Override
     public void mouseDragged(MouseEvent event) {
         this.mouseX = event.getX();
         this.mouseY = event.getY();
     }
 
-    @Override
+
     /**
      * Handles the general movement of the mouse.
      */
+    @Override
     public void mouseMoved(MouseEvent event) {
         this.mouseX = event.getX();
         this.mouseY = event.getY();
     }
 
-    @Override
+
     /**
      * Handles a mouse click.
      */
+    @Override
     public void mouseClicked(MouseEvent arg0) {
 
     }
 
-    @Override
+
     /**
      * Handles the cursor entering the frame.
      */
+    @Override
     public void mouseEntered(MouseEvent arg0) {
         // TODO Auto-generated method stub
     }
 
-    @Override
+
     /**
      * Handles the cursor exiting the frame.
      */
+    @Override
     public void mouseExited(MouseEvent arg0) {
         // TODO Auto-generated method stub
     }
 
-    @Override
+
     /**
      * Handles a pressed mouse button.
      */
+    @Override
     public void mousePressed(MouseEvent event) {
         this.mouseB = event.getButton();
     }
 
-    @Override
+
     /**
      * Handles a released mouse button.
      */
+    @Override
     public void mouseReleased(MouseEvent arg0) {
         this.mouseB = -1;
     }
@@ -160,11 +169,29 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
      * Enumerates the click type of the mouse.
      */
     public enum ClickType {
+        /**
+         * Unknown click type.
+         */
         Unknown,
+        /**
+         * Left click click type.
+         */
         LeftClick,
+        /**
+         * Scroll click click type.
+         */
         ScrollClick,
+        /**
+         * Right click click type.
+         */
         RightClick,
+        /**
+         * Forward page click type.
+         */
         ForwardPage,
+        /**
+         * Back page click type.
+         */
         BackPage
     }
 }

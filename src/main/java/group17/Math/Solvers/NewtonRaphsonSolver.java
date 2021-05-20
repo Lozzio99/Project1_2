@@ -16,6 +16,9 @@ import static group17.System.Clock.DAY;
 import static group17.Utils.Config.CHECK_COLLISIONS;
 import static group17.Utils.Config.INSERT_ROCKET;
 
+/**
+ * The type Newton raphson solver.
+ */
 public class NewtonRaphsonSolver {
 
     static {
@@ -23,16 +26,35 @@ public class NewtonRaphsonSolver {
         CHECK_COLLISIONS = false;
     }
 
+    /**
+     * The constant initPos.
+     */
     public static Vector3dInterface initPos;
+    /**
+     * The constant endTime.
+     */
     public static double endTime;
 
+    /**
+     * The Log iteration.
+     */
     public final boolean LOG_ITERATION = true;
     private int i = 0;
+
+    /**
+     * The Stopping criterion.
+     */
 
     final double STOPPING_CRITERION = 100;
     private final NewtRaphFunction fX;
     private Function<Vector3dInterface> f;
+    /**
+     * The Init sol.
+     */
     public Vector3dInterface initSol;
+    /**
+     * The Target sol.
+     */
     public Vector3dInterface targetSol;
 
     /**
@@ -48,11 +70,11 @@ public class NewtonRaphsonSolver {
     /**
      * Constructor of Newton-Raphson solver for the rocket-simulation problem
      *
-     * @param initPos initial position of a rocket
+     * @param initPos   initial position of a rocket
      * @param targetPos target position of a rocket
-     * @param endTime fixed time at which rocket must reach its target
+     * @param endTime   fixed time at which rocket must reach its target
      */
-    public NewtonRaphsonSolver(Vector3dInterface initPos, Vector3dInterface targetPos ,double endTime) {
+    public NewtonRaphsonSolver(Vector3dInterface initPos, Vector3dInterface targetPos, double endTime) {
         this.fX = pF;
         NewtonRaphsonSolver.initPos = initPos;
         targetPosition = targetPos.clone();
@@ -70,6 +92,11 @@ public class NewtonRaphsonSolver {
         return (v1.sub(v2)).norm() / v2.norm();
     }
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         Vector3D initPos = new Vector3D(-9.839198644659751E-01, -1.912460575714917E-01, 5.542821181619438E-05);
         Vector3D targetPos = new Vector3D(1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02);
@@ -80,9 +107,10 @@ public class NewtonRaphsonSolver {
 
     /**
      * Approximation of a solution to a function using Newton-Rhapson method
-     * @param initSol initial solution
+     *
+     * @param initSol   initial solution
      * @param targetSol target solution of the model function
-     * @param h step-size
+     * @param h         step-size
      * @return approximated solution i.e. fX(aprxSol) ~ targetSol
      */
     public Vector3dInterface NewtRhapSolution(Vector3dInterface initSol, Vector3dInterface targetSol, double h) {
@@ -101,8 +129,9 @@ public class NewtonRaphsonSolver {
 
     /**
      * Newton-raphson step to approximate the velocity
+     *
      * @param vector interim velocity value
-     * @param h step-size
+     * @param h      step-size
      * @return approximated velocity
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector, double h) {

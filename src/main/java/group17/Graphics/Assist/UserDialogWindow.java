@@ -10,14 +10,19 @@ import javax.swing.border.StrokeBorder;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
+/**
+ * The type User dialog window.
+ */
 public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
     private static final List<Color> backGrounds = new ArrayList<>();
     private static final List<ImageIcon> icons = new ArrayList<>();
+
     static {
         tabs.add("MENU");
         backGrounds.add(new Color(204, 122, 255, 211));
@@ -57,12 +62,17 @@ public class UserDialogWindow {
         tips.add("Configure settings");
 
     }
+
     private final JFrame frame;
     private JTabbedPane mainPane;
     private LaunchAssist assist;
     private SimulationDataWindow dataWindow;
     private ErrorWindow errorWindow;
     private MainMenu menu;
+
+    /**
+     * Instantiates a new User dialog window.
+     */
     public UserDialogWindow() {
         try {
             //UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -106,7 +116,7 @@ public class UserDialogWindow {
     }
 
     private static ImageIcon loadIcon(String path) {
-        ImageIcon i = new ImageIcon(UserDialogWindow.class.getClassLoader().getResource("icons/" + path).getFile());
+        ImageIcon i = new ImageIcon(Objects.requireNonNull(UserDialogWindow.class.getClassLoader().getResource("icons/" + path)).getFile());
         Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
         i.setImage(scaled);
         return i;
@@ -122,6 +132,12 @@ public class UserDialogWindow {
         this.mainPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 
+    /**
+     * Config card component.
+     *
+     * @param index the index
+     * @return the component
+     */
     public Component configCard(int index) {
         switch (index) {
             case 0 -> {
@@ -176,12 +192,27 @@ public class UserDialogWindow {
         return this.menu.configFrame(new JPanel());
     }
 
+    /**
+     * Enable.
+     *
+     * @param i the
+     */
     public void enable(int... i) {
         for (int j : i) this.mainPane.setEnabledAt(j, true);
     }
+
+    /**
+     * Disable.
+     *
+     * @param i the
+     */
     public void disable(int... i) {
         for (int j : i) this.mainPane.setEnabledAt(j, false);
     }
+
+    /**
+     * Enable tabs.
+     */
     public void enableTabs() {
         if (LAUNCH_ASSIST) enable(1);
         if (REPORT) enable(2);
@@ -193,27 +224,57 @@ public class UserDialogWindow {
     }
 
 
+    /**
+     * Gets main menu.
+     *
+     * @return the main menu
+     */
     public MainMenu getMainMenu() {
         return menu;
     }
 
+    /**
+     * Gets launch assist.
+     *
+     * @return the launch assist
+     */
     public LaunchAssist getLaunchAssist() {
         return assist;
     }
 
+    /**
+     * Gets main pane.
+     *
+     * @return the main pane
+     */
     public JTabbedPane getMainPane() {
         return mainPane;
     }
 
+    /**
+     * Gets output window.
+     *
+     * @return the output window
+     */
     public SimulationDataWindow getOutputWindow() {
         return this.dataWindow;
     }
 
+    /**
+     * Gets error window.
+     *
+     * @return the error window
+     */
     public ErrorWindow getErrorWindow() {
         return errorWindow;
     }
 
 
+    /**
+     * Gets frame.
+     *
+     * @return the frame
+     */
     public JFrame getFrame() {
         return this.frame;
     }

@@ -5,6 +5,9 @@ import group17.Math.Lib.Vector3D;
 
 import java.awt.*;
 
+/**
+ * The type Star.
+ */
 public class Star extends CelestialBody {
     @Override
     public String toString() {

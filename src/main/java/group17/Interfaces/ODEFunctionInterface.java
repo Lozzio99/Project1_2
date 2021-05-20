@@ -7,6 +7,9 @@
 
 package group17.Interfaces;
 
+/**
+ * The interface Ode function interface.
+ */
 @FunctionalInterface
 public interface ODEFunctionInterface {
 
@@ -25,6 +28,13 @@ public interface ODEFunctionInterface {
      * @return  The average rate-of-change over the time-step. Has dimensions of [state]/[time].
      */
 
+    /**
+     * Call rate interface.
+     *
+     * @param t the t
+     * @param y the y
+     * @return the rate interface
+     */
     RateInterface call(double t, StateInterface y);
 
 

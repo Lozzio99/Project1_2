@@ -3,6 +3,9 @@ package group17.Math.Lib;
 import group17.Graphics.GraphicsManager;
 import org.jetbrains.annotations.Contract;
 
+/**
+ * The type Point 3 d converter.
+ */
 public class Point3DConverter {
     private static final double ZoomFactor = 1.05;
     private static final int SCREEN_WIDTH = GraphicsManager.screen.width, SCREEN_HEIGHT = GraphicsManager.screen.height;
@@ -25,7 +28,7 @@ public class Point3DConverter {
     /**
      * Returns the scale.
      *
-     * @return
+     * @return scale scale
      */
     @Contract(pure = true)
     public static double getScale() {
@@ -35,8 +38,8 @@ public class Point3DConverter {
     /**
      * Converts a point with respect to the scale.
      *
-     * @param point3D
-     * @return
+     * @param point3D the point 3 d
+     * @return java . awt . point
      */
     public static java.awt.Point convertPoint(Point3D point3D) {
         double x3d = point3D.getXCoordinate() * scale;
@@ -45,17 +48,16 @@ public class Point3DConverter {
         double[] newVal = scale(x3d, y3d, depth);
         int x2d = (int) (SCREEN_WIDTH / 2 + newVal[0]);
         int y2d = (int) (SCREEN_HEIGHT / 2 - newVal[1]);
-        java.awt.Point point2D = new java.awt.Point(x2d, y2d);
-        return point2D;
+        return new java.awt.Point(x2d, y2d);
     }
 
     /**
      * Returns an array of double variables which represent a scale.
      *
-     * @param x3d
-     * @param y3d
-     * @param depth
-     * @return
+     * @param x3d   the x value
+     * @param y3d   the y value
+     * @param depth the depth of the scene
+     * @return an array containing the x,y point coordinates
      */
     private static double[] scale(double x3d, double y3d, double depth) {
         double dist = Math.sqrt(x3d * x3d + y3d * y3d);
@@ -72,9 +74,9 @@ public class Point3DConverter {
     /**
      * Rotates a point around the X axis.
      *
-     * @param p
-     * @param CW
-     * @param degrees
+     * @param p       the p
+     * @param CW      the cw
+     * @param degrees the degrees
      */
     public static void rotateAxisX(final Point3D p, boolean CW, double degrees) {
         if (degrees == 0) return;
@@ -88,9 +90,9 @@ public class Point3DConverter {
     /**
      * Rotates a point around the Y axis.
      *
-     * @param p
-     * @param CW
-     * @param degrees
+     * @param p       the p
+     * @param CW      the cw
+     * @param degrees the degrees
      */
     public static void rotateAxisY(Point3D p, boolean CW, double degrees) {
         if (degrees == 0) return;
@@ -104,9 +106,9 @@ public class Point3DConverter {
     /**
      * Rotates a point around the Z axis.
      *
-     * @param p
-     * @param CW
-     * @param degrees
+     * @param p       the p
+     * @param CW      the cw
+     * @param degrees the degrees
      */
     public static void rotateAxisZ(Point3D p, boolean CW, double degrees) {
         if (degrees == 0) return;
