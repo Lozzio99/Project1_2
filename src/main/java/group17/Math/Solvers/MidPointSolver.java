@@ -1,12 +1,12 @@
 package group17.Math.Solvers;
 
 import group17.Interfaces.*;
-import group17.Math.Utils.Vector3D;
-import group17.System.CollisionDetector;
-import group17.System.RateOfChange;
+import group17.Math.Lib.Vector3D;
+import group17.System.State.RateOfChange;
+import group17.Utils.CollisionDetector;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
 

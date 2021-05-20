@@ -11,8 +11,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 
 public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
@@ -212,4 +212,6 @@ public class UserDialogWindow {
     public ErrorWindow getErrorWindow() {
         return errorWindow;
     }
+
+
 }

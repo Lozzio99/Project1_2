@@ -10,15 +10,15 @@ import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Math.Solvers.StandardVerletSolver;
 import group17.System.Bodies.CelestialBody;
-import group17.System.ErrorData;
-import group17.System.ErrorReport;
 import group17.System.SolarSystem;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorReport;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {

@@ -1,4 +1,4 @@
-package group17.System;
+package group17.Utils;
 
 import group17.Interfaces.Vector3dInterface;
 import org.jetbrains.annotations.Contract;
@@ -6,10 +6,10 @@ import org.jetbrains.annotations.Contract;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.DEBUG;
-import static group17.Config.ORIGINAL_DATA;
 import static group17.Main.simulation;
 import static group17.Main.userDialog;
+import static group17.Utils.Config.DEBUG;
+import static group17.Utils.Config.ORIGINAL_DATA;
 
 public class ErrorReport implements Runnable {
 

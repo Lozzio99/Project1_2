@@ -4,12 +4,13 @@ import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Solvers.*;
-import group17.System.ErrorData;
-import group17.System.ErrorReport;
+import group17.Simulation.Rocket.RocketSchedule;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorReport;
 
-import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 
 public class SimulationUpdater implements UpdaterInterface {
 
@@ -73,6 +74,7 @@ public class SimulationUpdater implements UpdaterInterface {
              * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
              * better to do that in system (in main thread from executor) and then pass it in here once solved
              */
+
             simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), CURRENT_TIME, simulation.getSystem().systemState(), STEP_SIZE));
             CURRENT_TIME += STEP_SIZE;
             if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)

@@ -1,14 +1,11 @@
 package group17.Math;
 
-import group17.Interfaces.Function;
 import group17.Interfaces.NewtRaphFunction;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.PartialDerivative;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.PartialDerivative;
+import group17.Math.Lib.Vector3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

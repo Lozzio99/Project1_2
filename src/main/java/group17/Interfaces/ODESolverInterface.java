@@ -10,7 +10,7 @@ package group17.Interfaces;
 import group17.Math.Solvers.EulerSolver;
 import group17.Math.Solvers.MaxCPUSolver;
 
-import static group17.Config.STEP_SIZE;
+import static group17.Utils.Config.STEP_SIZE;
 
 
 /*

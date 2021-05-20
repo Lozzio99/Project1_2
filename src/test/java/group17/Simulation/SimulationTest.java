@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static group17.Config.*;
+import static group17.Utils.Config.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimulationTest {

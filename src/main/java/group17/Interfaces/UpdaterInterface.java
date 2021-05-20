@@ -1,6 +1,6 @@
 package group17.Interfaces;
 
-import group17.Simulation.RocketSchedule;
+import group17.Simulation.Rocket.RocketSchedule;
 
 public interface UpdaterInterface extends Runnable {
 

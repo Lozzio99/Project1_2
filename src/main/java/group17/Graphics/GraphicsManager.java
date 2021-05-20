@@ -12,9 +12,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.Config.DEBUG;
-import static group17.Config.FPS;
 import static group17.Main.simulation;
+import static group17.Utils.Config.DEBUG;
+import static group17.Utils.Config.FPS;
 
 
 public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {

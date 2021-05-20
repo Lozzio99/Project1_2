@@ -1,7 +1,7 @@
 package group17.Graphics.Assist;
 
 import group17.Interfaces.Function;
-import group17.Math.Utils.Point;
+import group17.Math.Lib.Point;
 
 import javax.swing.*;
 import java.awt.*;

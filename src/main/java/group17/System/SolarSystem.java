@@ -2,20 +2,21 @@ package group17.System;
 
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.SystemInterface;
-import group17.Simulation.RocketSimulator;
+import group17.Simulation.Rocket.RocketSimulator;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Bodies.Planet;
 import group17.System.Bodies.Satellite;
 import group17.System.Bodies.Star;
+import group17.System.State.SystemState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.INSERT_ROCKET;
-import static group17.Config.LAUNCH_DATE;
 import static group17.System.Bodies.Planet.PlanetsEnum.*;
 import static group17.System.Bodies.Satellite.SatellitesEnum.MOON;
 import static group17.System.Bodies.Satellite.SatellitesEnum.TITAN;
+import static group17.Utils.Config.INSERT_ROCKET;
+import static group17.Utils.Config.LAUNCH_DATE;
 
 public class SolarSystem implements SystemInterface {
 

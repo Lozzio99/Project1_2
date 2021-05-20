@@ -1,10 +1,10 @@
 package group17.Math;
 
 import group17.Interfaces.StateInterface;
+import group17.Math.Lib.FreeFallFunction;
+import group17.Math.Lib.Vector3D;
 import group17.Math.Solvers.StandardVerletSolver;
-import group17.Math.Utils.FreeFallFunction;
-import group17.Math.Utils.Vector3D;
-import group17.System.SystemState;
+import group17.System.State.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,10 +1,11 @@
 package group17.System;
 
+import group17.Utils.ErrorReport;
 import org.jetbrains.annotations.Contract;
 
-import static group17.Config.ERROR_EVALUATION;
-import static group17.Config.REPORT;
 import static group17.Main.simulation;
+import static group17.Utils.Config.ERROR_EVALUATION;
+import static group17.Utils.Config.REPORT;
 
 public class Clock {
 
@@ -230,4 +231,12 @@ public class Clock {
         return false;
     }
 
+    public static class Date {
+        public double sec;
+        public double min;
+        public double hours;
+        public double days;
+        public double months;
+        public double years;
+    }
 }

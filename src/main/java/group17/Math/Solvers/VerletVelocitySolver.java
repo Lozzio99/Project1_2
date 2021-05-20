@@ -2,13 +2,13 @@ package group17.Math.Solvers;
 
 import group17.Interfaces.*;
 import group17.Main;
-import group17.Math.Utils.Vector3D;
-import group17.System.CollisionDetector;
-import group17.System.RateOfChange;
+import group17.Math.Lib.Vector3D;
+import group17.System.State.RateOfChange;
+import group17.Utils.CollisionDetector;
 import org.jetbrains.annotations.Contract;
 
-import static group17.Config.G;
 import static group17.Main.simulation;
+import static group17.Utils.Config.G;
 import static java.lang.Double.NaN;
 
 /**

@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static group17.Config.ERROR_EVALUATION;
-import static group17.Config.LAUNCH_DATE;
+import static group17.Utils.Config.ERROR_EVALUATION;
+import static group17.Utils.Config.LAUNCH_DATE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SolarSystemTest {

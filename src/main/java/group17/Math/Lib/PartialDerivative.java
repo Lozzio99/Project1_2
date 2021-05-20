@@ -1,6 +1,5 @@
-package group17.Math.Utils;
+package group17.Math.Lib;
 
-import group17.Interfaces.Function;
 import group17.Interfaces.NewtRaphFunction;
 import group17.Interfaces.Vector3dInterface;
 

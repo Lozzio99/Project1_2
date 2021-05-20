@@ -1,8 +1,8 @@
 package group17.Graphics.Scenes;
 
 
-import group17.Math.Utils.Point3D;
-import group17.Math.Utils.Point3DConverter;
+import group17.Math.Lib.Point3D;
+import group17.Math.Lib.Point3DConverter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -11,9 +11,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static group17.Config.PARTICLES_SIMULATION;
-import static group17.Config.SIMULATION_LEVEL;
 import static group17.Main.simulation;
+import static group17.Utils.Config.PARTICLES_SIMULATION;
+import static group17.Utils.Config.SIMULATION_LEVEL;
 
 /**
  * Abstract class to Render a scene

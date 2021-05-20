@@ -1,7 +1,7 @@
 package group17.Interfaces;
 
 
-import group17.Simulation.RocketSimulator;
+import group17.Simulation.Rocket.RocketSimulator;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Clock;
 
