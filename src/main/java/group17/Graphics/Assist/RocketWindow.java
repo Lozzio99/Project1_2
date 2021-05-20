@@ -3,6 +3,9 @@ package group17.Graphics.Assist;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Rocket window.
+ */
 public class RocketWindow extends JPanel {
     private final Color[] fuelState = new Color[]{
             new Color(117, 255, 97),
@@ -12,6 +15,9 @@ public class RocketWindow extends JPanel {
     };
     private int baseFuelConsumed = 0, baseFuel = 0, lightFuelConsumed = 0, lightFuel = 0;
 
+    /**
+     * Instantiates a new Rocket window.
+     */
     public RocketWindow() {
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rocket Info"));
         JButton j = new JButton("update base");
@@ -33,6 +39,9 @@ public class RocketWindow extends JPanel {
         });
     }
 
+    /**
+     * Update base fuel.
+     */
     public void updateBaseFuel() {
         if (baseFuel == 4)
             return;
@@ -40,6 +49,9 @@ public class RocketWindow extends JPanel {
         baseFuel++;
     }
 
+    /**
+     * Update light fuel.
+     */
     public void updateLightFuel() {
         if (lightFuel == 4)
             return;
@@ -47,6 +59,9 @@ public class RocketWindow extends JPanel {
         lightFuel++;
     }
 
+    /**
+     * Reset.
+     */
     public void reset() {
         baseFuel = lightFuelConsumed = baseFuelConsumed = lightFuel = 0;
     }
@@ -102,6 +117,13 @@ public class RocketWindow extends JPanel {
         g.fill(p);
     }
 
+    /**
+     * Fill shape.
+     *
+     * @param g  the g
+     * @param xs the xs
+     * @param ys the ys
+     */
     public void fillShape(Graphics2D g, int[] xs, int[] ys) {
         Polygon p = new Polygon();
         for (int i = 0; i < xs.length; i++) {

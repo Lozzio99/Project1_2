@@ -11,19 +11,33 @@ import static group17.Main.userDialog;
 import static group17.Utils.Config.DEBUG;
 import static group17.Utils.Config.ORIGINAL_DATA;
 
+/**
+ * The type Error report.
+ */
 public class ErrorReport implements Runnable {
 
+    /**
+     * The constant monthIndex.
+     */
     public static int monthIndex = -1;
     private final ErrorData state;
     private List<Vector3dInterface> absPosition, absVelocity;
     private List<Vector3dInterface> relPosition, relVelocity;
 
+    /**
+     * Instantiates a new Error report.
+     *
+     * @param state the state
+     */
     @Contract(pure = true)
     public ErrorReport(final ErrorData state) {
         //make a copy of the references
         this.state = state;
     }
 
+    /**
+     * Start.
+     */
     public void start() {
         if (monthIndex < 13) new Thread(this, "Error Log").start();
     }

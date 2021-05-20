@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import static group17.Main.simulation;
 import static group17.Utils.Config.PARTICLES_SIMULATION;
@@ -28,19 +29,97 @@ import static group17.Utils.Config.SIMULATION_LEVEL;
  * to the {@link #update()} and a consequent call to  {@link #resetMouse()}
  */
 public abstract class Scene extends JPanel {
+    /**
+     * The constant mouseSensitivity.
+     */
     protected final static double mouseSensitivity = 16;
+    /**
+     * The unit size for the axis
+     */
     private final static int UNIT_SIZE = 1410;//*(int) scale;
+    /**
+     * The constant mouse.
+     */
     public static MouseInput mouse;
-    protected static int initialX, initialY, x, y, xDif, yDif, deltaX, deltaY, totalXDif, totalYDif;
+    /**
+     * The constant initialX.
+     */
+    protected static int initialX,
+    /**
+     * The Initial y.
+     */
+    initialY,
+    /**
+     * The X.
+     */
+    x,
+    /**
+     * The Y.
+     */
+    y,
+    /**
+     * The X dif.
+     */
+    xDif,
+    /**
+     * The Y dif.
+     */
+    yDif,
+    /**
+     * The Delta x.
+     */
+    deltaX,
+    /**
+     * The Delta y.
+     */
+    deltaY,
+    /**
+     * The Total x dif.
+     */
+    totalXDif,
+    /**
+     * The Total y dif.
+     */
+    totalYDif;
+    /**
+     * The constant scale.
+     */
     protected static double scale = 3e8;
+    /**
+     * The Radius mag.
+     */
     protected double radiusMag = 4e2;
+    /**
+     * The Left.
+     */
     protected Point3D left = new Point3D(-UNIT_SIZE, 0, 0),
-            right = new Point3D(UNIT_SIZE, 0, 0),
-            top = new Point3D(0, UNIT_SIZE, 0),
-            bottom = new Point3D(0, -UNIT_SIZE, 0),
-            front = new Point3D(0, 0, UNIT_SIZE),
-            rear = new Point3D(0, 0, -UNIT_SIZE);
+    /**
+     * The Right.
+     */
+    right = new Point3D(UNIT_SIZE, 0, 0),
+    /**
+     * The Top.
+     */
+    top = new Point3D(0, UNIT_SIZE, 0),
+    /**
+     * The Bottom.
+     */
+    bottom = new Point3D(0, -UNIT_SIZE, 0),
+    /**
+     * The Front.
+     */
+    front = new Point3D(0, 0, UNIT_SIZE),
+    /**
+     * The Rear.
+     */
+    rear = new Point3D(0, 0, -UNIT_SIZE);
+    /**
+     * The background image
+     */
     private BufferedImage image;
+    /**
+     * The Graphics object
+     */
     private Graphics2D g;
     private boolean IMAGE_FAILED = false;
 
@@ -93,11 +172,10 @@ public abstract class Scene extends JPanel {
 
     /**
      * Loads the background image from resources
-     * todo set throw exception
      */
     void create() {
         try {
-            File f = new File(Scene.class.getClassLoader().getResource("milky-way4k.jpg").getFile());
+            File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("milky-way4k.jpg")).getFile());
             image = ImageIO.read(f);
         } catch (NullPointerException | IOException e) {
             IMAGE_FAILED = true;
@@ -107,6 +185,9 @@ public abstract class Scene extends JPanel {
     }
 
 
+    /**
+     * Init.
+     */
     public abstract void init();
 
 
@@ -114,7 +195,7 @@ public abstract class Scene extends JPanel {
      * updates the mouse tracking variables to update the bodies if
      * any mouse event was generated
      *
-     * @see SimulationScene#updateBodies()
+     * @see SimulationScene#updateBodies() SimulationScene#updateBodies()SimulationScene#updateBodies()SimulationScene#updateBodies()
      */
     public void update() {
         x = mouse.getX();
@@ -146,7 +227,7 @@ public abstract class Scene extends JPanel {
     /**
      * add the Mouse listener object to the scene
      *
-     * @param mouse
+     * @param mouse the mouse
      */
     public void addMouseControl(MouseInput mouse) {
         Scene.mouse = mouse;
@@ -221,11 +302,7 @@ public abstract class Scene extends JPanel {
         /**
          * Renders the system state bodies
          */
-        SIMULATION_SCENE,
-        /**
-         * TODO: 19/04/2021 implement this back
-         */
-        TRAJECTORIES
+        SIMULATION_SCENE
     }
 
 }

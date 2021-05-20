@@ -11,13 +11,25 @@ import static group17.Utils.Config.*;
 import static java.lang.Double.NaN;
 
 
+/**
+ * The type Euler solver.
+ */
 public class EulerSolver implements ODESolverInterface {
 
+    /**
+     * The constant currTime.
+     */
     public static double currTime = 0;
+    /**
+     * The constant endTime.
+     */
     public static double endTime = NaN;
     private boolean checked;
 
-    //p(x,y,z) //displacement
+    /**
+     * The Single core f.
+     */
+//p(x,y,z) //displacement
     //v(x,y,z) = p'(x,y,z)   //velocity
     //a(x,y,z) = dv(x,y,z) = dp(x,y,z)   //acceleration
     //           dt          dt

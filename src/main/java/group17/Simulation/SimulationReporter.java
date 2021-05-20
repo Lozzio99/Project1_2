@@ -10,6 +10,9 @@ import java.util.Map.Entry;
 
 import static group17.Utils.Config.*;
 
+/**
+ * The type Simulation reporter.
+ */
 public class SimulationReporter implements ReporterInterface, Thread.UncaughtExceptionHandler {
 
     private Thread thread;

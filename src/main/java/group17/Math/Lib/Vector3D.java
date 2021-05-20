@@ -8,18 +8,43 @@ import org.jetbrains.annotations.NotNull;
 import static java.lang.StrictMath.*;
 
 
+/**
+ * The type Vector 3 d.
+ */
 public class Vector3D implements Vector3dInterface {
 
 
+    /**
+     * The constant epsilon.
+     */
     /* TODO : think if we need to create new objects or if we can just modify the current vector */
     public static double epsilon = 0;
-    protected double x, y, z;
+    /**
+     * The X.
+     */
+    protected double x, /**
+     * The Y.
+     */
+    y, /**
+     * The Z.
+     */
+    z;
 
+    /**
+     * Instantiates a new Vector 3 d.
+     */
     public Vector3D() {
         this.x = this.y = this.z = 0;
     }
 
 
+    /**
+     * Instantiates a new Vector 3 d.
+     *
+     * @param x the x
+     * @param y the y
+     * @param z the z
+     */
     public Vector3D(double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -27,12 +52,23 @@ public class Vector3D implements Vector3dInterface {
     }
 
 
+    /**
+     * Instantiates a new Vector 3 d.
+     *
+     * @param p the p
+     */
     public Vector3D(Point3D p) {
         this.x = p.x;
         this.y = p.y;
         this.z = p.z;
     }
 
+    /**
+     * Instantiates a new Vector 3 d.
+     *
+     * @param p1 the p 1
+     * @param p2 the p 2
+     */
     public Vector3D(Point3D p1, Point3D p2) {
         this.x = p2.x - p1.x;
         this.y = p2.y - p1.y;
@@ -42,9 +78,9 @@ public class Vector3D implements Vector3dInterface {
     /**
      * Gets the distance between two vectors.
      *
-     * @param first
-     * @param other
-     * @return
+     * @param first the first
+     * @param other the other
+     * @return double double
      */
     public static double dist(Vector3dInterface first, Vector3dInterface other) {
         double v1 = pow(other.getX() - first.getX(), 2);
@@ -56,9 +92,9 @@ public class Vector3D implements Vector3dInterface {
     /**
      * Gets the unit vector between two vectors.
      *
-     * @param from
-     * @param to
-     * @return
+     * @param from the from
+     * @param to   the to
+     * @return vector 3 d interface
      */
     public static Vector3dInterface unitVectorDistance(Vector3dInterface from, Vector3dInterface to) {
         return normalize(new Vector3D(
@@ -70,9 +106,9 @@ public class Vector3D implements Vector3dInterface {
     /**
      * Returns the dot product of two vectors.
      *
-     * @param v1
-     * @param v2
-     * @return
+     * @param v1 the v 1
+     * @param v2 the v 2
+     * @return double double
      */
     public static double dot(Vector3dInterface v1, Vector3dInterface v2) {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY() + v1.getZ() * v2.getZ();
@@ -81,9 +117,9 @@ public class Vector3D implements Vector3dInterface {
     /**
      * Returns the cross of two vectors.
      *
-     * @param v1
-     * @param v2
-     * @return
+     * @param v1 the v 1
+     * @param v2 the v 2
+     * @return vector 3 d interface
      */
     @Contract("_, _ -> new")
     public static @NotNull Vector3dInterface cross(Vector3dInterface v1, Vector3dInterface v2) {
@@ -96,8 +132,8 @@ public class Vector3D implements Vector3dInterface {
     /**
      * Normalises the vector.
      *
-     * @param v
-     * @return
+     * @param v the v
+     * @return vector 3 d interface
      */
     public static Vector3dInterface normalize(Vector3dInterface v) {
         Vector3dInterface v2 = new Vector3D();
@@ -212,17 +248,16 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public String toString() {
-        String s = "(" +
+        return "(" +
                 this.getX() + "," +
                 this.getY() + "," +
                 this.getZ() + ")";
-        return s;
     }
 
     /**
      * Return a point3D from a Vector
      *
-     * @return
+     * @return a new Point3D object
      */
     @Override
     public Point3D fromVector() {

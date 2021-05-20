@@ -11,9 +11,18 @@ import static group17.Main.simulation;
 import static group17.Utils.Config.G;
 import static java.lang.Double.NaN;
 
+/**
+ * The type Standard verlet solver.
+ */
 public class StandardVerletSolver implements ODESolverInterface {
 
+    /**
+     * The constant currTime.
+     */
     public static double currTime = 0;
+    /**
+     * The constant endTime.
+     */
     public static double endTime = NaN;
     private boolean checked;
     private final boolean oldF = true;
@@ -22,6 +31,9 @@ public class StandardVerletSolver implements ODESolverInterface {
     private ODEFunctionInterface singleCoreF;
 
 
+    /**
+     * Instantiates a new Standard verlet solver.
+     */
     @Contract(pure = true)
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
@@ -102,6 +114,9 @@ public class StandardVerletSolver implements ODESolverInterface {
         this.singleCoreF = f;
     }
 
+    /**
+     * Sets first.
+     */
     public void setFirst() {
         this.first = true;
     }

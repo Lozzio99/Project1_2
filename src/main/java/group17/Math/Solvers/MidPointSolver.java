@@ -10,6 +10,9 @@ import static group17.Utils.Config.*;
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
 
+/**
+ * The type Mid point solver.
+ */
 public class MidPointSolver implements ODESolverInterface {
     private boolean checked;
     private ODEFunctionInterface singleCoreF = (t, y) ->

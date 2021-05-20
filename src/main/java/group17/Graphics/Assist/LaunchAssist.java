@@ -3,8 +3,14 @@ package group17.Graphics.Assist;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The type Launch assist.
+ */
 public class LaunchAssist extends AbstractLaunchAssist {
 
+    /**
+     * Instantiates a new Launch assist.
+     */
     public LaunchAssist() {
         super();
     }
@@ -39,6 +45,11 @@ public class LaunchAssist extends AbstractLaunchAssist {
     }
 
 
+    /**
+     * Step size panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel stepSizePanel() {
         JPanel inputVarPanel1 = new JPanel();
         inputVarPanel1.setLayout(new GridLayout(1, 2));
@@ -47,6 +58,11 @@ public class LaunchAssist extends AbstractLaunchAssist {
         return inputVarPanel1;
     }
 
+    /**
+     * Mass panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel massPanel() {
         JPanel inputVarPanel3 = new JPanel();
         inputVarPanel3.setLayout(new GridLayout(1, 2));
@@ -55,6 +71,11 @@ public class LaunchAssist extends AbstractLaunchAssist {
         return inputVarPanel3;
     }
 
+    /**
+     * Launch velocity panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel launchVelocityPanel() {
         JPanel inputVarPanel2 = new JPanel();
         inputVarPanel2.setLayout(new GridLayout(3, 3));
@@ -76,6 +97,11 @@ public class LaunchAssist extends AbstractLaunchAssist {
         return inputVarPanel2;
     }
 
+    /**
+     * Launch position panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel launchPositionPanel() {
         JPanel inputVectorPanel = new JPanel();
         inputVectorPanel.setLayout(new GridLayout(1, 4));
@@ -87,6 +113,11 @@ public class LaunchAssist extends AbstractLaunchAssist {
     }
 
 
+    /**
+     * Launch date panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel launchDatePanel() {
         JPanel inputDatePanel = new JPanel();
         inputDatePanel.setLayout(new GridLayout(1, 4));
@@ -97,6 +128,11 @@ public class LaunchAssist extends AbstractLaunchAssist {
         return (inputDatePanel);
     }
 
+    /**
+     * Launch time panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel launchTimePanel() {
         JPanel inputTimePanel = new JPanel();
         inputTimePanel.setLayout(new GridLayout(1, 4));
@@ -108,6 +144,11 @@ public class LaunchAssist extends AbstractLaunchAssist {
     }
 
 
+    /**
+     * Buttons panel j panel.
+     *
+     * @return the j panel
+     */
     public JPanel buttonsPanel() {
         JPanel btnPanel = new JPanel();
         btnPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));

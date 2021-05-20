@@ -11,16 +11,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * The type System state.
+ */
 public class SystemState implements StateInterface {
 
+    /**
+     * The Positions.
+     */
     List<Vector3dInterface> positions;
+    /**
+     * The Rate of change.
+     */
     RateInterface rateOfChange;
 
+    /**
+     * Instantiates a new System state.
+     */
     public SystemState() {
         this.positions = new ArrayList<>();
         this.rateOfChange = new RateOfChange();
     }
 
+    /**
+     * Instantiates a new System state.
+     *
+     * @param copy the copy
+     */
     public SystemState(StateInterface copy) {
         this.positions = new ArrayList<>();
         this.rateOfChange = new RateOfChange();
@@ -30,12 +47,24 @@ public class SystemState implements StateInterface {
         }
     }
 
+    /**
+     * Instantiates a new System state.
+     *
+     * @param copy the copy
+     * @param rate the rate
+     */
     public SystemState(StateInterface copy, RateInterface rate) {
         this.positions = copy.getPositions();
         this.rateOfChange = new RateOfChange();
         this.rateOfChange.setVelocities(rate.getVelocities());
     }
 
+    /**
+     * Instantiates a new System state.
+     *
+     * @param positions  the positions
+     * @param velocities the velocities
+     */
     @Contract(pure = true)
     public SystemState(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
         this.positions = positions;

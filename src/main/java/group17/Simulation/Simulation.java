@@ -21,6 +21,9 @@ import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
+/**
+ * The type Simulation.
+ */
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;

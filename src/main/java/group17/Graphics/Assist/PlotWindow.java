@@ -10,17 +10,34 @@ import java.util.Arrays;
 
 import static java.lang.StrictMath.sin;
 
+/**
+ * The type Plot window.
+ */
 public class PlotWindow extends JPanel {
 
-    GraphPane leftGraph, rightGraph;
+    /**
+     * The Left graph.
+     */
+    GraphPane leftGraph, /**
+     * The Right graph.
+     */
+    rightGraph;
 
 
+    /**
+     * Instantiates a new Plot window.
+     */
     public PlotWindow() {
         this.setLayout(new GridLayout(1, 2, 100, 10));
         this.setBorder(BorderFactory.createEmptyBorder(10, 15, 20, 15));
     }
 
 
+    /**
+     * Init plot window.
+     *
+     * @return the plot window
+     */
     public PlotWindow init() {
         this.add(this.leftGraph = new GraphPane());
         this.add(this.rightGraph = new GraphPane());
@@ -28,6 +45,11 @@ public class PlotWindow extends JPanel {
         return this;
     }
 
+    /**
+     * Test plot window.
+     *
+     * @return the plot window
+     */
     public PlotWindow test() {
         Function<Double> f = x -> 80 * sin(x / 17);
         double[] xs = new double[1000], ys = new double[1000];
@@ -42,6 +64,13 @@ public class PlotWindow extends JPanel {
         return this;
     }
 
+    /**
+     * Evaluate.
+     *
+     * @param xs          the xs
+     * @param ys          the ys
+     * @param left0right1 the left 0 right 1
+     */
     public void evaluate(double[] xs, double[] ys, int left0right1) {
         switch (left0right1) {
             case 0 -> {
@@ -56,8 +85,17 @@ public class PlotWindow extends JPanel {
     }
 
 
+    /**
+     * The type Graph pane.
+     */
     public static class GraphPane extends JPanel {
+        /**
+         * The constant graphSize.
+         */
         public static Dimension graphSize = new Dimension(450, 450);
+        /**
+         * The constant ORIGIN.
+         */
         public static Point ORIGIN;
         private final boolean plot2 = false;
         private final boolean drawAxis = true;
@@ -65,6 +103,9 @@ public class PlotWindow extends JPanel {
         private Line2D.Double xAxis, yAxis;
         private boolean calculated = false;
 
+        /**
+         * Instantiates a new Graph pane.
+         */
         public GraphPane() {
             this.setSize(graphSize);
             Point.setScreen(graphSize);
@@ -72,6 +113,12 @@ public class PlotWindow extends JPanel {
             if (drawAxis) this.makeAxis();
         }
 
+        /**
+         * Sorting for drawing.
+         *
+         * @param xs the xs
+         * @param ys the ys
+         */
         public static void sortingForDrawing(double[] xs, double[] ys) {
             int n = xs.length;
             for (int j = 1; j < n; j++) {
@@ -93,6 +140,13 @@ public class PlotWindow extends JPanel {
             this.yAxis = new Line2D.Double(py.getX(), py.getY(), py1.getX(), py1.getY());
         }
 
+        /**
+         * Plot graph pane.
+         *
+         * @param xs the xs
+         * @param ys the ys
+         * @return the graph pane
+         */
         public GraphPane plot(double[] xs, double[] ys) {
             calculated = false;
             if (xs.length != ys.length)

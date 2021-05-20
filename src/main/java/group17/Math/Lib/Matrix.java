@@ -5,19 +5,33 @@ import group17.Interfaces.Vector3dInterface;
 import java.io.Serializable;
 import java.util.Random;
 
+/**
+ * The type Matrix.
+ */
 public class Matrix implements Serializable {
+    /**
+     * The P.
+     */
     static int[] p = new int[]{3, 5, 7, 11, 13, 17, 23, 29, 31, 37};
     private final transient long SERIAL_ID = new Random().nextLong() * p[new Random().nextInt(p.length - 1)];
+    /**
+     * The N rows.
+     */
     public int n_rows;
+    /**
+     * The N cols.
+     */
     public int n_cols;
+    /**
+     * The Matrix.
+     */
     public double[][] matrix;
 
     /**
      * Constructor with null matrix
      *
      * @param num_rows the number of rows
-     * @param num_cols the number of columns
-     * @return a null matrix with given dimensions
+     * @param num_cols the number of columns Construct a null matrix with given dimensions
      */
     public Matrix(int num_rows, int num_cols) {
         this.n_cols = num_cols;
@@ -28,8 +42,7 @@ public class Matrix implements Serializable {
     /**
      * Constructor from array
      *
-     * @param input the array resulting in a row
-     * @return a single column matrix
+     * @param input the array resulting in a row Construct a single column matrix
      */
     public Matrix(double[] input) {
         this.matrix = clone(input);
@@ -40,8 +53,7 @@ public class Matrix implements Serializable {
     /**
      * Constructor from array
      *
-     * @param matrix the double dimensions array
-     * @return a matrix with the given values
+     * @param matrix the double dimensions array Construct a matrix with the given values
      */
     public Matrix(double[][] matrix) {
         this.n_rows = matrix.length;
@@ -230,6 +242,13 @@ public class Matrix implements Serializable {
         return new Matrix(res);
     }
 
+    /**
+     * Div matrix.
+     *
+     * @param m the m
+     * @param v the v
+     * @return the matrix
+     */
     public static Matrix div(Matrix m, Matrix v) {
         double[][] res = new double[v.n_rows][v.n_cols];
         for (int i = 0; i < m.getMatrix().length; i++) {
@@ -303,8 +322,8 @@ public class Matrix implements Serializable {
     /**
      * static method to perform a matrix addition
      *
-     * @param n the left side matrix
      * @param m the right side matrix
+     * @param n the left side matrix
      * @return a 2-dim array after the addition
      */
     public static double[][] add(double[][] m, double[][] n) {
@@ -325,8 +344,8 @@ public class Matrix implements Serializable {
      * static method that combines @method dfunc and map
      *
      * @param m the matrix that comes activated and derivated
+     * @return the matrix
      */
-
     public static Matrix ddfunc(Matrix m) {
         double[][] res = new double[m.n_rows][m.n_cols];
         for (int i = 0; i < m.n_rows; i++) {
@@ -358,12 +377,16 @@ public class Matrix implements Serializable {
         return new Matrix(res);
     }
 
+    /**
+     * Invert double [ ] [ ].
+     *
+     * @param in the in
+     * @return the double [ ] [ ]
+     */
     public static double[][] invert(double[][] in) {
         double[][] a = new double[in.length][in[0].length];
         for (int i = 0; i < in.length; i++) {
-            for (int j = 0; j < in[0].length; j++) {
-                a[i][j] = in[i][j];
-            }
+            System.arraycopy(in[i], 0, a[i], 0, in[0].length);
         }
         int n = a.length;
         double[][] x = new double[n][n];
@@ -396,6 +419,12 @@ public class Matrix implements Serializable {
         return x;
     }
 
+    /**
+     * Gaussian.
+     *
+     * @param a     the a
+     * @param index the index
+     */
     public static void gaussian(double[][] a, int[] index) {
         int n = index.length;
         double[] c = new double[n];
@@ -569,6 +598,11 @@ public class Matrix implements Serializable {
         this.setMatrix(res);
     }
 
+    /**
+     * Determinant 3 by 3 double.
+     *
+     * @return the double
+     */
     public double determinant3by3() {
         double a = this.matrix[0][0] * this.matrix[1][1] * this.matrix[2][2];
         double b = this.matrix[0][1] * this.matrix[1][2] * this.matrix[2][0];

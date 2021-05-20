@@ -7,18 +7,45 @@ import java.awt.*;
 
 import static group17.Utils.Config.*;
 
+/**
+ * The type Main menu.
+ */
 @SuppressWarnings("rawtypes")
 public abstract class MainMenu {
-    // Variables
+    /**
+     * The constant SIMULATION_TYPES.
+     */
+// Variables
     static final String[] SIMULATION_TYPES = {"Rocket Simulation", "Pendulum Simulation", "Numerical Simulation", "Particles Simulation", "Solar System Simulation"};
+    /**
+     * The Cpu levels.
+     */
     static final String[] CPU_LEVELS = {"Min CPU", "Max CPU"};
+    /**
+     * The Solvers.
+     */
     static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)", "Midpoint"};
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 600;
+    /**
+     * The Current solver.
+     */
     static protected int currentSolver = DEFAULT_SOLVER;
-    static JFrame frame;
+    /**
+     * The Current simulation type.
+     */
     static protected int currentSimulationType = SIMULATION_LEVEL;
+    /**
+     * The Current cpu level.
+     */
     static protected int currentCPULevel = CPU_LEVEL;
+    /**
+     * The Frame.
+     */
+    static JFrame frame;
+    /**
+     * The Title label.
+     */
     JLabel titleLabel;
 
 
@@ -31,6 +58,9 @@ public abstract class MainMenu {
     }
 
 
+    /**
+     * Sets frame.
+     */
     public void setFrame() {
         frame = new JFrame("Project 1.2 - Group 17");
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -44,6 +74,12 @@ public abstract class MainMenu {
         frame.setVisible(true);
     }
 
+    /**
+     * Config frame component.
+     *
+     * @param controlPanel the control panel
+     * @return the component
+     */
     public Component configFrame(Container controlPanel) {
         //frame.setLocationRelativeTo(null);
 
@@ -167,6 +203,9 @@ public abstract class MainMenu {
         return controlPanel;
     }
 
+    /**
+     * Start simulation.
+     */
     public abstract void startSimulation();
 }
 

@@ -11,12 +11,22 @@ import static group17.Utils.Config.CHECK_COLLISIONS;
 import static group17.Utils.Config.REPORT;
 
 
+/**
+ * The type Collision detector.
+ */
 public class CollisionDetector {
 
     private static boolean collision;
     private static String output;
 
 
+    /**
+     * Check collided.
+     *
+     * @param a     the a
+     * @param b     the b
+     * @param distm the distm
+     */
     public static void checkCollided(CelestialBody a, CelestialBody b, double distm) {
         if (!CHECK_COLLISIONS) return;
         collision = false;
@@ -40,6 +50,13 @@ public class CollisionDetector {
             simulation.getReporter().report("COLLISION " + output);
     }
 
+    /**
+     * Check collisions system interface.
+     *
+     * @param system   the system
+     * @param reporter the reporter
+     * @return the system interface
+     */
     @Contract("_, _ -> param1")
     public static SystemInterface checkCollisions(final @NotNull SystemInterface system, ReporterInterface reporter) {
 

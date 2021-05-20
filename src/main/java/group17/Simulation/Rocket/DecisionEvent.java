@@ -7,7 +7,15 @@ import org.jetbrains.annotations.Contract;
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.round;
 
+/**
+ * The type Decision event.
+ */
 public class DecisionEvent {
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         Vector3dInterface v1, av1;
         System.out.println((v1 = new Vector3D(9e-10, 9e-10, 9e-10)).hashCode());
@@ -19,13 +27,26 @@ public class DecisionEvent {
         System.out.println(av1.equals(new Vector3D()));   // this is the cool thing here
     }
 
+    /**
+     * The type Approx v 3 d.
+     */
     public static class ApproxV3D extends Vector3D {
+        /**
+         * The constant epsilon.
+         */
         public static double epsilon;
 
         static {
             ApproxV3D.epsilon = 1e-8;  //override var
         }
 
+        /**
+         * Instantiates a new Approx v 3 d.
+         *
+         * @param x the x
+         * @param y the y
+         * @param z the z
+         */
         public ApproxV3D(double x, double y, double z) {
             super(x, y, z);
         }
