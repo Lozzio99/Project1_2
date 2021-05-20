@@ -2,14 +2,12 @@ package group17.Math.Solvers;
 
 
 import group17.Interfaces.*;
-import group17.Main;
 import group17.Math.Lib.Vector3D;
 import group17.System.State.RateOfChange;
 import group17.Utils.CollisionDetector;
 
 import static group17.Main.simulation;
-import static group17.Utils.Config.G;
-import static group17.Utils.Config.STEP_SIZE;
+import static group17.Utils.Config.*;
 import static java.lang.Double.NaN;
 
 
@@ -34,7 +32,7 @@ public class EulerSolver implements ODESolverInterface {
                     double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
                     acc = y.getPositions().get(k).sub(acc); // Get the force vector
                     double den = Math.sqrt(squareDist);
-                    if (!checked) {
+                    if (!checked && CHECK_COLLISIONS) {
                         CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
                                 simulation.getSystem().getCelestialBodies().get(k), den);
                     }
@@ -45,7 +43,7 @@ public class EulerSolver implements ODESolverInterface {
                     the same in all the system
                 */
                     acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                    acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
+                    acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
                     totalAcc = totalAcc.addMul(STEP_SIZE, acc);
                     // p = h*acc(derivative of velocity)
                 }
