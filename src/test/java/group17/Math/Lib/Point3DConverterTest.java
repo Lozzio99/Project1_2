@@ -16,6 +16,7 @@ class Point3DConverterTest {
 
     @BeforeEach
     void setUp() {
+        Point3DConverter converter = new Point3DConverter();
         LEFT = new Point3D(-400, 100, 0);
         RIGHT = new Point3D(400, 100, 0);
     }
@@ -59,19 +60,48 @@ class Point3DConverterTest {
         assertTrue(abs(x1.getY() - x2.getY()) < 5);
     }
 
+    //testing rotate 0 degree
+    @Test
+    @DisplayName("RotateAxisX0Degree")
+    void RotateAxisX0Degree() {
+        double x = LEFT.x, y = LEFT.y, z = LEFT.z;
+        Point3DConverter.rotateAxisX(LEFT, false, 0);
+        assertEquals(x, LEFT.x);
+        assertEquals(y, LEFT.y);
+        assertEquals(z, LEFT.z);
+    }
+
+    //rotate 90 degree on a single axis
+    //put point back to original position
     @Test
     @DisplayName("RotateAxisX")
     void RotateAxisX() {
-
         double x = LEFT.x, y = LEFT.y, z = LEFT.z;
         Point3DConverter.rotateAxisX(LEFT, false, 90);
         assertEquals(x, LEFT.x);
         assertNotEquals(y, LEFT.y);
         assertNotEquals(z, LEFT.z);
         assertEquals(y, LEFT.z);
-
+        Point3DConverter.rotateAxisX(LEFT, true, 90);
+        assertEquals(x, LEFT.x);
+        assertEquals(y, LEFT.y);
+        assertEquals(z, LEFT.z);
     }
 
+
+    //testing rotate 0 degree
+    @Test
+    @DisplayName("RotateAxisX0Degree")
+    void RotateAxisY0Degree() {
+        double x = LEFT.x, y = LEFT.y, z = LEFT.z;
+        Point3DConverter.rotateAxisY(LEFT, false, 0);
+        assertEquals(x, LEFT.x);
+        assertEquals(y, LEFT.y);
+        assertEquals(z, LEFT.z);
+    }
+
+    //rotate 90 degree on a single axis
+    //put point back to original position
     @Test
     @DisplayName("RotateAxisY")
     void RotateAxisY() {
@@ -81,16 +111,40 @@ class Point3DConverterTest {
         assertNotEquals(x, LEFT.x);
         assertNotEquals(z, LEFT.z);
         assertEquals(x, LEFT.z);
+        Point3DConverter.rotateAxisY(LEFT, true, 90);
+        assertTrue(abs(x - LEFT.x) < 1e-5);
+        assertTrue(abs(y - LEFT.y) < 1e-5);
+        assertTrue(abs(z - LEFT.z) < 1e-5);
     }
 
+    //testing rotate 0 degree
+    @Test
+    @DisplayName("RotateAxisX0Degree")
+    void RotateAxisZ0Degree() {
+        double x = LEFT.x, y = LEFT.y, z = LEFT.z;
+        Point3DConverter.rotateAxisZ(LEFT, false, 0);
+        assertTrue(abs(x - LEFT.x) < 1e-5);
+        assertTrue(abs(y - LEFT.y) < 1e-5);
+        assertTrue(abs(z - LEFT.z) < 1e-5);
+    }
+
+    //testing rotate 0 degree
+    //rotate 90 degree on a single axis
+    //put point back to original position
     @Test
     @DisplayName("RotateAxisZ")
     void RotateAxisZ() {
         double x = LEFT.x, y = LEFT.y, z = LEFT.z;
+
         Point3DConverter.rotateAxisZ(LEFT, false, 90);
         assertEquals(z, LEFT.z);
         assertNotEquals(x, LEFT.x);
         assertNotEquals(y, LEFT.y);
         assertEquals(x, LEFT.y);
+        Point3DConverter.rotateAxisZ(LEFT, true, 90);
+        assertTrue(abs(x - LEFT.x) < 1e-5);
+        assertTrue(abs(y - LEFT.y) < 1e-5);
+        assertTrue(abs(z - LEFT.z) < 1e-5);
+
     }
 }
