@@ -48,7 +48,7 @@ public class Config {
     public static int SIMULATION_LEVEL = 0;//which simulation is going to run
     public static double STEP_SIZE = 360;
     public static double CURRENT_TIME = 0;
-    public static int TRAJECTORY_LENGTH = SIMULATION_LEVEL == SOLAR_SYSTEM_SIMULATION ? 500 : 50;
+    public static int TRAJECTORY_LENGTH = 1000;
     public static int PARTICLES = 700;
     public static int DEFAULT_SOLVER = MIDPOINT_SOLVER;
     public static int CPU_LEVEL = 1;

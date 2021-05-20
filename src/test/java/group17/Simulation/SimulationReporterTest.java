@@ -21,6 +21,7 @@ class SimulationReporterTest {
     @Test
     @DisplayName("Run")
     void Run() {
+        reporter.init();
         reporter.start();
     }
 
@@ -38,8 +39,8 @@ class SimulationReporterTest {
     @Test
     @DisplayName("Start")
     void Start() {
-
         int threadsBefore = Thread.currentThread().getThreadGroup().activeCount();
+        reporter.init();
         reporter.start();
         int threadsAfter = Thread.currentThread().getThreadGroup().activeCount();
         assertEquals(threadsBefore + 1, threadsAfter);
@@ -77,6 +78,7 @@ class SimulationReporterTest {
     @Test
     @DisplayName("ParseException")
     void ParseException() {
+        ReporterInterface reporter = new SimulationReporter();
         reporter.init();
         assertAll(
                 () -> assertEquals("\tStopped simulation due to bad initialisation configuration",

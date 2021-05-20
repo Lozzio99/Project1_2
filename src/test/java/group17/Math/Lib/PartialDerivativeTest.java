@@ -1,9 +1,7 @@
-package group17.Math;
+package group17.Math.Lib;
 
 import group17.Interfaces.NewtRaphFunction;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Lib.PartialDerivative;
-import group17.Math.Lib.Vector3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
