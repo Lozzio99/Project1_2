@@ -70,16 +70,6 @@ public interface StateInterface {
         return newState;
     }
 
-    /**
-     * @return a String containing the state of the system
-     */
-    default StateInterface copy(StateInterface tobeCloned) {
-        StateInterface s = new SystemState();
-        for (Vector3dInterface v : tobeCloned.getPositions()) {
-            s.getPositions().add(v.clone());
-        }
-        return s;
-    }
 
     default StateInterface multiply(double scalar) {
         if (this.getPositions().size() == 0)
@@ -133,7 +123,7 @@ public interface StateInterface {
 
     default void update(StateInterface step) {
         this.setPositions(step.getPositions());
-        this.getRateOfChange().setVel(step.getRateOfChange().getVelocities());
+        this.getRateOfChange().setVelocities(step.getRateOfChange().getVelocities());
     }
 
     @Override

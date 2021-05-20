@@ -19,26 +19,7 @@ public interface RateInterface {
      */
     List<Vector3dInterface> getVelocities();
 
-    void setVel(List<Vector3dInterface> vel);
-
-    default RateInterface sub(int scalar) {
-        if (this.getVelocities().size() == 0)
-            throw new RuntimeException(" Nothing to multiply ");
-
-        RateInterface rate = new RateOfChange();
-        for (int i = 0; i < this.getVelocities().size(); i++) {
-            rate.getVelocities().add(this.getVelocities().get(i).sub(new Vector3D(scalar, scalar, scalar)));
-        }
-        return rate;
-    }
-
-    default RateInterface copy() {
-        RateInterface s = new RateOfChange();
-        for (Vector3dInterface v : this.getVelocities()) {
-            s.getVelocities().add(v.clone());
-        }
-        return s;
-    }
+    void setVelocities(List<Vector3dInterface> vel);
 
     default RateInterface multiply(double scalar) {
         if (this.getVelocities().size() == 0)
@@ -61,26 +42,12 @@ public interface RateInterface {
         return rate;
     }
 
-
-    default RateInterface add(RateInterface tobeAdded) {
+    default RateInterface add(double scalar) {
         if (this.getVelocities().size() == 0)
-            throw new RuntimeException(" Nothing to add ");
+            throw new RuntimeException(" Nothing to multiply ");
         RateInterface rate = new RateOfChange();
-
         for (int i = 0; i < this.getVelocities().size(); i++) {
-            rate.getVelocities().add(this.getVelocities().get(i).add(tobeAdded.getVelocities().get(i)));
-        }
-        return rate;
-    }
-
-    default RateInterface sumOf(RateInterface... states) {
-        RateInterface rate = new RateOfChange();
-        for (int i = 0; i < states[0].getVelocities().size(); i++) {
-            Vector3dInterface velsum = this.getVelocities().get(i);
-            for (RateInterface r : states) {
-                velsum = velsum.add(r.getVelocities().get(i));
-            }
-            rate.getVelocities().add(velsum);
+            rate.getVelocities().add(this.getVelocities().get(i).add(new Vector3D(scalar, scalar, scalar)));
         }
         return rate;
     }
@@ -96,13 +63,42 @@ public interface RateInterface {
         return rate;
     }
 
-    default RateInterface state0() {
+    default RateInterface copy() {
+        RateInterface s = new RateOfChange();
+        for (Vector3dInterface v : this.getVelocities()) {
+            s.getVelocities().add(v.clone());
+        }
+        return s;
+    }
+
+    default RateInterface add(RateInterface tobeAdded) {
+        if (this.getVelocities().size() == 0)
+            throw new RuntimeException(" Nothing to add ");
+        RateInterface rate = new RateOfChange();
+
+        for (int i = 0; i < this.getVelocities().size(); i++) {
+            rate.getVelocities().add(this.getVelocities().get(i).add(tobeAdded.getVelocities().get(i)));
+        }
+        return rate;
+    }
+    default RateInterface sumOf(RateInterface... states) {
+        RateInterface rate = new RateOfChange();
+        for (int i = 0; i < states[0].getVelocities().size(); i++) {
+            Vector3dInterface velsum = this.getVelocities().get(i);
+            for (RateInterface r : states) {
+                velsum = velsum.add(r.getVelocities().get(i));
+            }
+            rate.getVelocities().add(velsum);
+        }
+        return rate;
+    }
+
+    default RateInterface initialRate() {
         if (this.getVelocities().size() != 0)
-            this.setVel(new ArrayList<>(11));
+            this.setVelocities(new ArrayList<>(11));
         for (int i = 0; i < simulation.getSystem().systemState().getPositions().size(); i++) {
             this.getVelocities().add(simulation.getSystem().getCelestialBodies().get(i).getVectorVelocity());
         }
         return this;
     }
-
 }

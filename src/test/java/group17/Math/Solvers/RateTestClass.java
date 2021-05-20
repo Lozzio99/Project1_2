@@ -14,7 +14,7 @@ public class RateTestClass implements RateTest {
     }
 
     @Override
-    public void setVel(List<Vector3dInterface> vel) {
+    public void setVelocities(List<Vector3dInterface> vel) {
 
     }
 

@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static group17.Main.simulation;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class SystemStateTest {
 
@@ -21,11 +23,11 @@ class SystemStateTest {
     void setUp() {
         test = new SystemState();
         test.setPositions(List.of(new Vector3D(), new Vector3D(1, 1, 1)));
-        test.getRateOfChange().setVel(List.of(new Vector3D(), new Vector3D(1, 1, 1)));
+        test.getRateOfChange().setVelocities(List.of(new Vector3D(), new Vector3D(1, 1, 1)));
 
         operator = new SystemState();
         operator.setPositions(List.of(new Vector3D(5, 5, 5), new Vector3D(5, 5, 5)));
-        operator.getRateOfChange().setVel(List.of(new Vector3D(5, 5, 5), new Vector3D(5, 5, 5)));
+        operator.getRateOfChange().setVelocities(List.of(new Vector3D(5, 5, 5), new Vector3D(5, 5, 5)));
     }
 
     @Test
@@ -82,6 +84,8 @@ class SystemStateTest {
     @Test
     @DisplayName("Multiply")
     void Multiply() {
+        assertThrows(RuntimeException.class, () -> new SystemState().multiply(1));
+
         StateInterface test2 = test.multiply(10);
         assertEquals(List.of(new Vector3D(), new Vector3D(10, 10, 10)), test2.getPositions());
         assertEquals(List.of(new Vector3D(), new Vector3D(10, 10, 10)), test2.getRateOfChange().getVelocities());
@@ -93,6 +97,8 @@ class SystemStateTest {
     @Test
     @DisplayName("Div")
     void Div() {
+        assertThrows(RuntimeException.class, () -> new SystemState().div(2));
+
         StateInterface test2 = test.div(2);
         assertEquals(List.of(new Vector3D(), new Vector3D(.5, .5, .5)), test2.getPositions());
         assertEquals(List.of(new Vector3D(), new Vector3D(.5, .5, .5)), test2.getRateOfChange().getVelocities());
@@ -104,6 +110,8 @@ class SystemStateTest {
     @Test
     @DisplayName("Add")
     void Add() {
+        assertThrows(RuntimeException.class, () -> new SystemState().add(new SystemState()));
+
         StateInterface test2 = test.add(operator);
         assertEquals(List.of(new Vector3D(5, 5, 5), new Vector3D(6, 6, 6)), test2.getPositions());
         assertEquals(List.of(new Vector3D(5, 5, 5), new Vector3D(6, 6, 6)), test2.getRateOfChange().getVelocities());
@@ -154,6 +162,7 @@ class SystemStateTest {
     @Test
     @DisplayName("TestToString")
     void TestToString() {
+        assumeTrue(simulation == null);
         assertDoesNotThrow(() -> test.toString());
         assertDoesNotThrow(() -> operator.toString());
         assertDoesNotThrow(() -> new SystemState().toString());

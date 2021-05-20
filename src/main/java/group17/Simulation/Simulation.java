@@ -139,7 +139,6 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void initAssist() {
-        //this.userDialog = new AssistFrame();
         this.assist.init();
         this.errorUI.makeTable();
         this.errorUI.initButtons();
