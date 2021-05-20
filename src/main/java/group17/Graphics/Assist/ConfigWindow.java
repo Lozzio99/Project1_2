@@ -5,9 +5,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
 import static group17.Main.userDialog;
+import static group17.Utils.Config.*;
 
 public class ConfigWindow extends JPanel {
     //launch - stats - plot - rocket - performance - errors - controllers

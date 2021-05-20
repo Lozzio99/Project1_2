@@ -4,14 +4,14 @@ import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.*;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 
 public class MaxCPUSolver implements ODEFunctionInterface {
 
@@ -24,9 +24,9 @@ public class MaxCPUSolver implements ODEFunctionInterface {
 
     @Contract("_, _, _ -> param3")
     public static Vector3dInterface set(int i, StateInterface state, Vector3dInterface acc) {
-        if (SOLVER == EULER_SOLVER)
+        if (DEFAULT_SOLVER == EULER_SOLVER)
             state.getRateOfChange().getVelocities().set(i, state.getRateOfChange().getVelocities().get(i).add(acc));
-        if (SOLVER == RUNGE_KUTTA_SOLVER)
+        if (DEFAULT_SOLVER == RUNGE_KUTTA_SOLVER)
             state.getRateOfChange().getVelocities().set(i, acc.clone());
         return acc;
     }

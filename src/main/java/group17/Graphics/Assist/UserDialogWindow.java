@@ -11,8 +11,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 
 public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
@@ -162,7 +162,7 @@ public class UserDialogWindow {
         this.menu = new MainMenu() {
             @Override
             public void startSimulation() {
-                SOLVER = currentSolver;
+                DEFAULT_SOLVER = currentSolver;
                 if (simulation == null) {
                     simulation = new Simulation();
                     simulation.setAssist(d);
@@ -212,4 +212,6 @@ public class UserDialogWindow {
     public ErrorWindow getErrorWindow() {
         return errorWindow;
     }
+
+
 }

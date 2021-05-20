@@ -3,16 +3,15 @@ package group17.Math.Solvers;
 import group17.Interfaces.Function;
 import group17.Interfaces.NewtRaphFunction;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Matrix;
-import group17.Math.Utils.PartialDerivative;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Matrix;
+import group17.Math.Lib.PartialDerivative;
+import group17.Math.Lib.Vector3D;
 import org.jetbrains.annotations.Contract;
 
-import java.util.Arrays;
-
-import static group17.Config.INSERT_ROCKET;
-import static group17.Config.STEP_SIZE;
-import static group17.Math.Solvers.RocketSimModel.*;
+import static group17.Math.Solvers.RocketSimModel.pF;
+import static group17.Math.Solvers.RocketSimModel.targetPosition;
+import static group17.Utils.Config.INSERT_ROCKET;
+import static group17.Utils.Config.STEP_SIZE;
 
 public class NewtonRaphsonSolver {
 

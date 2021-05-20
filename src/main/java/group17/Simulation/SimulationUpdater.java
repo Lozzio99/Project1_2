@@ -3,16 +3,14 @@ package group17.Simulation;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Solvers.EulerSolver;
-import group17.Math.Solvers.RungeKutta4thSolver;
-import group17.Math.Solvers.StandardVerletSolver;
-import group17.Math.Solvers.VerletVelocitySolver;
-import group17.System.ErrorData;
-import group17.System.ErrorReport;
+import group17.Math.Solvers.*;
+import group17.Simulation.Rocket.RocketSchedule;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorReport;
 
-import static group17.Config.*;
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 
 public class SimulationUpdater implements UpdaterInterface {
 
@@ -27,15 +25,17 @@ public class SimulationUpdater implements UpdaterInterface {
         this.schedule.init();
         this.schedule.prepare();
 
-        switch (SOLVER) {
+
+        switch (DEFAULT_SOLVER) {
             case EULER_SOLVER -> this.solver = new EulerSolver();
             case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKutta4thSolver();
             case VERLET_VEL_SOLVER -> this.solver = new VerletVelocitySolver();
             case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver();
+            case MIDPOINT_SOLVER -> this.solver = new MidPointSolver();
             default -> {
                 this.solver = new EulerSolver();
                 if (REPORT)
-                    simulation.getReporter().report(new IllegalStateException("UPDATER/SOLVER/" + EULER_SOLVER));
+                    simulation.getReporter().report(new IllegalStateException("UPDATER/DEFAULT_SOLVER/" + EULER_SOLVER));
             }
         }
 
@@ -74,10 +74,12 @@ public class SimulationUpdater implements UpdaterInterface {
              * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
              * better to do that in system (in main thread from executor) and then pass it in here once solved
              */
-            simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), STEP_SIZE, simulation.getSystem().systemState(), STEP_SIZE));
-            if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION) {
+
+            simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), CURRENT_TIME, simulation.getSystem().systemState(), STEP_SIZE));
+            CURRENT_TIME += STEP_SIZE;
+            if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)
                 new ErrorReport(new ErrorData(simulation.getSystem().systemState())).start();
-            }
+
         } catch (Exception e) {
             if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);
         }

@@ -1,6 +1,7 @@
 package group17;
 
 import group17.System.Clock;
+import group17.Utils.Config;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -102,6 +103,19 @@ class ClockTest {
                 assertEquals(1, clock.getDays());
                 assertEquals(fromApril[i], clock.getMonths());
             }
+    }
+
+    @Test
+    @DisplayName("GetDates")
+    void testDateEquals() {
+        Clock clock = new Clock().setLaunchDay();
+        assertEquals(1, clock.getDate().days);
+        assertEquals(4, clock.getDate().months);
+        assertEquals(2020, clock.getDate().years);
+        assertEquals(2020, clock.getYears());
+        assertEquals(0, clock.getMin());
+        assertEquals(0, clock.getHour());
+        assertEquals(0, clock.getSec());
     }
 
     @ParameterizedTest(name = "testing {0} steps")

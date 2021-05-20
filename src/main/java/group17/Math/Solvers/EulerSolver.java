@@ -1,16 +1,15 @@
 package group17.Math.Solvers;
 
 
-import group17.Interfaces.ODEFunctionInterface;
-import group17.Interfaces.ODESolverInterface;
-import group17.Interfaces.StateInterface;
-import group17.Interfaces.Vector3dInterface;
+import group17.Interfaces.*;
 import group17.Main;
-import group17.Math.Utils.Vector3D;
-import group17.System.CollisionDetector;
+import group17.Math.Lib.Vector3D;
+import group17.System.State.RateOfChange;
+import group17.Utils.CollisionDetector;
 
-import static group17.Config.G;
 import static group17.Main.simulation;
+import static group17.Utils.Config.G;
+import static group17.Utils.Config.STEP_SIZE;
 import static java.lang.Double.NaN;
 
 
@@ -26,6 +25,7 @@ public class EulerSolver implements ODESolverInterface {
     //           dt          dt
     public ODEFunctionInterface singleCoreF = (t, y) ->
     {
+        RateInterface rate = new RateOfChange();
         for (int i = 0; i < y.getPositions().size(); i++) {
             Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
             for (int k = 0; k < y.getPositions().size(); k++) {
@@ -46,13 +46,12 @@ public class EulerSolver implements ODESolverInterface {
                 */
                     acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
                     acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
-                    totalAcc = totalAcc.addMul(t, acc);
+                    totalAcc = totalAcc.addMul(STEP_SIZE, acc);
                     // p = h*acc(derivative of velocity)
                 }
             }  // y1 =y0 + h*acc
             // y1 = y0 + p
-            y.getRateOfChange().getVelocities()
-                    .set(i, y.getRateOfChange().getVelocities().get(i).add(totalAcc));
+            rate.getVelocities().add(y.getRateOfChange().getVelocities().get(i).add(totalAcc));
         }
         checked = true;
         return y.getRateOfChange();
@@ -68,10 +67,10 @@ public class EulerSolver implements ODESolverInterface {
 
     @Override
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
-        // y1 = y0 +f(x,y0);
+        // y1 = y0 + h*f(t,y0);
         checked = false;
         currTime = currentTime;
-        return y.addMul(stepSize, f.call(stepSize, y));
+        return y.addMul(stepSize, f.call(currentTime, y));
         //       y0  +  (y * h      dy(rate of change))
 
         // add (y * h) to y

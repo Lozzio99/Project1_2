@@ -8,16 +8,17 @@ import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
+import group17.Math.Solvers.StandardVerletSolver;
 import group17.System.Bodies.CelestialBody;
-import group17.System.ErrorData;
-import group17.System.ErrorReport;
 import group17.System.SolarSystem;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorReport;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Simulation implements SimulationInterface {
@@ -32,14 +33,11 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void init() {
-        if (REPORT)
-            this.initReporter();   //first thing, will check all exceptions
+        if (REPORT) this.initReporter();   //first thing, will check all exceptions
 
         this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
-        if (LAUNCH_ASSIST)
-            this.initAssist();
-        if (ENABLE_GRAPHICS)
-            this.initGraphics();
+        if (LAUNCH_ASSIST) this.initAssist();
+        if (ENABLE_GRAPHICS) this.initGraphics();
 
         this.initUpdater();  //last thing, will start the simulation if it's the only one running
 
@@ -53,7 +51,7 @@ public class Simulation implements SimulationInterface {
                 this.getAssist().showAssistParameters();
             }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
-            service.scheduleWithFixedDelay(this::loop, 30, 11, MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 30, 8, MILLISECONDS);
         } else {
             if (DEBUG || REPORT)
                 this.getReporter().report(new RuntimeException("STOP"));
@@ -64,6 +62,8 @@ public class Simulation implements SimulationInterface {
     public void reset() {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
+        CURRENT_TIME = 0;
+        ErrorReport.monthIndex = 0;
         if (!LAUNCH_ASSIST) {
             if (REPORT) this.getReporter().report("START SIMULATION");
             try {
@@ -73,6 +73,7 @@ public class Simulation implements SimulationInterface {
             }
             this.setWaiting(false);
         }
+        if (DEFAULT_SOLVER == VERLET_STD_SOLVER) ((StandardVerletSolver) this.getUpdater().getSolver()).setFirst();
         this.getUpdater().getSchedule().init();
         this.getUpdater().getSchedule().prepare();
     }
@@ -169,8 +170,7 @@ public class Simulation implements SimulationInterface {
         this.system = new SolarSystem();
         this.system.initClock();
         this.system.initPlanets();
-        if (INSERT_ROCKET)
-            this.system.initRocket();
+        if (INSERT_ROCKET) this.system.initRocket();
         this.system.initialState();
     }
 

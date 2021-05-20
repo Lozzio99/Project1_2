@@ -1,16 +1,14 @@
 package group17.Math.Solvers;
 
-import group17.Interfaces.ODEFunctionInterface;
-import group17.Interfaces.ODESolverInterface;
-import group17.Interfaces.StateInterface;
-import group17.Interfaces.Vector3dInterface;
+import group17.Interfaces.*;
 import group17.Main;
-import group17.Math.Utils.Vector3D;
-import group17.System.CollisionDetector;
+import group17.Math.Lib.Vector3D;
+import group17.System.State.RateOfChange;
+import group17.Utils.CollisionDetector;
 import org.jetbrains.annotations.Contract;
 
-import static group17.Config.G;
 import static group17.Main.simulation;
+import static group17.Utils.Config.G;
 import static java.lang.Double.NaN;
 
 public class StandardVerletSolver implements ODESolverInterface {
@@ -18,13 +16,16 @@ public class StandardVerletSolver implements ODESolverInterface {
     public static double currTime = 0;
     public static double endTime = NaN;
     private boolean checked;
-    private StateInterface prevState;
+    private final boolean oldF = true;
     private boolean first = true;
+    private StateInterface prevState, oldP;
     private ODEFunctionInterface singleCoreF;
+
 
     @Contract(pure = true)
     public StandardVerletSolver() {
         this.singleCoreF = (h, y) -> {
+            RateInterface rate = new RateOfChange();
             for (int i = 0; i < y.getPositions().size(); i++) {
                 Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
                 for (int k = 0; k < y.getPositions().size(); k++) {
@@ -51,11 +52,10 @@ public class StandardVerletSolver implements ODESolverInterface {
                 }  // y1 =y0 + h*acc
                 // y1 = y0 + p
                 //FIXME : why did we had to change this?
-                y.getRateOfChange().getVelocities()
-                        .set(i, totalAcc.clone());
+                rate.getVelocities().add(totalAcc);
             }
             checked = true;
-            return y.getRateOfChange();
+            return rate;
         };
     }
 
@@ -79,17 +79,18 @@ public class StandardVerletSolver implements ODESolverInterface {
         StateInterface diff;
         if (first) {
             RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
-            diff = rk4.step(f, t, StateInterface.clone(y), h);
+            diff = rk4.old(rk4.getOldF(), t, y, h);
             first = false;
         } else {
-            StateInterface subPrev = StateInterface.clone(prevState).multiply(-1);
-            StateInterface twiceY = StateInterface.clone(y).multiply(2.0);
-            StateInterface rateMulPart = StateInterface.clone(y).rateMul(h * h, f.call(1, StateInterface.clone(y)));
+            StateInterface subPrev = prevState.copy().multiply(-1);
+            StateInterface twiceY = y.copy().multiply(2.0);
+            StateInterface rateMulPart = y.copy().rateMul(h * h, f.call(1, y));
             diff = subPrev.add(twiceY).add(rateMulPart);
         }
-        prevState = StateInterface.clone(y);
+        prevState = y.copy();
         return diff;
     }
+
 
     @Override
     public ODEFunctionInterface getFunction() {
@@ -101,4 +102,7 @@ public class StandardVerletSolver implements ODESolverInterface {
         this.singleCoreF = f;
     }
 
+    public void setFirst() {
+        this.first = true;
+    }
 }

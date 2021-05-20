@@ -1,8 +1,8 @@
 package group17.Graphics.Scenes;
 
 
-import group17.Math.Utils.Point3D;
-import group17.Math.Utils.Point3DConverter;
+import group17.Math.Lib.Point3D;
+import group17.Math.Lib.Point3DConverter;
 import org.jetbrains.annotations.Contract;
 
 import java.awt.*;
@@ -10,8 +10,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.Arrays;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 
 public class SimulationScene extends Scene {
     volatile Point3D[] planetsPositions;

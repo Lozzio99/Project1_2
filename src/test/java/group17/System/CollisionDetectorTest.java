@@ -1,8 +1,9 @@
 package group17.System;
 
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Bodies.Particle;
+import group17.Utils.CollisionDetector;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static group17.Config.CHECK_COLLISIONS;
-import static group17.Config.REPORT;
+import static group17.Utils.Config.CHECK_COLLISIONS;
+import static group17.Utils.Config.REPORT;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CollisionDetectorTest {

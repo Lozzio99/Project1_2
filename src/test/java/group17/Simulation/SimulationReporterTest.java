@@ -82,7 +82,7 @@ class SimulationReporterTest {
                 () -> assertEquals("\tStopped simulation due to bad initialisation configuration",
                         reporter.parseException("STOP")),
                 () -> assertEquals("\tMissing solver configuration or wrong level selected, select in range [1,4]\n ~ will switch to default : EULER",
-                        reporter.parseException("UPDATER/SOLVER/1")),
+                        reporter.parseException("UPDATER/DEFAULT_SOLVER/1")),
                 () -> assertEquals("EXCEPTION", reporter.parseException("Anything else"))
         );
     }

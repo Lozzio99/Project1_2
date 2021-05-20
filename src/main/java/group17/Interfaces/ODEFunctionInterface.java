@@ -7,6 +7,7 @@
 
 package group17.Interfaces;
 
+@FunctionalInterface
 public interface ODEFunctionInterface {
 
     /*

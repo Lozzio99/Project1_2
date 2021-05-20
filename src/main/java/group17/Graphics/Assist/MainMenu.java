@@ -5,20 +5,20 @@ import org.jetbrains.annotations.Contract;
 import javax.swing.*;
 import java.awt.*;
 
-import static group17.Config.*;
+import static group17.Utils.Config.*;
 
 @SuppressWarnings("rawtypes")
 public abstract class MainMenu {
     // Variables
     static final String[] SIMULATION_TYPES = {"Rocket Simulation", "Pendulum Simulation", "Numerical Simulation", "Particles Simulation", "Solar System Simulation"};
     static final String[] CPU_LEVELS = {"Min CPU", "Max CPU"};
-    static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)"};
+    static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)", "Midpoint"};
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 600;
-    static protected int currentSolver = SOLVER;
+    static protected int currentSolver = DEFAULT_SOLVER;
     static JFrame frame;
-    protected int currentSimulationType = SIMULATION_LEVEL;
-    protected int currentCPULevel = CPU_LEVEL;
+    static protected int currentSimulationType = SIMULATION_LEVEL;
+    static protected int currentCPULevel = CPU_LEVEL;
     JLabel titleLabel;
 
 
@@ -71,10 +71,11 @@ public abstract class MainMenu {
         cpuLevelDropdown.setSelectedIndex(CPU_LEVEL == MIN_CPU ? 0 : 1);
         solverDropdown = new JComboBox<>(SOLVERS);
         solverDropdown.setSelectedIndex(
-                switch (SOLVER) {
+                switch (DEFAULT_SOLVER) {
                     case RUNGE_KUTTA_SOLVER -> 1;
                     case VERLET_VEL_SOLVER -> 2;
                     case VERLET_STD_SOLVER -> 3;
+                    case MIDPOINT_SOLVER -> 4;
                     default -> 0;
                 }
         );
@@ -90,7 +91,7 @@ public abstract class MainMenu {
 
         startButton.addActionListener(e -> {
             // --- Select the correct simulation ---
-            int currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {
+            currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {
                 case ("Rocket Simulation") -> ROCKET_SIMULATION;
                 case ("Pendulum Simulation") -> PENDULUM_SIMULATION;
                 case ("Numerical Simulation") -> NUMERICAL_SIMULATION;
@@ -99,16 +100,17 @@ public abstract class MainMenu {
                 default -> SOLAR_SYSTEM_SIMULATION;
             };
             // --- Select the correct CPU type ---
-            int currentCPULevel = switch (cpuLevelDropdown.getSelectedItem().toString()) {
+            currentCPULevel = switch (cpuLevelDropdown.getSelectedItem().toString()) {
                 case ("Max CPU") -> MAX_CPU;
                 default -> MIN_CPU;
             };
 
             // --- Select the correct solver ---
-            int currentSolver = switch (solverDropdown.getSelectedItem().toString()) {
+            currentSolver = switch (solverDropdown.getSelectedItem().toString()) {
                 case ("Runge Kutta") -> RUNGE_KUTTA_SOLVER;
                 case ("Verlet (VEL)") -> VERLET_VEL_SOLVER;
                 case ("Verlet (STD)") -> VERLET_STD_SOLVER;
+                case ("Midpoint") -> MIDPOINT_SOLVER;
                 default -> EULER_SOLVER;
             };
 
