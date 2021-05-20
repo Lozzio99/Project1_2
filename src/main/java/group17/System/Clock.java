@@ -15,6 +15,7 @@ public class Clock {
     /**
      * The constant DAY.
      */
+
     public static final double DAY = 86400.0;
     private static final String[] monthStrings =
             {"January", "February", "March", "April", "May", "June",
