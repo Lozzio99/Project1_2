@@ -26,7 +26,6 @@ class SystemStateTest {
         operator = new SystemState();
         operator.setPositions(List.of(new Vector3D(5, 5, 5), new Vector3D(5, 5, 5)));
         operator.getRateOfChange().setVel(List.of(new Vector3D(5, 5, 5), new Vector3D(5, 5, 5)));
-
     }
 
     @Test
@@ -183,7 +182,22 @@ class SystemStateTest {
     @DisplayName("TestEquals")
     void TestEquals() {
         assertNotEquals(test, operator);
+        assertNotEquals(test, List.of(List.of(new Vector3D(), new Vector3D(1, 1, 1)), List.of(new Vector3D(), new Vector3D(1, 1, 1))));
+
         StateInterface test2 = new SystemState(List.of(new Vector3D(), new Vector3D(1, 1, 1)), List.of(new Vector3D(), new Vector3D(1, 1, 1)));
         assertEquals(test, test2);
+    }
+
+    @Test
+    @DisplayName("testConstructorWithState")
+    void testConstructorWithState() {
+
+        StateInterface test2 = new SystemState(test);
+        assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test2.getPositions());
+        assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test2.getRateOfChange().getVelocities());
+
+        assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test.getPositions());
+        assertEquals(List.of(new Vector3D(), new Vector3D(1, 1, 1)), test.getRateOfChange().getVelocities());
+
     }
 }
