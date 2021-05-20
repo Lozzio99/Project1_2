@@ -144,7 +144,7 @@ public class Simulation implements SimulationInterface {
         this.errorUI.makeTable();
         this.errorUI.initButtons();
         //making the first report to check if positions are correct
-        new ErrorReport(new ErrorData(this.system.systemState())).start();
+        if (ERROR_EVALUATION) new ErrorReport(new ErrorData(this.system.systemState())).start();
     }
 
 

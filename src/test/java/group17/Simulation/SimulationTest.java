@@ -3,7 +3,6 @@ package group17.Simulation;
 import group17.Graphics.Assist.UserDialogWindow;
 import group17.Interfaces.SimulationInterface;
 import group17.Main;
-import group17.System.SolarSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,10 +56,10 @@ class SimulationTest {
     @Test
     @DisplayName("InitSystem")
     void InitSystem() {
+        ERROR_EVALUATION = false;
         simulationTest.initSystem();
         assertNotNull(simulationTest.getSystem());
         assertNotEquals("null", simulationTest.getSystem().toString());
-        System.out.println(new SolarSystem());
         assertNotEquals("SOLAR SYSTEM\tnull,\n" +
                 "\tSTATE\n" +
                 "null\n" +

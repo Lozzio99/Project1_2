@@ -1,8 +1,7 @@
-package group17.Math;
+package group17.Math.Solvers;
 
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.StateInterface;
-import group17.Math.Solvers.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

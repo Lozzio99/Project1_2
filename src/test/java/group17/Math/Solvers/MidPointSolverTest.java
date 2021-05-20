@@ -73,7 +73,6 @@ class MidPointSolverTest {
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
     void Step(int indexExpected) {
         solution = mid.solve(dydx, y, tf, 0.1);
-        System.out.println(solution[indexExpected]);
         assertTrue(() -> abs(((StateTest) solution[indexExpected]).getY() - expected[indexExpected]) < 2e-2);
     }
 }
