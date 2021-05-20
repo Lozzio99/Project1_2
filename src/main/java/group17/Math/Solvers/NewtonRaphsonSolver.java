@@ -8,21 +8,26 @@ import group17.Math.Lib.PartialDerivative;
 import group17.Math.Lib.Vector3D;
 import org.jetbrains.annotations.Contract;
 
+import java.util.Arrays;
+
 import static group17.Math.Solvers.RocketSimModel.pF;
 import static group17.Math.Solvers.RocketSimModel.targetPosition;
+import static group17.System.Clock.DAY;
+import static group17.Utils.Config.CHECK_COLLISIONS;
 import static group17.Utils.Config.INSERT_ROCKET;
-import static group17.Utils.Config.STEP_SIZE;
 
 public class NewtonRaphsonSolver {
 
-    public final boolean LOG_ITERATION = false;
-    private int i = 0;
+    static {
+        INSERT_ROCKET = true;
+        CHECK_COLLISIONS = false;
+    }
+
     public static Vector3dInterface initPos;
     public static double endTime;
 
-    static {
-        INSERT_ROCKET = true;
-    }
+    public final boolean LOG_ITERATION = true;
+    private int i = 0;
 
     final double STOPPING_CRITERION = 100;
     private final NewtRaphFunction fX;
@@ -66,8 +71,11 @@ public class NewtonRaphsonSolver {
     }
 
     public static void main(String[] args) {
-        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(new Vector3D(), new Vector3D(-1.160685142387819E+00, 1.189131565321710E+00, 5.323467155528554E-02) ,2678400.0);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(-7485730.186, 6281273.438, -8172135.798), new Vector3D(0.0,0.0,0.0), STEP_SIZE);
+        Vector3D initPos = new Vector3D(-9.839198644659751E-01, -1.912460575714917E-01, 5.542821181619438E-05);
+        Vector3D targetPos = new Vector3D(1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02);
+        double FixedTime = DAY * 30 * 6;
+        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, targetPos, FixedTime);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5000.0, 5000.0, 5000.0), new Vector3D(0.0, 0.0, 0.0), 600);
     }
 
     /**
@@ -99,6 +107,7 @@ public class NewtonRaphsonSolver {
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector, double h) {
         double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), h); // Compute matrix of partial derivatives D
+        System.out.println(Arrays.deepToString(D));
         Matrix DI = new Matrix(Matrix.invert(D)); // Compute DI inverse of D
         Vector3dInterface modelVector = fX.modelFx(vector);
         Vector3dInterface DIProd = DI.multiplyVector(modelVector);
@@ -106,4 +115,3 @@ public class NewtonRaphsonSolver {
     }
 
 }
-
