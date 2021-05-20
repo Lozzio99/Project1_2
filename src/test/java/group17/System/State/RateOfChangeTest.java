@@ -17,7 +17,6 @@ import java.util.List;
 import static group17.Main.simulation;
 import static java.lang.Double.NaN;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class RateOfChangeTest {
 
@@ -163,7 +162,7 @@ class RateOfChangeTest {
     @Test
     @DisplayName("TestToString")
     void TestToString() {
-        assumeTrue(simulation == null);
+        simulation = null;
         RateInterface test = new RateOfChange();
         test.setVelocities(five());
         assertEquals("[(5.0,5.0,5.0), (5.0,5.0,5.0)]", test.toString());

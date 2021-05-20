@@ -121,7 +121,7 @@ class ProbeSimulatorTest {
         Vector3dInterface[] trajectory = simulateOneYear();
         try {
             FileWriter writer = new FileWriter("trajectory.csv");
-            System.out.println("trajectory length: " + trajectory.length);
+            if (PRINT_OUTPUT) System.out.println("trajectory length: " + trajectory.length);
             String header = "day,x,y,z";
             if (PRINT_OUTPUT) System.out.println(header);
             writer.write(header + "\n");

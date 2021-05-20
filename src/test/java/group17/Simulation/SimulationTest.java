@@ -171,7 +171,6 @@ class SimulationTest {
         LAUNCH_ASSIST = false;
         simulation.reset();
         assertFalse(simulation.waiting());
-        Main.simulation = null;
     }
 
     @Test

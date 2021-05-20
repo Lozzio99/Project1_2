@@ -7,13 +7,13 @@ import group17.System.State.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static group17.Utils.Config.DEBUG;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StandardVerletSolverTest {
 
     @Test
     @DisplayName("SolveODE")
-        //FIXME: check this why it's giving such an high error
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();
         StandardVerletSolver solver = new StandardVerletSolver();
@@ -30,7 +30,7 @@ public class StandardVerletSolverTest {
 
         double aprxSolution = aprxStates[aprxStates.length - 1].getPositions().get(0).getZ();
         double expectedSol = initVelocity.getZ() * tf - 0.5 * FreeFallFunction.CONSTANT_G * tf * tf; // free fall equation
-        if (true) {
+        if (DEBUG) {
             System.out.println(expectedSol);
             System.out.println(aprxSolution);
         }

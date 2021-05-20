@@ -61,6 +61,8 @@ class ErrorReportTest {
         t.setUncaughtExceptionHandler(Thread.getDefaultUncaughtExceptionHandler());
         try {
             t.start();
+            Thread.sleep(500);
+            t.join();
         } catch (Exception e) {
             assertEquals(NullPointerException.class, e.getClass());
         }
