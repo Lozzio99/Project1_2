@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NewtonRaphsonSolverTest {
 
+    private static final boolean PRINT_OUTPUT = false;
     @Test
     @DisplayName("Newton-Raphson solver")
     void NewtRaphSolve() {
@@ -24,10 +25,10 @@ class NewtonRaphsonSolverTest {
         };
 
         Vector3dInterface testRes = (new NewtonRaphsonSolver(testFx)).NewtRhapSolution(new Vector3D(1, 1, 1), new Vector3D(0, 0, 0), 0.01);
-        System.out.println(testRes.toString());
+        if (PRINT_OUTPUT) System.out.println(testRes.toString());
         Vector3dInterface testFxSol = new Vector3D(0.0, 0.0, 0.0);
         Vector3dInterface testFxRes = testFx.modelFx(testRes);
-        System.out.println(testFxRes.toString());
+        if (PRINT_OUTPUT) System.out.println(testFxRes.toString());
         assertTrue(Math.abs(testFxRes.getX() - testFxSol.getX()) < 0.001
                 && Math.abs(testFxRes.getY() - testFxSol.getY()) < 0.001
                 && Math.abs(testFxRes.getZ() - testFxSol.getZ()) < 0.001);

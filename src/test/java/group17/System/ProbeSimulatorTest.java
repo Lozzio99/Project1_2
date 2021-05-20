@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ProbeSimulatorTest {
 
     static final double ACCURACY = 100; // 1 meter (might need to tweak that)
+    static final boolean PRINT_OUTPUT = false;
     public static Vector3dInterface[] simulateOneYear() {
 
         Vector3dInterface probe_relative_position = new Vector3D(6371e3, 0, 0);
@@ -120,18 +121,18 @@ class ProbeSimulatorTest {
         Vector3dInterface[] trajectory = simulateOneYear();
         try {
             FileWriter writer = new FileWriter("trajectory.csv");
-            System.out.println("trajectory length: " + trajectory.length);
+            if (PRINT_OUTPUT) System.out.println("trajectory length: " + trajectory.length);
             String header = "day,x,y,z";
-            System.out.println(header);
+            if (PRINT_OUTPUT) System.out.println(header);
             writer.write(header + "\n");
             for (int i = 0; i < trajectory.length; i++) {
                 String row = i + "," + trajectory[i].getX() + "," + trajectory[i].getY() + "," + trajectory[i].getZ();
-                System.out.println(row);
+                if (PRINT_OUTPUT) System.out.println(row);
                 writer.write(row + "\n");
             }
             writer.close();
         } catch (IOException e) {
-            System.out.println("An error occurred.");
+            if (PRINT_OUTPUT) System.out.println("An error occurred.");
             e.printStackTrace();
         }
         assertEquals(367,

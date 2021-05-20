@@ -9,7 +9,7 @@ import static group17.Utils.Config.REPORT;
 
 public class Clock {
 
-
+    public static final double DAY = 86400.0;
     private static final String[] monthStrings =
             {"January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"};

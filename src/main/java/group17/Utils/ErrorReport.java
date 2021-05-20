@@ -26,12 +26,11 @@ public class ErrorReport implements Runnable {
 
     public void start() {
         if (monthIndex < 13) new Thread(this, "Error Log").start();
-        else System.exit(0);
     }
 
     @Override
     public void run() {
-        userDialog.disable(6);
+        if (userDialog != null) userDialog.disable(6);
         //ASSUMING [ NO ] ROCKET HERE
         absPosition = new ArrayList<>(11);
         absVelocity = new ArrayList<>(11);
@@ -64,9 +63,10 @@ public class ErrorReport implements Runnable {
 
         }
 
-        userDialog.getErrorWindow().updateLabels(new ErrorData(absPosition, absVelocity));
-        userDialog.enable(6);
-
+        if (userDialog != null) {
+            userDialog.getErrorWindow().updateLabels(new ErrorData(absPosition, absVelocity));
+            userDialog.enable(6);
+        }
     }
 
 

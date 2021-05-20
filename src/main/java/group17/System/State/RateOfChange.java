@@ -17,7 +17,7 @@ public class RateOfChange implements RateInterface {
     }
 
     @Override
-    public void setVel(List<Vector3dInterface> vel) {
+    public void setVelocities(List<Vector3dInterface> vel) {
         this.vel = vel;
     }
 
@@ -25,15 +25,18 @@ public class RateOfChange implements RateInterface {
     public List<Vector3dInterface> getVelocities() {
         return this.vel;
     }
-
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        for (int i = 0; i < vel.size(); i++) {
-            s.append(simulation.getSystem().getCelestialBodies().get(i).toString());
-            s.append(" : ");
-            s.append(this.vel.get(i).toString()).append("\n");
+        if (simulation != null)
+            for (int i = 0; i < vel.size(); i++) {
+                s.append(simulation.getSystem().getCelestialBodies().get(i).toString());
+                s.append(" : ");
+                s.append(this.vel.get(i).toString()).append("\n");
+            }
+        else {
+            s.append(this.vel.toString());
         }
-        return vel.toString();
+        return s.toString().trim();
     }
 }

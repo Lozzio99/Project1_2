@@ -33,14 +33,14 @@ public class SystemState implements StateInterface {
     public SystemState(StateInterface copy, RateInterface rate) {
         this.positions = copy.getPositions();
         this.rateOfChange = new RateOfChange();
-        this.rateOfChange.setVel(rate.getVelocities());
+        this.rateOfChange.setVelocities(rate.getVelocities());
     }
 
     @Contract(pure = true)
     public SystemState(List<Vector3dInterface> positions, List<Vector3dInterface> velocities) {
         this.positions = positions;
         this.rateOfChange = new RateOfChange();
-        rateOfChange.setVel(velocities);
+        rateOfChange.setVelocities(velocities);
     }
 
 

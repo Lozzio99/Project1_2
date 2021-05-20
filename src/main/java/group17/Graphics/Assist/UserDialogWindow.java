@@ -214,4 +214,7 @@ public class UserDialogWindow {
     }
 
 
+    public JFrame getFrame() {
+        return this.frame;
+    }
 }
