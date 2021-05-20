@@ -1,15 +1,15 @@
-package group17.Simulation;
+package group17.Simulation.Rocket;
 
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import group17.System.Clock;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static group17.Config.LAUNCH_DATE;
+import static group17.Utils.Config.LAUNCH_DATE;
 
 public class RocketSchedule {
 

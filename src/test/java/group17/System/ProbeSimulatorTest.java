@@ -2,8 +2,8 @@ package group17.System;
 
 import group17.Interfaces.ProbeSimulatorInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
-import group17.Simulation.RocketSimulator;
+import group17.Math.Lib.Vector3D;
+import group17.Simulation.Rocket.RocketSimulator;
 import group17.Simulation.Simulation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 

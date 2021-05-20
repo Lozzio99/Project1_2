@@ -2,10 +2,10 @@ package group17.Math.Solvers;
 
 import group17.Interfaces.*;
 import group17.Main;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import group17.Simulation.Simulation;
 
-import static group17.Config.*;
+import static group17.Utils.Config.*;
 
 public class RocketSimModel {
     public static Vector3dInterface targetPosition;

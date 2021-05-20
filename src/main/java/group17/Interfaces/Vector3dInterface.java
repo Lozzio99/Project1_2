@@ -8,7 +8,7 @@
 package group17.Interfaces;
 
 
-import group17.Math.Utils.Point3D;
+import group17.Math.Lib.Point3D;
 
 public interface Vector3dInterface {
 

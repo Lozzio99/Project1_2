@@ -1,6 +1,7 @@
 package group17;
 
 import group17.System.Clock;
+import group17.Utils.Config;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

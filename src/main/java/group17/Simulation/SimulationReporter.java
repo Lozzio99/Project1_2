@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static group17.Config.*;
+import static group17.Utils.Config.*;
 
 public class SimulationReporter implements ReporterInterface, Thread.UncaughtExceptionHandler {
 

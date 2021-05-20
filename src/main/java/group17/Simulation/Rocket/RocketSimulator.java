@@ -1,16 +1,16 @@
-package group17.Simulation;
+package group17.Simulation.Rocket;
 
 import group17.Interfaces.RocketInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import group17.System.Bodies.CelestialBody;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
-import static group17.Config.STEP_SIZE;
 import static group17.Main.simulation;
+import static group17.Utils.Config.STEP_SIZE;
 import static java.lang.Double.NaN;
 
 public class RocketSimulator extends CelestialBody implements RocketInterface {

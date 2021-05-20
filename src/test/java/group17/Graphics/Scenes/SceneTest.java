@@ -1,8 +1,8 @@
 package group17.Graphics.Scenes;
 
 import group17.Interfaces.GraphicsInterface;
-import group17.Math.Utils.Point3D;
-import group17.Math.Utils.Point3DConverter;
+import group17.Math.Lib.Point3D;
+import group17.Math.Lib.Point3DConverter;
 
 import java.awt.*;
 import java.awt.geom.Line2D;

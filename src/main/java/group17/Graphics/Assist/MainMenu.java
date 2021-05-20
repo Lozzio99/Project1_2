@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Contract;
 import javax.swing.*;
 import java.awt.*;
 
-import static group17.Config.*;
+import static group17.Utils.Config.*;
 
 @SuppressWarnings("rawtypes")
 public abstract class MainMenu {

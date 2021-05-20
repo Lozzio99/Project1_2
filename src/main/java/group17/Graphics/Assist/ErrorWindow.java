@@ -2,10 +2,10 @@ package group17.Graphics.Assist;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import group17.System.Bodies.CelestialBody;
-import group17.System.ErrorData;
-import group17.System.ErrorReport;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorReport;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -21,9 +21,9 @@ import java.io.*;
 import java.util.List;
 import java.util.*;
 
-import static group17.Config.ORIGINAL_DATA;
-import static group17.Config.REPORT;
 import static group17.Main.simulation;
+import static group17.Utils.Config.ORIGINAL_DATA;
+import static group17.Utils.Config.REPORT;
 
 
 public class ErrorWindow extends JPanel {

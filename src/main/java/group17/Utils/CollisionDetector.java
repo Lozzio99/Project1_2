@@ -1,4 +1,4 @@
-package group17.System;
+package group17.Utils;
 
 import group17.Interfaces.ReporterInterface;
 import group17.Interfaces.SystemInterface;
@@ -6,9 +6,9 @@ import group17.System.Bodies.CelestialBody;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-import static group17.Config.CHECK_COLLISIONS;
-import static group17.Config.REPORT;
 import static group17.Main.simulation;
+import static group17.Utils.Config.CHECK_COLLISIONS;
+import static group17.Utils.Config.REPORT;
 
 
 public class CollisionDetector {

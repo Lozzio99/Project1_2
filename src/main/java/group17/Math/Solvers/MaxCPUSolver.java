@@ -4,14 +4,14 @@ import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.*;
 
-import static group17.Config.*;
 import static group17.Main.simulation;
+import static group17.Utils.Config.*;
 
 public class MaxCPUSolver implements ODEFunctionInterface {
 

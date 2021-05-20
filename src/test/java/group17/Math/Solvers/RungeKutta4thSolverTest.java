@@ -42,7 +42,7 @@ class RungeKutta4thSolverTest {
     @DisplayName("Solve")
     void Solve() {
         double step = 0.5;
-        double accuracy = 1e-2;
+        double accuracy = 1e-3;
         StateInterface firstStep = rk.testingRK(dydx, t, y, step);
         assertTrue(() -> abs(0.36609962 - ((StateTest) firstStep).getY()) < accuracy);
         assertTrue(() -> abs(0.36609962 - ((StateTest) firstStep).getRateOfChange().getDy()) < accuracy);
@@ -66,7 +66,7 @@ class RungeKutta4thSolverTest {
     @Test
     @DisplayName("Step")
     void Step() {
-        double step = 0.2, accuracy = 1e-1;
+        double step = 0.2, accuracy = 1e-5;
         StateInterface step1, step2, step3, step4, step5;
         step1 = rk.testingRK(dydx, t, y, step);
         t += step;

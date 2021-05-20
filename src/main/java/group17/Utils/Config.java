@@ -1,7 +1,6 @@
-package group17;
+package group17.Utils;
 
 import group17.System.Clock;
-import group17.System.ErrorData;
 
 public class Config {
     /**

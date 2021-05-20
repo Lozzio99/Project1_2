@@ -1,7 +1,7 @@
-package group17.Simulation;
+package group17.Simulation.Rocket;
 
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import org.jetbrains.annotations.Contract;
 
 import static java.lang.StrictMath.abs;

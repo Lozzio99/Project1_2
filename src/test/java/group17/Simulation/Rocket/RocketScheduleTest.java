@@ -1,11 +1,11 @@
-package group17.Simulation;
+package group17.Simulation.Rocket;
 
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Utils.Vector3D;
+import group17.Math.Lib.Vector3D;
 import group17.System.Bodies.CelestialBody;
 import group17.System.Clock;
-import group17.System.SystemState;
+import group17.System.State.SystemState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 
-import static group17.Config.ERROR_EVALUATION;
-import static group17.Config.LAUNCH_DATE;
+import static group17.Utils.Config.ERROR_EVALUATION;
+import static group17.Utils.Config.LAUNCH_DATE;
 import static java.lang.Double.NaN;
 import static org.junit.jupiter.api.Assertions.*;
 

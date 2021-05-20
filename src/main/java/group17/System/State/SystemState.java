@@ -1,4 +1,4 @@
-package group17.System;
+package group17.System.State;
 
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.SimulationInterface;

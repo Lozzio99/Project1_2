@@ -1,4 +1,4 @@
-package group17.Math.Utils;
+package group17.Math.Lib;
 
 import group17.Graphics.GraphicsManager;
 import org.jetbrains.annotations.Contract;
