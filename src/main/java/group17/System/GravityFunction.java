@@ -22,22 +22,22 @@ public final class GravityFunction {
     private static volatile boolean checkedCollisions;
     private static volatile double currentTime;
     private final ODEFunctionInterface evalRateOfChange = (h, y) -> {
-        RateInterface state = new RateOfChange();
+        final RateInterface newRate = new RateOfChange();
         for (int i = 0; i < y.getPositions().size(); i++) {
-            state.getVelocities().add(
+            newRate.getVelocities().add(
                     velocityFromAcceleration(i, y, h));
         }
-        return state;
+        return newRate;
     };
     private final ODEFunctionInterface evalCurrVelocity = (t, y) -> {
-        RateInterface state = new RateOfChange();
+        final RateInterface newRate = new RateOfChange();
         double dt = t - currentTime;
         for (int i = 0; i < y.getPositions().size(); i++) {
-            state.getVelocities().add(
+            newRate.getVelocities().add(
                     y.getRateOfChange().getVelocities().get(i)
                             .add(velocityFromAcceleration(i, y, dt)));
         }
-        return state;
+        return newRate;
     };
 
     /**
