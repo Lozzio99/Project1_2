@@ -24,7 +24,7 @@ import static group17.Utils.Config.*;
  *
  * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
  * @version 1.0
- * @since 19/02/2021
+ * @since 19 /02/2021
  */
 public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 

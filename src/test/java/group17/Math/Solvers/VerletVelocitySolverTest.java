@@ -4,6 +4,7 @@ package group17.Math.Solvers;
 import group17.Interfaces.StateInterface;
 import group17.Math.Lib.FreeFallFunction;
 import group17.Math.Lib.Vector3D;
+import group17.System.GravityFunction;
 import group17.System.State.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ public class VerletVelocitySolverTest {
     @DisplayName("SolveODE")
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();
-        VerletVelocitySolver solver = new VerletVelocitySolver();
+        VerletVelocitySolver solver = new VerletVelocitySolver(new GravityFunction().getEvaluateRateOfChange());
         // init parameters
         Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0
         Vector3D initVelocity = new Vector3D(0, 0, 0);
@@ -33,8 +34,8 @@ public class VerletVelocitySolverTest {
         double expectedSol = initVelocity.getZ() * tf - 0.5 * FreeFallFunction.CONSTANT_G * tf * tf; // free fall equation
         if (DEBUG) {
             System.out.println(expectedSol);
-            for (int i = 0; i < aprxStates.length; i++) {
-                System.out.println(aprxStates[i].getPositions().get(0).getZ());
+            for (StateInterface aprxState : aprxStates) {
+                System.out.println(aprxState.getPositions().get(0).getZ());
             }
         }
 

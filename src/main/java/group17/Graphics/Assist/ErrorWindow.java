@@ -49,12 +49,14 @@ public class ErrorWindow extends JPanel {
         this.setBorder(titledBorder);
         this.setLayout(new GridLayout(2, 1));
         this.parseOriginal();
-
     }
 
+    /**
+     * Parse original.
+     */
     @Deprecated(forRemoval = true)
     /* Making csv from txt file  + creating error data array */
-    private void parseOriginal() {
+    public void parseOriginal() {
         FileReader fr;
         FileWriter fw;
         try {

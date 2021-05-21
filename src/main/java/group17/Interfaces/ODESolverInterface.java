@@ -7,8 +7,6 @@
 
 package group17.Interfaces;
 
-import group17.Math.Solvers.EulerSolver;
-
 import static group17.Utils.Config.STEP_SIZE;
 
 
@@ -113,18 +111,10 @@ public interface ODESolverInterface {
      * therefore will be consequently implemented in different ways
      *
      * @return the function used for calculations
-     * @see EulerSolver#getFunction() EulerSolver#getFunction()EulerSolver#getFunction()
-     * @see EulerSolver#singleCoreF EulerSolver#singleCoreFEulerSolver#singleCoreF
+     * @see group17.System.GravityFunction
      */
     ODEFunctionInterface getFunction();
 
     String toString();
-
-    /**
-     * Sets f.
-     *
-     * @param f the f
-     */
-    void setF(ODEFunctionInterface f);
 
 }
