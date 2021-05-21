@@ -6,6 +6,9 @@ import group17.Math.Lib.Vector3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NewtonRaphsonSolverTest {
@@ -13,7 +16,7 @@ class NewtonRaphsonSolverTest {
     private static final boolean PRINT_OUTPUT = false;
     @Test
     @DisplayName("Newton-Raphson solver")
-    void NewtRaphSolve() {
+    void NewtRaphSolve() throws IOException {
         // Example from: http://fourier.eng.hmc.edu/e176/lectures/NM/node21.html
         NewtRaphFunction testFx = vector -> {
             double x = vector.getX(), y = vector.getY(), z = vector.getZ();

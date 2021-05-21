@@ -15,13 +15,12 @@ public class RocketSimModel {
 
     public static NewtRaphFunction pF = vector -> {
         Vector3D aprxPos = (Vector3D) RocketSimModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
-        System.out.println(aprxPos.toString());
         return targetPosition.sub(aprxPos);
     };
 
     static {
         DEFAULT_SOLVER = MIDPOINT_SOLVER; // put here the best solver
-        STEP_SIZE = 200;
+        STEP_SIZE = 50;
         REPORT = false;
         INSERT_ROCKET = true;
         CHECK_COLLISIONS = false;
@@ -67,15 +66,13 @@ public class RocketSimModel {
 
 
     public static void main(String[] args) {
-        // FIXME: For some reason, simulation produces the same result every time no matter what :/
-        Vector3D res1 = (Vector3D) stateFx(new Vector3D(-1.471922101663588E11, -2.860995816266412E10, 8278183.19359608), new Vector3D(10000, 1000000.0, 600000.0), 86700 * 1e2);
+        Vector3D res1 = (Vector3D) stateFx(new Vector3D(-9.839198644659751E-01, -1.912460575714917E-01, 5.542821181619438E-05), new Vector3D(155580.29183892664,-133430.31623543188,-478.1753941877174), 86700.0 * 30 * 6);
         System.out.println(res1.toString());
-        Vector3D res2 = (Vector3D) stateFx(new Vector3D(0.0, 0.0, 0.0), new Vector3D(100, 100.0, 100.0), 1);
+        Vector3D res2 = (Vector3D) stateFx(new Vector3D(0.0, 0.0, 0.0), new Vector3D(100.1, 100.0, 100.0), 86700);
         System.out.println(res2.toString());
 
-        //(-3.4594511332232066E24,1.8655241966218185E25,-4.1859192756969905E20)
-        //(-3.4594511332232066E24,1.8655241966218185E25,-4.1859192756969905E20)
-        //(-3.4594511332232066E24,1.8655241966218185E25,-4.1859192756969905E20)
+        // 1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02
+        // -2.1762284772885286E12,-2.590189915097415E12,-3.3437836480196583E10
 
     }
 
