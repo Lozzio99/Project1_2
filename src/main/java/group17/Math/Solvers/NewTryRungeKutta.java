@@ -28,8 +28,6 @@ public class NewTryRungeKutta implements ODESolverInterface {
     }
 
 
-
-
     /**
      * Testing rk state interface.
      *

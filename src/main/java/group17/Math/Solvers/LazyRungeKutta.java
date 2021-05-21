@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Contract;
 /**
  * The type Lazy runge kutta.
  * ** WORKING WITH NUMERICAL TEST RUNGE KUTTA
+ * *** NOT WORKING WITHIN THE SIMULATION (goes to NaN very quickly)
  */
 public class LazyRungeKutta implements ODESolverInterface {
     private final ODEFunctionInterface f;
