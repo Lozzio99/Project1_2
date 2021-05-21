@@ -97,7 +97,7 @@ public class Clock {
 
     private boolean checkFirst() {
         if (this.days == 1 && this.hour == 0 && this.min == 0 && this.sec == 0) {
-            ErrorReport.monthIndex++;
+            ErrorReport.monthIndex.getAndIncrement();
             if (REPORT) simulation.getReporter().report("FIRST OF MONTH - EVALUATING ERRORS");
             return true;
         }

@@ -36,7 +36,12 @@ test {
 
     onOutput { descriptor, event ->
         if (event.destination == TestOutputEvent.Destination.StdErr) {
-            logger.error "Test: " + descriptor + ", error: " + event.message as Error
+
+            if (event.message instanceof String)
+                logger.error "Test: " + descriptor + ", error: " + event.message as String
+            else
+                logger.error "Test: " + descriptor + ", error: " + event.message as Error
+
         } else {
             logger.lifecycle  "Test: " + descriptor + ", output: " + event.message as String
         }

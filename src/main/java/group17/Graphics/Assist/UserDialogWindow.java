@@ -150,7 +150,7 @@ public class UserDialogWindow {
                 return this.dataWindow = new SimulationDataWindow();
             }
             case 3 -> {
-                return new PlotWindow().init().test();
+                return new PlotWindow().init();
             }
             case 4 -> {
                 return new RocketWindow();

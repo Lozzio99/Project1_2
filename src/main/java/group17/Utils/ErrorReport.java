@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Main.simulation;
@@ -23,7 +24,7 @@ public class ErrorReport implements Runnable {
     /**
      * The constant monthIndex.
      */
-    public static volatile int monthIndex = -1;
+    public static volatile AtomicInteger monthIndex = new AtomicInteger(-1);
     private final ErrorData state;
     private static volatile AtomicReference<FileWriter> fileWriter;
     private List<Vector3dInterface> absPosition, absVelocity;
@@ -61,7 +62,7 @@ public class ErrorReport implements Runnable {
      * Start.
      */
     public void start() {
-        if (monthIndex < 13) new Thread(this, "Error Log").start();
+        if (monthIndex.get() < 13 && monthIndex.get() >= 0) new Thread(this, "Error Log").start();
     }
 
     @Override
@@ -81,15 +82,15 @@ public class ErrorReport implements Runnable {
 
         for (int i = 0; i < state.getPositions().size(); i++) {
             absPosition.add(state.getPositions().get(i)
-                    .absSub(ORIGINAL_DATA[monthIndex].getPositions().get(i)));
+                    .absSub(ORIGINAL_DATA[monthIndex.get()].getPositions().get(i)));
             absVelocity.add(state.getVelocities().get(i)
-                    .absSub(ORIGINAL_DATA[monthIndex].getVelocities().get(i)));
+                    .absSub(ORIGINAL_DATA[monthIndex.get()].getVelocities().get(i)));
             relPosition.add(absPosition.get(i)
-                    .div(ORIGINAL_DATA[monthIndex].getPositions().get(i)));
+                    .div(ORIGINAL_DATA[monthIndex.get()].getPositions().get(i)));
             relVelocity.add(absVelocity.get(i)
-                    .div(ORIGINAL_DATA[monthIndex].getVelocities().get(i)));
-            Vector3dInterface subPos = state.getPositions().get(i).sub(ORIGINAL_DATA[monthIndex].getPositions().get(i));
-            Vector3dInterface subVel = state.getVelocities().get(i).sub(ORIGINAL_DATA[monthIndex].getVelocities().get(i));
+                    .div(ORIGINAL_DATA[monthIndex.get()].getVelocities().get(i)));
+            Vector3dInterface subPos = state.getPositions().get(i).sub(ORIGINAL_DATA[monthIndex.get()].getPositions().get(i));
+            Vector3dInterface subVel = state.getVelocities().get(i).sub(ORIGINAL_DATA[monthIndex.get()].getVelocities().get(i));
 
 
             averageErrorPosition = averageErrorPosition.add(subPos.multiply(subPos));
@@ -143,8 +144,6 @@ public class ErrorReport implements Runnable {
                 fileWriter.get().write("********************************        EOE     **************************************\n");
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
-                System.out.println("month evaluation log completed");
             }
         }
     }

@@ -29,7 +29,6 @@ public class CollisionDetector {
      */
     public static void checkCollided(CelestialBody a, CelestialBody b, double distm) {
         if (!CHECK_COLLISIONS) return;
-        collision = false;
         output = "";
         if (distm < (b.getRADIUS() + a.getRADIUS())) {
             if (a.isCollided() || b.isCollided())

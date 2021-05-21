@@ -66,7 +66,7 @@ public class Simulation implements SimulationInterface {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         CURRENT_TIME = 0;
-        ErrorReport.monthIndex = 0;
+        ErrorReport.monthIndex.getAndSet(0);
         if (!LAUNCH_ASSIST) {
             if (REPORT) this.getReporter().report("START SIMULATION");
             try {

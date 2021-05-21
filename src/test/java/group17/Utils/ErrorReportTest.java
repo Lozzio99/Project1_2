@@ -24,7 +24,7 @@ class ErrorReportTest {
     static void setUp() {
         stateTest = new SystemState(List.of(new Vector3D()), List.of(new Vector3D(NaN, NaN, NaN)));
         ORIGINAL_DATA[0] = new ErrorData(stateTest);
-        ErrorReport.monthIndex = 0;
+        ErrorReport.monthIndex.getAndSet(0);
         report = new ErrorReport(new ErrorData(stateTest));
     }
 
@@ -45,7 +45,7 @@ class ErrorReportTest {
     @Test
     @DisplayName("Start")
     void testWrongMonthIndex() {
-        ErrorReport.monthIndex = 14;
+        ErrorReport.monthIndex.getAndSet(14);
         ERROR_EVALUATION = true;
         int nThreads = Thread.activeCount();
         report.start();

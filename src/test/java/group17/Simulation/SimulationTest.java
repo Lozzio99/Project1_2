@@ -107,7 +107,7 @@ class SimulationTest {
         simulation = new Simulation();
         simulation.initSystem();
         DEBUG = true;
-        ErrorReport.monthIndex = 0;
+        ErrorReport.monthIndex.getAndSet(0);
         ErrorData data = ORIGINAL_DATA[0] = new ErrorData(simulation.getSystem().systemState());
         simulation.setAssist(userDialog = new UserDialogWindow());
         simulation.initAssist();  //should make automatically the first error report
