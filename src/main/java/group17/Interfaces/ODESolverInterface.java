@@ -7,11 +7,12 @@
 
 package group17.Interfaces;
 
-import group17.Math.Solvers.EulerSolver;
-
 import static group17.Utils.Config.STEP_SIZE;
 
 
+/**
+ * The interface Ode solver interface.
+ */
 /*
  * A class for solving a general differential equation dy/dt = f(t,y)
  *     y(t) describes the state of the system at time t
@@ -19,6 +20,14 @@ import static group17.Utils.Config.STEP_SIZE;
  */
 public interface ODESolverInterface {
 
+    /**
+     * Solve state interface [ ].
+     *
+     * @param f  the f
+     * @param y0 the y 0
+     * @param ts the ts
+     * @return the state interface [ ]
+     */
     /*
      * Solve the differential equation by taking multiple steps.
      *
@@ -44,6 +53,15 @@ public interface ODESolverInterface {
         return states;
     }
 
+    /**
+     * Solve state interface [ ].
+     *
+     * @param f  the f
+     * @param y0 the y 0
+     * @param tf the tf
+     * @param h  the h
+     * @return the state interface [ ]
+     */
     /*
      * Solve the differential equation by taking multiple steps of equal size, starting at time 0.
      * The final step may have a smaller size, if the step-size does not exactly divide the solution time range
@@ -67,6 +85,15 @@ public interface ODESolverInterface {
         return path;
     }
 
+    /**
+     * Step state interface.
+     *
+     * @param f the f
+     * @param t the t
+     * @param y the y
+     * @param h the h
+     * @return the state interface
+     */
     /*
      * Update rule for one step.
      *
@@ -84,13 +111,10 @@ public interface ODESolverInterface {
      * therefore will be consequently implemented in different ways
      *
      * @return the function used for calculations
-     * @see EulerSolver#getFunction()
-     * @see EulerSolver#singleCoreF
+     * @see group17.System.GravityFunction
      */
     ODEFunctionInterface getFunction();
 
     String toString();
-
-    void setF(ODEFunctionInterface f);
 
 }

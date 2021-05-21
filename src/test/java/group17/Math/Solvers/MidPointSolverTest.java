@@ -40,7 +40,7 @@ class MidPointSolverTest {
         double y0 = 0;
         y = new StateTestClass();
         y.setY(y0);
-        mid = new MidPointSolver();
+        mid = new MidPointSolver(dydx);
     }
 
     @Test

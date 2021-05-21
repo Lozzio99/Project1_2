@@ -8,10 +8,27 @@ import group17.System.SolarSystem;
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
+/**
+ * The type Rocket sim model.
+ */
 public class RocketSimModel {
+    /**
+     * The constant targetPosition.
+     */
     public static Vector3dInterface targetPosition;
+    /**
+     * The Solver.
+     */
+
     static ODESolverInterface solver;
+    /**
+     * The Initial state.
+     */
     static StateInterface initialState;
+
+    /**
+     * The constant pF.
+     */
 
     public static NewtRaphFunction pF = vector -> {
         Vector3D aprxPos = (Vector3D) RocketSimModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
@@ -26,6 +43,13 @@ public class RocketSimModel {
         CHECK_COLLISIONS = false;
     }
 
+    /**
+     * Create system system interface.
+     *
+     * @param initLocation the init location
+     * @param initVelocity the init velocity
+     * @return the system interface
+     */
     public static SystemInterface createSystem(Vector3dInterface initLocation, Vector3dInterface initVelocity) {
         final SystemInterface[] system = new SystemInterface[1];
         simulation = new Simulation() {
@@ -50,6 +74,15 @@ public class RocketSimModel {
         return system[0];
     }
 
+
+    /**
+     * State fx vector 3 d interface.
+     *
+     * @param initPos      the init pos
+     * @param initVelocity the init velocity
+     * @param timeFinal    the time final
+     * @return the vector 3 d interface
+     */
     public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal) {
         // init parameters
         SystemInterface system = createSystem(initPos, initVelocity);
@@ -64,7 +97,11 @@ public class RocketSimModel {
     }
 
 
-
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         Vector3D res1 = (Vector3D) stateFx(new Vector3D(-9.839198644659751E-01, -1.912460575714917E-01, 5.542821181619438E-05), new Vector3D(155580.29183892664,-133430.31623543188,-478.1753941877174), 86700.0 * 30 * 6);
         System.out.println(res1.toString());

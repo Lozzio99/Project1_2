@@ -26,6 +26,9 @@ import static group17.Utils.Config.ORIGINAL_DATA;
 import static group17.Utils.Config.REPORT;
 
 
+/**
+ * The type Error window.
+ */
 public class ErrorWindow extends JPanel {
 
     private final JTable originalDataTable = new JTable();
@@ -37,20 +40,25 @@ public class ErrorWindow extends JPanel {
     private final JTextArea[] planetViewValues = new JTextArea[4];
     private ErrorData ERROR_DATA_CURRENT_MONTH;
 
+    /**
+     * Instantiates a new Error window.
+     */
     public ErrorWindow() {
         TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40), "Horizon Original Data");
         titledBorder.setTitlePosition(TitledBorder.TOP);
         this.setBorder(titledBorder);
         this.setLayout(new GridLayout(2, 1));
         this.parseOriginal();
-
     }
 
+    /**
+     * Parse original.
+     */
     @Deprecated(forRemoval = true)
     /* Making csv from txt file  + creating error data array */
-    private void parseOriginal() {
-        FileReader fr = null;
-        FileWriter fw = null;
+    public void parseOriginal() {
+        FileReader fr;
+        FileWriter fw;
         try {
             File nasaFile = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource(dir + "NASA_HORIZON_MONTHS.txt")).getFile()),
                     csvFile = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource(dir + "ORIGINAL_MONTHS.csv")).getFile());
@@ -87,7 +95,7 @@ public class ErrorWindow extends JPanel {
                     monthRecord[i][6] = vectorVel[1];
                     monthRecord[i][7] = vectorVel[2];
                 }
-                if (scan.hasNextLine()) whiteLine = scan.nextLine();
+                if (scan.hasNextLine()) scan.nextLine(); //white line
                 ORIGINAL_DATA[monthIndex] = new ErrorData().setData(pos, vel);
                 monthIndex++;
                 all.addAll(Arrays.asList(monthRecord));
@@ -105,6 +113,9 @@ public class ErrorWindow extends JPanel {
         return new Vector3D(Double.parseDouble(vectorVel[0]), Double.parseDouble(vectorVel[1]), Double.parseDouble(vectorVel[2]));
     }
 
+    /**
+     * Make table.
+     */
     public void makeTable() {
         originalDataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         DefaultTableModel csv_model = new DefaultTableModel();
@@ -147,6 +158,9 @@ public class ErrorWindow extends JPanel {
         this.add(dataTableScrollPane, 0);
     }
 
+    /**
+     * Init buttons.
+     */
     public void initButtons() {
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayout(6, 1, 5, 5));
@@ -194,7 +208,7 @@ public class ErrorWindow extends JPanel {
     }
 
     private void createEditorPane(JPanel bottomPanel) {
-        JEditorPane textPane = null;
+        JEditorPane textPane;
         textPane = new JEditorPane();
         textPane.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
         textPane.setEditable(false);
@@ -217,7 +231,7 @@ public class ErrorWindow extends JPanel {
                                 else cmd.append(String.format(" || %s \"%s\"", browsers[i], url));
                             }
 
-                            runtime.exec(new String[]{"sh", "-c", cmd.toString()});
+                            runtime.exec(new String[]{"sh", "-color", cmd.toString()});
 
                         }
                         default -> {
@@ -251,6 +265,11 @@ public class ErrorWindow extends JPanel {
         planetViewValues[3].setText("Mean Velocity error : ");
     }
 
+    /**
+     * Update labels.
+     *
+     * @param data the data
+     */
     public void updateLabels(ErrorData data) {
         this.ERROR_DATA_CURRENT_MONTH = data;
     }

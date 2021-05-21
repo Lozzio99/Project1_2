@@ -5,9 +5,20 @@ import group17.Math.Lib.Vector3D;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * The type Particle.
+ */
 public class Particle extends CelestialBody {
+    /**
+     * The Id.
+     */
     int id;
 
+    /**
+     * Instantiates a new Particle.
+     *
+     * @param id the id
+     */
     public Particle(int id) {
         this.id = id;
     }

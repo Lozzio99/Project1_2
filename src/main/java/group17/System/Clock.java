@@ -7,7 +7,14 @@ import static group17.Main.simulation;
 import static group17.Utils.Config.ERROR_EVALUATION;
 import static group17.Utils.Config.REPORT;
 
+/**
+ * The type Clock.
+ */
 public class Clock {
+
+    /**
+     * The constant DAY.
+     */
 
     public static final double DAY = 86400.0;
     private static final String[] monthStrings =
@@ -17,6 +24,9 @@ public class Clock {
     private boolean leap;
     private int[] daysInMonths;
 
+    /**
+     * Instantiates a new Clock.
+     */
     public Clock() {
         sec = 0;
         min = 0;
@@ -26,20 +36,12 @@ public class Clock {
         years = 0;
     }
 
-    public static void main(String[] args) {
-        Clock c = new Clock().setLaunchDay().setInitialTime(00, 50, 23);
-        int k = 0;
-        while (true) {
 
-            c.step(60);
-            if (k % 1000 == 0)
-                System.out.println(c);
-            Thread.onSpinWait();
-            k++;
-        }
-
-    }
-
+    /**
+     * Sets launch day.
+     *
+     * @return the launch day
+     */
     public Clock setLaunchDay() {
         setInitialDay(1, 4, 2020);
         setInitialTime(0, 0, 0);
@@ -48,6 +50,14 @@ public class Clock {
         return this;
     }
 
+    /**
+     * Sets initial day.
+     *
+     * @param days  the days
+     * @param month the month
+     * @param years the years
+     * @return the initial day
+     */
     public Clock setInitialDay(int days, int month, int years) {
         this.days = days;
         this.months = month;
@@ -55,6 +65,14 @@ public class Clock {
         return this;
     }
 
+    /**
+     * Sets initial time.
+     *
+     * @param sec   the sec
+     * @param min   the min
+     * @param hours the hours
+     * @return the initial time
+     */
     public Clock setInitialTime(int sec, int min, int hours) {
         this.sec = sec;
         this.min = min;
@@ -62,6 +80,12 @@ public class Clock {
         return this;
     }
 
+    /**
+     * Step boolean.
+     *
+     * @param secStep the sec step
+     * @return the boolean
+     */
     public synchronized boolean step(double secStep) {
         int step = (int) secStep;
         if (step != 0)
@@ -148,6 +172,9 @@ public class Clock {
         this.years += years;
     }
 
+    /**
+     * Check leap.
+     */
     public void checkLeap() {
         leap = this.years % 4 == 0;
         daysInMonths = new int[]{31, (leap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -164,38 +191,83 @@ public class Clock {
                 this.years + "  }";
     }
 
+    /**
+     * Gets sec.
+     *
+     * @return the sec
+     */
     public int getSec() {
         return sec;
     }
 
+    /**
+     * Gets min.
+     *
+     * @return the min
+     */
     public int getMin() {
         return min;
     }
 
+    /**
+     * Gets hour.
+     *
+     * @return the hour
+     */
     public int getHour() {
         return hour;
     }
 
+    /**
+     * Gets days.
+     *
+     * @return the days
+     */
     public int getDays() {
         return days;
     }
 
+    /**
+     * Gets months.
+     *
+     * @return the months
+     */
     public int getMonths() {
         return months;
     }
 
+    /**
+     * Gets years.
+     *
+     * @return the years
+     */
     public int getYears() {
         return years;
     }
 
+    /**
+     * Get days in months int [ ].
+     *
+     * @return the int [ ]
+     */
     public int[] getDaysInMonths() {
         return daysInMonths;
     }
 
+    /**
+     * Month string string.
+     *
+     * @return the string
+     */
     public String monthString() {
         return monthStrings[months - 1];
     }
 
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
     public final Date getDate() {
         final Date d = new Date();
         d.sec = this.sec;
@@ -231,12 +303,33 @@ public class Clock {
         return false;
     }
 
+    /**
+     * The type Date.
+     */
     public static class Date {
+        /**
+         * The Sec.
+         */
         public double sec;
+        /**
+         * The Min.
+         */
         public double min;
+        /**
+         * The Hours.
+         */
         public double hours;
+        /**
+         * The Days.
+         */
         public double days;
+        /**
+         * The Months.
+         */
         public double months;
+        /**
+         * The Years.
+         */
         public double years;
     }
 }

@@ -1,64 +1,31 @@
 package group17.Math.Solvers;
 
-import group17.Interfaces.*;
-import group17.Main;
-import group17.Math.Lib.Vector3D;
-import group17.System.State.RateOfChange;
-import group17.Utils.CollisionDetector;
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.StateInterface;
+import group17.System.GravityFunction;
 import org.jetbrains.annotations.Contract;
 
-import static group17.Main.simulation;
-import static group17.Utils.Config.G;
-import static java.lang.Double.NaN;
-
+/**
+ * The type Standard verlet solver.
+ */
 public class StandardVerletSolver implements ODESolverInterface {
 
-    public static double currTime = 0;
-    public static double endTime = NaN;
-    private boolean checked;
-    private final boolean oldF = true;
-    private boolean first = true;
-    private StateInterface prevState, oldP;
-    private ODEFunctionInterface singleCoreF;
+    private boolean first;
+    private final ODEFunctionInterface f;
+    private StateInterface prevState;
 
 
+    /**
+     * Instantiates a new Standard verlet solver.
+     *
+     * @param f the f
+     */
     @Contract(pure = true)
-    public StandardVerletSolver() {
-        this.singleCoreF = (h, y) -> {
-            RateInterface rate = new RateOfChange();
-            for (int i = 0; i < y.getPositions().size(); i++) {
-                Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
-                for (int k = 0; k < y.getPositions().size(); k++) {
-                    if (i != k) {
-                        Vector3dInterface acc = y.getPositions().get(i).clone();
-                        double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
-                        acc = y.getPositions().get(k).sub(acc); // Get the force vector
-                        double den = Math.sqrt(squareDist);
-                        if (!checked) {
-                            CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
-                                    simulation.getSystem().getCelestialBodies().get(k), den);
-                        }
-                    /*
-                        ! Important !
-                        if two bodies collapses into the same point
-                        that would crash to NaN and consequently
-                        the same in all the system
-                    */
-                        acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                        acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
-                        totalAcc = totalAcc.addMul(h, acc);
-                        // p = h*acc(derivative of velocity)
-                    }
-                }  // y1 =y0 + h*acc
-                // y1 = y0 + p
-                //FIXME : why did we had to change this?
-                rate.getVelocities().add(totalAcc);
-            }
-            checked = true;
-            return rate;
-        };
+    public StandardVerletSolver(final ODEFunctionInterface f) {
+        first = true;
+        this.f = f;
     }
-
 
     /**
      * Step of a Standard Verlet Algorithm:
@@ -75,11 +42,11 @@ public class StandardVerletSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         // next position
-        checked = false;
+        GravityFunction.setChecked(false);
         StateInterface diff;
         if (first) {
-            RungeKutta4thSolver rk4 = new RungeKutta4thSolver();
-            diff = rk4.old(rk4.getOldF(), t, y, h);
+            ODESolverInterface solver = new OldRungeKutta(new GravityFunction().getEvaluateRateOfChange());
+            diff = solver.step(solver.getFunction(), t, y, h);
             first = false;
         } else {
             StateInterface subPrev = prevState.copy().multiply(-1);
@@ -94,14 +61,13 @@ public class StandardVerletSolver implements ODESolverInterface {
 
     @Override
     public ODEFunctionInterface getFunction() {
-        return singleCoreF;
+        return this.f;
     }
 
-    @Override
-    public void setF(ODEFunctionInterface f) {
-        this.singleCoreF = f;
-    }
 
+    /**
+     * Sets first.
+     */
     public void setFirst() {
         this.first = true;
     }

@@ -7,38 +7,85 @@ import group17.System.Clock;
 
 import java.util.List;
 
+/**
+ * The interface System interface.
+ */
 public interface SystemInterface {
 
 
-    // Properties
+    /**
+     * Gets celestial bodies.
+     *
+     * @return the celestial bodies
+     */
+// Properties
     List<CelestialBody> getCelestialBodies();
 
 
+    /**
+     * Gets clock.
+     *
+     * @return the clock
+     */
     Clock getClock();
 
+    /**
+     * Init clock.
+     */
     void initClock();
 
 
-    // Initial State
+    /**
+     * System state state interface.
+     *
+     * @return the state interface
+     */
+// Initial State
     StateInterface systemState();
 
+    /**
+     * Gets rocket.
+     *
+     * @return the rocket
+     */
     RocketSimulator getRocket();
 
+    /**
+     * Init planets.
+     */
     void initPlanets();
 
+    /**
+     * Init rocket.
+     */
     void initRocket();
 
 
-    // simulation actions
+    /**
+     * Start.
+     */
+// simulation actions
     void start();
 
+    /**
+     * Reset.
+     */
     void reset();
 
+    /**
+     * Stop.
+     */
     void stop();
 
     String toString();
 
+    /**
+     * Step.
+     */
     void step();
 
+    /**
+     * Initial state.
+     */
     void initialState();
 }

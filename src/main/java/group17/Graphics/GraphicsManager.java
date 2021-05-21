@@ -17,12 +17,30 @@ import static group17.Utils.Config.DEBUG;
 import static group17.Utils.Config.FPS;
 
 
+/**
+ * The type Graphics manager.
+ */
 public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {
 
+    /**
+     * The Main graphics th.
+     */
     protected final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
+    /**
+     * The Mouse.
+     */
     protected MouseInput mouse;
+    /**
+     * The Current scene.
+     */
     protected Scene currentScene;
+    /**
+     * The Frames.
+     */
     int frames = 0;
+    /**
+     * The T.
+     */
     double t = System.currentTimeMillis();
     private JFrame frame;
     private WindowEvent listen;
@@ -40,6 +58,9 @@ public class GraphicsManager extends Canvas implements GraphicsInterface, Runnab
         //this.frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
     }
 
+    /**
+     * Sets window properties.
+     */
     protected void setWindowProperties() {
         final var closed = new WindowAdapter() {
             @Override

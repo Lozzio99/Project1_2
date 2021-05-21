@@ -23,7 +23,6 @@ dependencies {
 }
 
 test {
-    useTestNG()
     useJUnitPlatform()
     testLogging {
         events 'passed', 'skipped', 'failed'
@@ -32,14 +31,14 @@ test {
     testLogging.showStandardStreams true
     minHeapSize "128m"
     maxHeapSize "512m"
-    beforeTest { descriptor -> logger.lifecycle "Running test: " + descriptor}
+    beforeTest { descriptor -> logger.lifecycle "Running test: " + descriptor as String }
     failFast true
 
     onOutput { descriptor, event ->
         if (event.destination == TestOutputEvent.Destination.StdErr) {
-            logger.error "Test: " + descriptor + ", error: " + event.message
+            logger.error "Test: " + descriptor + ", error: " + event.message as Error
         } else {
-            logger.lifecycle "Test: " + descriptor + ", output: " + event.message
+            logger.lifecycle  "Test: " + descriptor + ", output: " + event.message as String
         }
     }
     //onOutput { descriptor, event -> logger.lifecycle("Test: " + descriptor + " \noutput: " + event.message )}

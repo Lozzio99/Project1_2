@@ -8,6 +8,9 @@ import java.util.List;
 
 import static group17.Main.simulation;
 
+/**
+ * The interface Rate interface.
+ */
 public interface RateInterface {
 
 
@@ -19,8 +22,19 @@ public interface RateInterface {
      */
     List<Vector3dInterface> getVelocities();
 
+    /**
+     * Sets velocities.
+     *
+     * @param vel the vel
+     */
     void setVelocities(List<Vector3dInterface> vel);
 
+    /**
+     * Multiply rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
     default RateInterface multiply(double scalar) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
@@ -32,6 +46,12 @@ public interface RateInterface {
         return rate;
     }
 
+    /**
+     * Sub rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
     default RateInterface sub(double scalar) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
@@ -42,6 +62,12 @@ public interface RateInterface {
         return rate;
     }
 
+    /**
+     * Add rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
     default RateInterface add(double scalar) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
@@ -52,6 +78,12 @@ public interface RateInterface {
         return rate;
     }
 
+    /**
+     * Div rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
     default RateInterface div(double scalar) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to multiply ");
@@ -63,6 +95,11 @@ public interface RateInterface {
         return rate;
     }
 
+    /**
+     * Copy rate interface.
+     *
+     * @return the rate interface
+     */
     default RateInterface copy() {
         RateInterface s = new RateOfChange();
         for (Vector3dInterface v : this.getVelocities()) {
@@ -71,6 +108,12 @@ public interface RateInterface {
         return s;
     }
 
+    /**
+     * Add rate interface.
+     *
+     * @param tobeAdded the tobe added
+     * @return the rate interface
+     */
     default RateInterface add(RateInterface tobeAdded) {
         if (this.getVelocities().size() == 0)
             throw new RuntimeException(" Nothing to add ");
@@ -81,6 +124,13 @@ public interface RateInterface {
         }
         return rate;
     }
+
+    /**
+     * Sum of rate interfaces.
+     *
+     * @param states the states
+     * @return the rate interface
+     */
     default RateInterface sumOf(RateInterface... states) {
         RateInterface rate = new RateOfChange();
         for (int i = 0; i < states[0].getVelocities().size(); i++) {
@@ -93,6 +143,11 @@ public interface RateInterface {
         return rate;
     }
 
+    /**
+     * Initial rate rate interface.
+     *
+     * @return the rate interface
+     */
     default RateInterface initialRate() {
         if (this.getVelocities().size() != 0)
             this.setVelocities(new ArrayList<>(11));

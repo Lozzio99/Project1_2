@@ -13,9 +13,21 @@ import java.util.Arrays;
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
+/**
+ * The type Simulation scene.
+ */
 public class SimulationScene extends Scene {
+    /**
+     * The Planets positions.
+     */
     volatile Point3D[] planetsPositions;
+    /**
+     * The Radius.
+     */
     volatile double[] radius;
+    /**
+     * The Trajectories.
+     */
     volatile Bag[] trajectories;
 
 
@@ -72,6 +84,11 @@ public class SimulationScene extends Scene {
         }
     }
 
+    /**
+     * Get planet positions point 3 d [ ].
+     *
+     * @return the point 3 d [ ]
+     */
     public Point3D[] getPlanetPositions() {
         return this.planetsPositions;
     }
@@ -87,6 +104,9 @@ public class SimulationScene extends Scene {
         super.resetMouse();
     }
 
+    /**
+     * Update bodies.
+     */
     public void updateBodies() {
 
         //TODO : try translate planetPositions points by Vector.sub(oldPosition)
@@ -114,6 +134,13 @@ public class SimulationScene extends Scene {
     }
 
 
+    /**
+     * Planet shape ellipse 2 d . double.
+     *
+     * @param position the position
+     * @param radius   the radius
+     * @return the ellipse 2 d . double
+     */
     Ellipse2D.Double planetShape(Point3D position, double radius) {
         Point p = Point3DConverter.convertPoint(position);
         return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
@@ -127,11 +154,26 @@ public class SimulationScene extends Scene {
     }
 
 
+    /**
+     * The type Bag.
+     */
     class Bag {
+        /**
+         * The Trajectories.
+         */
         final Point3D[] trajectories;
+        /**
+         * The Insert.
+         */
         int insert;
+        /**
+         * The Loop.
+         */
         boolean loop;
 
+        /**
+         * Instantiates a new Bag.
+         */
         @Contract(pure = true)
         Bag() {
             this.trajectories = new Point3D[TRAJECTORY_LENGTH];
@@ -139,6 +181,11 @@ public class SimulationScene extends Scene {
             this.loop = false;
         }
 
+        /**
+         * Add.
+         *
+         * @param p the p
+         */
         void add(final Point3D p) {
             this.trajectories[this.insert] = p;
             this.insert++;
@@ -147,6 +194,11 @@ public class SimulationScene extends Scene {
             }
         }
 
+        /**
+         * Get trajectories point 3 d [ ].
+         *
+         * @return the point 3 d [ ]
+         */
         Point3D[] getTrajectories() {
             return this.trajectories;
         }

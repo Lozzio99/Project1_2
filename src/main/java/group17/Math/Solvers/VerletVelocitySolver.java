@@ -1,59 +1,28 @@
 package group17.Math.Solvers;
 
-import group17.Interfaces.*;
-import group17.Main;
-import group17.Math.Lib.Vector3D;
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
+import group17.System.GravityFunction;
 import group17.System.State.RateOfChange;
-import group17.Utils.CollisionDetector;
 import org.jetbrains.annotations.Contract;
-
-import static group17.Main.simulation;
-import static group17.Utils.Config.G;
-import static java.lang.Double.NaN;
 
 /**
  * Verlet Velosity Solver (both positions and velocity, less round-off errors)
  */
 public class VerletVelocitySolver implements ODESolverInterface {
 
-    public static double currTime = 0;
-    public static double endTime = NaN;
-    private ODEFunctionInterface singleCoreF;
-    private boolean checked;
+    private final ODEFunctionInterface f;
 
+    /**
+     * Instantiates a new Verlet velocity solver.
+     *
+     * @param f the f
+     */
     @Contract(pure = true)
-    public VerletVelocitySolver() {
-        this.singleCoreF = (h, y) -> {
-            RateInterface rate = new RateOfChange();
-            for (int i = 0; i < y.getPositions().size(); i++) {
-                Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
-                for (int k = 0; k < y.getPositions().size(); k++) {
-                    if (i != k) {
-                        Vector3dInterface acc = y.getPositions().get(i).clone();
-                        double squareDist = Math.pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);
-                        acc = y.getPositions().get(k).sub(acc); // Get the force vector
-                        double den = Math.sqrt(squareDist);
-                        if (!checked) {
-                            CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i),
-                                    simulation.getSystem().getCelestialBodies().get(k), den);
-                        }
-                    /*
-                        ! Important !
-                        if two bodies collapses into the same point
-                        that would crash to NaN and consequently
-                        the same in all the system
-                    */
-                        acc = acc.mul(1 / (den == 0 ? 0.0000001 : den)); // Normalise to length 1
-                        acc = acc.mul((G * Main.simulation.getSystem().getCelestialBodies().get(k).getMASS()) / (squareDist == 0 ? 0.0000001 : squareDist)); // Convert force to acceleration
-                        totalAcc = totalAcc.addMul(h, acc);
-                        // p = h*acc(derivative of velocity)
-                    }
-                }
-                rate.getVelocities().add(totalAcc);
-            }
-            checked = true;
-            return rate;
-        };
+    public VerletVelocitySolver(final ODEFunctionInterface f) {
+        this.f = f;
     }
 
 
@@ -73,7 +42,7 @@ public class VerletVelocitySolver implements ODESolverInterface {
      */
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
-        checked = false;
+        GravityFunction.setChecked(false);
         // next position
         RateInterface velocity = new RateOfChange();
         velocity.setVelocities(y.getRateOfChange().getVelocities());
@@ -87,19 +56,13 @@ public class VerletVelocitySolver implements ODESolverInterface {
         RateInterface part7 = velocity.add(part6);
 
         part4.getRateOfChange().setVelocities(part7.getVelocities());
-        y = part4;
         return part4;
     }
 
 
     @Override
     public ODEFunctionInterface getFunction() {
-        return singleCoreF;
-    }
-
-    @Override
-    public void setF(ODEFunctionInterface f) {
-        this.singleCoreF = f;
+        return f;
     }
 
 }

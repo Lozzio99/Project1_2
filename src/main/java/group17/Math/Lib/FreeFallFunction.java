@@ -12,6 +12,9 @@ import group17.Interfaces.StateInterface;
  */
 public class FreeFallFunction implements ODEFunctionInterface {
 
+    /**
+     * The constant CONSTANT_G.
+     */
     public static final double CONSTANT_G = 9.81998;
 
     @Override
@@ -25,7 +28,5 @@ public class FreeFallFunction implements ODEFunctionInterface {
         return next_rate;
     }
 
-    /**
-     * For Higher cpu usages, shuts down all waiting or busy threads
-     */
+
 }

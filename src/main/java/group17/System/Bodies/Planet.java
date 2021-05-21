@@ -5,9 +5,20 @@ import group17.Math.Lib.Vector3D;
 
 import java.awt.*;
 
+/**
+ * The type Planet.
+ */
 public class Planet extends CelestialBody {
+    /**
+     * The Planet.
+     */
     PlanetsEnum planet;
 
+    /**
+     * Instantiates a new Planet.
+     *
+     * @param planet the planet
+     */
     public Planet(PlanetsEnum planet) {
         this.planet = planet;
     }
@@ -80,14 +91,41 @@ public class Planet extends CelestialBody {
     }
 
 
+    /**
+     * The enum Planets enum.
+     */
     public enum PlanetsEnum {
+        /**
+         * Mercury planets enum.
+         */
         MERCURY,
+        /**
+         * Venus planets enum.
+         */
         VENUS,
+        /**
+         * Earth planets enum.
+         */
         EARTH,
+        /**
+         * Mars planets enum.
+         */
         MARS,
+        /**
+         * Jupiter planets enum.
+         */
         JUPITER,
+        /**
+         * Saturn planets enum.
+         */
         SATURN,
+        /**
+         * Uranus planets enum.
+         */
         URANUS,
+        /**
+         * Neptune planets enum.
+         */
         NEPTUNE
     }
 

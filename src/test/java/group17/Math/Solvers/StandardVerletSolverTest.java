@@ -3,6 +3,7 @@ package group17.Math.Solvers;
 import group17.Interfaces.StateInterface;
 import group17.Math.Lib.FreeFallFunction;
 import group17.Math.Lib.Vector3D;
+import group17.System.GravityFunction;
 import group17.System.State.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class StandardVerletSolverTest {
     @DisplayName("SolveODE")
     void SolveODE() {
         FreeFallFunction yd = new FreeFallFunction();
-        StandardVerletSolver solver = new StandardVerletSolver();
+        StandardVerletSolver solver = new StandardVerletSolver(new GravityFunction().getEvaluateRateOfChange());
         solver.setFirst();
         // init parameters
         Vector3D initPos = new Vector3D(0, 0, 0); // at t_0 = 0

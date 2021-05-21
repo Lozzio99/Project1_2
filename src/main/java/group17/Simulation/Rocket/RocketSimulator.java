@@ -13,35 +13,81 @@ import static group17.Main.simulation;
 import static group17.Utils.Config.STEP_SIZE;
 import static java.lang.Double.NaN;
 
+/**
+ * The type Rocket simulator.
+ */
 public class RocketSimulator extends CelestialBody implements RocketInterface {
 
-    // Variables
+    /**
+     * The Start fuel.
+     */
+// Variables
     double startFuel = 2e4;
+    /**
+     * The Fuel mass.
+     */
     double fuelMass;
+    /**
+     * The Total mass.
+     */
     double totalMass;
+    /**
+     * The Exhaust velocity.
+     */
     double exhaustVelocity = 2e4;
+    /**
+     * The Max thrust.
+     */
     double maxThrust = 3e7;
 
+    /**
+     * The Local acceleration.
+     */
     Vector3dInterface localAcceleration;
 
 
+    /**
+     * Instantiates a new Rocket simulator.
+     */
     public RocketSimulator() {
         this.localAcceleration = new Vector3D();
     }
 
+    /**
+     * Add acceleration.
+     *
+     * @param toAdd the to add
+     */
     public void addAcceleration(Vector3dInterface toAdd) {
         this.localAcceleration = this.localAcceleration.add(toAdd);
     }
 
+    /**
+     * Gets local acceleration.
+     *
+     * @return the local acceleration
+     */
     public Vector3dInterface getLocalAcceleration() {
         return localAcceleration;
     }
 
+    /**
+     * Sets local acceleration.
+     *
+     * @param localAcceleration the local acceleration
+     */
     public void setLocalAcceleration(Vector3dInterface localAcceleration) {
         this.localAcceleration = localAcceleration;
     }
 
-    /*
+    /**
+     * Evaluate loss double.
+     *
+     * @param desiredVelocity the desired velocity
+     * @param actualVelocity  the actual velocity
+     * @return the double
+     */
+/*
          desiredVelocity - obtain from Newton-Raphson method
          stepSize used to determine if m_dot * Ve > maxThrust
          y for getting currentVelocity of Rocket
@@ -58,6 +104,11 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
     }
 
 
+    /**
+     * Update mass.
+     *
+     * @param propellantConsumed the propellant consumed
+     */
     public void updateMass(double propellantConsumed) {
         if (this.getFuelMass() - propellantConsumed > 0) {
             this.setMASS(this.totalMass - propellantConsumed);
@@ -82,6 +133,11 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
         return "ROCKET";
     }
 
+    /**
+     * Info string.
+     *
+     * @return the string
+     */
     public String info() {
         return "Dry Mass: " + this.getMASS() + "\n" +
                 "Fuel Mass: " + this.fuelMass + "\n";

@@ -1,10 +1,14 @@
 package group17.Interfaces;
 
+/**
+ * The interface Newt raph function.
+ */
 public interface NewtRaphFunction {
 
 
     /**
      * Vector-valued function of the model to be approximated
+     *
      * @param vector input vector (e.g. velocity)
      * @return result of the function
      */

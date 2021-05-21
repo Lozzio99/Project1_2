@@ -1,10 +1,4 @@
-/**
- * This class represents the dialog frame, which is opened upon start.
- *
- * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
- * @version 1.0
- * @since 19/02/2021
- */
+
 
 package group17.Graphics.Assist;
 
@@ -26,35 +20,96 @@ import static group17.Main.userDialog;
 import static group17.Utils.Config.*;
 
 /**
- * DialogFrame
+ * This class represents the dialog frame, which is opened upon start.
+ *
+ * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+ * @version 1.0
+ * @since 19 /02/2021
  */
 public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
     private static int t = 0;
-    protected final AtomicReference<Thread> dialogThread = new AtomicReference<Thread>();
+    /**
+     * The Dialog thread.
+     */
+    protected final AtomicReference<Thread> dialogThread = new AtomicReference<>();
+    /**
+     * The Text area.
+     */
     protected final JTextArea textArea = new JTextArea(10, 30);
+    /**
+     * The St size field.
+     */
     protected final JTextField stSizeField = new JTextField();
+    /**
+     * The Mass size field.
+     */
     protected final JTextField massSizeField = new JTextField();
 
+    /**
+     * The L x coord field.
+     */
     protected final JTextField lXCoordField = new JTextField();
+    /**
+     * The L y coord field.
+     */
     protected final JTextField lYCoordField = new JTextField();
+    /**
+     * The L z coord field.
+     */
     protected final JTextField lZCoordField = new JTextField();
 
+    /**
+     * The Dd field.
+     */
     protected final JTextField ddField = new JTextField();
+    /**
+     * The Mm field.
+     */
     protected final JTextField mmField = new JTextField();
+    /**
+     * The Yy field.
+     */
     protected final JTextField yyField = new JTextField();
 
+    /**
+     * The Hh field.
+     */
     protected final JTextField hhField = new JTextField();
+    /**
+     * The M field.
+     */
     protected final JTextField mField = new JTextField();
+    /**
+     * The Ss field.
+     */
     protected final JTextField ssField = new JTextField();
+    /**
+     * The X vel slider.
+     */
     protected final JSlider xVelSlider = new JSlider(-30000, 30000);
+    /**
+     * The Y vel slider.
+     */
     protected final JSlider yVelSlider = new JSlider(-30000, 30000);
+    /**
+     * The Z vel slider.
+     */
     protected final JSlider zVelSlider = new JSlider(-30000, 30000);
     // TODO: weight for the velocity slider to be changed if needed
     private final double velocitySliderW = 1.0;
+    /**
+     * The Frame.
+     */
     protected JFrame frame;
+    /**
+     * The Output window.
+     */
     protected SimulationDataWindow outputWindow;
 
+    /**
+     * Instantiates a new Abstract launch assist.
+     */
     public AbstractLaunchAssist() {
         //this.setFrame();
     }
@@ -74,14 +129,22 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Creates the setup panel.
      *
-     * @return
+     * @return j panel
      */
     protected abstract JPanel createSetUpPanel();
 
+    /**
+     * Sets output window.
+     *
+     * @param w the w
+     */
     public void setOutputWindow(SimulationDataWindow w) {
         this.outputWindow = w;
     }
 
+    /**
+     * Sets date.
+     */
     public void setDate() {
         this.setSsField("" + simulation.getSystem().getClock().getSec());
         this.setMinuteField("" + simulation.getSystem().getClock().getMin());
@@ -91,6 +154,9 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.setYyField("" + simulation.getSystem().getClock().getYears());
     }
 
+    /**
+     * Show assist parameters.
+     */
     public void showAssistParameters() {
         this.setStepField("" + STEP_SIZE);
         this.setDate();
@@ -116,6 +182,9 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Acquire data.
+     */
     public void acquireData() {
         STEP_SIZE = getTimeStepSize();
         if (INSERT_ROCKET && !simulation.getSystem().getRocket().isCollided()) {
@@ -127,10 +196,20 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Sets month field.
+     *
+     * @param mmField the mm field
+     */
     public void setMonthField(String mmField) {
         this.mmField.setText(mmField);
     }
 
+    /**
+     * Sets minute field.
+     *
+     * @param mField the m field
+     */
     public void setMinuteField(String mField) {
         this.mField.setText(mField);
     }
@@ -138,7 +217,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Method to append text to output.
      *
-     * @param message
+     * @param message the message
      */
     public void appendToOutput(String message) {
         textArea.append(message + "\n");
@@ -147,7 +226,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the time in seconds.
      *
-     * @return
+     * @return time ss
      */
     public double getTimeSS() {
         return Double.parseDouble(ssField.getText());
@@ -156,7 +235,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Sets the output.
      *
-     * @param toString
+     * @param toString the to string
      */
     public void setOutput(String toString) {
         textArea.setText(toString + "\n");
@@ -165,7 +244,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Get the step size.
      *
-     * @return
+     * @return time step size
      */
     public double getTimeStepSize() {
         if (stSizeField.getText().equals(""))
@@ -176,7 +255,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Get the mass of a probe.
      *
-     * @return
+     * @return probe mass
      */
     public double getProbeMass() {
         if (massSizeField.getText().equals(""))
@@ -187,7 +266,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Get the X coordinate of the launch.
      *
-     * @return
+     * @return launch x
      */
     public double getLaunchX() {
         if (lXCoordField.getText().equals(""))
@@ -198,7 +277,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Get the Y coordinate of the launch.
      *
-     * @return
+     * @return launch y
      */
     public double getLaunchY() {
         if (lYCoordField.getText().equals(""))
@@ -209,7 +288,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Get the Z coordinate of the launch.
      *
-     * @return
+     * @return launch z
      */
     public double getLaunchZ() {
         if (lZCoordField.getText().equals(""))
@@ -220,7 +299,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the amount of velocity on the X axis of a probe upon launch.
      *
-     * @return
+     * @return launch velocity x
      */
     public double getLaunchVelocityX() {
         return velocitySliderW * xVelSlider.getValue();
@@ -229,7 +308,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the amount of velocity on the Y axis of a probe upon launch.
      *
-     * @return
+     * @return launch velocity y
      */
     public double getLaunchVelocityY() {
         return velocitySliderW * yVelSlider.getValue();
@@ -238,7 +317,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the amount of velocity on the Z axis of a probe upon launch.
      *
-     * @return
+     * @return launch velocity z
      */
     public double getLaunchVelocityZ() {
         return velocitySliderW * zVelSlider.getValue();
@@ -247,7 +326,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the day of the current date.
      *
-     * @return
+     * @return date dd
      */
     public double getDateDD() {
         return Double.parseDouble(ddField.getText());
@@ -256,7 +335,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the month of the current date.
      *
-     * @return
+     * @return date mm
      */
     public double getDateMM() {
         return Double.parseDouble(mmField.getText());
@@ -265,7 +344,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the year of the current date.
      *
-     * @return
+     * @return date yyyy
      */
     public double getDateYYYY() {
         return Double.parseDouble(yyField.getText());
@@ -274,7 +353,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the time in hours.
      *
-     * @return
+     * @return time hh
      */
     public double getTimeHH() {
         return Double.parseDouble(hhField.getText());
@@ -283,32 +362,62 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     /**
      * Returns the time in minutes.
      *
-     * @return
+     * @return time min
      */
     public double getTimeMin() {
         return Double.parseDouble(mField.getText());
     }
 
+    /**
+     * Sets dd field.
+     *
+     * @param ddField the dd field
+     */
     public void setDdField(String ddField) {
         this.ddField.setText(ddField);
     }
 
+    /**
+     * Sets yy field.
+     *
+     * @param yyField the yy field
+     */
     public void setYyField(String yyField) {
         this.yyField.setText(yyField);
     }
 
+    /**
+     * Sets hh field.
+     *
+     * @param hhField the hh field
+     */
     public void setHhField(String hhField) {
         this.hhField.setText(hhField);
     }
 
+    /**
+     * Sets ss field.
+     *
+     * @param ssField the ss field
+     */
     public void setSsField(String ssField) {
         this.ssField.setText(ssField);
     }
 
+    /**
+     * Sets step field.
+     *
+     * @param ssField the ss field
+     */
     public void setStepField(String ssField) {
         this.stSizeField.setText(ssField);
     }
 
+    /**
+     * Sets probe field.
+     *
+     * @param ssField the ss field
+     */
     public void setProbeField(String ssField) {
         this.massSizeField.setText(ssField);
     }
@@ -327,6 +436,9 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Start.
+     */
     public void start() {
         this.dialogThread.set(new Thread(Thread.currentThread().getThreadGroup(), this, "Dialog Thread", 10));
         this.dialogThread.get().setPriority(4);
@@ -334,6 +446,11 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.dialogThread.get().start();
     }
 
+    /**
+     * Gets frame.
+     *
+     * @return the frame
+     */
     public JFrame getFrame() {
         return this.frame;
     }
@@ -343,12 +460,18 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      *
      * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
      * @version 1.0
-     * @since 19/02/2021
+     * @since 19 /02/2021
      */
     class updateLabel implements ChangeListener {
-        private JLabel jLabel = new JLabel();
-        private JSlider jSlider = new JSlider();
+        private final JLabel jLabel;
+        private final JSlider jSlider;
 
+        /**
+         * Instantiates a new Update label.
+         *
+         * @param jSlider the j slider
+         * @param jLabel  the j label
+         */
         public updateLabel(JSlider jSlider, JLabel jLabel) {
             this.jLabel = jLabel;
             this.jSlider = jSlider;
@@ -366,9 +489,8 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      *
      * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
      * @version 1.0
-     * @since 19/02/2021
+     * @since 19 /02/2021
      */
-
     class resetBtnListener implements ActionListener {
 
         @Override
@@ -391,7 +513,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      *
      * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
      * @version 1.0
-     * @since 19/02/2021
+     * @since 19 /02/2021
      */
     class startBtnListener implements ActionListener {
 
@@ -418,6 +540,9 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     }
 
 
+    /**
+     * The type Pause btn listener.
+     */
     class pauseBtnListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

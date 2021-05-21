@@ -10,41 +10,58 @@ package group17.Interfaces;
 
 import group17.Math.Lib.Point3D;
 
+/**
+ * The interface Vector 3 d interface.
+ */
 public interface Vector3dInterface {
 
     /**
+     * From vector point 3 d.
+     *
      * @return a Point3D from a given Vector
      * @see Point3D
      */
     Point3D fromVector();
 
     /**
+     * Gets x.
+     *
      * @return the x value
      */
     double getX();
 
     /**
      * set the x value
+     *
+     * @param x the x
      */
     void setX(double x);
 
     /**
+     * Gets y.
+     *
      * @return the y value
      */
     double getY();
 
     /**
      * set the y value
+     *
+     * @param y the y
      */
     void setY(double y);
 
     /**
+     * Gets z.
+     *
      * @return the z value
      */
     double getZ();
 
     /**
      * set the z value
+     *
+     * @param z the z
      */
     void setZ(double z);
 
@@ -64,6 +81,12 @@ public interface Vector3dInterface {
      */
     Vector3dInterface sub(Vector3dInterface other);
 
+    /**
+     * Abs sub vector 3 d interface.
+     *
+     * @param other the other
+     * @return the vector 3 d interface
+     */
     Vector3dInterface absSub(Vector3dInterface other);
 
     /**
@@ -88,25 +111,21 @@ public interface Vector3dInterface {
      *
      * @param scalar the double used in the multiplication step
      * @param other  the vector used in the multiplication step
-     * @return the result of the multiplication step added to this vector,
-     * for example:
-     * <p>
-     * Vector3d a = Vector();
-     * double h = 2;
-     * Vector3d b = Vector();
-     * ahb = a.addMul(h, b);
-     * <p>
-     * ahb should now contain the result of this mathematical operation:
-     * a+h*b
+     * @return the result of the multiplication step added to this vector, for example: <p> Vector3d a = Vector(); double h = 2; Vector3d b = Vector(); ahb = a.addMul(h, b); <p> ahb should now contain the result of this mathematical operation: a+h*b
      */
     Vector3dInterface addMul(double scalar, Vector3dInterface other);
 
     /**
+     * Norm double.
+     *
      * @return the Euclidean norm of a vector
      */
     double norm();
 
     /**
+     * Dist double.
+     *
+     * @param other the other
      * @return the Euclidean distance between two vectors
      */
     double dist(Vector3dInterface other);
@@ -125,12 +144,30 @@ public interface Vector3dInterface {
     Vector3dInterface clone();
 
 
+    /**
+     * Heading double.
+     *
+     * @return the double
+     */
     double heading();
 
+    /**
+     * Is zero boolean.
+     *
+     * @return the boolean
+     */
     boolean isZero();
 
     @Override
     int hashCode();
 
+    /**
+     * Div vector 3 d interface.
+     *
+     * @param vector3dInterface the vector 3 d interface
+     * @return the vector 3 d interface
+     */
     Vector3dInterface div(Vector3dInterface vector3dInterface);
+
+    Vector3dInterface multiply(Vector3dInterface other);
 }
