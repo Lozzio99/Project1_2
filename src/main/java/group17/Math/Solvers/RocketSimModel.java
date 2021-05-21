@@ -19,6 +19,7 @@ public class RocketSimModel {
     /**
      * The Solver.
      */
+
     static ODESolverInterface solver;
     /**
      * The Initial state.
@@ -28,6 +29,7 @@ public class RocketSimModel {
     /**
      * The constant pF.
      */
+
     public static NewtRaphFunction pF = vector -> {
         Vector3D aprxPos = (Vector3D) RocketSimModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
         System.out.println(aprxPos.toString());
@@ -72,6 +74,7 @@ public class RocketSimModel {
         simulation.initUpdater();
         return system[0];
     }
+
 
     /**
      * State fx vector 3 d interface.

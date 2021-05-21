@@ -44,6 +44,7 @@ public class NewtonRaphsonSolver {
     /**
      * The Stopping criterion.
      */
+
     final double STOPPING_CRITERION = 100;
     private final NewtRaphFunction fX;
     private Function<Vector3dInterface> f;
