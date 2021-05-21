@@ -23,7 +23,6 @@ dependencies {
 }
 
 test {
-    useTestNG()
     useJUnitPlatform()
     testLogging {
         events 'passed', 'skipped', 'failed'
