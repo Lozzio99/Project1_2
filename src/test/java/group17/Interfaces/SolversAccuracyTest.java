@@ -24,7 +24,7 @@ class SolversAccuracyTest {
     static volatile AtomicReference<FileWriter> fileWriter;
 
     static {
-        solvers = new String[]{"", "EULER", "RUNGE KUTTA", "VERLET VEL", "VERLET STD", "MIDPOINT", "OLD RUNGE K", "LAZY RUNGE K"};
+        solvers = new String[]{"", "EULER", "NEW RUNGE KUTTA", "VERLET VEL", "VERLET STD", "MIDPOINT", "OLD RUNGE K", "LAZY RUNGE K"};
         DEBUG = false;
         ENABLE_GRAPHICS = false;
         REPORT = false;
@@ -39,7 +39,7 @@ class SolversAccuracyTest {
         //testStepSize(20);
         //testStepSize(60);
         testStepSize(360);
-        testStepSize(86400);
+        //testStepSize(86400);
 
     }
 
@@ -73,7 +73,7 @@ class SolversAccuracyTest {
             simulation.initUpdater();
             simulation.getUpdater().setFileWriter(writer);
             new ErrorReport(fileWriter, new ErrorData(simulation.getSystem().systemState())).start();
-            while (ErrorReport.monthIndex < 3) {
+            while (ErrorReport.monthIndex < 4) {
                 simulation.startUpdater();
                 onSpinWait();
             }

@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Source for the test is NM lecture on runge kutta methods for solving ODE systems
  */
-class RungeKutta4thSolverTest {
+class TestingLazyRungeKutta {
     static final double exactValue = 0.503347;
-    static NewTryRungeKutta rk;
+    static LazyRungeKutta rk;
     static TestODEFunction dydx = (t, y) -> {
         RateTest rate = new RateTestClass();
         double y_ = ((StateTest) y).getY();
@@ -35,14 +35,14 @@ class RungeKutta4thSolverTest {
         double y0 = 0;
         y = new StateTestClass();
         y.setY(y0);
-        rk = new NewTryRungeKutta(dydx);
+        rk = new LazyRungeKutta(dydx);
     }
 
     @Test
     @DisplayName("Solve")
     void Solve() {
         double step = 0.5;
-        double accuracy = 1e-3;
+        double accuracy = 1e-4;
         StateInterface firstStep = rk.step(dydx, t, y, step);
         assertTrue(() -> abs(0.36609962 - ((StateTest) firstStep).getY()) < accuracy);
         assertTrue(() -> abs(0.36609962 - ((StateTest) firstStep).getRateOfChange().getDy()) < accuracy);
@@ -50,7 +50,7 @@ class RungeKutta4thSolverTest {
         StateInterface secondStep = rk.step(dydx, t, firstStep, step);
         assertTrue(() -> abs(0.5025005 - ((StateTest) secondStep).getY()) < accuracy);
         assertTrue(() -> abs(0.1364009 - ((StateTest) secondStep).getRateOfChange().getDy()) < accuracy);
-        assertTrue(() -> abs(exactValue - ((StateTest) secondStep).getY()) < accuracy); //0.4 diff
+        assertTrue(() -> abs(exactValue - ((StateTest) secondStep).getY()) < 1e-3); //0.4 diff
     }
 
 
@@ -74,7 +74,7 @@ class RungeKutta4thSolverTest {
     @Test
     @DisplayName("Step")
     void Step() {
-        double step = 0.2, accuracy = 1e-5;
+        double step = 0.2, accuracy = 1e-4;
         StateInterface step1, step2, step3, step4, step5;
         step1 = rk.step(dydx, t, y, step);
         t += step;

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Contract;
 
 /**
  * The type Lazy runge kutta.
+ * ** WORKING WITH NUMERICAL TEST RUNGE KUTTA
  */
 public class LazyRungeKutta implements ODESolverInterface {
     private final ODEFunctionInterface f;
@@ -27,12 +28,12 @@ public class LazyRungeKutta implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         GravityFunction.setCurrentTime(t);
         GravityFunction.setChecked(false);
-        RateInterface k1 = f.call(t, y);
-        RateInterface k2 = f.call(t + 0.5 * h, y.addMul(0.5, k1));
-        RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5, k2));
-        RateInterface k4 = f.call(t + h, y.addMul(1, k3));
-        RateInterface newRate = k1.div(6).add(k2.div(3)).add(k3.div(3)).add(k4.div(6));
-        return y.addMul(h, newRate);
+        RateInterface k1 = f.call(t, y).multiply(h);
+        RateInterface k2 = f.call(t + 0.5 * h, y.addMul(0.5, k1)).multiply(h);
+        RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5, k2)).multiply(h);
+        RateInterface k4 = f.call(t + h, y.addMul(1, k3)).multiply(h);
+        RateInterface newRate = k1.sumOf(k2.multiply(2), k3.multiply(2), k4).div(6);
+        return y.addMul(1, newRate);
     }
 
     @Override

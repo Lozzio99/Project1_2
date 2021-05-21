@@ -21,6 +21,10 @@ import static java.lang.StrictMath.sqrt;
 public final class GravityFunction {
     private static volatile boolean checkedCollisions;
     private static volatile double currentTime;
+
+    /**
+     * Function that returns the rate of change of a state at a point in time
+     */
     private final ODEFunctionInterface evalRateOfChange = (h, y) -> {
         final RateInterface newRate = new RateOfChange();
         for (int i = 0; i < y.getPositions().size(); i++) {
@@ -29,6 +33,11 @@ public final class GravityFunction {
         }
         return newRate;
     };
+
+    /**
+     * Function that returns the rate of change of a state at a point in time, added
+     * to the current state velocities
+     */
     private final ODEFunctionInterface evalCurrVelocity = (t, y) -> {
         final RateInterface newRate = new RateOfChange();
         double dt = t - currentTime;
@@ -65,7 +74,7 @@ public final class GravityFunction {
         currentTime = ct;
     }
 
-    private Vector3dInterface velocityFromAcceleration(int i, final StateInterface y, double h) {
+    private static Vector3dInterface velocityFromAcceleration(int i, final StateInterface y, double h) {
         Vector3dInterface totalAcc = new Vector3D(0, 0, 0);
         for (int k = 0; k < y.getPositions().size(); k++) {
             if (i != k) {
@@ -90,14 +99,13 @@ public final class GravityFunction {
         return totalAcc;
     }
 
-    /**
-     * Gets evaluate rate of change.
-     *
-     * @return the evaluate rate of change
-     */
-    @Contract(pure = true)
-    public ODEFunctionInterface getEvaluateRateOfChange() {
-        return this.evalRateOfChange;
+    public static boolean checkDifferent(StateInterface a, StateInterface b, double accuracy) {
+        for (int i = 0; i < a.getPositions().size(); i++) {
+            Vector3dInterface absPos = a.getPositions().get(i).absSub(b.getPositions().get(i));
+            Vector3dInterface absVel = a.getRateOfChange().getVelocities().get(i).absSub(b.getRateOfChange().getVelocities().get(i));
+            if (absPos.norm() > accuracy || absVel.norm() > accuracy) return false;
+        }
+        return true;
     }
 
     /**
@@ -108,6 +116,16 @@ public final class GravityFunction {
     @Contract(pure = true)
     public ODEFunctionInterface getEvaluateCurrentVelocity() {
         return evalCurrVelocity;
+    }
+
+    /**
+     * Gets evaluate rate of change.
+     *
+     * @return the evaluate rate of change
+     */
+    @Contract(pure = true)
+    public ODEFunctionInterface getEvaluateRateOfChange() {
+        return this.evalRateOfChange;
     }
 
 }

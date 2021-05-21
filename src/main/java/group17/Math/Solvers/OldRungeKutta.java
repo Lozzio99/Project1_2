@@ -20,7 +20,6 @@ public class OldRungeKutta implements ODESolverInterface {
 
     /**
      * Instantiates a new Old runge kutta.
-     *
      * @param f the f
      */
     public OldRungeKutta(final ODEFunctionInterface f) {

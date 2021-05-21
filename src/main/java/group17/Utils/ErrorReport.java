@@ -66,7 +66,6 @@ public class ErrorReport implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("running error report");
         if (userDialog != null) userDialog.disable(6);
         //ASSUMING [ NO ] ROCKET HERE
         absPosition = new ArrayList<>(11);
@@ -81,16 +80,21 @@ public class ErrorReport implements Runnable {
         }
 
         for (int i = 0; i < state.getPositions().size(); i++) {
-            absPosition.add(ORIGINAL_DATA[monthIndex].getPositions().get(i)
-                    .absSub(state.getPositions().get(i)));
-            absVelocity.add(ORIGINAL_DATA[monthIndex].getVelocities().get(i)
-                    .absSub(state.getVelocities().get(i)));
+            absPosition.add(state.getPositions().get(i)
+                    .absSub(ORIGINAL_DATA[monthIndex].getPositions().get(i)));
+            absVelocity.add(state.getVelocities().get(i)
+                    .absSub(ORIGINAL_DATA[monthIndex].getVelocities().get(i)));
             relPosition.add(absPosition.get(i)
                     .div(ORIGINAL_DATA[monthIndex].getPositions().get(i)));
             relVelocity.add(absVelocity.get(i)
                     .div(ORIGINAL_DATA[monthIndex].getVelocities().get(i)));
-            averageErrorPosition = averageErrorPosition.add(absPosition.get(i));
-            averageErrorVelocity = averageErrorVelocity.add(absVelocity.get(i));
+            Vector3dInterface subPos = state.getPositions().get(i).sub(ORIGINAL_DATA[monthIndex].getPositions().get(i));
+            Vector3dInterface subVel = state.getVelocities().get(i).sub(ORIGINAL_DATA[monthIndex].getVelocities().get(i));
+
+
+            averageErrorPosition = averageErrorPosition.add(subPos.multiply(subPos));
+            averageErrorVelocity = averageErrorVelocity.add(subVel.multiply(subVel));
+
             if (DEBUG) {
                 System.out.println("PLANET " + simulation.getSystem().getCelestialBodies().get(i).toString() + "~~~~~~~~");
                 //System.out.println("ORIGINAL PV : " + ORIGINAL_DATA[monthIndex].getPositions().get(i));
@@ -104,6 +108,8 @@ public class ErrorReport implements Runnable {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
         }
+
+
         averageErrorPosition = averageErrorPosition.div(state.getPositions().size());
         averageErrorVelocity = averageErrorVelocity.div(state.getVelocities().size());
         avgPosErrorMonth.add(averageErrorPosition);
@@ -122,7 +128,6 @@ public class ErrorReport implements Runnable {
         }
 
         if (fileWriter != null) {
-            System.out.println("writing file...");
             try {
                 fileWriter.get().write("********************************        SOE     **************************************\n");
                 fileWriter.get().write("MONTH " + monthIndex + "\n");
@@ -133,13 +138,13 @@ public class ErrorReport implements Runnable {
                     fileWriter.get().write("REL ERROR POS : " + relPosition.get(i) + "\n");
                     fileWriter.get().write("REL ERROR VEL : " + relVelocity.get(i) + "\n");
                 }
-                fileWriter.get().write("\n" + "AVERAGE ERROR POSIT : " + averageErrorPosition + "\n");
-                fileWriter.get().write("AVERAGE ERROR VEL   : " + averageErrorVelocity + "\n");
+                //fileWriter.get().write("\n" + "AVERAGE ERROR POSIT : " + averageErrorPosition + "\n");
+                //fileWriter.get().write("AVERAGE ERROR VEL   : " + averageErrorVelocity + "\n");
                 fileWriter.get().write("********************************        EOE     **************************************\n");
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                System.out.println("month evaluation logged successfully");
+                System.out.println("month evaluation log completed");
             }
         }
     }

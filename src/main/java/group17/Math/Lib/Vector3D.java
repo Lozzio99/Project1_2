@@ -15,17 +15,14 @@ public class Vector3D implements Vector3dInterface {
 
 
     /**
-     * The constant epsilon.
-     */
-    /* TODO : think if we need to create new objects or if we can just modify the current vector */
-    public static double epsilon = 0;
-    /**
      * The X.
      */
-    protected double x, /**
+    protected double x,
+    /**
      * The Y.
      */
-    y, /**
+    y,
+    /**
      * The Z.
      */
     z;
@@ -196,6 +193,13 @@ public class Vector3D implements Vector3dInterface {
         return new Vector3D(this.x / vector.getX(),
                 this.y / vector.getY(),
                 this.z / vector.getZ());
+    }
+
+    @Override
+    public Vector3dInterface multiply(Vector3dInterface other) {
+        return new Vector3D(this.x * other.getX(),
+                this.y * other.getY(),
+                this.z * other.getZ());
     }
 
     /**

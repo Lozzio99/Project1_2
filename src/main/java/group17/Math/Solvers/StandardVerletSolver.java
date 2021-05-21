@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Contract;
  */
 public class StandardVerletSolver implements ODESolverInterface {
 
-    private boolean first = true;
+    private boolean first;
     private final ODEFunctionInterface f;
     private StateInterface prevState;
 
@@ -23,6 +23,7 @@ public class StandardVerletSolver implements ODESolverInterface {
      */
     @Contract(pure = true)
     public StandardVerletSolver(final ODEFunctionInterface f) {
+        first = true;
         this.f = f;
     }
 

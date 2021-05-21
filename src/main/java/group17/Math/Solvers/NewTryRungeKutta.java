@@ -10,6 +10,8 @@ import org.jetbrains.annotations.Contract;
 /**
  * The type Runge kutta 4 th solver.
  */
+
+//OK around 10^-2/10^-3 error
 public class NewTryRungeKutta implements ODESolverInterface {
 
 
@@ -27,18 +29,6 @@ public class NewTryRungeKutta implements ODESolverInterface {
 
 
 
-    private boolean checkDifferent(StateInterface a, StateInterface b) {
-        for (int i = 0; i < a.getPositions().size(); i++) {
-            if (!a.getPositions().get(i).equals(b.getPositions().get(i))) {
-                return false;
-            }
-        }
-        for (int i = 0; i < a.getRateOfChange().getVelocities().size(); i++) {
-            if (!a.getRateOfChange().getVelocities().get(i).equals(b.getRateOfChange().getVelocities().get(i)))
-                return false;
-        }
-        return true;
-    }
 
     /**
      * Testing rk state interface.
@@ -58,7 +48,7 @@ public class NewTryRungeKutta implements ODESolverInterface {
         k3 = f.call(t + (h / 2), y.addMul(0.5 * h, k2));
         k4 = f.call(t + h, y.addMul(h, k3));
         k5 = k1.sumOf(k2, k2, k3, k3, k4);
-        return y.addMul(h, k5.div(6));
+        return y.addMul(1, (k5.div(6)).multiply(h));
     }
 
 
