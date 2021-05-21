@@ -1,6 +1,7 @@
 package group17.System;
 
 import group17.Interfaces.Vector3dInterface;
+import group17.Simulation.ErrorExportCSV;
 import org.jetbrains.annotations.Contract;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ErrorReport implements Runnable {
     private final ErrorData state;
     private List<Vector3dInterface> absPosition, absVelocity;
     private List<Vector3dInterface> relPosition, relVelocity;
+    ErrorExportCSV errorExportCSV = ErrorExportCSV.getErrorExportCSV();
 
     @Contract(pure = true)
     public ErrorReport(final ErrorData state) {
@@ -61,6 +63,9 @@ public class ErrorReport implements Runnable {
                 System.out.println("REL ERROR VEL : " + relVelocity.get(i));
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
+
+            if (monthIndex <= 12)
+                errorExportCSV.addErrorData(monthIndex, simulation.getSystem().getCelestialBodies().get(i).toString(), relPosition.get(i), relVelocity.get(i));
 
         }
 
