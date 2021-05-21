@@ -195,9 +195,9 @@ public class ErrorWindow extends JPanel {
             if (!c.toString().equals("ROCKET")) this.planetBox.addItem(c);
 
         this.planetBox.addActionListener(e -> {
-            if (ErrorReport.monthIndex >= 13) return;  //no data after april '22
+            if (ErrorReport.monthIndex.get() >= 13) return;  //no data after april '22
             int planetBoxSelectedIndex = this.planetBox.getSelectedIndex();
-            int monthIndex = ErrorReport.monthIndex;
+            int monthIndex = ErrorReport.monthIndex.get();
             this.originalDataTable.setAutoscrolls(true);
             this.originalDataTable.setRowSelectionInterval((monthIndex * 11) + planetBoxSelectedIndex, (monthIndex * 11) + planetBoxSelectedIndex);
             originalDataTable.scrollRectToVisible(new Rectangle(originalDataTable.getCellRect(((monthIndex * 11) +
