@@ -1,12 +1,12 @@
 package group17.Simulation;
 
 import group17.Interfaces.Vector3dInterface;
-import static group17.Config.DEBUG;
+import group17.Main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.PrintWriter;
+
+
+import static group17.Config.*;
 
 /**
  * This class takes care of exporting the calculated errors to a .csv file.
@@ -18,8 +18,8 @@ public class ErrorExportCSV {
     private static ErrorExportCSV singleton;
 
     // Variables
-    File file;
-    String filePath = "out/errorData/errorLog.csv";
+    String filePathFolder = "out/errorData/";
+    String filePath = filePathFolder + "errorLog.csv";
     PrintWriter pw;
     StringBuilder sb;
 
@@ -37,9 +37,31 @@ public class ErrorExportCSV {
      * Private constructor of a singleton.
      */
     private ErrorExportCSV() {
-        // Remove old file
-        file = new File(filePath);
-        file.delete();
+        // Build file path (according to solver and step size)
+        String solver = "";
+        switch (DEFAULT_SOLVER) {
+            case 1:
+                solver = "EULER_SOLVER";
+                break;
+            case 2:
+                solver = "RUNGE_KUTTA_SOLVER";
+                break;
+            case 3:
+                solver = "VERLET_VEL_SOLVER";
+                break;
+            case 4:
+                solver = "VERLET_STD_SOLVER";
+                break;
+            case 5:
+                solver = "MIDPOINT_SOLVER";
+                break;
+            default:
+                solver = "invalidSolverSelected";
+                break;
+        }
+
+        filePath = filePathFolder + "errorLog_StepSize_" + STEP_SIZE + "_" + solver + ".csv";
+
         if (DEBUG)
             System.out.println("Old .csv file deleted!");
 
