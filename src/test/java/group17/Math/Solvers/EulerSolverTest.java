@@ -34,7 +34,7 @@ class EulerSolverTest {
         double y0 = 0;
         y = new StateTestClass();
         y.setY(y0);
-        euler = new EulerSolver();
+        euler = new EulerSolver(dydx);
     }
 
     @Test

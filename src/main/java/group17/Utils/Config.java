@@ -47,6 +47,14 @@ public class Config {
      * The constant MIDPOINT_SOLVER.
      */
     public static final int MIDPOINT_SOLVER = 5;
+
+    /**
+     * TESTING SOLVERS
+     */
+    public static final int OLD_RUNGE = 6, /**
+     * The Lazy runge.
+     */
+    LAZY_RUNGE = 7;
     /**
      * The constant MIN_CPU.
      */

@@ -195,7 +195,7 @@ public abstract class Scene extends JPanel {
      * updates the mouse tracking variables to update the bodies if
      * any mouse event was generated
      *
-     * @see SimulationScene#updateBodies() SimulationScene#updateBodies()SimulationScene#updateBodies()SimulationScene#updateBodies()
+     * @see SimulationScene#updateBodies() SimulationScene#updateBodies()SimulationScene#updateBodies()SimulationScene#updateBodies()SimulationScene#updateBodies()
      */
     public void update() {
         x = mouse.getX();

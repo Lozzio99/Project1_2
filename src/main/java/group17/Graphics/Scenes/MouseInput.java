@@ -8,7 +8,7 @@ import java.awt.event.*;
  *
  * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
  * @version 1.0
- * @since 19/02/2021
+ * @since 19 /02/2021
  */
 public class MouseInput extends MouseMotionAdapter implements MouseListener, MouseWheelListener {
 
@@ -67,20 +67,14 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
      * @return button button
      */
     public ClickType getButton() {
-        switch (this.mouseB) {
-            case 1:
-                return ClickType.LeftClick;
-            case 2:
-                return ClickType.ScrollClick;
-            case 3:
-                return ClickType.RightClick;
-            case 4:
-                return ClickType.BackPage;
-            case 5:
-                return ClickType.ForwardPage;
-            default:
-                return ClickType.Unknown;
-        }
+        return switch (this.mouseB) {
+            case 1 -> ClickType.LeftClick;
+            case 2 -> ClickType.ScrollClick;
+            case 3 -> ClickType.RightClick;
+            case 4 -> ClickType.BackPage;
+            case 5 -> ClickType.ForwardPage;
+            default -> ClickType.Unknown;
+        };
     }
 
     /**

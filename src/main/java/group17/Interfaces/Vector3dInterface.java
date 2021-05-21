@@ -168,4 +168,6 @@ public interface Vector3dInterface {
      * @return the vector 3 d interface
      */
     Vector3dInterface div(Vector3dInterface vector3dInterface);
+
+    Vector3dInterface multiply(Vector3dInterface other);
 }
