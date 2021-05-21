@@ -1,4 +1,4 @@
-package group17.Interfaces;
+package group17;
 
 import group17.Graphics.Assist.ErrorWindow;
 import group17.Simulation.Simulation;
@@ -34,6 +34,7 @@ class SolversAccuracyTest {
     }
 
 
+
     public SolversAccuracyTest() throws IOException {
         new ErrorWindow();
         //testStepSize(20);
@@ -42,6 +43,7 @@ class SolversAccuracyTest {
         //testStepSize(86400);
 
     }
+
 
     public static void main(String[] args) throws IOException {
         new SolversAccuracyTest();
@@ -57,7 +59,7 @@ class SolversAccuracyTest {
         testSolver(fileWriter, VERLET_STD_SOLVER);
         testSolver(fileWriter, MIDPOINT_SOLVER);
         testSolver(fileWriter, OLD_RUNGE);
-        testSolver(fileWriter, LAZY_RUNGE);
+        //testSolver(fileWriter, LAZY_RUNGE);
         fileWriter.get().write("END OF TEST");
         fileWriter.get().close();
     }

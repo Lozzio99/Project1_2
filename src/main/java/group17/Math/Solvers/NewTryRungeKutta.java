@@ -48,7 +48,8 @@ public class NewTryRungeKutta implements ODESolverInterface {
         k3 = f.call(t + (h / 2), y.addMul(0.5 * h, k2));
         k4 = f.call(t + h, y.addMul(h, k3));
         k5 = k1.sumOf(k2, k2, k3, k3, k4);
-        return y.addMul(1, (k5.div(6)).multiply(h));
+        return y.addMul(h, k5.div(6));
+        //return y.addMul(1,(k5.div(6).multiply(h)));  //to make it work with the numerical test
     }
 
 

@@ -2,6 +2,7 @@ package group17.Math.Solvers;
 
 import group17.Interfaces.StateInterface;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +13,7 @@ import static java.lang.StrictMath.exp;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 class TestNewTryRungeKuttaTest {
 
     static final double exactValue = 0.503347;
