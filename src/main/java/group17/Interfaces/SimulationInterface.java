@@ -1,8 +1,8 @@
 package group17.Interfaces;
 
 
-import group17.Graphics.Assist.LaunchAssist;
-import group17.Graphics.Assist.UserDialogWindow;
+import group17.Graphics.Assist.LaunchAssistWindow;
+import group17.Graphics.UserDialogWindow;
 import group17.Simulation.SimulationReporter;
 
 /**
@@ -55,7 +55,7 @@ public interface SimulationInterface {
      * @return the assist
      */
 //Assist
-    LaunchAssist getAssist();
+    LaunchAssistWindow getAssist();
 
     /**
      * Sets assist.

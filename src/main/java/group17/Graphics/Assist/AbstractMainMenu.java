@@ -11,7 +11,7 @@ import static group17.Utils.Config.*;
  * The type Main menu.
  */
 @SuppressWarnings("rawtypes")
-public abstract class MainMenu {
+public abstract class AbstractMainMenu {
     /**
      * The constant SIMULATION_TYPES.
      */
@@ -53,7 +53,7 @@ public abstract class MainMenu {
      * Constructor
      */
     @Contract(pure = true)
-    public MainMenu() {
+    public AbstractMainMenu() {
         //this.setFrame();
     }
 

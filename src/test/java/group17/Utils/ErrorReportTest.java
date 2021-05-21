@@ -1,6 +1,6 @@
 package group17.Utils;
 
-import group17.Graphics.Assist.UserDialogWindow;
+import group17.Graphics.UserDialogWindow;
 import group17.Interfaces.StateInterface;
 import group17.Math.Lib.Vector3D;
 import group17.System.State.SystemState;

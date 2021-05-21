@@ -1,9 +1,9 @@
 package group17.Simulation;
 
 import group17.Graphics.Assist.ErrorWindow;
-import group17.Graphics.Assist.LaunchAssist;
-import group17.Graphics.Assist.UserDialogWindow;
+import group17.Graphics.Assist.LaunchAssistWindow;
 import group17.Graphics.GraphicsManager;
+import group17.Graphics.UserDialogWindow;
 import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.SystemInterface;
@@ -27,7 +27,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
     private GraphicsInterface graphics;
-    private LaunchAssist assist;
+    private LaunchAssistWindow assist;
     private ErrorWindow errorUI;
     private volatile SystemInterface system;
     private SimulationReporter reporter;
@@ -156,7 +156,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public LaunchAssist getAssist() {
+    public LaunchAssistWindow getAssist() {
         return this.assist;
     }
 

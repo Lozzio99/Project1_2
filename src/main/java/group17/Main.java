@@ -1,6 +1,6 @@
 package group17;
 
-import group17.Graphics.Assist.UserDialogWindow;
+import group17.Graphics.UserDialogWindow;
 import group17.Interfaces.SimulationInterface;
 
 /**

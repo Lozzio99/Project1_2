@@ -63,10 +63,10 @@ public class PerformanceWindow extends JPanel {
      * @param cpuCount         the cpu count
      * @return the int
      */
-    public static int calcCPU(long cpuStartTime, long elapsedStartTime, int cpuCount) {
+    public static int calcCPU(long cpuStartTime, long elapsedStartTime, int cpuCount, long threadId) {
         long end = System.nanoTime();
         long totalAvailCPUTime = cpuCount * (end - elapsedStartTime);
-        long totalUsedCPUTime = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime() - cpuStartTime;
+        long totalUsedCPUTime = ManagementFactory.getThreadMXBean().getThreadCpuTime(threadId) - cpuStartTime;
         log("Total CPU Time:" + totalUsedCPUTime + " ns.");
         log("Total Avail CPU Time:" + totalAvailCPUTime + " ns.");
         float per = ((float) totalUsedCPUTime * 100) / (float) totalAvailCPUTime;
@@ -151,7 +151,7 @@ public class PerformanceWindow extends JPanel {
                 log("THREAD : " + ManagementFactory.getThreadMXBean().getThreadInfo(id).getThreadName() + "\t");
                 long startCPUTime = ManagementFactory.getThreadMXBean().getThreadCpuTime(id);
                 long start = System.nanoTime();
-                float cpuPercent = calcCPU(startCPUTime, start, cpuCount);
+                float cpuPercent = calcCPU(startCPUTime, start, cpuCount, id);
                 log("CPU USAGE : " + cpuPercent + " % ");
                 log("~~~~~~~~~~~~~~~~~~~~~~");
                 Thread.sleep(1000);
@@ -165,9 +165,9 @@ public class PerformanceWindow extends JPanel {
     }
 
     /**
-     * Test runtime garbage.
+     * Test and clean runtime garbage.
      */
-    public static void testRuntimeGarbage() {
+    public static void freeRuntimeGarbage() {
         Runtime runtime;
         byte[] bytes;
         log("\n **MEMORY DETAILS  ** \n");
@@ -188,6 +188,34 @@ public class PerformanceWindow extends JPanel {
         printUsage(runtime);
     }
 
+    private static void testRuntimeThreads() {
+        log("\n **THREADS DETAILS  ** \n");
+        String s = Thread.currentThread().getThreadGroup().toString();
+        log(s);
+        Set<Thread> allThreads = Thread.getAllStackTraces().keySet();
+        loopThreads(allThreads);
+    }
+
+    private static void loopThreads(Set<Thread> set) {
+        for (Thread t : set) {
+            try {
+                log(t.getName());
+                log("Daemon: " + t.isDaemon());
+                log("Priority: " + t.getPriority());
+                log("Group: " + t.getThreadGroup());
+                log("Group count: " + t.getThreadGroup().activeCount());
+                log("State: " + t.getState());
+                log("~~~~~~~~~~~~~~~~~~~~~~");
+                Thread.sleep(1000);
+            } catch (Exception ignored) {
+            }
+        }
+        try {
+            Thread.sleep(500);
+        } catch (Exception ignored) {
+        }
+    }
+
     /**
      * Init.
      */
@@ -196,7 +224,7 @@ public class PerformanceWindow extends JPanel {
         text = new JTextArea(10, 30);
         JScrollPane pane = new JScrollPane(text);
         pane.setSize(600, 400);
-        JButton testRuntime = new JButton("test garbage");
+        JButton testRuntime = new JButton("free garbage");
         testRuntime.addActionListener(x -> start(0));
         JButton runtimeMemory = new JButton("runtimeMemory usage");
         runtimeMemory.addActionListener(x -> start(1));
@@ -252,7 +280,7 @@ public class PerformanceWindow extends JPanel {
         switch (i) {
             case 0 -> t = new Thread(() -> {
                 text.setText("");
-                testRuntimeGarbage();
+                freeRuntimeGarbage();
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             });
             case 1 -> t = new Thread(() -> {
@@ -278,33 +306,5 @@ public class PerformanceWindow extends JPanel {
         }
         assert t != null;
         t.start();
-    }
-
-    private void testRuntimeThreads() {
-        log("\n **THREADS DETAILS  ** \n");
-        String s = Thread.currentThread().getThreadGroup().toString();
-        log(s);
-        Set<Thread> allThreads = Thread.getAllStackTraces().keySet();
-        loopThreads(allThreads);
-    }
-
-    private void loopThreads(Set<Thread> set) {
-        for (Thread t : set) {
-            try {
-                log(t.getName());
-                log("Daemon: " + t.isDaemon());
-                log("Priority: " + t.getPriority());
-                log("Group: " + t.getThreadGroup());
-                log("Group count: " + t.getThreadGroup().activeCount());
-                log("State: " + t.getState());
-                log("~~~~~~~~~~~~~~~~~~~~~~");
-                Thread.sleep(1000);
-            } catch (Exception ignored) {
-            }
-        }
-        try {
-            Thread.sleep(500);
-        } catch (Exception ignored) {
-        }
     }
 }
