@@ -70,7 +70,7 @@ class SolversAccuracyTest {
         testSolver(fileWriter, VERLET_STD_SOLVER);
         testSolver(fileWriter, MIDPOINT_SOLVER);
         testSolver(fileWriter, OLD_RUNGE);
-        //testSolver(fileWriter, LAZY_RUNGE);
+        //testSolver(fileWriter, LAZY_RUNGE);  //doesn't work for solar system simulation need to modify it a bit
         fileWriter.get().write("END OF TEST");
         fileWriter.get().close();
     }
