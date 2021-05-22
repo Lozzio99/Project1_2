@@ -1,7 +1,7 @@
 package group17.Simulation;
 
-import group17.Graphics.Assist.LaunchAssist;
-import group17.Graphics.Assist.UserDialogWindow;
+import group17.Graphics.Assist.LaunchAssistWindow;
+import group17.Graphics.UserDialogWindow;
 import group17.Interfaces.SimulationInterface;
 import group17.Main;
 import group17.Utils.ErrorData;
@@ -107,7 +107,7 @@ class SimulationTest {
         simulation = new Simulation();
         simulation.initSystem();
         DEBUG = true;
-        ErrorReport.monthIndex.getAndSet(0);
+        ErrorReport.setMonthIndex(0);
         ErrorData data = ORIGINAL_DATA[0] = new ErrorData(simulation.getSystem().systemState());
         simulation.setAssist(userDialog = new UserDialogWindow());
         simulation.initAssist();  //should make automatically the first error report
@@ -266,7 +266,7 @@ class SimulationTest {
         simulation.setAssist(assist);
         assertNotNull(simulation.getAssist());
         assertNotEquals("wrong", simulation.getAssist().toString());
-        assertEquals(LaunchAssist.class, simulation.getAssist().getClass());
+        assertEquals(LaunchAssistWindow.class, simulation.getAssist().getClass());
         assist.getFrame().dispose();
         simulation = null;
     }
