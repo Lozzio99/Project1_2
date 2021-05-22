@@ -11,7 +11,6 @@ import group17.Interfaces.UpdaterInterface;
 import group17.Math.Solvers.StandardVerletSolver;
 import group17.System.Bodies.CelestialBody;
 import group17.System.SolarSystem;
-import group17.Utils.ErrorData;
 import group17.Utils.ErrorReport;
 
 import java.util.concurrent.Executors;
@@ -43,7 +42,6 @@ public class Simulation implements SimulationInterface {
         if (ENABLE_GRAPHICS) this.initGraphics();
 
         this.initUpdater();  //last thing, will start the simulation if it's the only one running
-
     }
 
     @Override
@@ -66,7 +64,7 @@ public class Simulation implements SimulationInterface {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         CURRENT_TIME = 0;
-        ErrorReport.monthIndex.getAndSet(0);
+        ErrorReport.setMonthIndex(0);
         if (!LAUNCH_ASSIST) {
             if (REPORT) this.getReporter().report("START SIMULATION");
             try {
@@ -113,7 +111,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void startUpdater() {
+    public synchronized void startUpdater() {
         this.updater.start();
     }
 
@@ -130,7 +128,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void startGraphics() {
+    public synchronized void startGraphics() {
         this.graphics.start();
     }
 
@@ -146,12 +144,11 @@ public class Simulation implements SimulationInterface {
         this.errorUI.makeTable();
         this.errorUI.initButtons();
         //making the first report to check if positions are correct
-        if (ERROR_EVALUATION) new ErrorReport(new ErrorData(this.system.systemState())).start();
     }
 
 
     @Override
-    public void startAssist() {
+    public synchronized void startAssist() {
         this.assist.start();
     }
 
@@ -177,7 +174,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void startSystem() {
+    public synchronized void startSystem() {
         this.system.start();
     }
 
@@ -193,7 +190,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void startReport() {
+    public synchronized void startReport() {
         this.reporter.start();
     }
 
@@ -209,7 +206,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void setRunning() {
+    public synchronized void setRunning() {
         if (!this.running)
             this.running = true;
     }
@@ -220,17 +217,17 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void setWaiting(boolean isWaiting) {
+    public synchronized void setWaiting(boolean isWaiting) {
         this.paused = isWaiting;
     }
 
     @Override
-    public void setStopped(boolean stopped) {
+    public synchronized void setStopped(boolean stopped) {
         this.stopped = stopped;
     }
 
     @Override
-    public void updateState() {
+    public synchronized void updateState() {
         for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {
             if (getSystem().getCelestialBodies().get(i).isCollided()) {
                 getSystem().systemState().getPositions().remove(i);

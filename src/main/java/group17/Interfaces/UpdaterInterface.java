@@ -2,7 +2,7 @@ package group17.Interfaces;
 
 import group17.Simulation.Rocket.RocketSchedule;
 
-import java.io.FileWriter;
+import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -25,7 +25,7 @@ public interface UpdaterInterface extends Runnable {
      *
      * @param fileWriter the file writer
      */
-    void setFileWriter(AtomicReference<FileWriter> fileWriter);
+    void setFileWriter(AtomicReference<Writer> fileWriter);
 
     /**
      * Gets solver.
@@ -40,4 +40,6 @@ public interface UpdaterInterface extends Runnable {
      * @return the schedule
      */
     RocketSchedule getSchedule();
+
+    AtomicReference<Writer> initWriter();
 }

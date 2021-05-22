@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Main.userDialog;
 import static group17.Utils.Config.*;
@@ -24,8 +25,8 @@ class ErrorReportTest {
     static void setUp() {
         stateTest = new SystemState(List.of(new Vector3D()), List.of(new Vector3D(NaN, NaN, NaN)));
         ORIGINAL_DATA[0] = new ErrorData(stateTest);
-        ErrorReport.monthIndex.getAndSet(0);
-        report = new ErrorReport(new ErrorData(stateTest));
+        ErrorReport.setMonthIndex(0);
+        report = new ErrorReport(new AtomicReference<>(), new ErrorData(stateTest));
     }
 
     @Test
@@ -45,7 +46,7 @@ class ErrorReportTest {
     @Test
     @DisplayName("Start")
     void testWrongMonthIndex() {
-        ErrorReport.monthIndex.getAndSet(14);
+        ErrorReport.setMonthIndex(14);
         ERROR_EVALUATION = true;
         int nThreads = Thread.activeCount();
         report.start();
