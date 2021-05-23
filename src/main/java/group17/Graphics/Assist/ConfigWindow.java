@@ -15,7 +15,7 @@ import static group17.Utils.Config.*;
 public class ConfigWindow extends JPanel {
     //launch - stats - plot - rocket - performance - errors - controllers
     private static final String[] s = {"ENABLED", "DISABLED"};
-    private static final JButton[] buttons = new JButton[11];
+    static final JButton[] buttons = new JButton[11];
     private static final JLabel[] texts = new JLabel[11];
     private static final List<String> bStrings = new ArrayList<>();
 
@@ -74,7 +74,6 @@ public class ConfigWindow extends JPanel {
      * A COPY WITHOUT EXPLICITLY CALLING THE DESIRED VARIABLE
      * btw ive tried everything of the above feel free to change my mind
      */
-
     private void configButton(JButton j, int i) {
 
         switch (i) {

@@ -7,14 +7,19 @@ import group17.Math.Solvers.*;
 import group17.Simulation.Rocket.RocketSchedule;
 import group17.System.GravityFunction;
 import group17.Utils.ErrorData;
+import group17.Utils.ErrorExportCSV;
 import group17.Utils.ErrorReport;
 
+import java.io.File;
 import java.io.FileWriter;
+import java.io.Writer;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
+import static group17.Utils.ErrorReport.testingAccuracy;
 
 /**
  * The type Simulation updater.
@@ -24,7 +29,7 @@ public class SimulationUpdater implements UpdaterInterface {
     private RocketSchedule schedule;
     private ODESolverInterface solver;
     private Thread updaterThread;
-    private volatile AtomicReference<FileWriter> fileWriter;
+    private volatile AtomicReference<Writer> fileWriter = new AtomicReference<>();
 
     @Override
     public void init() {
@@ -49,6 +54,12 @@ public class SimulationUpdater implements UpdaterInterface {
             }
         }
 
+        if (ERROR_EVALUATION) {
+            this.initWriter();
+            new ErrorReport(fileWriter, new ErrorData(simulation.getSystem().systemState())).start();
+
+        }
+
         if (!LAUNCH_ASSIST) {
             if (ENABLE_GRAPHICS) simulation.getGraphics().changeScene(SIMULATION_SCENE);
             if (REPORT) simulation.getReporter().report("START SIMULATION");
@@ -67,7 +78,7 @@ public class SimulationUpdater implements UpdaterInterface {
 
 
     @Override
-    public void setFileWriter(AtomicReference<FileWriter> fileWriter) {
+    public void setFileWriter(AtomicReference<Writer> fileWriter) {
         this.fileWriter = fileWriter;
     }
 
@@ -94,10 +105,8 @@ public class SimulationUpdater implements UpdaterInterface {
             simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), CURRENT_TIME, simulation.getSystem().systemState(), STEP_SIZE));
             CURRENT_TIME += STEP_SIZE;
             if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION) {
-                if (fileWriter != null)
-                    new ErrorReport(fileWriter, new ErrorData(simulation.getSystem().systemState())).start();
-                else
-                    new ErrorReport(new ErrorData(simulation.getSystem().systemState())).start();
+                if (!testingAccuracy) initWriter(); //will make a different output from the testing one
+                new ErrorReport(Objects.requireNonNullElseGet(fileWriter, AtomicReference::new), new ErrorData(simulation.getSystem().systemState())).start();
             }
 
         } catch (Exception e) {
@@ -114,4 +123,31 @@ public class SimulationUpdater implements UpdaterInterface {
     public RocketSchedule getSchedule() {
         return schedule;
     }
+
+    @Override
+    public AtomicReference<Writer> initWriter() {
+        String path = ErrorReport.makeMonthDirectories(getClass());  //build/resources/main
+        File file;
+        try {
+            switch (FORMAT) {
+                case TXT -> {
+                    path += "txt";
+                    file = new File(path);
+                    fileWriter.set(new FileWriter(file));
+                }
+                case CSV -> {
+                    path += "csv";
+                    file = new File(path);
+                    fileWriter.set(new ErrorExportCSV(file));
+                }
+                default -> {
+                }
+            }
+        } catch (Exception e) {
+            if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);
+        }
+        return fileWriter;
+    }
+
+
 }

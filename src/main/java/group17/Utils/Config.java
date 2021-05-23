@@ -6,10 +6,18 @@ import group17.System.Clock;
  * The type Config.
  */
 public class Config {
+
+    //             FINAL CONFIGURATIONS
+
     /**
-     * FINAL CONFIGURATIONS
+     * Global enum for the accuracy output,
+     * NO_OUTPUT for suppressing file generation
+     * or TXT, CSV
+     *
+     * @see Format
+     * @see ErrorReport
      */
-//NOT EDITABLE
+    public static final Format FORMAT = Format.NO_OUTPUT;
     public static final int ROCKET_SIMULATION = 4;
     /**
      * The constant PENDULUM_SIMULATION.
@@ -51,10 +59,11 @@ public class Config {
     /**
      * TESTING SOLVERS
      */
-    public static final int OLD_RUNGE = 6, /**
+    public static final int OLD_RUNGE = 6;
+    /**
      * The Lazy runge.
      */
-    LAZY_RUNGE = 7;
+    public static final int LAZY_RUNGE = 7;
     /**
      * The constant MIN_CPU.
      */
@@ -68,9 +77,14 @@ public class Config {
      */
     public static final ErrorData[] ORIGINAL_DATA = new ErrorData[13];
     /**
+     * The constant LAUNCH_DATE.
+     */
+    public static final Clock LAUNCH_DATE = new Clock();  //set to launch day in runtime
+
+    /**
      * BOOLEAN CONFIGURATIONS
      */
-// EDITABLE
+    //                      EDITABLE  (in runtime too)
     public static Boolean LAUNCH_ASSIST = true;
     /**
      * The constant ENABLE_GRAPHICS.
@@ -117,13 +131,15 @@ public class Config {
      */
     public static Boolean NAMES = true;
     /**
-     * The constant LAUNCH_DATE.
+     * The constant DEFAULT_SOLVER.
      */
-    public static Clock LAUNCH_DATE;
+    public static int DEFAULT_SOLVER = MIDPOINT_SOLVER;  //editable in main menu
+
+
     /**
      * NUMERICAL CONFIGURATIONS
      */
-//EDITABLE
+    //                      EDITABLE (not in runtime)
     public static double FPS = 0;
     /**
      * The constant SIMULATION_LEVEL.
@@ -145,10 +161,6 @@ public class Config {
      * The constant PARTICLES.
      */
     public static int PARTICLES = 700;
-    /**
-     * The constant DEFAULT_SOLVER.
-     */
-    public static int DEFAULT_SOLVER = MIDPOINT_SOLVER;
     /**
      * The constant CPU_LEVEL.
      */

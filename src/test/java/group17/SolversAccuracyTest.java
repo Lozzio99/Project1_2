@@ -4,84 +4,146 @@ import group17.Graphics.Assist.ErrorWindow;
 import group17.Simulation.Simulation;
 import group17.System.GravityFunction;
 import group17.Utils.ErrorData;
+import group17.Utils.ErrorExportCSV;
 import group17.Utils.ErrorReport;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.parallel.Isolated;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Objects;
+import java.io.Writer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
-import static java.lang.Thread.onSpinWait;
 import static java.lang.Thread.sleep;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Isolated   //to run isolated
+@Disabled("Run only when we have new data or new solvers to check")
 class SolversAccuracyTest {
 
-    static String[] solvers;
-    static File file;
-    static volatile AtomicReference<FileWriter> fileWriter;
+    static int MONTH_REPORT_STOP = 13;
 
     static {
-        solvers = new String[]{"", "EULER", "NEW RUNGE KUTTA", "VERLET VEL", "VERLET STD", "MIDPOINT", "OLD RUNGE K", "LAZY RUNGE K"};
-        DEBUG = false;
+        DEBUG = false;  //don't run this with debug will go out of heap size
         ENABLE_GRAPHICS = false;
         REPORT = false;
         LAUNCH_ASSIST = false;
         CHECK_COLLISIONS = false;
         INSERT_ROCKET = false;
-    }
-
-
-
-    public SolversAccuracyTest() throws IOException {
+        ERROR_EVALUATION = true;
         new ErrorWindow();
-        //testStepSize(20);
-        //testStepSize(60);
-        testStepSize(360);
-        //testStepSize(86400);
+    }
+
+    final AtomicReference<Writer> fileWriter = new AtomicReference<>();
+    File file;
+
+    @BeforeEach
+    void opening() {
+        Runtime.getRuntime().gc();
+        simulation = null;
+    }
+
+    @AfterEach
+    void closing() {
+        try {
+            Thread.sleep(1000);
+            simulation = null;
+            Runtime.getRuntime().gc();
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
-
-    public static void main(String[] args) throws IOException {
-        new SolversAccuracyTest();
+    @ParameterizedTest(name = "testing step size {0}")
+    @ValueSource(ints = {60, 360, 86400})
+    void testAndOutputToTXT(int stepSize) {
+        STEP_SIZE = stepSize; //convert to double
+        testSolversAndOutputFile(EULER_SOLVER, "ErrorTestLog.txt");
+        testSolversAndOutputFile(RUNGE_KUTTA_SOLVER, "ErrorTestLog.txt");
+        testSolversAndOutputFile(VERLET_VEL_SOLVER, "ErrorTestLog.txt");
+        testSolversAndOutputFile(VERLET_STD_SOLVER, "ErrorTestLog.txt");
+        testSolversAndOutputFile(MIDPOINT_SOLVER, "ErrorTestLog.txt");
+        testSolversAndOutputFile(OLD_RUNGE, "ErrorTestLog.txt");
     }
 
-    private void testStepSize(double stepSize) throws IOException {
-        STEP_SIZE = stepSize;
-        file = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("STEPSIZE" + ((int) stepSize) + ".txt")).getFile());
-        fileWriter = new AtomicReference<>(new FileWriter(file));
-        testSolver(fileWriter, EULER_SOLVER);
-        testSolver(fileWriter, RUNGE_KUTTA_SOLVER);
-        testSolver(fileWriter, VERLET_VEL_SOLVER);
-        testSolver(fileWriter, VERLET_STD_SOLVER);
-        testSolver(fileWriter, MIDPOINT_SOLVER);
-        testSolver(fileWriter, OLD_RUNGE);
-        //testSolver(fileWriter, LAZY_RUNGE);
-        fileWriter.get().write("END OF TEST");
-        fileWriter.get().close();
+    @ParameterizedTest(name = "testing step size {0}")
+    @ValueSource(ints = {60, 360, 86400})
+    void testAndOutputToCSV(int stepSize) {
+        STEP_SIZE = stepSize; //convert to double
+        testSolversAndOutputFile(EULER_SOLVER, "ErrorTestLog.csv");
+        testSolversAndOutputFile(RUNGE_KUTTA_SOLVER, "ErrorTestLog.csv");
+        testSolversAndOutputFile(VERLET_VEL_SOLVER, "ErrorTestLog.csv");
+        testSolversAndOutputFile(VERLET_STD_SOLVER, "ErrorTestLog.csv");
+        testSolversAndOutputFile(MIDPOINT_SOLVER, "ErrorTestLog.csv");
+        testSolversAndOutputFile(OLD_RUNGE, "ErrorTestLog.csv");
     }
 
-    private synchronized void testSolver(AtomicReference<FileWriter> writer, int solver) {
+    private synchronized void testSolversAndOutputFile(int solver, String appendix) {
         try {
             simulation = new Simulation();
-            ErrorReport.monthIndex = -1;
-            simulation.initSystem();
+            ErrorReport.setMonthIndex(-1);
             DEFAULT_SOLVER = solver;
-            writer.get().write("RUNNING TEST ON SOLVER : " + solvers[solver] + "\n");
             GravityFunction.setCurrentTime(0);
+            simulation.initSystem();
+            ERROR_EVALUATION = false;
             simulation.initUpdater();
-            simulation.getUpdater().setFileWriter(writer);
+            ERROR_EVALUATION = true;  //avoid creating another fileWriter
+            setUpWriter(appendix);
             new ErrorReport(fileWriter, new ErrorData(simulation.getSystem().systemState())).start();
-            while (ErrorReport.monthIndex < 4) {
-                simulation.startUpdater();
-                onSpinWait();
+            simulation.getUpdater().setFileWriter(fileWriter);
+            ErrorReport.testingAccuracy = true;
+            assertEquals(0, ErrorReport.monthIndex());
+            CompletableFuture<?> future;
+            while (ErrorReport.monthIndex() < MONTH_REPORT_STOP) {
+                //it's hard to do this concurrently, but setting month stop
+                // to 13 (the maximum data provided)
+                // makes sure this won't exceed this number
+                future = CompletableFuture.runAsync(simulation::startUpdater);
+                future.get(2000, TimeUnit.MILLISECONDS);
             }
-            sleep(3000);
-        } catch (IOException | InterruptedException e) {
+            assertEquals(ErrorReport.monthIndex(), MONTH_REPORT_STOP);
+            sleep(3000); //give the time to the file writer to successfully close the stream
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        } finally {
+            simulation = null;
+        }
+    }
+
+    private void setUpWriter(String appendix) {
+        file = new File(this.extractDir() + "\\" + appendix);  //build/resources/test
+        if (DEBUG) System.out.println(file.getPath());
+        try {
+            switch (appendix) {
+                case "ErrorTestLog.txt" -> fileWriter.set(new FileWriter(file));
+                case "ErrorTestLog.csv" -> fileWriter.set(new ErrorExportCSV(file));
+                default -> {
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private String extractDir() {
+        String path = ("src\\test\\resources\\ErrorData");
+        path += "\\" + ErrorReport.solvers[DEFAULT_SOLVER] + "\\" + ((int) STEP_SIZE);
+        File dir = new File(path);
+        dir.mkdirs();
+        return path;
+    }
+
+
 }

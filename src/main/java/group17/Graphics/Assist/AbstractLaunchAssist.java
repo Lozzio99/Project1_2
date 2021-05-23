@@ -4,6 +4,7 @@ package group17.Graphics.Assist;
 
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Lib.Vector3D;
+import group17.System.Clock;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -38,66 +39,32 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      */
     protected final JTextArea textArea = new JTextArea(10, 30);
     /**
-     * The St size field.
-     */
-    protected final JTextField stSizeField = new JTextField();
-    /**
-     * The Mass size field.
-     */
-    protected final JTextField massSizeField = new JTextField();
-
-    /**
-     * The L x coord field.
-     */
-    protected final JTextField lXCoordField = new JTextField();
-    /**
-     * The L y coord field.
-     */
-    protected final JTextField lYCoordField = new JTextField();
-    /**
-     * The L z coord field.
-     */
-    protected final JTextField lZCoordField = new JTextField();
-
-    /**
      * The Dd field.
      */
-    protected final JTextField ddField = new JTextField();
+    protected final JLabel ddField = new JLabel();
     /**
      * The Mm field.
      */
-    protected final JTextField mmField = new JTextField();
+    protected final JLabel mmField = new JLabel();
     /**
      * The Yy field.
      */
-    protected final JTextField yyField = new JTextField();
+    protected final JLabel yyField = new JLabel();
 
     /**
      * The Hh field.
      */
-    protected final JTextField hhField = new JTextField();
+    protected final JLabel hhField = new JLabel();
     /**
      * The M field.
      */
-    protected final JTextField mField = new JTextField();
+    protected final JLabel mField = new JLabel();
     /**
      * The Ss field.
      */
-    protected final JTextField ssField = new JTextField();
-    /**
-     * The X vel slider.
-     */
-    protected final JSlider xVelSlider = new JSlider(-30000, 30000);
-    /**
-     * The Y vel slider.
-     */
-    protected final JSlider yVelSlider = new JSlider(-30000, 30000);
-    /**
-     * The Z vel slider.
-     */
-    protected final JSlider zVelSlider = new JSlider(-30000, 30000);
-    // TODO: weight for the velocity slider to be changed if needed
-    private final double velocitySliderW = 1.0;
+    protected final JLabel ssField = new JLabel();
+
+
     /**
      * The Frame.
      */
@@ -114,12 +81,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         //this.setFrame();
     }
 
-    private void setFrame() {
-        this.frame = new JFrame();
-        this.frame.setSize(700, 300);
-        this.frame.setTitle("Dialog window");
-        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 
     /**
      * Initialises the frame.
@@ -154,65 +115,10 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.setYyField("" + simulation.getSystem().getClock().getYears());
     }
 
-    /**
-     * Show assist parameters.
-     */
-    public void showAssistParameters() {
-        this.setStepField("" + STEP_SIZE);
-        this.setDate();
-        if (INSERT_ROCKET) {
-            this.setProbeField("" + simulation.getSystem().getCelestialBodies().get(11).getMASS());
-            lXCoordField.setText("" + simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().getX());
-            lYCoordField.setText("" + simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().getY());
-            lZCoordField.setText("" + simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().getZ());
-            String ready = ("READY TO START\n") +
-                    ("Those are the starting coordinates : ") +
-                    (simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().toString()) +
-                    ("\nThis is the starting velocity:\n") +
-                    (simulation.getSystem().getCelestialBodies().get(11).getVectorVelocity().toString()) +
-                    ("\nIf you want to change the starting velocity\n" +
-                            "   > you can increase / decrease the sliders\n") +
-                    ("If you want to change the starting position\n" +
-                            "   > you can plug in the desired values") +
-                    ("If you want to change step size or probe mass\n" +
-                            "   > you can plug in the desired value") +
-                    ("If you trust our shoot then just START SIMULATION :=)");
-            ready += "\n" + simulation.toString() + "\n";
-            this.setOutput(ready);
-        }
-    }
-
-    /**
-     * Acquire data.
-     */
-    public void acquireData() {
-        STEP_SIZE = getTimeStepSize();
-        if (INSERT_ROCKET && !simulation.getSystem().getRocket().isCollided()) {
-            Vector3dInterface v = new Vector3D(getLaunchVelocityX(), getLaunchVelocityY(), getLaunchVelocityZ());
-            if (!v.isZero()) {
-                simulation.getUpdater().getSchedule().addToPlan(LAUNCH_DATE, v);
-                System.out.println(v);
-            }
-        }
-    }
-
-    /**
-     * Sets month field.
-     *
-     * @param mmField the mm field
-     */
-    public void setMonthField(String mmField) {
-        this.mmField.setText(mmField);
-    }
-
-    /**
-     * Sets minute field.
-     *
-     * @param mField the m field
-     */
-    public void setMinuteField(String mField) {
-        this.mField.setText(mField);
-    }
+    protected final JSlider xVelSlider = new JSlider(-30000, 30000);
+    protected final JSlider yVelSlider = new JSlider(-30000, 30000);
+    protected final JSlider zVelSlider = new JSlider(-30000, 30000);
+    private final double velocitySliderW = 1.0;
 
     /**
      * Method to append text to output.
@@ -223,14 +129,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         textArea.append(message + "\n");
     }
 
-    /**
-     * Returns the time in seconds.
-     *
-     * @return time ss
-     */
-    public double getTimeSS() {
-        return Double.parseDouble(ssField.getText());
-    }
 
     /**
      * Sets the output.
@@ -242,58 +140,58 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     }
 
     /**
-     * Get the step size.
-     *
-     * @return time step size
+     * Show assist parameters.
      */
-    public double getTimeStepSize() {
-        if (stSizeField.getText().equals(""))
-            return 0;
-        return Double.parseDouble(stSizeField.getText());
+    public void showAssistParameters() {
+        //this.setStepField("" + STEP_SIZE);
+        this.setDate();
+        if (INSERT_ROCKET) {
+            String ready = ("READY TO START\n") +
+                    ("initial mass         :" + simulation.getSystem().getCelestialBodies().get(11).getMASS() + "\n") +
+                    ("starting coordinates : ") +
+                    (simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().toString()) +
+                    ("\nstarting velocity  : ") +
+                    (simulation.getSystem().getCelestialBodies().get(11).getVectorVelocity().toString());
+            ready += "\n" + simulation.toString() + "\n";
+            this.setOutput(ready);
+        }
     }
 
     /**
-     * Get the mass of a probe.
-     *
-     * @return probe mass
+     * Acquire data.
      */
-    public double getProbeMass() {
-        if (massSizeField.getText().equals(""))
-            return 0;
-        return Double.parseDouble(massSizeField.getText());
+    public void acquireData() {
+        //STEP_SIZE = getTimeStepSize();
+
+        if (INSERT_ROCKET) {
+            Vector3dInterface v = new Vector3D(
+                    getLaunchVelocityX(),
+                    getLaunchVelocityY(),
+                    getLaunchVelocityZ());
+            if (!v.isZero()) {
+                ERROR_EVALUATION = false;
+                simulation.getUpdater().getSchedule().addToPlan(new Clock().setLaunchDay(), v);
+                ERROR_EVALUATION = true;
+            }
+        }
     }
 
     /**
-     * Get the X coordinate of the launch.
+     * Sets month field.
      *
-     * @return launch x
+     * @param mmField the mm field
      */
-    public double getLaunchX() {
-        if (lXCoordField.getText().equals(""))
-            return 0;
-        return Double.parseDouble(lXCoordField.getText());
+    public void setMonthField(String mmField) {
+        this.mmField.setText("      " + mmField);
     }
 
     /**
-     * Get the Y coordinate of the launch.
+     * Sets minute field.
      *
-     * @return launch y
+     * @param mField the m field
      */
-    public double getLaunchY() {
-        if (lYCoordField.getText().equals(""))
-            return 0;
-        return Double.parseDouble(lYCoordField.getText());
-    }
-
-    /**
-     * Get the Z coordinate of the launch.
-     *
-     * @return launch z
-     */
-    public double getLaunchZ() {
-        if (lZCoordField.getText().equals(""))
-            return 0;
-        return Double.parseDouble(lZCoordField.getText());
+    public void setMinuteField(String mField) {
+        this.mField.setText("       " + mField);
     }
 
     /**
@@ -323,104 +221,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         return velocitySliderW * zVelSlider.getValue();
     }
 
-    /**
-     * Returns the day of the current date.
-     *
-     * @return date dd
-     */
-    public double getDateDD() {
-        return Double.parseDouble(ddField.getText());
-    }
-
-    /**
-     * Returns the month of the current date.
-     *
-     * @return date mm
-     */
-    public double getDateMM() {
-        return Double.parseDouble(mmField.getText());
-    }
-
-    /**
-     * Returns the year of the current date.
-     *
-     * @return date yyyy
-     */
-    public double getDateYYYY() {
-        return Double.parseDouble(yyField.getText());
-    }
-
-    /**
-     * Returns the time in hours.
-     *
-     * @return time hh
-     */
-    public double getTimeHH() {
-        return Double.parseDouble(hhField.getText());
-    }
-
-    /**
-     * Returns the time in minutes.
-     *
-     * @return time min
-     */
-    public double getTimeMin() {
-        return Double.parseDouble(mField.getText());
-    }
-
-    /**
-     * Sets dd field.
-     *
-     * @param ddField the dd field
-     */
-    public void setDdField(String ddField) {
-        this.ddField.setText(ddField);
-    }
-
-    /**
-     * Sets yy field.
-     *
-     * @param yyField the yy field
-     */
-    public void setYyField(String yyField) {
-        this.yyField.setText(yyField);
-    }
-
-    /**
-     * Sets hh field.
-     *
-     * @param hhField the hh field
-     */
-    public void setHhField(String hhField) {
-        this.hhField.setText(hhField);
-    }
-
-    /**
-     * Sets ss field.
-     *
-     * @param ssField the ss field
-     */
-    public void setSsField(String ssField) {
-        this.ssField.setText(ssField);
-    }
-
-    /**
-     * Sets step field.
-     *
-     * @param ssField the ss field
-     */
-    public void setStepField(String ssField) {
-        this.stSizeField.setText(ssField);
-    }
-
-    /**
-     * Sets probe field.
-     *
-     * @param ssField the ss field
-     */
-    public void setProbeField(String ssField) {
-        this.massSizeField.setText(ssField);
-    }
 
     @Override
     public synchronized void run() {
@@ -455,34 +255,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         return this.frame;
     }
 
-    /**
-     * Nested class representing the update label on the right side of the dialog frame.
-     *
-     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
-     * @version 1.0
-     * @since 19 /02/2021
-     */
-    class updateLabel implements ChangeListener {
-        private final JLabel jLabel;
-        private final JSlider jSlider;
 
-        /**
-         * Instantiates a new Update label.
-         *
-         * @param jSlider the j slider
-         * @param jLabel  the j label
-         */
-        public updateLabel(JSlider jSlider, JLabel jLabel) {
-            this.jLabel = jLabel;
-            this.jSlider = jSlider;
-        }
-
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            jLabel.setText(String.valueOf(velocitySliderW * jSlider.getValue()));
-        }
-
-    }
 
     /**
      * Nested class representing the ActionListener, when the clear button is clicked.
@@ -556,5 +329,206 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         }
     }
 
+    /**
+     * Sets dd field.
+     *
+     * @param ddField the dd field
+     */
+    public void setDdField(String ddField) {
+        this.ddField.setText("      " + ddField);
+    }
 
+    /**
+     * Sets yy field.
+     *
+     * @param yyField the yy field
+     */
+    public void setYyField(String yyField) {
+        this.yyField.setText("  " + yyField);
+    }
+
+    /**
+     * Sets hh field.
+     *
+     * @param hhField the hh field
+     */
+    public void setHhField(String hhField) {
+        this.hhField.setText("      " + hhField);
+    }
+
+    /**
+     * Sets ss field.
+     *
+     * @param ssField the ss field
+     */
+    public void setSsField(String ssField) {
+        this.ssField.setText("      " + ssField);
+    }
+
+    /**
+     * Nested class representing the update label on the right side of the dialog frame.
+     *
+     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
+     * @version 1.0
+     * @since 19 /02/2021
+     */
+    class updateLabel implements ChangeListener {
+        private final JLabel jLabel;
+        private final JSlider jSlider;
+
+        /**
+         * Instantiates a new Update label.
+         *
+         * @param jSlider the j slider
+         * @param jLabel  the j label
+         */
+        public updateLabel(JSlider jSlider, JLabel jLabel) {
+            this.jLabel = jLabel;
+            this.jSlider = jSlider;
+        }
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            jLabel.setText(String.valueOf(velocitySliderW * jSlider.getValue()));
+        }
+
+    }
+
+
+
+    /*
+     * Returns the time in seconds.
+     *
+     * @return time ss
+
+    public double getTimeSS() {
+        return Double.parseDouble(ssField.getText());
+    }
+    //protected final JTextField stSizeField = new JTextField();
+    //protected final JTextField massSizeField = new JTextField();
+    //protected final JTextField lXCoordField = new JTextField();
+    //protected final JTextField lYCoordField = new JTextField();
+    //protected final JTextField lZCoordField = new JTextField();
+    */
+    /*
+     * Returns the day of the current date.
+     *
+     * @return date dd
+
+    public double getDateDD() {
+        return Double.parseDouble(ddField.getText());
+    }
+
+
+     * Returns the month of the current date.
+     *
+     * @return date mm
+
+    public double getDateMM() {
+        return Double.parseDouble(mmField.getText());
+    }
+
+
+     * Returns the year of the current date.
+     *
+     * @return date yyyy
+
+    public double getDateYYYY() {
+        return Double.parseDouble(yyField.getText());
+    }
+
+
+     * Returns the time in hours.
+     *
+     * @return time hh
+
+    public double getTimeHH() {
+        return Double.parseDouble(hhField.getText());
+    }
+
+
+     * Returns the time in minutes.
+     *
+     * @return time min
+
+    public double getTimeMin() {
+        return Double.parseDouble(mField.getText());
+    }
+     */
+    /*
+
+    private void setFrame() {
+        this.frame = new JFrame();
+        this.frame.setSize(700, 300);
+        this.frame.setTitle("Dialog window");
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+     * Sets step field.
+     *
+     * @param ssField the ss field
+
+    public void setStepField(String ssField) {
+        this.stSizeField.setText(ssField);
+    }
+
+       * Get the step size.
+       *
+       * @return time step size
+      public double getTimeStepSize() {
+          if (stSizeField.getText().equals(""))
+              return 0;
+          return Double.parseDouble(stSizeField.getText());
+      }
+
+       * Get the mass of a probe.
+       *
+       * @return probe mass
+
+      public double getProbeMass() {
+          if (massSizeField.getText().equals(""))
+              return 0;
+          return Double.parseDouble(massSizeField.getText());
+      }
+      *
+       * Get the X coordinate of the launch.
+       *
+       * @return launch x
+
+      public double getLaunchX() {
+          if (lXCoordField.getText().equals(""))
+              return 0;
+          return Double.parseDouble(lXCoordField.getText());
+      }
+
+
+       * Get the Y coordinate of the launch.
+       *
+       * @return launch y
+
+      public double getLaunchY() {
+          if (lYCoordField.getText().equals(""))
+              return 0;
+          return Double.parseDouble(lYCoordField.getText());
+      }
+
+
+       * Get the Z coordinate of the launch.
+       *
+       * @return launch z
+
+      public double getLaunchZ() {
+          if (lZCoordField.getText().equals(""))
+              return 0;
+          return Double.parseDouble(lZCoordField.getText());
+      }
+
+
+     * Sets probe field.
+     *
+     * @param ssField the ss field
+
+    public void setProbeField(String ssField) {
+        this.massSizeField.setText(ssField);
+    }
+    */
 }

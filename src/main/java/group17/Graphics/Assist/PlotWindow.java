@@ -1,14 +1,11 @@
 package group17.Graphics.Assist;
 
-import group17.Interfaces.Function;
 import group17.Math.Lib.Point;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.util.Arrays;
-
-import static java.lang.StrictMath.sin;
 
 /**
  * The type Plot window.
@@ -45,24 +42,6 @@ public class PlotWindow extends JPanel {
         return this;
     }
 
-    /**
-     * Test plot window.
-     *
-     * @return the plot window
-     */
-    public PlotWindow test() {
-        Function<Double> f = x -> 80 * sin(x / 17);
-        double[] xs = new double[1000], ys = new double[1000];
-        int x_ = GraphPane.graphSize.width / 2;
-        double k = -x_;
-        for (int i = 0; i < xs.length; i++) {
-            xs[i] = k;
-            ys[i] = f.apply(k);
-            k += 0.5;
-        }
-        this.evaluate(xs, ys, 0);
-        return this;
-    }
 
     /**
      * Evaluate.
@@ -188,8 +167,6 @@ public class PlotWindow extends JPanel {
             }
             g.setClip(0, 0, getWidth(), getHeight());
         }
-
-
     }
 
 }

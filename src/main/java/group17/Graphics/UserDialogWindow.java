@@ -1,5 +1,6 @@
-package group17.Graphics.Assist;
+package group17.Graphics;
 
+import group17.Graphics.Assist.*;
 import group17.Simulation.Simulation;
 
 import javax.swing.*;
@@ -65,10 +66,10 @@ public class UserDialogWindow {
 
     private final JFrame frame;
     private JTabbedPane mainPane;
-    private LaunchAssist assist;
+    private LaunchAssistWindow assist;
     private SimulationDataWindow dataWindow;
     private ErrorWindow errorWindow;
-    private MainMenu menu;
+    private AbstractMainMenu menu;
 
     /**
      * Instantiates a new User dialog window.
@@ -144,13 +145,13 @@ public class UserDialogWindow {
                 return initMenu();
             }
             case 1 -> {
-                return this.assist = new LaunchAssist();
+                return this.assist = new LaunchAssistWindow();
             }
             case 2 -> {
                 return this.dataWindow = new SimulationDataWindow();
             }
             case 3 -> {
-                return new PlotWindow().init().test();
+                return new PlotWindow().init();
             }
             case 4 -> {
                 return new RocketWindow();
@@ -175,7 +176,7 @@ public class UserDialogWindow {
 
     private Component initMenu() {
         UserDialogWindow d = this;
-        this.menu = new MainMenu() {
+        this.menu = new AbstractMainMenu() {
             @Override
             public void startSimulation() {
                 DEFAULT_SOLVER = currentSolver;
@@ -187,6 +188,7 @@ public class UserDialogWindow {
                 }
                 enableTabs();
                 mainPane.setSelectedIndex(1);
+                disable(0);
             }
         };
         return this.menu.configFrame(new JPanel());
@@ -229,7 +231,7 @@ public class UserDialogWindow {
      *
      * @return the main menu
      */
-    public MainMenu getMainMenu() {
+    public AbstractMainMenu getMainMenu() {
         return menu;
     }
 
@@ -238,7 +240,7 @@ public class UserDialogWindow {
      *
      * @return the launch assist
      */
-    public LaunchAssist getLaunchAssist() {
+    public LaunchAssistWindow getLaunchAssist() {
         return assist;
     }
 

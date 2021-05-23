@@ -108,7 +108,7 @@ class RocketScheduleTest {
     void addPlanByClock() {
 
         ERROR_EVALUATION = false;
-        Clock clock = LAUNCH_DATE = new Clock().setLaunchDay();
+        Clock clock = LAUNCH_DATE.setLaunchDay();
         scheduler.prepare();
         Vector3dInterface v = scheduler.getDesiredVelocity(clock);
         assertFalse(v.isZero());
