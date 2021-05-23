@@ -42,6 +42,7 @@ public class RocketSimModel {
         REPORT = false;
         INSERT_ROCKET = true;
         CHECK_COLLISIONS = false;
+        ERROR_EVALUATION = false;
     }
 
     /**

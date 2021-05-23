@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Contract;
  */
 
 //OK around 10^-2/10^-3 error
-public class NewTryRungeKutta implements ODESolverInterface {
+public class RungeKuttaSolver implements ODESolverInterface {
 
 
     private final ODEFunctionInterface f;
@@ -23,7 +23,7 @@ public class NewTryRungeKutta implements ODESolverInterface {
      * @param f the function
      */
     @Contract(pure = true)
-    public NewTryRungeKutta(final ODEFunctionInterface f) {
+    public RungeKuttaSolver(final ODEFunctionInterface f) {
         this.f = f;
     }
 
@@ -49,7 +49,6 @@ public class NewTryRungeKutta implements ODESolverInterface {
         return y.addMul(h, k5.div(6));
         //return y.addMul(1,(k5.div(6).multiply(h)));  //to make it work with the numerical test
     }
-
 
 
 

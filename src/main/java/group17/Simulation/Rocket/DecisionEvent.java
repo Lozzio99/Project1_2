@@ -11,6 +11,13 @@ import static java.lang.StrictMath.round;
  * The type Decision event.
  */
 public class DecisionEvent {
+
+
+    public DecisionEvent(Vector3dInterface rocketP, Vector3dInterface titanPosition) {
+        new ApproxV3D(rocketP);
+    }
+
+
     /**
      * The entry point of application.
      *
@@ -24,7 +31,7 @@ public class DecisionEvent {
         System.out.println(v1);
         System.out.println(av1);
         System.out.println(v1.equals(av1));
-        System.out.println(av1.equals(new Vector3D()));   // this is the cool thing here
+        System.out.println(av1.equals(new Vector3D(0, 0, 0)));   // this is the cool thing here
     }
 
     /**
@@ -49,6 +56,10 @@ public class DecisionEvent {
          */
         public ApproxV3D(double x, double y, double z) {
             super(x, y, z);
+        }
+
+        public ApproxV3D(Vector3dInterface v) {
+            super(v.getX(), v.getY(), v.getZ());
         }
 
         @Override

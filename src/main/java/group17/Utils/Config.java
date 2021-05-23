@@ -18,6 +18,8 @@ public class Config {
      * @see ErrorReport
      */
     public static final Format FORMAT = Format.NO_OUTPUT;
+
+
     public static final int ROCKET_SIMULATION = 4;
     /**
      * The constant PENDULUM_SIMULATION.
@@ -101,7 +103,7 @@ public class Config {
     /**
      * The constant INSERT_ROCKET.
      */
-    public static Boolean INSERT_ROCKET = false;
+    public static Boolean INSERT_ROCKET = true;
     /**
      * The constant ROCKET_INFO.
      */
@@ -133,7 +135,7 @@ public class Config {
     /**
      * The constant DEFAULT_SOLVER.
      */
-    public static int DEFAULT_SOLVER = MIDPOINT_SOLVER;  //editable in main menu
+    public static int DEFAULT_SOLVER = LAZY_RUNGE;  //editable in main menu
 
 
     /**

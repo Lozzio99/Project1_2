@@ -24,7 +24,7 @@ public abstract class AbstractMainMenu {
     /**
      * The Solvers.
      */
-    static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)", "Midpoint"};
+    static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)", "Midpoint", "Lazy Runge Kutta"};
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 600;
     /**
@@ -147,6 +147,7 @@ public abstract class AbstractMainMenu {
                 case ("Verlet (VEL)") -> VERLET_VEL_SOLVER;
                 case ("Verlet (STD)") -> VERLET_STD_SOLVER;
                 case ("Midpoint") -> MIDPOINT_SOLVER;
+                case ("Lazy Runge Kutta") -> LAZY_RUNGE;
                 default -> EULER_SOLVER;
             };
 

@@ -1,8 +1,6 @@
-package group17.Math.Solvers;
+package group17.System.State;
 
-import group17.Interfaces.RateInterface;
-import group17.Interfaces.StateInterface;
-import group17.Interfaces.Vector3dInterface;
+import group17.Interfaces.*;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class StateTestClass implements StateTest {
         StateTestClass state = new StateTestClass();
         double dy = ((RateTest) r).getDy();
         state.setY(this.getY() + (h * dy));
-        state.getRateOfChange().setDy(dy);
+        state.getRateOfChange().setDy(h * dy);
         return state;
     }
 
@@ -35,6 +33,11 @@ public class StateTestClass implements StateTest {
     public RateTest getRateOfChange() {
         if (testDy == null) testDy = new RateTestClass();
         return testDy;
+    }
+
+    @Override
+    public void setRateOfChange(RateInterface newRate) {
+        this.testDy = (RateTest) newRate;
     }
 
     @Override
@@ -89,7 +92,7 @@ public class StateTestClass implements StateTest {
     public String toString() {
         return "State{" +
                 "y=" + y +
-                " , " + testDy +
+                " ,\n " + testDy +
                 '}';
     }
 
@@ -100,5 +103,12 @@ public class StateTestClass implements StateTest {
 
     @Override
     public void setPositions(List<Vector3dInterface> v) {
+    }
+
+    @Override
+    public StateInterface getState(RateInterface rate) {
+        StateTest newState = new StateTestClass();
+        newState.setY(((RateTest) rate).getDy());
+        return newState;
     }
 }

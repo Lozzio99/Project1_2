@@ -7,8 +7,6 @@ import group17.Math.Lib.Vector3D;
 import group17.System.Clock;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,7 +62,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      */
     protected final JLabel ssField = new JLabel();
 
-
+    protected static boolean overrideExistingVelocity = false;
     /**
      * The Frame.
      */
@@ -115,9 +113,9 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.setYyField("" + simulation.getSystem().getClock().getYears());
     }
 
-    protected final JSlider xVelSlider = new JSlider(-30000, 30000);
-    protected final JSlider yVelSlider = new JSlider(-30000, 30000);
-    protected final JSlider zVelSlider = new JSlider(-30000, 30000);
+    protected final JTextField xVelSlider = new JTextField();
+    protected final JTextField yVelSlider = new JTextField();
+    protected final JTextField zVelSlider = new JTextField();
     private final double velocitySliderW = 1.0;
 
     /**
@@ -162,16 +160,25 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      */
     public void acquireData() {
         //STEP_SIZE = getTimeStepSize();
-
         if (INSERT_ROCKET) {
             Vector3dInterface v = new Vector3D(
                     getLaunchVelocityX(),
                     getLaunchVelocityY(),
                     getLaunchVelocityZ());
             if (!v.isZero()) {
+                final boolean f = ERROR_EVALUATION;
                 ERROR_EVALUATION = false;
-                simulation.getUpdater().getSchedule().addToPlan(new Clock().setLaunchDay(), v);
-                ERROR_EVALUATION = true;
+                if (overrideExistingVelocity)
+                    simulation.getUpdater().getSchedule().setPlan(new Clock().setLaunchDay(), v);
+                else
+                    simulation.getUpdater().getSchedule().addToPlan(new Clock().setLaunchDay(), v);
+                ERROR_EVALUATION = f;
+            } else {
+                if (overrideExistingVelocity) {
+                    simulation.getUpdater().getSchedule().setPlan(new Clock().setLaunchDay(), v);
+                    if (REPORT)
+                        simulation.getReporter().report("Zero Vector Decision won't be displayed for logical reasons");
+                }
             }
         }
     }
@@ -200,7 +207,8 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      * @return launch velocity x
      */
     public double getLaunchVelocityX() {
-        return velocitySliderW * xVelSlider.getValue();
+
+        return this.xVelSlider.getText().equals("") ? 0 : Double.parseDouble(this.xVelSlider.getText());
     }
 
     /**
@@ -209,7 +217,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      * @return launch velocity y
      */
     public double getLaunchVelocityY() {
-        return velocitySliderW * yVelSlider.getValue();
+        return this.yVelSlider.getText().equals("") ? 0 : Double.parseDouble(this.yVelSlider.getText());
     }
 
     /**
@@ -218,7 +226,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
      * @return launch velocity z
      */
     public double getLaunchVelocityZ() {
-        return velocitySliderW * zVelSlider.getValue();
+        return this.zVelSlider.getText().equals("") ? 0 : Double.parseDouble(this.zVelSlider.getText());
     }
 
 
@@ -270,8 +278,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         public void actionPerformed(ActionEvent e) {
             if (simulation.waiting())
                 return;
-            if (REPORT)
-                simulation.getReporter().report("RESET SIMULATION");
+            if (REPORT) simulation.getReporter().report("RESET SIMULATION");
             if (ENABLE_GRAPHICS)
                 simulation.getGraphics().changeScene(STARTING_SCENE);
             if (LAUNCH_ASSIST)
@@ -365,23 +372,25 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.ssField.setText("      " + ssField);
     }
 
-    /**
+
+    /*
+
      * Nested class representing the update label on the right side of the dialog frame.
      *
      * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevan​
      * @version 1.0
      * @since 19 /02/2021
-     */
+
     class updateLabel implements ChangeListener {
         private final JLabel jLabel;
         private final JSlider jSlider;
 
-        /**
+
          * Instantiates a new Update label.
          *
          * @param jSlider the j slider
          * @param jLabel  the j label
-         */
+
         public updateLabel(JSlider jSlider, JLabel jLabel) {
             this.jLabel = jLabel;
             this.jSlider = jSlider;
@@ -393,6 +402,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         }
 
     }
+    */
 
 
 

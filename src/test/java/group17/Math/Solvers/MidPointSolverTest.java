@@ -1,12 +1,15 @@
 package group17.Math.Solvers;
 
-import group17.Interfaces.ODESolverInterface;
-import group17.Interfaces.StateInterface;
+import group17.Interfaces.*;
+import group17.System.State.RateTestClass;
+import group17.System.State.StateTestClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.Arrays;
 
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
@@ -19,7 +22,7 @@ class MidPointSolverTest {
 
     static final double exactValue = 0.503347;
     static ODESolverInterface mid;
-    static TestODEFunction dydx = (t, y) -> {
+    static ODEFunctionInterface dydx = (t, y) -> {
         RateTest rate = new RateTestClass();
         double y_ = ((StateTest) y).getY();
         rate.setDy(exp(-t) - (y_ * y_));
@@ -47,17 +50,14 @@ class MidPointSolverTest {
     @DisplayName("Solve")
     void Solve() {
         double step = 0.5;
-
         assertEquals(1.0, ((RateTest) dydx.call(0, y)).getDy());
-
         StateInterface firstStep = mid.step(dydx, t, y, step);
-
-        assertTrue(() -> abs(0.3582 - ((StateTest) firstStep).getY()) < 1e-4);
-        assertTrue(() -> abs(0.7163 - ((StateTest) firstStep).getRateOfChange().getDy()) < 1e-4);
+        assertTrue(() -> abs(0.35815 - ((StateTest) firstStep).getY()) < 1e-6);
+        assertTrue(() -> abs(0.7163 - ((StateTest) firstStep).getRateOfChange().getDy() / step) < 1e-6);
         t += step;
         StateInterface secondStep = mid.step(dydx, t, firstStep, step);
-        assertTrue(() -> abs(.4802 - ((StateTest) secondStep).getY()) < 1e-4);
-        assertTrue(() -> abs(.2442 - ((StateTest) secondStep).getRateOfChange().getDy()) < 1e-4);
+        assertTrue(() -> abs(.4802 - ((StateTest) secondStep).getY()) < 3e-5);
+        assertTrue(() -> abs(.2442 - ((StateTest) secondStep).getRateOfChange().getDy() / step) < 1e-4);
         assertTrue(() -> abs(exactValue - ((StateTest) secondStep).getY()) < 3e-2); //0.03 diff
     }
 
@@ -66,6 +66,8 @@ class MidPointSolverTest {
     void TestSolve(double step) {
         double accuracy = step * 2;
         StateInterface[] sol = mid.solve(dydx, y, 1, step);
+        if (step > 0.01)
+            System.out.println(Arrays.toString(sol));
         assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < accuracy);
     }
 

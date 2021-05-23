@@ -41,7 +41,7 @@ public class SimulationUpdater implements UpdaterInterface {
 
         switch (DEFAULT_SOLVER) {
             case EULER_SOLVER -> this.solver = new EulerSolver(new GravityFunction().getEvaluateCurrentVelocity());
-            case RUNGE_KUTTA_SOLVER -> this.solver = new NewTryRungeKutta(new GravityFunction().getEvaluateCurrentVelocity());
+            case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKuttaSolver(new GravityFunction().getEvaluateCurrentVelocity());
             case VERLET_VEL_SOLVER -> this.solver = new VerletVelocitySolver(new GravityFunction().getEvaluateRateOfChange());
             case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver(new GravityFunction().getEvaluateRateOfChange());
             case MIDPOINT_SOLVER -> this.solver = new MidPointSolver(new GravityFunction().getEvaluateCurrentVelocity());

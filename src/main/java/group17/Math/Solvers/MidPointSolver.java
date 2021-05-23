@@ -4,6 +4,7 @@ import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.StateInterface;
 import group17.System.GravityFunction;
+import org.jetbrains.annotations.Contract;
 
 /**
  * The type Mid point solver.
@@ -16,6 +17,7 @@ public class MidPointSolver implements ODESolverInterface {
      *
      * @param f the f
      */
+    @Contract(pure = true)
     public MidPointSolver(final ODEFunctionInterface f) {
         this.f = f;
     }
@@ -25,9 +27,8 @@ public class MidPointSolver implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         GravityFunction.setCurrentTime(t);
         GravityFunction.setChecked(false);
-        return y.addMul(h,
-                f.call(t + (h / 2), y.addMul(h / 2,
-                        f.call(t, y))));
+
+        return y.addMul(h, f.call(t + (h / 2), y.addMul(h / 2, f.call(t, y))));
     }
 
     @Override

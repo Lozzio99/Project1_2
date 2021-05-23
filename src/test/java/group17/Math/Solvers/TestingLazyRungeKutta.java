@@ -1,6 +1,11 @@
 package group17.Math.Solvers;
 
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.RateTest;
 import group17.Interfaces.StateInterface;
+import group17.Interfaces.StateTest;
+import group17.System.State.RateTestClass;
+import group17.System.State.StateTestClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class TestingLazyRungeKutta {
     static final double exactValue = 0.503347;
     static LazyRungeKutta rk;
-    static TestODEFunction dydx = (t, y) -> {
+    static ODEFunctionInterface dydx = (t, y) -> {
         RateTest rate = new RateTestClass();
         double y_ = ((StateTest) y).getY();
         rate.setDy(exp(-t) - (y_ * y_));
@@ -58,7 +63,7 @@ class TestingLazyRungeKutta {
     @ValueSource(doubles = {1e-2, 1e-3, 1e-4, 1e-5, 1e-6})
     void TestSolve(double step) {
         //this uses the step method
-        double accuracy = step * 10;
+        double accuracy = step / 2;
         StateInterface[] sol = new StateInterface[(int) (Math.round(tf / step)) + 2];
         double currTime = 0;
         sol[0] = y;
@@ -68,6 +73,7 @@ class TestingLazyRungeKutta {
             currTime += step;
         }
         sol[sol.length - 1] = rk.step(dydx, tf - currTime, y, tf - currTime);
+        System.err.println(accuracy);
         assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < accuracy);
     }
 

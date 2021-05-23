@@ -28,7 +28,9 @@ import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Isolated   //to run isolated
+
 @Disabled("Run only when we have new data or new solvers to check")
+
 class SolversAccuracyTest {
 
     static int MONTH_REPORT_STOP = 13;
@@ -114,7 +116,7 @@ class SolversAccuracyTest {
                 future.get(2000, TimeUnit.MILLISECONDS);
             }
             assertEquals(ErrorReport.monthIndex(), MONTH_REPORT_STOP);
-            sleep(3000); //give the time to the file writer to successfully close the stream
+            sleep(6000); //give the time to the file writer to successfully close the stream
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
         } finally {
@@ -123,7 +125,7 @@ class SolversAccuracyTest {
     }
 
     private void setUpWriter(String appendix) {
-        file = new File(this.extractDir() + "\\" + appendix);  //build/resources/test
+        file = new File(this.extractDir() + "\\" + appendix);  //   ..src/test/resources/ErrorData/..
         if (DEBUG) System.out.println(file.getPath());
         try {
             switch (appendix) {

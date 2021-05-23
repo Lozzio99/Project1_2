@@ -22,6 +22,7 @@ public class LaunchAssistWindow extends AbstractLaunchAssist {
         this.setPreferredSize(new Dimension(1000, 500));
         this.setLayout(new GridLayout(1, 2, 20, 20));
         this.add(createSetUpPanel());
+        textArea.setFont(Font.decode(Font.MONOSPACED));
         JScrollPane scrollPane = new JScrollPane(textArea);
         this.add(scrollPane);
         this.setFocusable(true);
@@ -112,19 +113,20 @@ public class LaunchAssistWindow extends AbstractLaunchAssist {
 
     public JPanel launchVelocityPanel() {
         JPanel inputVarPanel2 = new JPanel();
-        inputVarPanel2.setLayout(new GridLayout(3, 3));
+        inputVarPanel2.setLayout(new GridLayout(3, 1));
         JLabel xVelLabel = new JLabel("X");
         JLabel yVelLabel = new JLabel("Y");
         JLabel zVelLabel = new JLabel("Z");
-        xVelSlider.addChangeListener(new updateLabel(xVelSlider, xVelLabel));
-        yVelSlider.addChangeListener(new updateLabel(yVelSlider, yVelLabel));
-        zVelSlider.addChangeListener(new updateLabel(zVelSlider, zVelLabel));
         inputVarPanel2.add(new JLabel(" "));
         inputVarPanel2.add(xVelSlider);
         inputVarPanel2.add(xVelLabel);
+        JCheckBox overrideVel = new JCheckBox("override existing");
+        overrideVel.addChangeListener(e -> overrideExistingVelocity = overrideVel.isSelected());
+        inputVarPanel2.add(overrideVel);
         inputVarPanel2.add(new JLabel("Launch velocity "));
         inputVarPanel2.add(yVelSlider);
         inputVarPanel2.add(yVelLabel);
+        inputVarPanel2.add(new JLabel(" "));
         inputVarPanel2.add(new JLabel(" "));
         inputVarPanel2.add(zVelSlider);
         inputVarPanel2.add(zVelLabel);
