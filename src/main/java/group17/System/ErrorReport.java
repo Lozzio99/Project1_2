@@ -64,10 +64,10 @@ public class ErrorReport implements Runnable {
                 System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
 
-            if (monthIndex <= 12)
-                errorExportCSV.addErrorData(monthIndex, simulation.getSystem().getCelestialBodies().get(i).toString(), relPosition.get(i), relVelocity.get(i));
-
+            errorExportCSV.addErrorData(monthIndex, simulation.getSystem().getCelestialBodies().get(i).toString(), relPosition.get(i), relVelocity.get(i));
         }
+        if (monthIndex == 13)
+            errorExportCSV.closeFile();
 
         userDialog.getErrorWindow().updateLabels(new ErrorData(absPosition, absVelocity));
         userDialog.enable(6);
