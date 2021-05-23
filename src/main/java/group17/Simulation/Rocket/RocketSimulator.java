@@ -87,7 +87,7 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
      * @param actualVelocity  the actual velocity
      * @return the double
      */
-/*
+    /*
          desiredVelocity - obtain from Newton-Raphson method
          stepSize used to determine if m_dot * Ve > maxThrust
          y for getting currentVelocity of Rocket
@@ -110,7 +110,7 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
      * @param propellantConsumed the propellant consumed
      */
     public void updateMass(double propellantConsumed) {
-        if (this.getFuelMass() - propellantConsumed > 0) {
+        if (this.getFuelMass() - propellantConsumed >= 0) {
             this.setMASS(this.totalMass - propellantConsumed);
             this.setFuelMass(this.fuelMass - propellantConsumed);
         } else {

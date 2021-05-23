@@ -1,6 +1,4 @@
-package group17.Math.Solvers;
-
-import group17.Interfaces.StateInterface;
+package group17.Interfaces;
 
 public interface StateTest extends StateInterface {
     double getY();

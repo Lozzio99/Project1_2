@@ -22,6 +22,8 @@ public interface ReporterInterface extends Runnable {
      */
     void report();
 
+    void reportToAssist();
+
     /**
      * Report.
      *

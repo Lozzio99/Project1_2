@@ -75,10 +75,11 @@ public interface StateInterface {
         StateInterface newState = new SystemState();
         for (int i = 0; i < this.getPositions().size(); i++) {
             newState.getPositions().add(this.getPositions().get(i).addMul(step, rate.getVelocities().get(i)));
-            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i).clone());
+            newState.getRateOfChange().getVelocities().add(rate.getVelocities().get(i));
         }
         return newState;
     }
+
 
     /**
      * Rate mul state interface.
@@ -183,4 +184,14 @@ public interface StateInterface {
 
     @Override
     int hashCode();
+
+    void setRateOfChange(RateInterface newRate);
+
+    default StateInterface getState(RateInterface rate) {
+        StateInterface state = new SystemState();
+        for (int i = 0; i < rate.getVelocities().size(); i++) {
+            state.getPositions().add(rate.getVelocities().get(i));
+        }
+        return state;
+    }
 }
