@@ -46,6 +46,7 @@ public class RocketSchedule {
      */
     public void prepare() {
         this.setPlan(LAUNCH_DATE, new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
+        this.addToPlan(LAUNCH_DATE, new Vector3D(-974, 978, 0)); // boost at launch
     }
 
 

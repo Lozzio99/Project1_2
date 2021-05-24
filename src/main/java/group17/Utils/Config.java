@@ -101,7 +101,7 @@ public class Config {
     /**
      * The constant INSERT_ROCKET.
      */
-    public static Boolean INSERT_ROCKET = false;
+    public static Boolean INSERT_ROCKET = true;
     /**
      * The constant ROCKET_INFO.
      */
@@ -148,7 +148,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = 360;
+    public static double STEP_SIZE = 1500;
     /**
      * The constant CURRENT_TIME.
      */

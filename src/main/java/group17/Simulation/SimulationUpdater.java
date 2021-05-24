@@ -3,6 +3,7 @@ package group17.Simulation;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Interfaces.Vector3dInterface;
+import group17.Math.Lib.Vector3D;
 import group17.Math.Solvers.*;
 import group17.Simulation.Rocket.RocketSchedule;
 import group17.System.GravityFunction;
@@ -84,6 +85,7 @@ public class SimulationUpdater implements UpdaterInterface {
 
     @Override
     public synchronized void run() {
+        System.out.println("Distance to Titan: " + Vector3D.dist(simulation.getSystem().systemState().getPositions().get(0), simulation.getSystem().getRocket().getVectorLocation()));
         // ROCKET DECISION
         try {
             if (INSERT_ROCKET) {

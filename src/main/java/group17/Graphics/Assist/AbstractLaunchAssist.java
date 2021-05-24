@@ -115,9 +115,9 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
         this.setYyField("" + simulation.getSystem().getClock().getYears());
     }
 
-    protected final JSlider xVelSlider = new JSlider(-30000, 30000);
-    protected final JSlider yVelSlider = new JSlider(-30000, 30000);
-    protected final JSlider zVelSlider = new JSlider(-30000, 30000);
+    protected final JSlider xVelSlider = new JSlider(-3000, 3000);
+    protected final JSlider yVelSlider = new JSlider(-3000, 3000);
+    protected final JSlider zVelSlider = new JSlider(-3000, 3000);
     private final double velocitySliderW = 1.0;
 
     /**
