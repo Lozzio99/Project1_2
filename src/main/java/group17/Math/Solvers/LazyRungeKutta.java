@@ -34,7 +34,7 @@ public class LazyRungeKutta implements ODESolverInterface {
         RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5, k2)).multiply(h);
         RateInterface k4 = f.call(t + h, y.addMul(1, k3)).multiply(h);
         RateInterface newRate = k1.sumOf(k2.multiply(2), k3.multiply(2), k4).div(6);
-        return y.addMul(1, newRate);
+        return y.addMul(h, newRate.div(h));
     }
 
     @Override

@@ -22,7 +22,7 @@ import static group17.Utils.Config.*;
  */
 public class ErrorReport implements Runnable {
 
-    public final static String[] solvers = new String[]{"", "E", "Rk+", "Vve", "Vst", "M", "Rk-"};
+    public final static String[] solvers = new String[]{"", "E", "Rk+", "Vve", "Vst", "M", "Rk-", "RkL"};
     /**
      * The constant monthIndex.
      */

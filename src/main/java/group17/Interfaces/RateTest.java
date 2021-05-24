@@ -1,6 +1,4 @@
-package group17.Math.Solvers;
-
-import group17.Interfaces.RateInterface;
+package group17.Interfaces;
 
 public interface RateTest extends RateInterface {
     double getDy();

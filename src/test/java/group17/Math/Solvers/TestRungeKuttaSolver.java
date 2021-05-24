@@ -1,33 +1,47 @@
 package group17.Math.Solvers;
 
-import group17.Interfaces.StateInterface;
+import group17.Interfaces.*;
+import group17.System.State.RateTestClass;
+import group17.System.State.StateTestClass;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
+
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
-class TestNewTryRungeKuttaTest {
+class TestRungeKuttaSolver {
 
-    static final double exactValue = 0.503347;
-    static NewTryRungeKutta rk;
-    static TestODEFunction dydx = (t, y) -> {
+    static final double exactValue = 0.5033467;
+    static RungeKuttaSolver rk;
+    static ODEFunctionInterface dydx = (t, y) -> {
         RateTest rate = new RateTestClass();
         double y_ = ((StateTest) y).getY();
-        rate.setDy(exp(-t) - (y_ * y_));
+        rate.setDy(exp(-t) - (y_ * y_));  // e^-t - y^2
         return rate;
     };
 
     static StateTest y;
     static RateTest dy;
     static double t, tf;
+
+    private static StateTest[] getSolution(double step) {
+        StateTest[] sol = new StateTest[(int) (Math.round(tf / step)) + 2];
+        double currTime = 0;
+        sol[0] = y;
+        for (int i = 1; i < sol.length - 1; i++) {
+            sol[i] = (StateTest) rk.step(dydx, currTime, y, step);
+            y = sol[i];
+            currTime += step;
+        }
+        sol[sol.length - 1] = (StateTest) rk.step(dydx, tf - currTime, y, tf - currTime);
+        return sol;
+    }
 
     @BeforeEach
     void setup() {
@@ -36,12 +50,29 @@ class TestNewTryRungeKuttaTest {
         double y0 = 0;
         y = new StateTestClass();
         y.setY(y0);
-        rk = new NewTryRungeKutta(dydx);
+        rk = new RungeKuttaSolver(dydx);
+    }
+
+    @Test
+    void step() {
+        ODESolverInterface oldrk = new OldRungeKutta(dydx);
+        System.out.println(Arrays.toString(oldrk.solve(dydx, y, tf, 0.1)));
+        System.out.println(Arrays.toString(rk.solve(dydx, y, tf, 0.1)));
+
+    }
+
+    @ParameterizedTest(name = "testing stepSize {0}")
+    @ValueSource(doubles = {1e-2, 1e-3, 1e-4, 1e-5, 1e-6})
+    void SolveMethod(double step) {
+
+        StateInterface[] test = rk.solve(dydx, y, tf, step);
+        StateTest[] solution = getSolution(step);
+        assertEquals(((StateTest) test[test.length - 1]).getY(), solution[solution.length - 1].getY());
     }
 
     @Test
     @DisplayName("Solve")
-    void Solve() {
+    void StepSizeBig() {
         double step = 0.5;
         double accuracy = 1e-4;
         StateInterface firstStep = rk.step(dydx, t, y, step);
@@ -57,19 +88,15 @@ class TestNewTryRungeKuttaTest {
 
     @ParameterizedTest(name = "testing stepSize {0}")
     @ValueSource(doubles = {1e-2, 1e-3, 1e-4, 1e-5, 1e-6})
-    void TestSolve(double step) {
+    void StepSizeSmall(double step) {
         //this uses the step method
-        double accuracy = step * 10;
-        StateInterface[] sol = new StateInterface[(int) (Math.round(tf / step)) + 2];
-        double currTime = 0;
-        sol[0] = y;
-        for (int i = 1; i < sol.length - 1; i++) {
-            sol[i] = rk.step(dydx, currTime, y, step);
-            y = (StateTest) sol[i];
-            currTime += step;
-        }
-        sol[sol.length - 1] = rk.step(dydx, tf - currTime, y, tf - currTime);
-        assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < accuracy);
+        double accuracy = 1e-6;
+        StateTest[] sol = getSolution(step);
+        double solution = sol[sol.length - 1].getY();
+        double absErr = abs(exactValue - solution);
+        double relErr = absErr / exactValue;
+        assertTrue(() -> absErr < accuracy);
+        assertTrue(() -> relErr < accuracy);  //this checks that the order is correct
     }
 
     @Test
@@ -79,7 +106,7 @@ class TestNewTryRungeKuttaTest {
         StateInterface step1, step2, step3, step4, step5;
         step1 = rk.step(dydx, t, y, step);
         t += step;
-        assertTrue(() -> abs(0.179 - ((StateTest) step1).getRateOfChange().getDy()) < accuracy); //from 0 to 0.17900
+        assertTrue(() -> abs(0.179 - ((StateTest) step1).getRateOfChange().getDy()) < 1e-3); //from 0 to 0.17900
         assertTrue(() -> abs(0.179 - ((StateTest) step1).getY()) < accuracy);
 
         step2 = rk.step(dydx, t, step1, step);
@@ -102,12 +129,16 @@ class TestNewTryRungeKuttaTest {
         t += step;
         assertTrue(() -> abs(0.03373 - ((StateTest) step5).getRateOfChange().getDy()) < accuracy);
         assertTrue(() -> abs(0.50333 - ((StateTest) step5).getY()) < accuracy);
+
+
     }
+
 
     @Test
     @DisplayName("GetFunction")
     void GetFunction() {
         assertDoesNotThrow(() -> rk.getFunction());
+
     }
 
 

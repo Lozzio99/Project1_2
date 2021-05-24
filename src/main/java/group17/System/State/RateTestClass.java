@@ -1,6 +1,7 @@
-package group17.Math.Solvers;
+package group17.System.State;
 
 import group17.Interfaces.RateInterface;
+import group17.Interfaces.RateTest;
 import group17.Interfaces.Vector3dInterface;
 
 import java.util.List;

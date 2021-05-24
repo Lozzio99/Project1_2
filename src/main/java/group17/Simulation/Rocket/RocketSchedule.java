@@ -9,7 +9,7 @@ import group17.System.Clock;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static group17.Utils.Config.LAUNCH_DATE;
+import static group17.Utils.Config.ERROR_EVALUATION;
 
 /**
  * The type Rocket schedule.
@@ -29,6 +29,8 @@ public class RocketSchedule {
      */
     Map<Vector3dInterface, Vector3dInterface> shiftAtDistance;
 
+    Map<DecisionEvent, Vector3dInterface> shiftAtApproximatedState;
+
 
     /**
      * Init.
@@ -45,7 +47,11 @@ public class RocketSchedule {
      * Prepare.
      */
     public void prepare() {
-        this.setPlan(LAUNCH_DATE, new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
+        final boolean f = ERROR_EVALUATION;
+        ERROR_EVALUATION = false; // avoid making error reports
+        this.setPlan(new Clock().setLaunchDay(), new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
+        //this.setPlan(new Clock().setInitialTime(0,0,0).setInitialTime(0,0,0),new Vector3D(0,0,0));
+        ERROR_EVALUATION = f;
     }
 
 
@@ -58,7 +64,7 @@ public class RocketSchedule {
     public Vector3dInterface shift(SystemInterface system) {
         return this.getDesiredVelocity(system.getClock()).
                 add(this.getDesiredVelocity(system.systemState())).
-                add(this.getDesiredVelocity(system.getRocket().getVectorLocation()/*TODO: titan.sub(rocket) */));
+                add(this.getDesiredVelocity(system.systemState().getPositions().get(8).absSub(system.systemState().getPositions().get(11))));
         //eventually everything null this will return a vector (0,0,0)
     }
 
@@ -70,7 +76,7 @@ public class RocketSchedule {
      */
     public Vector3dInterface getDesiredVelocity(Clock clock) {
         if (clock == null) return new Vector3D();
-        Vector3dInterface v = shiftAtTime.get(clock);
+        Vector3dInterface v = shiftAtTime.getOrDefault(clock, new Vector3D());
         return v == null ? new Vector3D() : v;
     }
 
@@ -139,6 +145,7 @@ public class RocketSchedule {
      */
     public void setPlan(Clock time, Vector3dInterface v) {
         if (time == null || v == null) return;
+        Vector3dInterface vOld = this.shiftAtTime.remove(time);
         this.shiftAtTime.put(time, v);
     }
 

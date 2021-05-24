@@ -112,6 +112,11 @@ public class SystemState implements StateInterface {
     }
 
     @Override
+    public void setRateOfChange(RateInterface rateOfChange) {
+        this.rateOfChange = rateOfChange;
+    }
+
+    @Override
     public int hashCode() {
         int hash = 31;
         hash = 31 * hash + this.positions.hashCode();

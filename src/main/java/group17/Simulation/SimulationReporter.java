@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
 /**
@@ -21,6 +22,13 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
 
     @Override
     public synchronized void run() {
+        if (simulation != null) {
+            if (LAUNCH_ASSIST) {
+                if (simulation.getAssist() != null) {
+                    this.reportToAssist();
+                }
+            }
+        }
         this.report();
     }
 
@@ -41,14 +49,25 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
     @Override
     public void report() {
         for (Entry<LocalDateTime, String> s : this.report.entrySet()) {
-            System.out.println("{ " + s + " }");
+            System.out.println("{ " + s.getKey() + " -> " + s.getValue() + " }");
         }
         for (Entry<LocalDateTime, String> s : this.exceptions.entrySet()) {
-            System.err.println("{ " + s + " }");
+            System.err.println("{ " + s.getKey() + " -> " + s.getValue() + " }");
         }
         this.report.clear();
         this.exceptions.clear();
     }
+
+    @Override
+    public void reportToAssist() {
+        for (Entry<LocalDateTime, String> s : this.report.entrySet()) {
+            simulation.getAssist().appendToOutput("{ " + s.getKey() + " -> " + s.getValue() + " }");
+        }
+        for (Entry<LocalDateTime, String> s : this.exceptions.entrySet()) {
+            simulation.getAssist().appendToOutput("{ " + s.getKey() + " -> " + s.getValue() + " }");
+        }
+    }
+
 
     @Override
     public void report(String string) {
