@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Arrays;
 
+import static group17.Utils.Config.DEBUG;
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,9 +56,12 @@ class TestRungeKuttaSolver {
 
     @Test
     void step() {
+        DEBUG = false;
         ODESolverInterface oldrk = new OldRungeKutta(dydx);
-        System.out.println(Arrays.toString(oldrk.solve(dydx, y, tf, 0.1)));
-        System.out.println(Arrays.toString(rk.solve(dydx, y, tf, 0.1)));
+        if (DEBUG) {
+            System.out.println(Arrays.toString(oldrk.solve(dydx, y, tf, 0.1)));
+            System.out.println(Arrays.toString(rk.solve(dydx, y, tf, 0.1)));
+        }
 
     }
 

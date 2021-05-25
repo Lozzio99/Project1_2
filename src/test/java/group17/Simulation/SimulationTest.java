@@ -12,9 +12,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import static group17.Main.simulation;
 import static group17.Main.userDialog;
 import static group17.Utils.Config.*;
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -35,10 +41,11 @@ class SimulationTest {
     @AfterEach
     void tearDown() {
         try {
-            Thread.sleep(100);
-        } catch (InterruptedException ignored) {
+            sleep(100);
+            simulation = null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        simulation = null;
     }
 
 
@@ -197,6 +204,48 @@ class SimulationTest {
         simulation = null;
     }
 
+    @Test
+    @DisplayName("Loop")
+    void TestLoop() {
+        assumeTrue(simulation == null);
+        ERROR_EVALUATION = false;
+        LAUNCH_ASSIST = false;
+        ENABLE_GRAPHICS = true;
+        userDialog = new UserDialogWindow();
+        userDialog.getMainMenu().startSimulation();
+        //simulation.init();
+        try {
+            sleep(500);
+            simulation.setWaiting(false);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        CompletableFuture<SimulationInterface> future =
+                CompletableFuture.runAsync(simulation::start)
+                        .thenApply(e -> {
+                            simulation.setWaiting(true);
+                            return simulation;
+                        });
+        assertAll(
+                () -> assertDoesNotThrow(simulation::getAssist),
+                () -> assertDoesNotThrow(simulation::getGraphics),
+                () -> assertDoesNotThrow(simulation::getSystem),
+                () -> assertDoesNotThrow(simulation::getReporter),
+                () -> assertDoesNotThrow(simulation::getUpdater));
+
+        try {
+            SimulationInterface res = future.get(100, TimeUnit.MILLISECONDS);
+            userDialog.getFrame().dispose();
+            simulation.getGraphics().getFrame().dispose();
+            sleep(3000);
+            res = null;
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+        simulation = null;
+    }
+
 
     @Test
     @DisplayName("StartUpdater")
@@ -206,6 +255,25 @@ class SimulationTest {
         simulation.initUpdater();
         REPORT = false;
         assertDoesNotThrow(simulation::startUpdater);
+
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        INSERT_ROCKET = true;
+        LAUNCH_ASSIST = false;
+        REPORT = true;
+        simulation.initReporter();
+        simulation.initSystem();
+        REPORT = false;
+        simulation.getUpdater().run();
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         simulation = null;
     }
 

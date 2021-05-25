@@ -1,18 +1,22 @@
 package group17.System;
 
-import group17.Utils.Config;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Isolated;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import static group17.Utils.Config.ERROR_EVALUATION;
+import static group17.Utils.Config.REPORT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+@Isolated
 class ClockTest {
 
     static {
-        Config.ERROR_EVALUATION = false;
+        ERROR_EVALUATION = false;
     }
 
     @Test
@@ -139,5 +143,67 @@ class ClockTest {
 
     }
 
+    @Test
+    @DisplayName("CheckIfReturnItsFirst")
+    void TestFirst() {
+        Clock clock = new Clock().setLaunchDay();
+        ERROR_EVALUATION = true;
+        REPORT = false;
+        while (!clock.step(20)) {
+        }
+        ERROR_EVALUATION = false;
+        assertEquals(1, clock.getDays());
+        assertEquals(0, clock.getSec());
+        assertEquals(0, clock.getHour());
+        assertEquals(0, clock.getMin());
+    }
+
+    @Test
+    @DisplayName("TestEquals")
+    void TestEquals() {
+        Clock clock = new Clock().setLaunchDay();
+        assertNotEquals(new Clock(), new Object());
+        assertNotEquals(new Clock().hashCode(), clock.hashCode());
+        assertEquals(clock, new Clock().setInitialDay(1, 4, 2020).setInitialTime(0, 0, 0));
+
+        assertNotEquals(clock, new Clock().setInitialDay(1, 4, 2020).setInitialTime(0, 0, 1));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 4, 2020).setInitialTime(0, 1, 1));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 4, 2020).setInitialTime(1, 1, 1));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 4, 2021).setInitialTime(1, 1, 1));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 5, 2021).setInitialTime(1, 1, 1));//1
+        assertNotEquals(clock, new Clock().setInitialDay(2, 5, 2021).setInitialTime(1, 1, 1));//1
+
+        assertNotEquals(clock, new Clock().setInitialDay(2, 5, 2021).setInitialTime(1, 1, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(2, 5, 2021).setInitialTime(1, 0, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(2, 5, 2021).setInitialTime(0, 0, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(2, 5, 2020).setInitialTime(0, 0, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(2, 4, 2020).setInitialTime(0, 0, 0));//1
+
+
+        assertNotEquals(clock, new Clock().setInitialDay(1, 5, 2020).setInitialTime(1, 0, 1));//1
+        assertNotEquals(clock, new Clock().setInitialDay(2, 4, 2021).setInitialTime(0, 1, 0));//1
+
+        assertNotEquals(clock, new Clock().setInitialDay(2, 4, 2020).setInitialTime(1, 0, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 5, 2020).setInitialTime(0, 0, 1));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 4, 2021).setInitialTime(0, 0, 0));//1
+
+
+        assertNotEquals(clock, new Clock().setInitialDay(1, 4, 2020).setInitialTime(0, 1, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 4, 2020).setInitialTime(1, 0, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(1, 5, 2020).setInitialTime(0, 0, 0));//1
+        assertNotEquals(clock, new Clock().setInitialDay(2, 4, 2020).setInitialTime(0, 0, 0));//1
+
+
+    }
+
+
+    @Test
+    @DisplayName("MonthStrings")
+    void MonthStrings() {
+
+        Clock clock = new Clock().setLaunchDay();
+        assertEquals("April", clock.monthString());
+
+    }
 
 }

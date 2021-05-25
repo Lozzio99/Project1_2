@@ -17,6 +17,7 @@ public class Clock {
      */
 
     public static final double DAY = 86400.0;
+    public static final double HOUR = 3600;
     private static final String[] monthStrings =
             {"January", "February", "March", "April", "May", "June",
                     "July", "August", "September", "October", "November", "December"};

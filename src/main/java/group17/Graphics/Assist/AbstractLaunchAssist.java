@@ -116,7 +116,6 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
     protected final JTextField xVelSlider = new JTextField();
     protected final JTextField yVelSlider = new JTextField();
     protected final JTextField zVelSlider = new JTextField();
-    private final double velocitySliderW = 1.0;
 
     /**
      * Method to append text to output.
@@ -232,7 +231,7 @@ public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
 
     @Override
     public synchronized void run() {
-        if (!simulation.waiting()) {
+        if (simulation != null && !simulation.waiting()) {
             this.setDate();
             if (t > 50) {
                 try {

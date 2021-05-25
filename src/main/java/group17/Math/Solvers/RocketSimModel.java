@@ -32,7 +32,7 @@ public class RocketSimModel {
 
     public static NewtRaphFunction pF = vector -> {
         Vector3D aprxPos = (Vector3D) RocketSimModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
-        System.out.println(aprxPos.toString());
+        if (DEBUG) System.out.println(aprxPos.toString());
         return targetPosition.sub(aprxPos);
     };
 
@@ -104,7 +104,7 @@ public class RocketSimModel {
      *
      * @param args the input arguments
      */
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         // FIXME: For some reason, simulation produces the same result every time no matter what :/
         Vector3D res1 = (Vector3D) stateFx(new Vector3D(-1.471922101663588E11, -2.860995816266412E10, 8278183.19359608), new Vector3D(10000, 1000000.0, 600000.0), 86700 * 1e2);
         System.out.println(res1.toString());
@@ -115,6 +115,6 @@ public class RocketSimModel {
         //(-3.4594511332232066E24,1.8655241966218185E25,-4.1859192756969905E20)
         //(-3.4594511332232066E24,1.8655241966218185E25,-4.1859192756969905E20)
 
-    }
+    }*/
 
 }

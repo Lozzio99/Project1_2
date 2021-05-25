@@ -1,8 +1,8 @@
 package group17;
 
 import group17.Graphics.Assist.ErrorWindow;
+import group17.Math.Lib.GravityFunction;
 import group17.Simulation.Simulation;
-import group17.System.GravityFunction;
 import group17.Utils.ErrorData;
 import group17.Utils.ErrorExportCSV;
 import group17.Utils.ErrorReport;
@@ -27,16 +27,15 @@ import static group17.Utils.Config.*;
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Isolated   //to run isolated
-
+@Isolated   //to be run isolated
 @Disabled("Run only when we have new data or new solvers to check")
-
 class SolversAccuracyTest {
 
     static int MONTH_REPORT_STOP = 13;
 
     static {
         DEBUG = false;  //don't run this with debug will go out of heap size
+        //gradle build file is set to use a maximum of 512mb in the heap
         ENABLE_GRAPHICS = false;
         REPORT = false;
         LAUNCH_ASSIST = false;
@@ -69,7 +68,8 @@ class SolversAccuracyTest {
     }
 
     @ParameterizedTest(name = "testing step size {0}")
-    @ValueSource(ints = {60, 360, 86400})
+    //@ValueSource(ints = {60, 360, 86400})    //stepsize 60 is pretty tough
+    @ValueSource(ints = {86400})
     void testAndOutputToTXT(int stepSize) {
         STEP_SIZE = stepSize; //convert to double
         testSolversAndOutputFile(EULER_SOLVER, "ErrorTestLog.txt");
@@ -81,7 +81,8 @@ class SolversAccuracyTest {
     }
 
     @ParameterizedTest(name = "testing step size {0}")
-    @ValueSource(ints = {60, 360, 86400})
+    //@ValueSource(ints = {60, 360, 86400})
+    @ValueSource(ints = {86400})
     void testAndOutputToCSV(int stepSize) {
         STEP_SIZE = stepSize; //convert to double
         testSolversAndOutputFile(EULER_SOLVER, "ErrorTestLog.csv");

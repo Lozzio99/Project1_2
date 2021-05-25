@@ -4,7 +4,7 @@ import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
-import group17.System.GravityFunction;
+import group17.Math.Lib.GravityFunction;
 import group17.System.State.RateOfChange;
 import org.jetbrains.annotations.Contract;
 

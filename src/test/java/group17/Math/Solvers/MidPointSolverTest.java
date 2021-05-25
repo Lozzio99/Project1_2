@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.Arrays;
-
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,8 +64,6 @@ class MidPointSolverTest {
     void TestSolve(double step) {
         double accuracy = step * 2;
         StateInterface[] sol = mid.solve(dydx, y, 1, step);
-        if (step > 0.01)
-            System.out.println(Arrays.toString(sol));
         assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < accuracy);
     }
 

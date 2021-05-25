@@ -98,7 +98,7 @@ public class SimulationScene extends Scene {
         try {
             this.updateBodies();
         } catch (NullPointerException | IndexOutOfBoundsException e) {
-            this.init();
+            if (simulation != null) this.init();
         }
 
         super.resetMouse();

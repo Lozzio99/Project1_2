@@ -3,8 +3,8 @@ package group17.Math.Solvers;
 
 import group17.Interfaces.StateInterface;
 import group17.Math.Lib.FreeFallFunction;
+import group17.Math.Lib.GravityFunction;
 import group17.Math.Lib.Vector3D;
-import group17.System.GravityFunction;
 import group17.System.State.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +32,7 @@ public class VerletVelocitySolverTest {
 
         double aprxSolution = aprxStates[aprxStates.length - 1].getPositions().get(0).getZ();
         double expectedSol = initVelocity.getZ() * tf - 0.5 * FreeFallFunction.CONSTANT_G * tf * tf; // free fall equation
+        DEBUG = false;
         if (DEBUG) {
             System.out.println(expectedSol);
             for (StateInterface aprxState : aprxStates) {

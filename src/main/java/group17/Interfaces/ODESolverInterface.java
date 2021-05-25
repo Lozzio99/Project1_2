@@ -7,6 +7,8 @@
 
 package group17.Interfaces;
 
+import group17.Math.Lib.GravityFunction;
+
 import static group17.Utils.Config.STEP_SIZE;
 
 
@@ -111,7 +113,7 @@ public interface ODESolverInterface {
      * therefore will be consequently implemented in different ways
      *
      * @return the function used for calculations
-     * @see group17.System.GravityFunction
+     * @see GravityFunction
      */
     ODEFunctionInterface getFunction();
 
