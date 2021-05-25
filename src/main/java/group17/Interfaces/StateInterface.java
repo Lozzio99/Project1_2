@@ -21,6 +21,8 @@ public interface StateInterface {
 
     RateInterface getRateOfChange();
 
+    void setRateOfChange(RateInterface rateOfChange);
+
     /**
      * The state of the bodies at a given point in time
      *
@@ -78,7 +80,18 @@ public interface StateInterface {
         for (Vector3dInterface v : tobeCloned.getPositions()) {
             s.getPositions().add(v.clone());
         }
+
+        for (Vector3dInterface v : tobeCloned.getRateOfChange().getVelocities()) {
+            s.getRateOfChange().getVelocities().add(v.clone());
+        }
         return s;
+    }
+    default StateInterface getState(RateInterface rate){
+        StateInterface state = new SystemState();
+        for(int i = 0; i < rate.getVelocities().size();i++){
+            state.getPositions().add(rate.getVelocities().get(i));
+        }
+        return state;
     }
 
     default StateInterface multiply(double scalar) {

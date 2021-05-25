@@ -33,7 +33,7 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                         acc = acc.mul(1 / den); // Normalise to length 1
                         acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
                     }
-                    totalAcc = totalAcc.addMul(t, acc);
+                    totalAcc = totalAcc.add(acc);
                     // p = h*acc(derivative of velocity)
                 }
             }
@@ -70,11 +70,11 @@ public class RungeKutta4thSolver implements ODESolverInterface {
                             acc = acc.mul(1 / den); // Normalise to length 1
                             acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration
                         }
-                        totalAcc = totalAcc.addMul(dt, acc);
+                        totalAcc = totalAcc.add(acc);  // Changed just to add since multiply by h at return of step
                         // p = h*acc(derivative of velocity)
                     }
                 }
-                rate.getVelocities().add(y.getRateOfChange().getVelocities().get(i).add(totalAcc));
+              rate.getVelocities().add(y.getRateOfChange().getVelocities().get(i).add(totalAcc));
             }
             checked = true;
             return rate;
@@ -85,43 +85,34 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
 
     public StateInterface old(ODEFunctionInterface f, double t, final StateInterface y, double h) {
-        RateInterface v21, v22, v23, v24, kv;
-        StateInterface s11, s12, s13, s14, kk;
+        StateInterface k1, k2, k3, k4, kk;
         checked = false;
 
         RateInterface velocity = y.getRateOfChange();
-        s11 = y.rateMul(h, velocity);
-        v21 = f.call(h, y);
-        s12 = y.rateMul(h, velocity.add(v21.div(2))); //!!
-        v22 = f.call(h, y.add(s11.div(2)));
-        s13 = y.rateMul(h, velocity.add(v22.div(2)));
-        v23 = f.call(h, y.add(s12.div(2)));
-        s14 = y.rateMul(h, velocity.add(v23));
-        v24 = f.call(h, y.add(s13));
 
+        k1 = y.getState(velocity);
+        k1.setRateOfChange(oldF.call(h, y));
+        k2 = y.getState(velocity.add(k1.getRateOfChange().multiply(h/2))); //!!
+        k2.setRateOfChange(oldF.call(h, y.add(k1.multiply(h/2))));
+        k3 = y.getState(velocity.add(k2.getRateOfChange().multiply(h/2)));
+        k3.setRateOfChange(oldF.call(h, y.add(k2.multiply(h/2))));
+        k4 = y.getState(velocity.add(k3.getRateOfChange().multiply(h)));
+        k4.setRateOfChange(oldF.call(h, y.add(k3.multiply(h))));
         if (DEBUG) {
             System.out.println("k11");
-            System.out.println(s11);
+            System.out.println(k1);
             System.out.println("k12");
-            System.out.println(s12);
+            System.out.println(k2);
             System.out.println("k13");
-            System.out.println(s13);
+            System.out.println(k3);
             System.out.println("k14");
-            System.out.println(s14);
+            System.out.println(k4);
         }
+        k2 = k2.multiply(2);
+        k3 = k3.multiply(2);
+        kk = ((k1.sumOf(k2, k3, k4)));
 
-        s12 = s12.multiply(2);
-        s13 = s13.multiply(2);
-        v22 = v22.multiply(2);
-        v23 = v23.multiply(2);
-        kk = (s11.sumOf(s12, s13, s14)).div(6);
-        kv = (v21.sumOf(v22, v23, v24)).div(6);
-
-        //-6.80564659829616E8
-        //-6.806783239281648E8
-
-
-        return new SystemState(y.add(kk), (y.getRateOfChange().add(kv)));
+        return new SystemState(y.add(kk.multiply(h/6)));
     }
 
     public ODEFunctionInterface getOldF() {
@@ -154,13 +145,16 @@ public class RungeKutta4thSolver implements ODESolverInterface {
 
 
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+        /*
         this.currentTime = t;
         RateInterface k1 = f.call(t, y).div(6);
         RateInterface k2 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k1)).div(3);
         RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5 * h, k2)).div(3);
         RateInterface k4 = f.call(t + h, y.addMul(h, k3)).div(6);
         RateInterface newRate = k1.sumOf(k2, k3, k4);
-        return y.addMul(h, newRate);
+
+         */
+        return old(f,t,y.copy(),h);
     }
 
     @Override

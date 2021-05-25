@@ -21,6 +21,11 @@ public class SystemState implements StateInterface {
         this.rateOfChange = new RateOfChange();
     }
 
+    @Override
+    public void setRateOfChange(RateInterface rateOfChange) {
+        this.rateOfChange = rateOfChange;
+    }
+
     public SystemState(StateInterface copy) {
         this.positions = new ArrayList<>();
         this.rateOfChange = new RateOfChange();

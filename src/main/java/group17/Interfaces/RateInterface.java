@@ -72,7 +72,6 @@ public interface RateInterface {
         }
         return rate;
     }
-
     default RateInterface sumOf(RateInterface... states) {
         RateInterface rate = new RateOfChange();
         for (int i = 0; i < states[0].getVelocities().size(); i++) {

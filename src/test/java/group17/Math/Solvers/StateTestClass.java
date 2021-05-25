@@ -38,6 +38,11 @@ public class StateTestClass implements StateTest {
     }
 
     @Override
+    public void setRateOfChange(RateInterface rateOfChange) {
+        testDy = (RateTest) rateOfChange;
+    }
+
+    @Override
     public StateInterface rateMul(double step, RateInterface rate) {
         StateTest newState = new StateTestClass();
         double dy = ((RateTest) rate).getDy();

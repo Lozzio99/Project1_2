@@ -1,9 +1,11 @@
 package group17.Simulation;
 
 import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.StateInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Solvers.*;
+import group17.System.Clock;
 import group17.System.ErrorData;
 import group17.System.ErrorReport;
 
@@ -63,7 +65,7 @@ public class SimulationUpdater implements UpdaterInterface {
                 if (!decision.isZero() && REPORT) {
                     simulation.getReporter().report("DECISION -> " + decision);
                     simulation.getSystem().getRocket().evaluateLoss(decision,
-                            simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11));
+                            simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11),STEP_SIZE);
                 }
             }
             ErrorData prev = new ErrorData(simulation.getSystem().systemState());
@@ -73,6 +75,23 @@ public class SimulationUpdater implements UpdaterInterface {
              * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
              * better to do that in system (in main thread from executor) and then pass it in here once solved
              */
+
+            // can change make stepsizes of checks proportionally smaller for supposedly better approximations
+
+            if(simulation.getSystem().getClock().equals(new Clock().setInitialDay(1,5,2020).setInitialTime(0,0,0))) {
+
+
+
+
+
+                StateInterface halfy = this.solver.step(this.solver.getFunction(), STEP_SIZE, simulation.getSystem().systemState().copy(), STEP_SIZE);
+                ErrorData ph = new ErrorData(halfy);
+                StateInterface fourthY = this.solver.step(this.solver.getFunction(), STEP_SIZE / 2, simulation.getSystem().systemState().copy(), STEP_SIZE / 2);
+                ErrorData ph2 = new ErrorData(fourthY);
+
+                ErrorData.checkOrder(ph, ph2);
+            }
+
             simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), CURRENT_TIME, simulation.getSystem().systemState(), STEP_SIZE));
             CURRENT_TIME += STEP_SIZE;
             if (simulation.getSystem().getClock().step(STEP_SIZE) && ERROR_EVALUATION)

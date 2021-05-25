@@ -46,9 +46,11 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
          stepSize used to determine if m_dot * Ve > maxThrust
          y for getting currentVelocity of Rocket
     */
-    public double evaluateLoss(Vector3dInterface desiredVelocity, Vector3dInterface actualVelocity) {
+    public double evaluateLoss(Vector3dInterface desiredVelocity, Vector3dInterface actualVelocity,double h) {
         double deltaV = desiredVelocity.sub(actualVelocity).norm();
         double propellantConsumed = (fuelMass * deltaV) / (this.exhaustVelocity + deltaV);
+       // double propellantConsumed = h*fuelMass*(1 - Math.exp(-1*deltaV/exhaustVelocity));
+        System.out.println("PROPELLANT CONSUMED: " + propellantConsumed);
         if (exhaustVelocity * (propellantConsumed / STEP_SIZE) > maxThrust) {
             System.out.println("Max Thrust exceeded!!!");
         }
