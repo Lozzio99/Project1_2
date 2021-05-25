@@ -9,7 +9,7 @@ import java.util.List;
 import static group17.Main.simulation;
 
 /**
- * The interface Rate interface.
+ *  An interface representing the time-derivative (rate-of-change) of the state of a system.
  */
 public interface RateInterface {
 

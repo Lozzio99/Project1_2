@@ -9,6 +9,9 @@ import static java.lang.StrictMath.round;
 
 /**
  * The type Decision event.
+ * DecisionEvent checks if it is time/desired state
+ * to use thrusters of rocket, increase velocity
+ *
  */
 public class DecisionEvent {
 

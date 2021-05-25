@@ -7,6 +7,8 @@ import java.awt.*;
 
 /**
  * The type Star.
+ * Represents the Sun in this Simulation
+ * Data from Project Manual
  */
 public class Star extends CelestialBody {
     @Override

@@ -15,7 +15,10 @@ public class Planet extends CelestialBody {
     PlanetsEnum planet;
 
     /**
+     *
      * Instantiates a new Planet.
+     * Repository Class for planets used in the Simulation
+     * Data from Project Manual
      *
      * @param planet the planet
      */

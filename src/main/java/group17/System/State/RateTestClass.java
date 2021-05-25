@@ -6,6 +6,9 @@ import group17.Interfaces.Vector3dInterface;
 
 import java.util.List;
 
+/**
+ * Concrete Test class for the RateInterface
+ */
 public class RateTestClass implements RateTest {
     private double dy;
 

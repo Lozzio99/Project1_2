@@ -18,7 +18,8 @@ import static group17.Main.userDialog;
 import static group17.Utils.Config.*;
 
 /**
- * The type Error report.
+ * Represents Observer class for the Errors
+ *   of Simulation
  */
 public class ErrorReport implements Runnable {
 

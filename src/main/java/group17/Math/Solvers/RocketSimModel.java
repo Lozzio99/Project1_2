@@ -48,8 +48,8 @@ public class RocketSimModel {
     /**
      * Create system system interface.
      *
-     * @param initLocation the init location
-     * @param initVelocity the init velocity
+     * @param initLocation the initial location
+     * @param initVelocity the initial velocity
      * @return the system interface
      */
     public static SystemInterface createSystem(Vector3dInterface initLocation, Vector3dInterface initVelocity) {

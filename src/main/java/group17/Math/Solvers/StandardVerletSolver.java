@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Contract;
 
 /**
  * The type Standard verlet solver.
+ * Second Order Solver
  */
 public class StandardVerletSolver implements ODESolverInterface {
 

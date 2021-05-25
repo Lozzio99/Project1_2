@@ -9,8 +9,7 @@ import group17.Utils.CollisionDetector;
 import org.jetbrains.annotations.Contract;
 
 import static group17.Main.simulation;
-import static group17.Utils.Config.CHECK_COLLISIONS;
-import static group17.Utils.Config.G;
+import static group17.Utils.Config.*;
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
 
@@ -28,7 +27,7 @@ public final class GravityFunction {
         final RateInterface newRate = new RateOfChange();
         for (int i = 0; i < y.getPositions().size(); i++) {
             newRate.getVelocities().add(
-                    velocityFromAcceleration(i, y, h));
+                    velocityFromAcceleration(i, y, 1)); // changed to 1 from h for OldRk
         }
         return newRate;
     };
@@ -43,7 +42,7 @@ public final class GravityFunction {
         for (int i = 0; i < y.getPositions().size(); i++) {
             newRate.getVelocities().add(
                     y.getRateOfChange().getVelocities().get(i)
-                            .add(velocityFromAcceleration(i, y, dt)));
+                            .add(velocityFromAcceleration(i, y, dt))); //
         }
         return newRate;
     };

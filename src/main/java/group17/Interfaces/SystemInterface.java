@@ -8,7 +8,7 @@ import group17.System.Clock;
 import java.util.List;
 
 /**
- * The interface System interface.
+ * An interface for simulating Solar System.
  */
 public interface SystemInterface {
 

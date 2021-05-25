@@ -8,13 +8,10 @@ import static group17.Utils.Config.ERROR_EVALUATION;
 import static group17.Utils.Config.REPORT;
 
 /**
- * The type Clock.
+ * Clock class used for testing and organising data
  */
 public class Clock {
 
-    /**
-     * The constant DAY.
-     */
 
     public static final double DAY = 86400.0;
     public static final double HOUR = 3600;

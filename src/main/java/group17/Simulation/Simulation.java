@@ -21,7 +21,7 @@ import static group17.Utils.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * The type Simulation.
+ * One of base classes of program, the simulation of the solar system
  */
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
@@ -59,6 +59,10 @@ public class Simulation implements SimulationInterface {
         }
     }
 
+    /**
+     * resets the whole simulation,reverts everything
+     * back to initial instance
+     */
     @Override
     public void reset() {
         this.setWaiting(true);   //first of all
@@ -226,6 +230,9 @@ public class Simulation implements SimulationInterface {
         this.stopped = stopped;
     }
 
+    /**
+     *  updates instance of simulation to the next state
+     */
     @Override
     public synchronized void updateState() {
         for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {

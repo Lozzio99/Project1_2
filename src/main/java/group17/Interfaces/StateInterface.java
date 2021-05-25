@@ -7,7 +7,7 @@ import group17.System.State.SystemState;
 import java.util.List;
 
 /**
- * The interface State interface.
+ * An interface representing the state of a system described by a differential equation.
  */
 public interface StateInterface {
 
@@ -86,7 +86,7 @@ public interface StateInterface {
      *
      * @param step the step
      * @param rate the rate
-     * @return the state interface
+     * @return new state based on step*Rate
      */
     default StateInterface rateMul(double step, RateInterface rate) { //!!
         StateInterface newState = new SystemState();
@@ -132,6 +132,17 @@ public interface StateInterface {
         }
         return state;
     }
+    default StateInterface divBy(double scalar) {
+        if (this.getPositions().size() == 0)
+            throw new RuntimeException(" Nothing to divide ");
+
+        StateInterface state = new SystemState();
+        for (int i = 0; i < this.getPositions().size(); i++) {
+            state.getPositions().add(this.getPositions().get(i).div(scalar));
+         //   state.getRateOfChange().getVelocities().add(this.getRateOfChange().getVelocities().get(i).div(scalar));
+        }
+        return state;
+    }
 
     /**
      * Add state interface.
@@ -153,6 +164,8 @@ public interface StateInterface {
 
     /**
      * Sum of state interface.
+     * Used for Rk4 Solver
+     * kk/6 = k1+2*k2+2*k3+k4'
      *
      * @param rates the rates
      * @return the state interface

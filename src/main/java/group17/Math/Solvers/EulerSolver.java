@@ -9,6 +9,7 @@ import group17.Math.Lib.GravityFunction;
 
 /**
  * The type Euler solver.
+ * First Order Solver
  */
 public class EulerSolver implements ODESolverInterface {
 
@@ -26,13 +27,19 @@ public class EulerSolver implements ODESolverInterface {
         this.f = f;
     }
 
-
+    /**
+     *  Formula
+     *  y1 = y0 + h*f(t,y0);
+     *
+     * @param f the function representing Newton's Gravitational law
+     * @param y the instance  of the Simulation
+     * @return the next state of the simulation based on a Euler Step
+     */
     @Override
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
-        // y1 = y0 + h*f(t,y0);
         GravityFunction.setChecked(false);
         GravityFunction.setCurrentTime(currentTime);
-        return y.addMul(stepSize, f.call(currentTime, y));
+        return y.addMul(stepSize, f.call(currentTime+stepSize, y));
     }
 
     @Override

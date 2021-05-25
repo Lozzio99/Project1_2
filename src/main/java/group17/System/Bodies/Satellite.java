@@ -9,14 +9,13 @@ import java.awt.*;
  * The type Satellite.
  */
 public class Satellite extends CelestialBody {
-    /**
-     * The Name.
-     */
+
     SatellitesEnum name;
 
     /**
      * Instantiates a new Satellite.
-     *
+     * Instantiates a new Planet.
+     * Repository Class for satellites used in the Simulation
      * @param name the name
      */
     public Satellite(SatellitesEnum name) {

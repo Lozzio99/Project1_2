@@ -1,8 +1,8 @@
 package group17.Interfaces;
 
 /**
- * The interface Function.
- *
+ * An interface for the function f that represents the
+ * differential equation dy/dt = f(t,y).
  * @param <E> the type parameter
  */
 @FunctionalInterface

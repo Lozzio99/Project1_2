@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Contract;
 import java.util.List;
 
 /**
- * The type Error data.
+ * Represents Data used in calculating errors of simulation
  */
 public class ErrorData {
     private List<Vector3dInterface> positions, velocities;
@@ -59,6 +59,7 @@ public class ErrorData {
         }
         return this;
     }
+
 
     /**
      * Gets positions.

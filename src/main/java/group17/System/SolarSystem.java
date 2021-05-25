@@ -23,9 +23,7 @@ import static group17.Utils.Config.LAUNCH_DATE;
  */
 public class SolarSystem implements SystemInterface {
 
-    /**
-     * The Clock.
-     */
+
     protected Clock clock;
     /**
      * The Bodies.

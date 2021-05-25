@@ -6,7 +6,7 @@ import group17.Graphics.UserDialogWindow;
 import group17.Simulation.SimulationReporter;
 
 /**
- * The interface Simulation interface.
+ * An interface for Simulating the Solar System
  */
 public interface SimulationInterface {
 

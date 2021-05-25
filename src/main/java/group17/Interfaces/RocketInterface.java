@@ -1,7 +1,7 @@
 package group17.Interfaces;
 
 /**
- * The interface Rocket interface.
+ * An interface for simulating a rocket launched from Earth
  */
 public interface RocketInterface extends ProbeSimulatorInterface {
 
