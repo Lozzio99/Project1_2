@@ -85,7 +85,7 @@ public class SimulationUpdater implements UpdaterInterface {
 
     @Override
     public synchronized void run() {
-        System.out.println("Distance to Titan: " + Vector3D.dist(simulation.getSystem().systemState().getPositions().get(0), simulation.getSystem().getRocket().getVectorLocation()));
+        System.out.println("Distance to Titan: " + Vector3D.dist(simulation.getSystem().systemState().getPositions().get(8), simulation.getSystem().systemState().getPositions().get(11)));
         // ROCKET DECISION
         try {
             if (INSERT_ROCKET) {

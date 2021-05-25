@@ -113,7 +113,7 @@ public class Config {
     /**
      * The constant ERROR_EVALUATION.
      */
-    public static Boolean ERROR_EVALUATION = true;
+    public static Boolean ERROR_EVALUATION = false;
     /**
      * The constant CHECK_COLLISIONS.
      */
@@ -133,7 +133,7 @@ public class Config {
     /**
      * The constant DEFAULT_SOLVER.
      */
-    public static int DEFAULT_SOLVER = MIDPOINT_SOLVER;  //editable in main menu
+    public static int DEFAULT_SOLVER = RUNGE_KUTTA_SOLVER;  //editable in main menu
 
 
     /**
@@ -148,7 +148,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = 1500;
+    public static double STEP_SIZE = 1800;
     /**
      * The constant CURRENT_TIME.
      */
