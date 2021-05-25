@@ -32,7 +32,7 @@ public class EulerSolver implements ODESolverInterface {
         // y1 = y0 + h*f(t,y0);
         GravityFunction.setChecked(false);
         GravityFunction.setCurrentTime(currentTime);
-        return y.addMul(stepSize, f.call(currentTime, y));
+        return y.addMul(stepSize, f.call(currentTime + stepSize, y));
     }
 
     @Override
