@@ -1,10 +1,9 @@
-package group17.System;
+package group17.Math.Lib;
 
 import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Lib.Vector3D;
 import group17.System.State.RateOfChange;
 import group17.Utils.CollisionDetector;
 import org.jetbrains.annotations.Contract;
@@ -97,15 +96,6 @@ public final class GravityFunction {
         }
         checkedCollisions = true;
         return totalAcc;
-    }
-
-    public static boolean checkDifferent(StateInterface a, StateInterface b, double accuracy) {
-        for (int i = 0; i < a.getPositions().size(); i++) {
-            Vector3dInterface absPos = a.getPositions().get(i).absSub(b.getPositions().get(i));
-            Vector3dInterface absVel = a.getRateOfChange().getVelocities().get(i).absSub(b.getRateOfChange().getVelocities().get(i));
-            if (absPos.norm() > accuracy || absVel.norm() > accuracy) return false;
-        }
-        return true;
     }
 
     /**

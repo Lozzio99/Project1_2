@@ -3,7 +3,7 @@ package group17.Math.Solvers;
 import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.StateInterface;
-import group17.System.GravityFunction;
+import group17.Math.Lib.GravityFunction;
 import org.jetbrains.annotations.Contract;
 
 /**

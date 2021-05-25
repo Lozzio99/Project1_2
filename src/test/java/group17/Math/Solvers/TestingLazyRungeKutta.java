@@ -73,7 +73,6 @@ class TestingLazyRungeKutta {
             currTime += step;
         }
         sol[sol.length - 1] = rk.step(dydx, tf - currTime, y, tf - currTime);
-        System.err.println(accuracy);
         assertTrue(() -> abs(exactValue - ((StateTest) sol[sol.length - 1]).getY()) < accuracy);
     }
 

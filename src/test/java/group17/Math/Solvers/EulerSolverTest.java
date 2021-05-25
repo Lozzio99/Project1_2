@@ -25,6 +25,7 @@ class EulerSolverTest {
     };
     static StateTest y;
     static double t, tf, stepSize;
+    private final boolean debug = false;
 
     @BeforeEach
     void setup() {
@@ -76,8 +77,10 @@ class EulerSolverTest {
         double absErr, relErr, accuracy = 1.2e-1;
         absErr = abs(y.getY() - exactValue);
         relErr = absErr / exactValue;
-        System.out.println(absErr);
-        System.out.println(exactValue);
+        if (debug) {
+            System.out.println(absErr);
+            System.out.println(exactValue);
+        }
         assertTrue(relErr < accuracy);
     }
 

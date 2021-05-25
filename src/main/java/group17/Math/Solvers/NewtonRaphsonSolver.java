@@ -12,7 +12,6 @@ import java.util.Arrays;
 
 import static group17.Math.Solvers.RocketSimModel.pF;
 import static group17.Math.Solvers.RocketSimModel.targetPosition;
-import static group17.System.Clock.DAY;
 import static group17.Utils.Config.CHECK_COLLISIONS;
 import static group17.Utils.Config.INSERT_ROCKET;
 
@@ -38,7 +37,7 @@ public class NewtonRaphsonSolver {
     /**
      * The Log iteration.
      */
-    public final boolean LOG_ITERATION = true;
+    public final boolean LOG_ITERATION = false;
     private int i = 0;
 
     /**
@@ -97,13 +96,13 @@ public class NewtonRaphsonSolver {
      *
      * @param args the input arguments
      */
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         Vector3D initPos = new Vector3D(-9.839198644659751E-01, -1.912460575714917E-01, 5.542821181619438E-05);
         Vector3D targetPos = new Vector3D(1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02);
         double FixedTime = DAY * 30 * 6;
         NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, targetPos, FixedTime);
         Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5000.0, 5000.0, 5000.0), new Vector3D(0.0, 0.0, 0.0), 600);
-    }
+    }*/
 
     /**
      * Approximation of a solution to a function using Newton-Rhapson method
@@ -136,7 +135,7 @@ public class NewtonRaphsonSolver {
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector, double h) {
         double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), h); // Compute matrix of partial derivatives D
-        System.out.println(Arrays.deepToString(D));
+        if (LOG_ITERATION) System.out.println(Arrays.deepToString(D));
         Matrix DI = new Matrix(Matrix.invert(D)); // Compute DI inverse of D
         Vector3dInterface modelVector = fX.modelFx(vector);
         Vector3dInterface DIProd = DI.multiplyVector(modelVector);

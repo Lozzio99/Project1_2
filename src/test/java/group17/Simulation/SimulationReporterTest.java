@@ -39,12 +39,8 @@ class SimulationReporterTest {
     @Test
     @DisplayName("Start")
     void Start() {
-        int threadsBefore = Thread.currentThread().getThreadGroup().activeCount();
         reporter.init();
-        reporter.start();
-        int threadsAfter = Thread.currentThread().getThreadGroup().activeCount();
-        assertEquals(threadsBefore + 1, threadsAfter);
-
+        assertDoesNotThrow(reporter::start);
     }
 
     @Test

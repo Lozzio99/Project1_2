@@ -81,7 +81,7 @@ public class StateTestClass implements StateTest {
     @Override
     public StateInterface sumOf(StateInterface... states) {
         StateTest rate = new StateTestClass();
-        rate.setY(0);
+        rate.setY(this.getY());
         for (StateInterface r : states) {
             rate.setY(rate.getY() + ((StateTest) r).getY());
         }

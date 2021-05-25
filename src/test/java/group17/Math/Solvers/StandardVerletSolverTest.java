@@ -2,8 +2,8 @@ package group17.Math.Solvers;
 
 import group17.Interfaces.StateInterface;
 import group17.Math.Lib.FreeFallFunction;
+import group17.Math.Lib.GravityFunction;
 import group17.Math.Lib.Vector3D;
-import group17.System.GravityFunction;
 import group17.System.State.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
