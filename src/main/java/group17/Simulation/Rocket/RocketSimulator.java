@@ -75,7 +75,7 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
      *M(t)=M_(start )−m ̇  ;m ̇=  Δm/Δt
      *M(t)∗a(t)= m ̇∗V_e=F_max;
      *a(t)=  F_max/(Mstart−m ̇∗t);
-     *∫a(t)dt=v(t); V_e∗ln(Mstar/M(t) ;
+     *∫a(t)dt=v(t); V_e∗ln(Mstart/M(t) ;
      *Δm=M_start∗(1 − e^(−Δv/V_e ));
      *Δm - Propellant Consumed for One Step
      * @param desiredVelocity the desired velocity
