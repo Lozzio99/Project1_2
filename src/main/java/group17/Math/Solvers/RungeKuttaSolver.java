@@ -9,6 +9,8 @@ import org.jetbrains.annotations.Contract;
 
 /**
  * The type Runge kutta 4 th solver.
+ * Fourth Order
+ * Fourth order solver for First Order ODE
  */
 
 //OK around 10^-2/10^-3 error
@@ -29,13 +31,18 @@ public class RungeKuttaSolver implements ODESolverInterface {
 
 
     /**
-     * Testing rk state interface.
      *
-     * @param f the f
-     * @param t the t
-     * @param y the y
-     * @param h the h
-     * @return the state interface
+     * k1=f(tn,yn)
+     * k2=f(tn+h2,yn+h/2*k1)
+     * k3=f(tn+h2,yn+h/2*k2)
+     * k4=hf(tn+h,yn+h*k3)
+     * kk = (k1 + 2*k2 + 2*k3 + k4)/6
+     *
+     *
+     * @param f the function representing Newton's Gravitational law
+     * @param y the instance of the Simulation
+     * @param h stepSize
+     * @return the next state of the simulation based on Runge-Kutta 4 Step
      */
     public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
         GravityFunction.setCurrentTime(t);

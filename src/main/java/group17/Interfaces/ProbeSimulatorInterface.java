@@ -8,7 +8,7 @@
 package group17.Interfaces;
 
 /**
- * The interface Probe simulator interface.
+ * An interface for simulating a probe launched from Earth
  */
 public interface ProbeSimulatorInterface {
     /**

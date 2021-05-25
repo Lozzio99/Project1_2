@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * The type System state.
+ * Concrete State Class, Represents the state of a system described by a differential equation
  */
 public class SystemState implements StateInterface {
 

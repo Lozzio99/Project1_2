@@ -135,7 +135,7 @@ public class Config {
     /**
      * The constant DEFAULT_SOLVER.
      */
-    public static int DEFAULT_SOLVER = LAZY_RUNGE;  //editable in main menu
+    public static int DEFAULT_SOLVER = OLD_RUNGE;  //editable in main menu
 
 
     /**
@@ -150,7 +150,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = 360;
+    public static double STEP_SIZE = 3600;
     /**
      * The constant CURRENT_TIME.
      */

@@ -22,7 +22,8 @@ import static group17.Utils.Config.*;
 import static group17.Utils.ErrorReport.testingAccuracy;
 
 /**
- * The type Simulation updater.
+ * Updater class of Simulation, updates body position based on solvers
+ * and then GUI
  */
 public class SimulationUpdater implements UpdaterInterface {
 
@@ -101,6 +102,7 @@ public class SimulationUpdater implements UpdaterInterface {
              * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
              * better to do that in system (in main thread from executor) and then pass it in here once solved
              */
+
 
             simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), CURRENT_TIME, simulation.getSystem().systemState(), STEP_SIZE));
             CURRENT_TIME += STEP_SIZE;

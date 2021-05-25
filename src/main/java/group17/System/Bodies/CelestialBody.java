@@ -7,7 +7,8 @@ import org.jetbrains.annotations.Contract;
 import java.awt.*;
 
 /**
- * The type Celestial body.
+ * Represents a Celestial Body, with fields for all physics attributes
+ * as well as GUI attributes
  */
 public abstract class CelestialBody {
     private Color color;

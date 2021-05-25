@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static group17.Utils.Config.ERROR_EVALUATION;
 
 /**
- * The type Rocket schedule.
+ * Schedules Shifts/Thrusts of Rocket based on Newton-Raphson
  */
 public class RocketSchedule {
 

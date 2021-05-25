@@ -4,7 +4,7 @@ import group17.Graphics.UserDialogWindow;
 import group17.Interfaces.SimulationInterface;
 
 /**
- * The type Main.
+ * Driver class of Program
  */
 public class Main {
     /**

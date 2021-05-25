@@ -8,13 +8,15 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Source of exact results : http://fourier.eng.hmc.edu/e176/lectures/NM/node21.html
+ */
 class NewtonRaphsonSolverTest {
 
     private static final boolean PRINT_OUTPUT = false;
     @Test
     @DisplayName("Newton-Raphson solver")
     void NewtRaphSolve() {
-        // Example from: http://fourier.eng.hmc.edu/e176/lectures/NM/node21.html
         NewtRaphFunction testFx = vector -> {
             double x = vector.getX(), y = vector.getY(), z = vector.getZ();
             return new Vector3D(
@@ -37,7 +39,6 @@ class NewtonRaphsonSolverTest {
     @Test
     @DisplayName("Newton-Raphson Step")
     void NewtRaphStep() {
-        // Example from: http://fourier.eng.hmc.edu/e176/lectures/NM/node21.html
         NewtRaphFunction testFx = vector -> {
             double x = vector.getX(), y = vector.getY(), z = vector.getZ();
             return new Vector3D(

@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Source for the test is NM lecture on euler method for solving ODE systems
+ * source:  https://canvas.maastrichtuniversity.nl/courses/4549/modules/items/130569
  */
 class EulerSolverTest {
     static final double exactValue = 0.5033467;

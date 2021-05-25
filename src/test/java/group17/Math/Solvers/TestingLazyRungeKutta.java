@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Source for the test is NM lecture on runge kutta methods for solving ODE systems
+ * source: https://canvas.maastrichtuniversity.nl/courses/4549/modules/items/130571
  */
 class TestingLazyRungeKutta {
     static final double exactValue = 0.503347;

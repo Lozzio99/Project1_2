@@ -9,7 +9,8 @@ import group17.System.State.RateOfChange;
 import org.jetbrains.annotations.Contract;
 
 /**
- * Verlet Velosity Solver (both positions and velocity, less round-off errors)
+ * Verlet Velocity Solver (both positions and velocity, less round-off errors)
+ * Second order Solver
  */
 public class VerletVelocitySolver implements ODESolverInterface {
 

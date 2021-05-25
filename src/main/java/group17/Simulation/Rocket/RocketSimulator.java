@@ -18,31 +18,18 @@ import static java.lang.Double.NaN;
  */
 public class RocketSimulator extends CelestialBody implements RocketInterface {
 
-    /**
-     * The Start fuel.
-     */
+
 // Variables
     double startFuel = 2e4;
-    /**
-     * The Fuel mass.
-     */
+
     double fuelMass;
-    /**
-     * The Total mass.
-     */
+
     double totalMass;
-    /**
-     * The Exhaust velocity.
-     */
+
     double exhaustVelocity = 2e4;
-    /**
-     * The Max thrust.
-     */
+
     double maxThrust = 3e7;
 
-    /**
-     * The Local acceleration.
-     */
     Vector3dInterface localAcceleration;
 
 
@@ -83,21 +70,28 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
     /**
      * Evaluate loss double.
      *
+     * source : https://www.narom.no/undervisningsressurser/sarepta/rocket-theory/rocket-engines/the-rocket-equation/
+     *
+     *M(t)=M_(start )−m ̇  ;m ̇=  Δm/Δt
+     *M(t)∗a(t)= m ̇∗V_e=F_max;
+     *a(t)=  F_max/(Mstart−m ̇∗t);
+     *∫a(t)dt=v(t); V_e∗ln(Mstar/M(t) ;
+     *Δm=M_start∗(1 − e^(−Δv/V_e ));
+     *Δm - Propellant Consumed for One Step
      * @param desiredVelocity the desired velocity
      * @param actualVelocity  the actual velocity
-     * @return the double
+     * @return Δm, propellant consumed
      */
-    /*
-         desiredVelocity - obtain from Newton-Raphson method
-         stepSize used to determine if m_dot * Ve > maxThrust
-         y for getting currentVelocity of Rocket
-    */
     public double evaluateLoss(Vector3dInterface desiredVelocity, Vector3dInterface actualVelocity) {
         double deltaV = desiredVelocity.sub(actualVelocity).norm();
+
         double propellantConsumed = (fuelMass * deltaV) / (this.exhaustVelocity + deltaV);
+
         if (exhaustVelocity * (propellantConsumed / STEP_SIZE) > maxThrust) {
             System.out.println("Max Thrust exceeded!!!");
         }
+
+
         simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11, desiredVelocity);
         updateMass(propellantConsumed);
         return propellantConsumed;

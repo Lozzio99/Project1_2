@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * The interface Updater interface.
+ * An interface for updating simulation instance of Solar System.
  */
 public interface UpdaterInterface extends Runnable {
 

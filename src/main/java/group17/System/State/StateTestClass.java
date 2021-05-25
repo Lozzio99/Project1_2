@@ -4,6 +4,9 @@ import group17.Interfaces.*;
 
 import java.util.List;
 
+/**
+ * Concrete Test class for the StateInterface
+ */
 public class StateTestClass implements StateTest {
     private RateTest testDy;
     private double y;
@@ -39,6 +42,7 @@ public class StateTestClass implements StateTest {
     public void setRateOfChange(RateInterface newRate) {
         this.testDy = (RateTest) newRate;
     }
+
 
     @Override
     public StateInterface rateMul(double step, RateInterface rate) {

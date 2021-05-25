@@ -10,7 +10,7 @@ import java.util.List;
 import static group17.Main.simulation;
 
 /**
- * The type Rate of change.
+ *   Concrete Rate Class,Represents the time-derivative (rate-of-change) of the state of a system.
  */
 public class RateOfChange implements RateInterface {
     /**
@@ -20,6 +20,7 @@ public class RateOfChange implements RateInterface {
 
     /**
      * Instantiates a new Rate of change.
+     *
      */
     @Contract(pure = true)
     public RateOfChange() {

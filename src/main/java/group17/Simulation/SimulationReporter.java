@@ -12,7 +12,8 @@ import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
 /**
- * The type Simulation reporter.
+ * Reporter Class for the Simulation, outputs exceptions, with fitting details
+ * about the problem that occurred.
  */
 public class SimulationReporter implements ReporterInterface, Thread.UncaughtExceptionHandler {
 

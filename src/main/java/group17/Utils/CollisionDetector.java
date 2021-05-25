@@ -12,7 +12,8 @@ import static group17.Utils.Config.REPORT;
 
 
 /**
- * The type Collision detector.
+ * Represents Observer class,
+ * checks if not collision of Celestial Bodies has ocurred
  */
 public class CollisionDetector {
 
@@ -23,9 +24,9 @@ public class CollisionDetector {
     /**
      * Check collided.
      *
-     * @param a     the a
-     * @param b     the b
-     * @param distm the distm
+     * @param a     Celestial Body a
+     * @param b     Celestial Body b
+     * @param distm distance between a and b
      */
     public static void checkCollided(CelestialBody a, CelestialBody b, double distm) {
         if (!CHECK_COLLISIONS) return;

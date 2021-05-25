@@ -8,7 +8,8 @@
 package group17.Interfaces;
 
 /**
- * The interface Ode function interface.
+ * An interface for the function f that represents the
+ *   differential equation dy/dt = f(t,y)
  */
 @FunctionalInterface
 public interface ODEFunctionInterface {

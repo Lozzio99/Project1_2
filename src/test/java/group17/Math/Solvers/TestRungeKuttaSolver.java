@@ -15,7 +15,10 @@ import static group17.Utils.Config.DEBUG;
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.exp;
 import static org.junit.jupiter.api.Assertions.*;
-
+/**
+ * Source for the test is NM lecture on runge kutta methods for solving ODE systems
+ * source: https://canvas.maastrichtuniversity.nl/courses/4549/modules/items/130571
+ */
 class TestRungeKuttaSolver {
 
     static final double exactValue = 0.5033467;
