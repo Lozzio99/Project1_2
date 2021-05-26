@@ -4,7 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * The type Rocket window.
+ * * * FUTURE feature * * *
+ * <p>
+ * <p>
+ * class to display valuable information about the rocket,
+ * such as fuel left, heading, acceleration...
  */
 public class RocketWindow extends JPanel {
     private final Color[] fuelState = new Color[]{

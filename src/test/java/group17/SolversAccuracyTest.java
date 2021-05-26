@@ -77,7 +77,7 @@ class SolversAccuracyTest {
         testSolversAndOutputFile(VERLET_VEL_SOLVER, "ErrorTestLog.txt");
         testSolversAndOutputFile(VERLET_STD_SOLVER, "ErrorTestLog.txt");
         testSolversAndOutputFile(MIDPOINT_SOLVER, "ErrorTestLog.txt");
-        testSolversAndOutputFile(OLD_RUNGE, "ErrorTestLog.txt");
+        testSolversAndOutputFile(GREEDY_RUNGE_KUTTA, "ErrorTestLog.txt");
     }
 
     @ParameterizedTest(name = "testing step size {0}")
@@ -90,7 +90,7 @@ class SolversAccuracyTest {
         testSolversAndOutputFile(VERLET_VEL_SOLVER, "ErrorTestLog.csv");
         testSolversAndOutputFile(VERLET_STD_SOLVER, "ErrorTestLog.csv");
         testSolversAndOutputFile(MIDPOINT_SOLVER, "ErrorTestLog.csv");
-        testSolversAndOutputFile(OLD_RUNGE, "ErrorTestLog.csv");
+        testSolversAndOutputFile(GREEDY_RUNGE_KUTTA, "ErrorTestLog.csv");
     }
 
     private synchronized void testSolversAndOutputFile(int solver, String appendix) {

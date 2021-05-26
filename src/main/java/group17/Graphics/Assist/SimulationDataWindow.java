@@ -6,7 +6,11 @@ import java.awt.*;
 import static group17.Main.simulation;
 
 /**
- * The type Simulation data window.
+ * * * FUTURE feature * * *
+ * <p>
+ * <p>
+ * class to display the runtime simulation values of the state,
+ * with current rate of change.
  */
 public class SimulationDataWindow extends JPanel {
     private JTextArea text;

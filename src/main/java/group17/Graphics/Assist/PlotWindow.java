@@ -8,7 +8,10 @@ import java.awt.geom.Line2D;
 import java.util.Arrays;
 
 /**
- * The type Plot window.
+ * * * FUTURE feature * * *
+ * <p>
+ * <p>
+ * class to plot a valued function on two different graphs
  */
 public class PlotWindow extends JPanel {
 

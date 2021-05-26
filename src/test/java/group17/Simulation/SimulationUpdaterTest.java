@@ -43,11 +43,11 @@ class SimulationUpdaterTest {
         updater = new SimulationUpdater();
         updater.init();
         assertEquals(MidPointSolver.class, updater.getSolver().getClass());
-        DEFAULT_SOLVER = OLD_RUNGE;
+        DEFAULT_SOLVER = GREEDY_RUNGE_KUTTA;
         updater = new SimulationUpdater();
         updater.init();
         assertEquals(OldRungeKutta.class, updater.getSolver().getClass());
-        DEFAULT_SOLVER = LAZY_RUNGE;
+        DEFAULT_SOLVER = TESTS_RUNGE_KUTTA;
         updater = new SimulationUpdater();
         updater.init();
         assertEquals(LazyRungeKutta.class, updater.getSolver().getClass());

@@ -39,7 +39,7 @@ public class HelpSupportWindow extends JDesktopPane {
         intFrame.setBounds(50, 0, 1000, 500);
         intFrame.setLocation(20, 20);
         intFrame.setVisible(true);
-        intFrame.setFrameIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("icons/death.png")).getFile()));
+        intFrame.setFrameIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource("icons/help.png")).getFile()));
         /*
         JTextArea textArea = new JTextArea(text,10,30);
         textArea.setEditable(true);

@@ -12,7 +12,11 @@ import java.util.Set;
 
 
 /**
- * The type Performance window.
+ * * * FUTURE feature * * *
+ * <p>
+ * <p>
+ * class to handle possible overloading of the memory,
+ * such as heap out of memory or managing subprocesses
  */
 public class PerformanceWindow extends JPanel {
     private static volatile JTextArea text;

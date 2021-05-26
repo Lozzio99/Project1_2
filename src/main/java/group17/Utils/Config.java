@@ -20,23 +20,19 @@ public class Config {
     public static final Format FORMAT = Format.NO_OUTPUT;
 
 
-    public static final int ROCKET_SIMULATION = 4;
+    /**
+     * The constant ROCKET_SIMULATION.
+     */
+    public static final int ROCKET_SIMULATION = 0;
     /**
      * The constant PENDULUM_SIMULATION.
      */
-    public static final int PENDULUM_SIMULATION = 3;
-    /**
-     * The constant NUMERICAL_SIMULATION.
-     */
-    public static final int NUMERICAL_SIMULATION = 2;
+    public static final int PENDULUM_SIMULATION = 1;
+
     /**
      * The constant PARTICLES_SIMULATION.
      */
-    public static final int PARTICLES_SIMULATION = 1;
-    /**
-     * The constant SOLAR_SYSTEM_SIMULATION.
-     */
-    public static final int SOLAR_SYSTEM_SIMULATION = 0;
+    public static final int PARTICLES_SIMULATION = 2;
     /**
      * The constant EULER_SOLVER.
      */
@@ -57,19 +53,18 @@ public class Config {
      * The constant MIDPOINT_SOLVER.
      */
     public static final int MIDPOINT_SOLVER = 5;
-
     /**
      * TESTING SOLVERS
      */
-    public static final int OLD_RUNGE = 6;
+    public static final int GREEDY_RUNGE_KUTTA = 6;
     /**
      * The Lazy runge.
      */
-    public static final int LAZY_RUNGE = 7;
+    public static final int TESTS_RUNGE_KUTTA = 7;
     /**
      * The constant MIN_CPU.
      */
-    public static final int MIN_CPU = 1;  //2 threads
+    public static final int MIN_CPU = 1;
     /**
      * The constant MAX_CPU.
      */
@@ -78,15 +73,19 @@ public class Config {
      * The constant ORIGINAL_DATA.
      */
     public static final ErrorData[] ORIGINAL_DATA = new ErrorData[13];
+    //default global array for imported original data values (loaded when launching the simulation)
+
     /**
      * The constant LAUNCH_DATE.
      */
     public static final Clock LAUNCH_DATE = new Clock();  //set to launch day in runtime
 
+
     /**
      * BOOLEAN CONFIGURATIONS
+     * available in assist window
      */
-    //                      EDITABLE  (in runtime too)
+    //                 EDITABLE  (in runtime too)
     public static Boolean LAUNCH_ASSIST = true;
     /**
      * The constant ENABLE_GRAPHICS.
@@ -135,7 +134,7 @@ public class Config {
     /**
      * The constant DEFAULT_SOLVER.
      */
-    public static int DEFAULT_SOLVER = OLD_RUNGE;  //editable in main menu
+    public static int DEFAULT_SOLVER = GREEDY_RUNGE_KUTTA;  //editable in main menu
 
 
     /**

@@ -47,8 +47,8 @@ public class SimulationUpdater implements UpdaterInterface {
             case VERLET_VEL_SOLVER -> this.solver = new VerletVelocitySolver(new GravityFunction().getEvaluateRateOfChange());
             case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver(new GravityFunction().getEvaluateRateOfChange());
             case MIDPOINT_SOLVER -> this.solver = new MidPointSolver(new GravityFunction().getEvaluateCurrentVelocity());
-            case OLD_RUNGE -> this.solver = new OldRungeKutta(new GravityFunction().getEvaluateRateOfChange());
-            case LAZY_RUNGE -> this.solver = new LazyRungeKutta(new GravityFunction().getEvaluateCurrentVelocity());
+            case GREEDY_RUNGE_KUTTA -> this.solver = new OldRungeKutta(new GravityFunction().getEvaluateRateOfChange());
+            case TESTS_RUNGE_KUTTA -> this.solver = new LazyRungeKutta(new GravityFunction().getEvaluateCurrentVelocity());
             default -> {
                 this.solver = new EulerSolver(new GravityFunction().getEvaluateCurrentVelocity());
                 if (REPORT)

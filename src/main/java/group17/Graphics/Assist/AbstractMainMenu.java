@@ -16,7 +16,7 @@ public abstract class AbstractMainMenu {
      * The constant SIMULATION_TYPES.
      */
 // Variables
-    static final String[] SIMULATION_TYPES = {"Rocket Simulation", "Pendulum Simulation", "Numerical Simulation", "Particles Simulation", "Solar System Simulation"};
+    static final String[] SIMULATION_TYPES = {"Rocket Simulation", "Pendulum Simulation", "Particles Simulation"};
     /**
      * The Cpu levels.
      */
@@ -24,7 +24,7 @@ public abstract class AbstractMainMenu {
     /**
      * The Solvers.
      */
-    static final String[] SOLVERS = {"Euler", "Runge Kutta", "Verlet (VEL)", "Verlet (STD)", "Midpoint", "Lazy Runge Kutta"};
+    static final String[] SOLVERS = {"Euler", "Lazy Runge Kutta", "Verlet (VEL)", "Verlet (STD)", "Midpoint", "Greedy Runge Kutta"};
     static private final int FRAME_WIDTH = 1000;
     static private final int FRAME_HEIGHT = 600;
     /**
@@ -128,12 +128,9 @@ public abstract class AbstractMainMenu {
         startButton.addActionListener(e -> {
             // --- Select the correct simulation ---
             currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {
-                case ("Rocket Simulation") -> ROCKET_SIMULATION;
                 case ("Pendulum Simulation") -> PENDULUM_SIMULATION;
-                case ("Numerical Simulation") -> NUMERICAL_SIMULATION;
                 case ("Particles Simulation") -> PARTICLES_SIMULATION;
-                case ("Solar System Simulation") -> SOLAR_SYSTEM_SIMULATION;
-                default -> SOLAR_SYSTEM_SIMULATION;
+                default -> ROCKET_SIMULATION;
             };
             // --- Select the correct CPU type ---
             currentCPULevel = switch (cpuLevelDropdown.getSelectedItem().toString()) {
@@ -143,11 +140,11 @@ public abstract class AbstractMainMenu {
 
             // --- Select the correct solver ---
             currentSolver = switch (solverDropdown.getSelectedItem().toString()) {
-                case ("Runge Kutta") -> RUNGE_KUTTA_SOLVER;
+                case ("Lazy Runge Kutta") -> RUNGE_KUTTA_SOLVER;
                 case ("Verlet (VEL)") -> VERLET_VEL_SOLVER;
                 case ("Verlet (STD)") -> VERLET_STD_SOLVER;
                 case ("Midpoint") -> MIDPOINT_SOLVER;
-                case ("Lazy Runge Kutta") -> OLD_RUNGE;
+                case ("Greedy Runge Kutta") -> GREEDY_RUNGE_KUTTA;
                 default -> EULER_SOLVER;
             };
 
