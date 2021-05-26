@@ -2,8 +2,8 @@ package group17.Interfaces;
 
 
 import group17.Simulation.Rocket.RocketSimulator;
-import group17.System.Bodies.CelestialBody;
-import group17.System.Clock;
+import group17.Simulation.System.Bodies.CelestialBody;
+import group17.Simulation.System.Clock;
 
 import java.util.List;
 

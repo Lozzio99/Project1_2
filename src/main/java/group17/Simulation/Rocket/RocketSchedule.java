@@ -4,7 +4,7 @@ import group17.Interfaces.StateInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Lib.Vector3D;
-import group17.System.Clock;
+import group17.Simulation.System.Clock;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +29,6 @@ public class RocketSchedule {
      */
     Map<Vector3dInterface, Vector3dInterface> shiftAtDistance;
 
-    Map<DecisionEvent, Vector3dInterface> shiftAtApproximatedState;
 
 
     /**
@@ -44,7 +43,14 @@ public class RocketSchedule {
     }
 
     /**
-     * Prepare.
+     * Preparing the scheduling in advance.
+     * Link to desired keys the corresponding vector decisions,
+     * which will be then applied, whenever one of these keys will
+     * be "present" in the system.
+     * Example: by linking a Clock with a specified date and time to
+     * a certain decision,it is then possible to retrieve this when the
+     * clock instance in the system will return true from the implemented
+     * equals(Object o) method.
      */
     public void prepare() {
         final boolean f = ERROR_EVALUATION;
@@ -63,8 +69,15 @@ public class RocketSchedule {
      */
     public Vector3dInterface shift(SystemInterface system) {
         return this.getDesiredVelocity(system.getClock()).
-                add(this.getDesiredVelocity(system.systemState())).
-                add(this.getDesiredVelocity(system.systemState().getPositions().get(8).absSub(system.systemState().getPositions().get(11))));
+                //see if there's something linked with the clock date key
+
+                        add(this.getDesiredVelocity(system.systemState())).
+                //see if there's something linked with this state key
+
+                        add(this.getDesiredVelocity(system.systemState().getPositions().get(8).absSub(system.systemState().getPositions().get(11))));
+        //see if there's something linked to this distance vector key
+
+
         //eventually everything null this will return a vector (0,0,0)
     }
 

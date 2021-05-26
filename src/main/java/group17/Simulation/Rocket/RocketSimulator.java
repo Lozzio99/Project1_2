@@ -4,7 +4,7 @@ import group17.Interfaces.RocketInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Lib.Vector3D;
-import group17.System.Bodies.CelestialBody;
+import group17.Simulation.System.Bodies.CelestialBody;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

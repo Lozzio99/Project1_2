@@ -1,9 +1,9 @@
 package group17.Graphics;
 
-import group17.Graphics.Scenes.MouseInput;
-import group17.Graphics.Scenes.Scene;
-import group17.Graphics.Scenes.SimulationScene;
-import group17.Graphics.Scenes.StartingScene;
+import Demo.Scenes.MouseInput;
+import Demo.Scenes.Scene;
+import Demo.Scenes.SimulationScene;
+import Demo.Scenes.StartingScene;
 import group17.Interfaces.GraphicsInterface;
 
 import javax.swing.*;
@@ -18,12 +18,12 @@ import static group17.Utils.Config.FPS;
 
 
 /**
- * The type Graphics manager.
+ * The main graphics threads/scenes handler
  */
 public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {
 
     /**
-     * The Main graphics th.
+     * The Main graphics thread.
      */
     protected final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
     /**

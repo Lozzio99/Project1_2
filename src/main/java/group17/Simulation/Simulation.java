@@ -9,8 +9,8 @@ import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Math.Solvers.StandardVerletSolver;
-import group17.System.Bodies.CelestialBody;
-import group17.System.SolarSystem;
+import group17.Simulation.System.Bodies.CelestialBody;
+import group17.Simulation.System.SolarSystem;
 import group17.Utils.ErrorReport;
 
 import java.util.concurrent.Executors;
@@ -21,7 +21,8 @@ import static group17.Utils.Config.*;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 /**
- * One of base classes of program, the simulation of the solar system
+ * Base class interface of program, the simulation of the solar system
+ * This class is the owner of the main pool thread which will run the simulation.
  */
 public class Simulation implements SimulationInterface {
     private UpdaterInterface updater;
@@ -52,16 +53,17 @@ public class Simulation implements SimulationInterface {
                 this.getAssist().showAssistParameters();
             }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
+
+            //8 ms should be fine as delay,
             service.scheduleWithFixedDelay(this::loop, 30, 8, MILLISECONDS);
         } else {
-            if (DEBUG || REPORT)
-                this.getReporter().report(new RuntimeException("STOP"));
+            if (DEBUG || REPORT) this.getReporter().report(new RuntimeException("STOP"));
         }
     }
 
     /**
      * resets the whole simulation,reverts everything
-     * back to initial instance
+     * back to initial instance, as if the program was restarted
      */
     @Override
     public void reset() {
@@ -91,6 +93,11 @@ public class Simulation implements SimulationInterface {
     }
 
 
+    /**
+     * Main simulation loop, synchronized under the control of static Monitor object of the class
+     * All instance methods invoked here are also encapsulated within these blocks
+     * to help solving concurrency problems, to enhance data visibility and instruction ordering.
+     */
     @Override
     public synchronized void loop() {
         if (this.running) {

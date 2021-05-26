@@ -20,6 +20,8 @@ public class RocketWindow extends JPanel {
      */
     public RocketWindow() {
         this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), "Rocket Info"));
+
+        /*
         JButton j = new JButton("update base");
         j.setSize(200, 50);
         this.add(j);
@@ -37,6 +39,7 @@ public class RocketWindow extends JPanel {
             p.updateLightFuel();
             p.update(p.getGraphics());
         });
+        */
     }
 
     /**

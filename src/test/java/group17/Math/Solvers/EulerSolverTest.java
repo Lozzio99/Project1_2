@@ -1,8 +1,8 @@
 package group17.Math.Solvers;
 
 import group17.Interfaces.*;
-import group17.System.State.RateTestClass;
-import group17.System.State.StateTestClass;
+import group17.Simulation.System.State.RateTestClass;
+import group17.Simulation.System.State.StateTestClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

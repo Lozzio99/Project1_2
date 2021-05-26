@@ -32,7 +32,7 @@ test {
     minHeapSize "128m"
     maxHeapSize "512m"
     beforeTest { descriptor -> logger.lifecycle "Running test: " + descriptor as String }
-    failFast false
+    failFast true
 
     onOutput { descriptor, event ->
         if (event.destination == TestOutputEvent.Destination.StdErr) {

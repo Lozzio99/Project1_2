@@ -38,8 +38,8 @@ public class EulerSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
         GravityFunction.setChecked(false);
-        GravityFunction.setCurrentTime(currentTime);
-        return y.addMul(stepSize, f.call(currentTime+stepSize, y));
+        GravityFunction.setCurrentTime(currentTime - stepSize);
+        return y.addMul(stepSize, f.call(currentTime, y));
     }
 
     @Override

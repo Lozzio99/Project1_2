@@ -3,7 +3,6 @@ package group17.Simulation;
 import group17.Graphics.Assist.LaunchAssistWindow;
 import group17.Graphics.UserDialogWindow;
 import group17.Interfaces.SimulationInterface;
-import group17.Main;
 import group17.Utils.ErrorData;
 import group17.Utils.ErrorReport;
 import org.junit.jupiter.api.AfterEach;
@@ -161,7 +160,7 @@ class SimulationTest {
         simulation.setStopped(false);
         LAUNCH_ASSIST = false;
         simulation.start();
-        Main.simulation = null;
+        simulation = null;
     }
 
     @Test
@@ -253,7 +252,7 @@ class SimulationTest {
         assumeTrue(simulation == null);
         simulation = new Simulation();
         simulation.initUpdater();
-        REPORT = false;
+        REPORT = DEBUG = false;
         assertDoesNotThrow(simulation::startUpdater);
 
         try {

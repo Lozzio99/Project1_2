@@ -3,7 +3,7 @@ package group17.Math.Solvers;
 import group17.Interfaces.*;
 import group17.Math.Lib.Vector3D;
 import group17.Simulation.Simulation;
-import group17.System.SolarSystem;
+import group17.Simulation.System.SolarSystem;
 
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;

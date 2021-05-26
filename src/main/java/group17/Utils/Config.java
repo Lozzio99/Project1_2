@@ -1,6 +1,6 @@
 package group17.Utils;
 
-import group17.System.Clock;
+import group17.Simulation.System.Clock;
 
 /**
  * The type Config.

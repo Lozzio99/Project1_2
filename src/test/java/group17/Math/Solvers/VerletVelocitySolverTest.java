@@ -5,7 +5,7 @@ import group17.Interfaces.StateInterface;
 import group17.Math.Lib.FreeFallFunction;
 import group17.Math.Lib.GravityFunction;
 import group17.Math.Lib.Vector3D;
-import group17.System.State.SystemState;
+import group17.Simulation.System.State.SystemState;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,8 @@
 package group17.Interfaces;
 
 import group17.Math.Lib.Vector3D;
-import group17.System.Bodies.CelestialBody;
-import group17.System.State.SystemState;
+import group17.Simulation.System.Bodies.CelestialBody;
+import group17.Simulation.System.State.SystemState;
 
 import java.util.List;
 

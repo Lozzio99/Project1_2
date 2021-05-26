@@ -2,7 +2,7 @@ package group17.Utils;
 
 import group17.Interfaces.ReporterInterface;
 import group17.Interfaces.SystemInterface;
-import group17.System.Bodies.CelestialBody;
+import group17.Simulation.System.Bodies.CelestialBody;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 

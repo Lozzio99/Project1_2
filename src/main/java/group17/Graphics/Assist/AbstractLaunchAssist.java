@@ -4,7 +4,7 @@ package group17.Graphics.Assist;
 
 import group17.Interfaces.Vector3dInterface;
 import group17.Math.Lib.Vector3D;
-import group17.System.Clock;
+import group17.Simulation.System.Clock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,8 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
-import static group17.Graphics.Scenes.Scene.SceneType.STARTING_SCENE;
+import static Demo.Scenes.Scene.SceneType.SIMULATION_SCENE;
+import static Demo.Scenes.Scene.SceneType.STARTING_SCENE;
 import static group17.Main.simulation;
 import static group17.Main.userDialog;
 import static group17.Utils.Config.*;

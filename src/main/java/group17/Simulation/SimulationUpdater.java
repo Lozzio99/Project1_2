@@ -16,14 +16,15 @@ import java.io.Writer;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
+import static Demo.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 import static group17.Utils.ErrorReport.testingAccuracy;
 
 /**
  * Updater class of Simulation, updates body position based on solvers
- * and then GUI
+ * Responsible to initialise a external/internal report about the errors
+ * from the solvers and the original data acquired.
  */
 public class SimulationUpdater implements UpdaterInterface {
 

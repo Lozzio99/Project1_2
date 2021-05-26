@@ -1,7 +1,7 @@
 package group17.Interfaces;
 
 import group17.Math.Lib.Vector3D;
-import group17.System.State.RateOfChange;
+import group17.Simulation.System.State.RateOfChange;
 
 import java.util.ArrayList;
 import java.util.List;

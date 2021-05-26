@@ -17,7 +17,9 @@ import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
 /**
- * The type User dialog window.
+ * UI assist class to show detailed information about the
+ * simulation which is running, helps the user by giving him
+ * a lot of freedom in setting configurations and application properties
  */
 public class UserDialogWindow {
     private static final List<String> tabs = new ArrayList<>(), tips = new ArrayList<>();
@@ -53,10 +55,10 @@ public class UserDialogWindow {
         backGrounds.add(new Color(195, 255, 220, 211));
         icons.add(loadIcon("errors.png"));
         tips.add("Evaluation errors");
-        tabs.add("CONTROLLERS");
+        tabs.add("HELP");
         backGrounds.add(new Color(94, 231, 255, 211));
-        icons.add(loadIcon("control.png"));
-        tips.add("Simulation controllers");
+        icons.add(loadIcon("help.png"));
+        tips.add("HELP");
         tabs.add("SETTINGS");
         backGrounds.add(new Color(76, 77, 78, 211));
         icons.add(loadIcon("settings.png"));
@@ -95,7 +97,7 @@ public class UserDialogWindow {
 
         this.frame = new JFrame();
         this.frame.setSize(new Dimension(1280, 620));
-        this.frame.setIconImage(loadIcon("death.png").getImage());
+        this.frame.setIconImage(loadIcon("17.png").getImage());
         this.frame.getContentPane().add(makeTabs(), BorderLayout.CENTER);
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.frame.setVisible(true);
@@ -163,7 +165,7 @@ public class UserDialogWindow {
                 return this.errorWindow = new ErrorWindow();
             }
             case 7 -> {
-                return new ControllersWindow();
+                return new HelpSupportWindow();
             }
             case 8 -> {
                 return new ConfigWindow();
@@ -197,7 +199,7 @@ public class UserDialogWindow {
     /**
      * Enable.
      *
-     * @param i the
+     * @param i the index of the window
      */
     public void enable(int... i) {
         for (int j : i) this.mainPane.setEnabledAt(j, true);
@@ -206,7 +208,7 @@ public class UserDialogWindow {
     /**
      * Disable.
      *
-     * @param i the
+     * @param i the index of the window
      */
     public void disable(int... i) {
         for (int j : i) this.mainPane.setEnabledAt(j, false);

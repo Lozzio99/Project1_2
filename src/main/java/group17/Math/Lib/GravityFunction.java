@@ -4,12 +4,13 @@ import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.System.State.RateOfChange;
+import group17.Simulation.System.State.RateOfChange;
 import group17.Utils.CollisionDetector;
 import org.jetbrains.annotations.Contract;
 
 import static group17.Main.simulation;
-import static group17.Utils.Config.*;
+import static group17.Utils.Config.CHECK_COLLISIONS;
+import static group17.Utils.Config.G;
 import static java.lang.StrictMath.pow;
 import static java.lang.StrictMath.sqrt;
 

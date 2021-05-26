@@ -54,7 +54,7 @@ class PerformanceWindowTest {
     }
 
     @ParameterizedTest(name = "testing start of {0}")
-    @ValueSource(ints = {0, 1, 2, 3})
+    @ValueSource(ints = {0, 2, 3})
     void Start(int i) {
         assertDoesNotThrow(() -> tab.start(i));
     }

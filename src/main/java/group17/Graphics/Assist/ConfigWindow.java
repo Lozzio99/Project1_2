@@ -107,7 +107,7 @@ public class ConfigWindow extends JPanel {
                     LAUNCH_ASSIST = !LAUNCH_ASSIST;
                     texts[i].setText(LAUNCH_ASSIST ? s[0] : s[1]);
                     texts[i].setForeground(LAUNCH_ASSIST ? g : r);
-                    simulation.reset();
+                    if (!simulation.waiting()) simulation.reset();
                 });
                 j.addChangeListener(e -> {
                     if (LAUNCH_ASSIST)

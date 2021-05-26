@@ -12,8 +12,9 @@ import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 
 /**
- * Reporter Class for the Simulation, outputs exceptions, with fitting details
- * about the problem that occurred.
+ * Reporter Class for the Simulation, outputs exceptions,intended to be implemented
+ * by giving with fitting details, an explanation about the problem that occurred, and the
+ * possible fix for it.
  */
 public class SimulationReporter implements ReporterInterface, Thread.UncaughtExceptionHandler {
 
@@ -103,7 +104,7 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
             if (message.startsWith("STOP")) {
                 return "\tStopped simulation due to bad initialisation configuration";
             }
-            if (message.startsWith("UPDATER"))
+            if (message.startsWith("UPDATER")) {
                 if (message.substring(8)  // there's a slash /
                         .startsWith("DEFAULT_SOLVER")) {
                     int solver = Integer.parseInt(message.substring(message.length() - 1));
@@ -116,6 +117,8 @@ public class SimulationReporter implements ReporterInterface, Thread.UncaughtExc
                     };
                     return "\tMissing solver configuration or wrong level selected, select in range [1,4]\n ~ will switch to default : " + s;
                 }
+            }
+
         }
         return "EXCEPTION";
     }

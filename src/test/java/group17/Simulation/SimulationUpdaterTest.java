@@ -3,7 +3,7 @@ package group17.Simulation;
 import group17.Interfaces.UpdaterInterface;
 import group17.Math.Solvers.*;
 import group17.Simulation.Rocket.RocketSchedule;
-import group17.System.Clock;
+import group17.Simulation.System.Clock;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
