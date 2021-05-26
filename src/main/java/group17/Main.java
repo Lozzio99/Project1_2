@@ -9,7 +9,7 @@ import group17.Interfaces.SimulationInterface;
  * which will take care of the initialisation, and allowing
  * the user selecting some initial preferences.
  */
-public class Main {
+public class Main extends UserDialogWindow {
 
     /**
      * The singleton instance of the simulation.
@@ -25,13 +25,13 @@ public class Main {
      * writing on the simulation instance.
      * To avoid bad ordering of the passed instructions,it is therefore necessary
      * to contains logical blocks within the instructions updating
-     * on the simulation instance.
+     * on the simulation cached instance.
      * A good advantage of this is the happens-before condition which is
      * implicit in the volatile keyword: meaning all instruction
      * written before of the actual writing on this instance will be
      * kept in the same ordering as they are passed, due to the uniqueness
-     * of the information pool, leading to the ability from the developer
-     * of forking tasks and then applying them in the correct order.
+     * of the information pool, leading to stability when forking tasks
+     * and then applying them in order.
      */
     public static volatile SimulationInterface simulation;
     /**

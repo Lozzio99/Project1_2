@@ -355,6 +355,9 @@ public class Vector3D implements Vector3dInterface {
                     v.getY() == this.y &&
                     v.getZ() == this.z;
         }
+        if (o instanceof ApproxV3D) {
+            return new ApproxV3D(this).equals(o);
+        }
         return false;
     }
 }

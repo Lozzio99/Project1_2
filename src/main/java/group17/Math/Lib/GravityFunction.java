@@ -18,8 +18,8 @@ import static java.lang.StrictMath.sqrt;
  * The type Gravity function.
  */
 public final class GravityFunction {
-    private static volatile boolean checkedCollisions;
-    private static volatile double currentTime;
+    private static boolean checkedCollisions;
+    private static double currentTime;
 
     /**
      * Function that returns the rate of change of a state at a point in time

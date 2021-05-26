@@ -37,21 +37,6 @@ public class ApproxV3D extends Vector3D {
         super(v.getX(), v.getY(), v.getZ());
     }
 
-    /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
-    public static void main(String[] args) {
-        Vector3dInterface v1, av1;
-        System.out.println((v1 = new Vector3D(9e-10, 9e-10, 9e-10)).hashCode());
-        System.out.println((av1 = new ApproxV3D(9e-10, 9e-10, 9e-10)).hashCode());
-
-        System.out.println(v1);
-        System.out.println(av1);
-        System.out.println(v1.equals(av1));
-        System.out.println(av1.equals(new Vector3D(0, 0, 0)));   // this is the cool thing here
-    }
 
     @Override
     public int hashCode() {

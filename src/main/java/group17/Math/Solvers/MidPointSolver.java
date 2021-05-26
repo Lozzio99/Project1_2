@@ -34,8 +34,9 @@ public class MidPointSolver implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         GravityFunction.setCurrentTime(t);
         GravityFunction.setChecked(false);
-        StateInterface eulerStep = y.copy().addMul(h / 2, f.call(t, y));
-        return y.addMul(h, f.call(t + (h / 2), eulerStep));
+        return y.addMul(h,
+                f.call(t + (h / 2), y.addMul(h / 2,
+                        f.call(t, y))));
     }
 
     @Override

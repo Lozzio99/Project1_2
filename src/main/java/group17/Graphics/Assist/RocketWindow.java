@@ -10,6 +10,7 @@ import java.awt.*;
  * class to display valuable information about the rocket,
  * such as fuel left, heading, acceleration...
  */
+@Deprecated(forRemoval = false)
 public class RocketWindow extends JPanel {
     private final Color[] fuelState = new Color[]{
             new Color(117, 255, 97),

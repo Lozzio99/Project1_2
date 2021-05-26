@@ -13,6 +13,8 @@ import java.util.Arrays;
  * <p>
  * class to plot a valued function on two different graphs
  */
+
+@Deprecated(forRemoval = false)
 public class PlotWindow extends JPanel {
 
     /**
