@@ -149,17 +149,23 @@ public class NewtonRaphsonSolver {
                 v1.getZ() + (6.371e6+0.1)*unitV.getZ()
         );
         System.out.println(startV1);
-
+https://math.stackexchange.com/questions/1784106/how-do-i-compute-the-closest-points-on-a-sphere-given-a-point-outside-the-sphere
          */
 
 
         Vector3D initPos = ROCKET_STARTING_POS;
-        Vector3D targetPos = TITAN_TARGET;
-        double FixedTime = 131414400;
+        Vector3D targetPos = TITAN_TARGET; // @
+        double FixedTime = 131414400; // @
         //double FixedTime = 7776000;
         //double FixedTime = 2592000;
+
+        //86400
+        //43200
+        //1440
+        //360
+
         NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, new Vector3D(1.3795800752854993E12,-4.3858348265323E11,-4.706900828533791E10), FixedTime);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(27796.24753416469,-108539.07976675793,-17776.928127736475), new Vector3D(0.0, 0.0, 0.0), 360);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5000,5000,5000), new Vector3D(0.0, 0.0, 0.0), 86400);
     }
 
     /**

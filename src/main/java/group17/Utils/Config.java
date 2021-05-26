@@ -150,7 +150,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = 43200/2;
+    public static double STEP_SIZE = (43200/2);
     /**
      * The constant CURRENT_TIME.
      */
