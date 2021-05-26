@@ -29,7 +29,7 @@ public class NewtonRaphsonSolver {
         CHECK_COLLISIONS = false;
     }
 
-    public static Vector3D ROCKET_STARTING_POS = new Vector3D(-1.4718605986293106E11,-2.8611609660793198E10,8088541.556074465);
+    public static Vector3D ROCKET_STARTING_POS = new Vector3D(-1.471795554926392E11,-2.8611430721517483E10,8050318.640204383);
 
     public static Vector3D INTERMEDIATE_TARGET_1A = new Vector3D(1.1282818052942159E11,-8.238101941804728E11,-1.3200423212630061E11);
     /**
@@ -60,7 +60,7 @@ public class NewtonRaphsonSolver {
      * The Stopping criterion.
      */
 
-    final double STOPPING_CRITERION = 100;
+    final double STOPPING_CRITERION = 1000;
     private final NewtRaphFunction fX;
     private Function<Vector3dInterface> f;
     private static PrintWriter printWriter;
@@ -135,8 +135,8 @@ public class NewtonRaphsonSolver {
      */
     public static void main(String[] args) {
         /*
-        Vector3D v1 = new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06);
-        Vector3D v2 = new Vector3D(1.3795800752854993E12,-4.3858348265323E11,-4.706900828533791E10);
+        Vector3D v1 = new Vector3D(-1.471858828790318E11,-2.8610694436326927E10,8164251.808805363);
+        Vector3D v2 = new Vector3D(7.30644042602411E11,-1.3075921735800641E11,-1.5798353431358152E10);
         double disV1V2 = v1.dist(v2);
         Vector3D unitV = new Vector3D(
                 (v2.getX()-v1.getX())/disV1V2,
@@ -144,18 +144,17 @@ public class NewtonRaphsonSolver {
                 (v2.getZ()-v1.getZ())/disV1V2
         );
         Vector3D startV1 = new Vector3D(
-                v1.getX() + (6.371e6+0.1)*unitV.getX(),
-                v1.getY() + (6.371e6+0.1)*unitV.getY(),
-                v1.getZ() + (6.371e6+0.1)*unitV.getZ()
+                v1.getX() + (6.371e6+1e2)*unitV.getX(),
+                v1.getY() + (6.371e6+1e2)*unitV.getY(),
+                v1.getZ() + (6.371e6+1e2)*unitV.getZ()
         );
         System.out.println(startV1);
-https://math.stackexchange.com/questions/1784106/how-do-i-compute-the-closest-points-on-a-sphere-given-a-point-outside-the-sphere
-         */
-
+        //https://math.stackexchange.com/questions/1784106/how-do-i-compute-the-closest-points-on-a-sphere-given-a-point-outside-the-sphere
+        */
 
         Vector3D initPos = ROCKET_STARTING_POS;
         Vector3D targetPos = TITAN_TARGET; // @
-        double FixedTime = 131414400; // @
+        double FixedTime = 65707200; // @
         //double FixedTime = 7776000;
         //double FixedTime = 2592000;
 
@@ -164,8 +163,8 @@ https://math.stackexchange.com/questions/1784106/how-do-i-compute-the-closest-po
         //1440
         //360
 
-        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, new Vector3D(1.3795800752854993E12,-4.3858348265323E11,-4.706900828533791E10), FixedTime);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5000,5000,5000), new Vector3D(0.0, 0.0, 0.0), 86400);
+        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, new Vector3D(7.30644042602411E11,-1.3075921735800641E11,-1.5798353431358152E10), FixedTime);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(427593.4150049929,-146737.40330891946,-16800.637441114588), new Vector3D(0.0, 0.0, 0.0), 10);
     }
 
     /**

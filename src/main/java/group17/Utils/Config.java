@@ -119,7 +119,7 @@ public class Config {
     /**
      * The constant CHECK_COLLISIONS.
      */
-    public static Boolean CHECK_COLLISIONS = false;
+    public static Boolean CHECK_COLLISIONS = true;
     /**
      * The constant PLOT.
      */
@@ -150,7 +150,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = (43200/2);
+    public static double STEP_SIZE = (43200.0/2);
     /**
      * The constant CURRENT_TIME.
      */

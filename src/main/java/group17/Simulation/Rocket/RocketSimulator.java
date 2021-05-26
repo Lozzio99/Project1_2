@@ -100,6 +100,7 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
         }
         simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11, desiredVelocity);
         updateMass(propellantConsumed);
+        this.update();
         return propellantConsumed;
     }
 
@@ -146,8 +147,7 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
     @Override
     public void update() {
         if (!this.isCollided()) {
-            simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11,
-                    simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11).addMul(STEP_SIZE, localAcceleration));
+            simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11, localAcceleration);
         }
     }
 
@@ -156,8 +156,8 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
         this.setMASS(7.8e4);
         this.setRADIUS(1e2);
         this.setColour(Color.GREEN);
-        this.setVectorLocation(new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06)); //earth
-        this.setVectorVelocity(new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
+        this.setVectorLocation(new Vector3D(-1.471795554926392E11,-2.8611430721517483E10,8050318.640204383)); //earth
+        this.setVectorVelocity(new Vector3D(0,0,0));
         this.localAcceleration = new Vector3D();
         this.fuelMass = this.startFuel;
         this.totalMass = this.startFuel + this.getMASS();

@@ -4,10 +4,8 @@ import group17.Graphics.Assist.ErrorWindow;
 import group17.Graphics.Assist.LaunchAssistWindow;
 import group17.Graphics.GraphicsManager;
 import group17.Graphics.UserDialogWindow;
-import group17.Interfaces.GraphicsInterface;
-import group17.Interfaces.SimulationInterface;
-import group17.Interfaces.SystemInterface;
-import group17.Interfaces.UpdaterInterface;
+import group17.Interfaces.*;
+import group17.Math.Lib.Vector3D;
 import group17.Math.Solvers.StandardVerletSolver;
 import group17.System.Bodies.CelestialBody;
 import group17.System.SolarSystem;
@@ -86,6 +84,15 @@ public class Simulation implements SimulationInterface {
         this.paused = false;
     }
 
+
+    public static void main(String[] args) {
+        Vector3D v1 = new Vector3D(6.33287311852789E11,-1.357175556995868E12,-2.13463704145366E9);
+        Vector3D v2 = new Vector3D(-1.471922101663588E11,-2.860995816266412E10,8278183.19359608);
+        Vector3D vnew = (Vector3D) v1.sub(v2);
+        Vector3D v3 = (Vector3D) Vector3D.normalize(vnew);
+        Vector3dInterface v4 = v3.mul(6.371e6);
+        System.out.println(v4);
+    }
 
     @Override
     public synchronized void loop() {
