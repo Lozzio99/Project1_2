@@ -8,7 +8,7 @@
 package group17.Interfaces;
 
 import static group17.Utils.Config.STEP_SIZE;
-
+import static group17.Utils.Config.PATH_ARRAY_LIMIT;
 
 /**
  * The interface Ode solver interface.
@@ -73,16 +73,44 @@ public interface ODESolverInterface {
      * @return  an array of size round(tf/h)+1 including all intermediate states along the path
      */
     default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
-        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 2];
-        double currTime = 0;
-        path[0] = y0;
-        for (int i = 1; i < path.length - 1; i++) {
-            path[i] = this.step(f, currTime, y0, h);
-            y0 = path[i];
-            currTime += h;
+        int pathLen = (int) (Math.round(tf / h)) + 2;
+        StateInterface[] path;
+        double currTime;
+        if (pathLen > PATH_ARRAY_LIMIT) {
+            int pathColLen = 1;
+            while (pathLen > PATH_ARRAY_LIMIT) {
+                pathLen/=2;
+                pathColLen*=2;
+            }
+            tf = pathLen*h;
+            path = new StateInterface[pathLen];
+            for (int i = 0; i < pathColLen; i++) {
+                currTime = 0;
+                path[0] = y0;
+                for (int j = 1; j < path.length - 1; j++) {
+                    path[j] = this.step(f, currTime, y0, h);
+                    y0 = path[j];
+                    currTime += h;
+                }
+                Runtime.getRuntime().gc();
+                path[path.length - 1] = this.step(f, tf - currTime, y0, tf - currTime);
+            }
+            return path;
         }
-        path[path.length - 1] = this.step(f, tf - currTime, y0, tf - currTime);
-        return path;
+        else {
+            path = new StateInterface[pathLen];
+            currTime = 0;
+            path[0] = y0;
+            for (int i = 1; i < path.length - 1; i++) {
+                path[i] = this.step(f, currTime, y0, h);
+                y0 = path[i];
+                currTime += h;
+            }
+            path[path.length - 1] = this.step(f, tf - currTime, y0, tf - currTime);
+            Runtime.getRuntime().gc();
+            return path;
+        }
+
     }
 
     /**

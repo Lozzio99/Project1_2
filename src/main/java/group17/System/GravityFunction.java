@@ -29,7 +29,7 @@ public final class GravityFunction {
         final RateInterface newRate = new RateOfChange();
         for (int i = 0; i < y.getPositions().size(); i++) {
             newRate.getVelocities().add(
-                    velocityFromAcceleration(i, y, h));
+                    velocityFromAcceleration(i, y, 1));
         }
         return newRate;
     };

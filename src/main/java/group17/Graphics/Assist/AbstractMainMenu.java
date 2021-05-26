@@ -112,6 +112,7 @@ public abstract class AbstractMainMenu {
                     case VERLET_VEL_SOLVER -> 2;
                     case VERLET_STD_SOLVER -> 3;
                     case MIDPOINT_SOLVER -> 4;
+                    case LAZY_RUNGE -> 5;
                     default -> 0;
                 }
         );
@@ -147,7 +148,7 @@ public abstract class AbstractMainMenu {
                 case ("Verlet (VEL)") -> VERLET_VEL_SOLVER;
                 case ("Verlet (STD)") -> VERLET_STD_SOLVER;
                 case ("Midpoint") -> MIDPOINT_SOLVER;
-                case ("Lazy Runge Kutta") -> LAZY_RUNGE;
+                case ("Lazy Runge Kutta") -> OLD_RUNGE;
                 default -> EULER_SOLVER;
             };
 

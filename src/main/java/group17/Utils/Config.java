@@ -150,7 +150,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = 360;
+    public static double STEP_SIZE = 43200/2;
     /**
      * The constant CURRENT_TIME.
      */
@@ -171,6 +171,10 @@ public class Config {
      * The constant G.
      */
     public static double G = 6.67408e-11;
+    /**
+     * Limit path array length for the solver
+     */
+    public static final int PATH_ARRAY_LIMIT = 4500000;
 
 
 }

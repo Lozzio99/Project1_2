@@ -8,6 +8,9 @@ import group17.Math.Lib.PartialDerivative;
 import group17.Math.Lib.Vector3D;
 import org.jetbrains.annotations.Contract;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 
 import static group17.Math.Solvers.RocketSimModel.pF;
@@ -25,6 +28,18 @@ public class NewtonRaphsonSolver {
         INSERT_ROCKET = true;
         CHECK_COLLISIONS = false;
     }
+
+    public static Vector3D ROCKET_STARTING_POS = new Vector3D(-1.4718605986293106E11,-2.8611609660793198E10,8088541.556074465);
+
+    public static Vector3D INTERMEDIATE_TARGET_1A = new Vector3D(1.1282818052942159E11,-8.238101941804728E11,-1.3200423212630061E11);
+    /**
+     * Position of Titan in 7776000 s
+     */
+    public static Vector3D TITAN_TARGET = new Vector3D(6.965120125571067E11,-1.326029551335418E12,-4.213729666566596E9);
+    /**
+     * Position of Saturn on 31/05/2024 (131 414 400 s)
+     */
+    public static Vector3D SATURN_TARGET = new Vector3D(1.438943971812315E12,-5.1199779496024976E11,-4.69637284525731E10);
 
     /**
      * The constant initPos.
@@ -48,6 +63,27 @@ public class NewtonRaphsonSolver {
     final double STOPPING_CRITERION = 100;
     private final NewtRaphFunction fX;
     private Function<Vector3dInterface> f;
+    private static PrintWriter printWriter;
+
+    static {
+        try {
+            printWriter = new PrintWriter("report.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static PrintWriter printWriter2;
+
+    static {
+        try {
+            printWriter2 = new PrintWriter("report_errors.txt");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * The Init sol.
      */
@@ -98,11 +134,32 @@ public class NewtonRaphsonSolver {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        Vector3D initPos = new Vector3D(-9.839198644659751E-01, -1.912460575714917E-01, 5.542821181619438E-05);
-        Vector3D targetPos = new Vector3D(1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02);
-        double FixedTime = DAY * 30 * 6;
-        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, targetPos, FixedTime);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5000.0, 5000.0, 5000.0), new Vector3D(0.0, 0.0, 0.0), 600);
+        /*
+        Vector3D v1 = new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06);
+        Vector3D v2 = new Vector3D(1.3795800752854993E12,-4.3858348265323E11,-4.706900828533791E10);
+        double disV1V2 = v1.dist(v2);
+        Vector3D unitV = new Vector3D(
+                (v2.getX()-v1.getX())/disV1V2,
+                (v2.getY()-v1.getY())/disV1V2,
+                (v2.getZ()-v1.getZ())/disV1V2
+        );
+        Vector3D startV1 = new Vector3D(
+                v1.getX() + (6.371e6+0.1)*unitV.getX(),
+                v1.getY() + (6.371e6+0.1)*unitV.getY(),
+                v1.getZ() + (6.371e6+0.1)*unitV.getZ()
+        );
+        System.out.println(startV1);
+
+         */
+
+
+        Vector3D initPos = ROCKET_STARTING_POS;
+        Vector3D targetPos = TITAN_TARGET;
+        double FixedTime = 131414400;
+        //double FixedTime = 7776000;
+        //double FixedTime = 2592000;
+        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, new Vector3D(1.3795800752854993E12,-4.3858348265323E11,-4.706900828533791E10), FixedTime);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(27796.24753416469,-108539.07976675793,-17776.928127736475), new Vector3D(0.0, 0.0, 0.0), 360);
     }
 
     /**
@@ -120,9 +177,14 @@ public class NewtonRaphsonSolver {
         // iteratively apply newton-raphson
         while (i < STOPPING_CRITERION) {
             aprxSol = NewtRhapStep(aprxSol, h);
-            if (LOG_ITERATION) System.out.println("Iteration #" + (i) + ": " + aprxSol.toString());
+            if (LOG_ITERATION) {
+                System.out.println("Result - Iteration #" + (i) + ": " + aprxSol.toString());
+                printWriter.println(aprxSol);
+            }
             i++;
         }
+        printWriter.close();
+        printWriter2.close();
         i = 0;
         return aprxSol;
     }
@@ -136,9 +198,12 @@ public class NewtonRaphsonSolver {
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector, double h) {
         double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), h); // Compute matrix of partial derivatives D
-        System.out.println(Arrays.deepToString(D));
         Matrix DI = new Matrix(Matrix.invert(D)); // Compute DI inverse of D
         Vector3dInterface modelVector = fX.modelFx(vector);
+        if (LOG_ITERATION) {
+            System.out.println("Error - Iteration #" + i + ": " + modelVector);
+            printWriter2.println(modelVector);
+        }
         Vector3dInterface DIProd = DI.multiplyVector(modelVector);
         return vector.sub(DIProd); // V1 = velocity - DI * function(velocity)
     }

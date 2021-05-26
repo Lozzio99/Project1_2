@@ -36,8 +36,8 @@ public class RocketSimModel {
     };
 
     static {
-        DEFAULT_SOLVER = MIDPOINT_SOLVER; // put here the best solver
-        STEP_SIZE = 50;
+        DEFAULT_SOLVER = VERLET_VEL_SOLVER; // put here the best solver
+        STEP_SIZE = 360;
         REPORT = false;
         INSERT_ROCKET = true;
         CHECK_COLLISIONS = false;
@@ -97,6 +97,40 @@ public class RocketSimModel {
         return solution[solution.length - 1].getPositions().get(11).clone();
     }
 
+    /**
+     * State fx vector 3 d interface.
+     *
+     * @param initPos      the init pos
+     * @param initVelocity the init velocity
+     * @param timeFinal    the time final
+     * @return the vector 3 d interface
+     */
+    public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal, double waitTime) {
+        // init parameters
+        SystemInterface system = createSystem(initPos, initVelocity);
+        initialState = system.systemState().copy();
+        solver = simulation.getUpdater().getSolver();
+
+        // solve trajectory
+        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
+        assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
+                !simulation.getSystem().getCelestialBodies().get(11).isCollided());
+        return solution[solution.length - 1].getPositions().get(11).clone();
+    }
+
+    public static Vector3dInterface TempStateFx(double timeFinal) {
+        // init parameters
+        SystemInterface system = createSystem(new Vector3D(), new Vector3D());
+        initialState = system.systemState().copy();
+        solver = simulation.getUpdater().getSolver();
+
+        // solve trajectory
+        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
+        assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
+                !simulation.getSystem().getCelestialBodies().get(11).isCollided());
+        return solution[solution.length - 1].getPositions().get(8).clone();
+    }
+
 
     /**
      * The entry point of application.
@@ -104,10 +138,11 @@ public class RocketSimModel {
      * @param args the input arguments
      */
     public static void main(String[] args) {
-        Vector3D res1 = (Vector3D) stateFx(new Vector3D(-9.839198644659751E-01, -1.912460575714917E-01, 5.542821181619438E-05), new Vector3D(155580.29183892664,-133430.31623543188,-478.1753941877174), 86700.0 * 30 * 6);
-        System.out.println(res1.toString());
-        Vector3D res2 = (Vector3D) stateFx(new Vector3D(0.0, 0.0, 0.0), new Vector3D(100.1, 100.0, 100.0), 86700);
-        System.out.println(res2.toString());
+        Vector3D res1 = (Vector3D) TempStateFx(131414400);
+        //Vector3D res1 = (Vector3D) stateFx(new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06),
+        //        new Vector3D(27796.24753416469,-108539.07976675793,-17776.928127736475),
+        //        7776000);
+        System.out.println(res1);
 
         // 1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02
         // -2.1762284772885286E12,-2.590189915097415E12,-3.3437836480196583E10
