@@ -29,13 +29,13 @@ public class NewtonRaphsonSolver {
         CHECK_COLLISIONS = false;
     }
 
-    public static Vector3D ROCKET_STARTING_POS = new Vector3D(-1.471795554926392E11,-2.8611430721517483E10,8050318.640204383);
+    public static Vector3D ROCKET_STARTING_POS = new Vector3D(-1.4717856245318698E11,-2.861154627637646E10,8032437.618829092);
 
     public static Vector3D INTERMEDIATE_TARGET_1A = new Vector3D(1.1282818052942159E11,-8.238101941804728E11,-1.3200423212630061E11);
     /**
      * Position of Titan in 7776000 s
      */
-    public static Vector3D TITAN_TARGET = new Vector3D(6.965120125571067E11,-1.326029551335418E12,-4.213729666566596E9);
+    public static Vector3D TITAN_TARGET = new Vector3D(1.3194651761804377E12,-6.203872902032109E11,-4.138820394098859E10);
     /**
      * Position of Saturn on 31/05/2024 (131 414 400 s)
      */
@@ -134,6 +134,7 @@ public class NewtonRaphsonSolver {
      * @param args the input arguments
      */
     public static void main(String[] args) {
+
         /*
         Vector3D v1 = new Vector3D(-1.471858828790318E11,-2.8610694436326927E10,8164251.808805363);
         Vector3D v2 = new Vector3D(7.30644042602411E11,-1.3075921735800641E11,-1.5798353431358152E10);
@@ -144,17 +145,18 @@ public class NewtonRaphsonSolver {
                 (v2.getZ()-v1.getZ())/disV1V2
         );
         Vector3D startV1 = new Vector3D(
-                v1.getX() + (6.371e6+1e2)*unitV.getX(),
-                v1.getY() + (6.371e6+1e2)*unitV.getY(),
-                v1.getZ() + (6.371e6+1e2)*unitV.getZ()
+                v1.getX() + (6.371e6+1e6)*unitV.getX(),
+                v1.getY() + (6.371e6+1e6)*unitV.getY(),
+                v1.getZ() + (6.371e6+1e6)*unitV.getZ()
         );
         System.out.println(startV1);
         //https://math.stackexchange.com/questions/1784106/how-do-i-compute-the-closest-points-on-a-sphere-given-a-point-outside-the-sphere
-        */
+
+         */
 
         Vector3D initPos = ROCKET_STARTING_POS;
         Vector3D targetPos = TITAN_TARGET; // @
-        double FixedTime = 65707200; // @
+        double FixedTime = 111153600; // @
         //double FixedTime = 7776000;
         //double FixedTime = 2592000;
 
@@ -163,8 +165,8 @@ public class NewtonRaphsonSolver {
         //1440
         //360
 
-        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(initPos, new Vector3D(7.30644042602411E11,-1.3075921735800641E11,-1.5798353431358152E10), FixedTime);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(427593.4150049929,-146737.40330891946,-16800.637441114588), new Vector3D(0.0, 0.0, 0.0), 10);
+        NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(ROCKET_STARTING_POS, TITAN_TARGET, FixedTime);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(0,0,0), new Vector3D(0.0, 0.0, 0.0), 1440);
     }
 
     /**

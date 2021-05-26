@@ -37,7 +37,7 @@ public class RocketSimModel {
 
     static {
         DEFAULT_SOLVER = VERLET_VEL_SOLVER; // put here the best solver
-        STEP_SIZE = 86400.0/2;
+        STEP_SIZE = 1440;
         REPORT = false;
         INSERT_ROCKET = true;
         CHECK_COLLISIONS = false;
@@ -128,7 +128,7 @@ public class RocketSimModel {
         StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
-        return solution[solution.length - 1].getPositions().get(6).clone();
+        return solution[solution.length - 1].getPositions().get(8).clone();
     }
 
 
@@ -143,7 +143,9 @@ public class RocketSimModel {
         //        new Vector3D(27796.24753416469,-108539.07976675793,-17776.928127736475),
         //        7776000);
         System.out.println(res1);
-
+        Vector3D res2 = (Vector3D) stateFx(new Vector3D(-1.4717856245318698E11,-2.861154627637646E10,8032437.618829092),
+                new Vector3D(9126.35961021559,-44920.22282131746,-1109.0487265164077),65707200);
+        System.out.println(res2);
         // 1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02
         // -2.1762284772885286E12,-2.590189915097415E12,-3.3437836480196583E10
 

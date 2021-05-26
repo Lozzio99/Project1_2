@@ -119,7 +119,7 @@ public class Config {
     /**
      * The constant CHECK_COLLISIONS.
      */
-    public static Boolean CHECK_COLLISIONS = true;
+    public static Boolean CHECK_COLLISIONS = false;
     /**
      * The constant PLOT.
      */
