@@ -27,7 +27,8 @@ import static group17.Utils.Config.REPORT;
 
 
 /**
- * The type Error window.
+ * The Error window.
+ * <a href="https://ssd.jpl.nasa.gov/horizons.cgi:C">ORIGINAL SOURCE LINK</a>Source
  */
 public class ErrorWindow extends JPanel {
 
@@ -38,7 +39,7 @@ public class ErrorWindow extends JPanel {
     private JComboBox<CelestialBody> planetBox;
     private static final int WINDOWS = 0, MAC = 1, LINUX = 2;
     private final JTextArea[] planetViewValues = new JTextArea[4];
-    private ErrorData ERROR_DATA_CURRENT_MONTH;
+    private ErrorData ABS_ERROR_DATA_CURRENT_MONTH, REL_ERROR_DATA_CURRENT_MONTH;
 
     /**
      * Instantiates a new Error window.
@@ -257,12 +258,11 @@ public class ErrorWindow extends JPanel {
     }
 
     private void showValues(int planetIndex) {
-        if (ERROR_DATA_CURRENT_MONTH == null) return;
-
-        planetViewValues[0].setText("Error with original position " + ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
-        planetViewValues[1].setText("Error with original velocity " + ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
-        planetViewValues[2].setText("Mean Position error : ");
-        planetViewValues[3].setText("Mean Velocity error : ");
+        if (ABS_ERROR_DATA_CURRENT_MONTH == null) return;
+        planetViewValues[0].setText("Abs. error with original position " + ABS_ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
+        planetViewValues[1].setText("Abs. error with original velocity " + ABS_ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
+        planetViewValues[2].setText("Rel. error with original position " + REL_ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());
+        planetViewValues[3].setText("Rel. error with original velocity " + REL_ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());
     }
 
     /**
@@ -270,8 +270,9 @@ public class ErrorWindow extends JPanel {
      *
      * @param data the data
      */
-    public void updateLabels(ErrorData data) {
-        this.ERROR_DATA_CURRENT_MONTH = data;
+    public void updateLabels(ErrorData data, boolean absolute) {
+        if (absolute) this.ABS_ERROR_DATA_CURRENT_MONTH = data;
+        else this.REL_ERROR_DATA_CURRENT_MONTH = data;
     }
 
 }

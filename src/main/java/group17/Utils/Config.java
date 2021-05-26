@@ -149,7 +149,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = 3600;
+    public static double STEP_SIZE = 7200;
     /**
      * The constant CURRENT_TIME.
      */
@@ -157,11 +157,8 @@ public class Config {
     /**
      * The constant TRAJECTORY_LENGTH.
      */
-    public static int TRAJECTORY_LENGTH = 1000;
-    /**
-     * The constant PARTICLES.
-     */
-    public static int PARTICLES = 700;
+    public static int TRAJECTORY_LENGTH = 2000;
+
     /**
      * The constant CPU_LEVEL.
      */

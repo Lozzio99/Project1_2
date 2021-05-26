@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @Isolated
-//@Disabled("Won't never work if tests are running at the same time")
 class SimulationTest {
 
 

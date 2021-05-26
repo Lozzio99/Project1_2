@@ -62,6 +62,7 @@ class TestingLazyRungeKutta {
 
     @ParameterizedTest(name = "testing stepSize {0}")
     @ValueSource(doubles = {1e-2, 1e-3, 1e-4, 1e-5, 1e-6})
+        //5e-7 accuracy
     void TestSolve(double step) {
         //this uses the step method
         double accuracy = step / 2;

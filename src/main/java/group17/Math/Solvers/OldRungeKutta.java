@@ -29,10 +29,10 @@ public class OldRungeKutta implements ODESolverInterface {
     /**
      * Step of Rk4 for 2nd order ODE
      *
-     * source: https://www.youtube.com/watch?v=TjZgQa2kec0&t=381s&ab_channel=LettherebemathLettherebemath
+     * <a href=https://www.youtube.com/watch?v=TjZgQa2kec0&t=381s&ab_channel=LettherebemathLettherebemath>source link</a>
      * Formula:
-     *dx/dt=x ̇=v;   dx = v∗dt;
-     *dv/dt=v ̇=a=F(t,x,v);     dv = a*dt = F(t,x,v)∗dt;
+     *  dx/dt=x ̇=v;   dx = v∗dt;
+     *  dv/dt=v ̇=a=F(t,x,v);     dv = a*dt = F(t,x,v)∗dt;
      *
      * dx1=h∗k_x1=h∗v;		       dv1=h∗k_v1=h∗F(t,x,v);
      * dx2=h∗k_x2=h∗(v+(d∗v1)/2);   dv2=h∗k_v2=h∗F(t+h/2,x+dx1/2,v+dv1/2);
@@ -52,7 +52,6 @@ public class OldRungeKutta implements ODESolverInterface {
     public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
         StateInterface k1, k2, k3, k4, kk;
         checked = false;
-
         RateInterface velocity = y.getRateOfChange();
         k1 = y.getState(velocity);
         k1.setRateOfChange(f.call(h, y));

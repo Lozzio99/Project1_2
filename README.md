@@ -4,11 +4,12 @@ Dke Group 17 Mission group17.phase1.group17.phase1.Titan
 
 # MISSION TITAN
 
-## Installation
+### Installation
 
-Required Gradle versions: 7.0.2 .
+Required Gradle versions: 7.0.2 . note if some problems arise,it could be that the -all distribution package is
+necessary
 
-Required gradle-wrapper.properties
+### Required gradle-wrapper.properties
 
 ```properties
 distributionBase=GRADLE_USER_HOME
@@ -18,7 +19,7 @@ zipStoreBase=GRADLE_USER_HOME
 zipStorePath=wrapper/dists
 ```
 
-Desired gradle testing implementation
+### Preferred gradle dependencies / testing task properties
 
 ```groovy
 dependencies {
@@ -35,59 +36,29 @@ test {
         events 'passed', 'skipped', 'failed'
     }
     maxParallelForks 1
-    testLogging.showStandardStreams true
     minHeapSize "128m"
     maxHeapSize "512m"
-    beforeTest { descriptor -> logger.lifecycle "Running test: " + descriptor as String }
     failFast true
-
-    onOutput { descriptor, event ->
-        if (event.destination == TestOutputEvent.Destination.StdErr) {
-
-            if (event.message instanceof String)
-                logger.error "Test: " + descriptor + ", error: " + event.message as String
-            else
-                logger.error "Test: " + descriptor + ", error: " + event.message as Error
-
-        } else {
-            logger.lifecycle  "Test: " + descriptor + ", output: " + event.message as String
-        }
-    }
-    //onOutput { descriptor, event -> logger.lifecycle("Test: " + descriptor + " \noutput: " + event.message )}
-    finalizedBy jacocoTestReport // report is always generated after tests run
+    onOutput { descriptor, event -> logger.lifecycle("Test: " + descriptor + " \noutput: " + event.message )}
+    finalizedBy jacocoTestReport
 }
 
 ```
 
-Use the package manager [gradle](https://gradle.org/install/) to install gradle.
-*_If you work in IntelliJ IDEA, you don't need to install Gradle separately, IntelliJ IDEA does it for you_*.
+### Compiler
 
-Open a console (or a Windows command prompt) and run gradle -v to run gradle and display the version, e.g.:
-
-```bash
-
-$ gradle -v
-
-
-------------------------------------------------------------
-Gradle 7.0
-------------------------------------------------------------
-
-Build time:   2021-04-09 22:27:31 UTC
-Revision:     ###################################
-
-Kotlin:       1.4.31
-Groovy:       3.0.7
-Ant:          Apache Ant(TM) version 1.10.9 compiled on September 27 2020
-JVM:          15.0.1 (Oracle Corporation 15.0.1+9-18)
-OS:           Windows 10 10.0 amd64
-
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="15" /> 
+  </component>
+</project>
 ```
 
+# Usage
 
-
-
-## Usage
+### Initialise the assist window and the simulation instance
 
 ```java
 import group17.phase1.group17.phase1.Titan.Interfaces.SimulationInterface;
@@ -100,12 +71,9 @@ public class Main {
     public static void main(String[] args) {
     }
 }
-
-
 ```
 
-## create a pre-defined Simulation
-
+### create a pre-defined Simulation
  ```java
 new AbstractMainMenu() {
 @Override
@@ -120,9 +88,43 @@ public void startSimulation() {
 };
 ```
 
+### set up a simulation
+
+```java
+@Override
+public void init() {
+        this.initReporter();   //first thing, will check all exceptions
+        this.initSystem();  // before graphics and userDialog (clock, positions init, ...)
+        this.initAssist();
+        this.initGraphics();
+        this.initUpdater();  //last thing, will start the simulation if it's the only one running
+}
+
+@Override
+public void start() {
+        this.setRunning();
+        ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
+        service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);
+}
+
+@Override
+public synchronized void loop() {
+        if (this.running) {
+            this.updateState();
+            this.startGraphics();
+            this.startReport();
+            this.startAssist();
+            if (!waiting()) {
+                this.startUpdater();
+                this.startSystem();
+            }
+        }
+}
+```
+
 ## UML Diagram
 
-[UML](src/main/java/group17/phase1/group17.phase1.Titan/diagram.png)
+[UML](src/main/resources/Main.uml)
 
 ## ERRORS EVALUATION
 
@@ -132,9 +134,9 @@ step size used If selected during tests (by enabling SolversAccuracyTest.java) t
 test/java/resources/ErrorData folder,as by standard organization.
 
 NOTE : the ErrorData folder MUST be present in both cases, if this options is selected NOTE : to allow the report
-generation it is *_required_* to let the simulation Clock to get to the *_first of the month at the exact time "00:00:
-00"_*. Check out the implementation of "group17/Simulation/System/Clock.java" or stick to step size exactly dividing a
-minute by a natural, integer number.
+generation it is **_required_**  to let the simulation Clock to get to the **_first of the month at the exact time "00:
+00:00"_**. Check out the implementation of [Clock.java](src/main/java/group17/Simulation/System/Clock.java) or stick to
+step size exactly dividing a minute by a natural, integer number.
 
 ## Contributing
 

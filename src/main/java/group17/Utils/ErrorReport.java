@@ -127,7 +127,7 @@ public class ErrorReport implements Runnable {
             Vector3dInterface subVel = state.getVelocities().get(i).sub(ORIGINAL_DATA[monthIndex()].getVelocities().get(i));
 
 
-            averageErrorPosition = averageErrorPosition.add(subPos.multiply(subPos));
+            averageErrorPosition = averageErrorPosition.add(subPos.multiply(subPos));//not sure if must do this comparing all planets
             averageErrorVelocity = averageErrorVelocity.add(subVel.multiply(subVel));
 
             if (DEBUG) {
@@ -158,7 +158,8 @@ public class ErrorReport implements Runnable {
 
 
         if (userDialog != null) {
-            userDialog.getErrorWindow().updateLabels(new ErrorData(absPosition, absVelocity));
+            userDialog.getErrorWindow().updateLabels(new ErrorData(absPosition, absVelocity), true);
+            userDialog.getErrorWindow().updateLabels(new ErrorData(relPosition, relVelocity), false);
             userDialog.enable(6);
         }
 

@@ -50,6 +50,18 @@ public class SystemState implements StateInterface {
     /**
      * Instantiates a new System state.
      *
+     * @param copy the copy
+     * @param rate the rate
+     */
+    public SystemState(StateInterface copy, RateInterface rate) {
+        this.positions = copy.getPositions();
+        this.rateOfChange = new RateOfChange();
+        this.rateOfChange.setVelocities(rate.getVelocities());
+    }
+
+    /**
+     * Instantiates a new System state.
+     *
      * @param positions  the positions
      * @param velocities the velocities
      */

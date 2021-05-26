@@ -53,9 +53,8 @@ public class Simulation implements SimulationInterface {
                 this.getAssist().showAssistParameters();
             }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
-
             //8 ms should be fine as delay,
-            service.scheduleWithFixedDelay(this::loop, 30, 8, MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);
         } else {
             if (DEBUG || REPORT) this.getReporter().report(new RuntimeException("STOP"));
         }
@@ -242,6 +241,7 @@ public class Simulation implements SimulationInterface {
      */
     @Override
     public synchronized void updateState() {
+        if (!CHECK_COLLISIONS) return;
         for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {
             if (getSystem().getCelestialBodies().get(i).isCollided()) {
                 getSystem().systemState().getPositions().remove(i);
