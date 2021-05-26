@@ -1,8 +1,8 @@
 package group17.Interfaces;
 
 
-import Demo.Scenes.MouseInput;
-import Demo.Scenes.Scene;
+import group17.Graphics.Scenes.MouseInput;
+import group17.Graphics.Scenes.Scene;
 
 import javax.swing.*;
 import java.awt.*;

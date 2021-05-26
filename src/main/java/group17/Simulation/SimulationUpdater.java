@@ -16,7 +16,7 @@ import java.io.Writer;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static Demo.Scenes.Scene.SceneType.SIMULATION_SCENE;
+import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
 import static group17.Main.simulation;
 import static group17.Utils.Config.*;
 import static group17.Utils.ErrorReport.testingAccuracy;

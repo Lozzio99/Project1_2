@@ -12,8 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static Demo.Scenes.Scene.SceneType.SIMULATION_SCENE;
-import static Demo.Scenes.Scene.SceneType.STARTING_SCENE;
+import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
+import static group17.Graphics.Scenes.Scene.SceneType.STARTING_SCENE;
 import static group17.Main.simulation;
 import static group17.Main.userDialog;
 import static group17.Utils.Config.*;

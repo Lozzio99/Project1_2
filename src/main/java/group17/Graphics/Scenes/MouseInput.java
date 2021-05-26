@@ -1,5 +1,5 @@
 
-package Demo.Scenes;
+package group17.Graphics.Scenes;
 
 import java.awt.event.*;
 

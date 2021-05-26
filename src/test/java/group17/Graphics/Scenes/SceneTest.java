@@ -1,4 +1,4 @@
-package Demo.Scenes;
+package group17.Graphics.Scenes;
 
 import group17.Interfaces.GraphicsInterface;
 import group17.Math.Lib.Point3D;

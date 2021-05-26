@@ -1,4 +1,4 @@
-package Demo.Scenes;
+package group17.Graphics.Scenes;
 
 import group17.Graphics.GraphicsManager;
 import org.junit.jupiter.api.DisplayName;
