@@ -36,7 +36,7 @@ public class StandardVerletSolverTest {
             System.out.println(aprxSolution);
         }
         // very and very inaccurate :(
-        assertTrue(1e2 > Math.abs(expectedSol - aprxSolution));
+        assertTrue(1e-2 > Math.abs(expectedSol - aprxSolution));
     }
 
     @Test

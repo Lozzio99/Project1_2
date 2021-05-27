@@ -68,8 +68,8 @@ class SolversAccuracyTest {
     }
 
     @ParameterizedTest(name = "testing step size {0}")
-    //@ValueSource(ints = {60, 360, 86400})    //stepsize 60 is pretty tough
-    @ValueSource(ints = {86400})
+    @ValueSource(ints = {60, 600, 6000, 60000})    //stepsize 60 is pretty tough
+    //@ValueSource(ints = {86400})
     void testAndOutputToTXT(int stepSize) {
         STEP_SIZE = stepSize; //convert to double
         testSolversAndOutputFile(EULER_SOLVER, "ErrorTestLog.txt");
@@ -81,8 +81,8 @@ class SolversAccuracyTest {
     }
 
     @ParameterizedTest(name = "testing step size {0}")
-    //@ValueSource(ints = {60, 360, 86400})
-    @ValueSource(ints = {86400})
+    @ValueSource(ints = {60, 600, 6000, 60000})
+    //@ValueSource(ints = {86400})
     void testAndOutputToCSV(int stepSize) {
         STEP_SIZE = stepSize; //convert to double
         testSolversAndOutputFile(EULER_SOLVER, "ErrorTestLog.csv");

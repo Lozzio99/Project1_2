@@ -34,6 +34,16 @@ public class Clock {
         years = 0;
     }
 
+    public Clock setInitialDayAndTime(int sec, int min, int hour, int days, int months, int years) {
+        this.sec = sec;
+        this.min = min;
+        this.hour = hour;
+        this.days = days;
+        this.months = months;
+        this.years = years;
+        return this;
+    }
+
 
     /**
      * Sets launch day.
