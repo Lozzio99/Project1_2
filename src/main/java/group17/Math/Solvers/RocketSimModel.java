@@ -35,9 +35,18 @@ public class RocketSimModel {
         return targetPosition.sub(aprxPos);
     };
 
+    /**
+     * The constant pF.
+     */
+
+    public static NewtRaphFunction pFDelay = vector -> {
+        Vector3D aprxPos = (Vector3D) RocketSimModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime, NewtonRaphsonSolver.waitTime);
+        return targetPosition.sub(aprxPos);
+    };
+
     static {
         DEFAULT_SOLVER = VERLET_VEL_SOLVER; // put here the best solver
-        STEP_SIZE = 1440;
+        STEP_SIZE = 360;
         REPORT = false;
         INSERT_ROCKET = true;
         CHECK_COLLISIONS = false;
@@ -78,6 +87,7 @@ public class RocketSimModel {
 
     /**
      * State fx vector 3 d interface.
+     * Simulates position of the rocket with given parameters starting on 00:00:00 01/04/2020.
      *
      * @param initPos      the init pos
      * @param initVelocity the init velocity
@@ -99,56 +109,31 @@ public class RocketSimModel {
 
     /**
      * State fx vector 3 d interface.
+     * Simulates position of the rocket with given parameters starting after the delay and stops on final time.
      *
      * @param initPos      the init pos
      * @param initVelocity the init velocity
      * @param timeFinal    the time final
+     * @param waitTime the delay time
      * @return the vector 3 d interface
      */
     public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal, double waitTime) {
         // init parameters
-        SystemInterface system = createSystem(initPos, initVelocity);
+        SystemInterface system = createSystem(initPos, new Vector3D(0,0,0));
         initialState = system.systemState().copy();
         solver = simulation.getUpdater().getSolver();
 
         // solve trajectory
-        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
+        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, waitTime, STEP_SIZE);
+        StateInterface init2State = solution[solution.length - 1].copy();
+
+        init2State.getPositions().set(11, initPos);
+        init2State.getRateOfChange().getVelocities().set(11, initVelocity);
+        solution = solver.solve(solver.getFunction(), init2State, timeFinal-waitTime, STEP_SIZE);
+
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
         return solution[solution.length - 1].getPositions().get(11).clone();
-    }
-
-    public static Vector3dInterface TempStateFx(double timeFinal) {
-        // init parameters
-        SystemInterface system = createSystem(new Vector3D(), new Vector3D());
-        initialState = system.systemState().copy();
-        solver = simulation.getUpdater().getSolver();
-
-        // solve trajectory
-        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
-        assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
-                !simulation.getSystem().getCelestialBodies().get(11).isCollided());
-        return solution[solution.length - 1].getPositions().get(8).clone();
-    }
-
-
-    /**
-     * The entry point of application.
-     *
-     * @param args the input arguments
-     */
-    public static void main(String[] args) {
-        Vector3D res1 = (Vector3D) TempStateFx(65707200);
-        //Vector3D res1 = (Vector3D) stateFx(new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06),
-        //        new Vector3D(27796.24753416469,-108539.07976675793,-17776.928127736475),
-        //        7776000);
-        System.out.println(res1);
-        Vector3D res2 = (Vector3D) stateFx(new Vector3D(-1.4717856245318698E11,-2.861154627637646E10,8032437.618829092),
-                new Vector3D(9126.35961021559,-44920.22282131746,-1109.0487265164077),65707200);
-        System.out.println(res2);
-        // 1.363555710400778E+00, 3.201330747536073E-01, -2.693888301471804E-02
-        // -2.1762284772885286E12,-2.590189915097415E12,-3.3437836480196583E10
-
     }
 
 }

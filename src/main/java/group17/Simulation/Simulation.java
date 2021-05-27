@@ -50,7 +50,7 @@ public class Simulation implements SimulationInterface {
                 this.getAssist().showAssistParameters();
             }
             ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
-            service.scheduleWithFixedDelay(this::loop, 30, 8, MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 30, 1, MILLISECONDS);
         } else {
             if (DEBUG || REPORT)
                 this.getReporter().report(new RuntimeException("STOP"));
