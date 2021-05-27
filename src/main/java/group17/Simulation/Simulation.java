@@ -34,7 +34,7 @@ public class Simulation implements SimulationInterface {
      *
      * @see group17.Main
      */
-    private SystemInterface system;
+    private volatile SystemInterface system;
     private SimulationReporter reporter;
 
     /**
@@ -56,7 +56,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final void start() {
+    public void start() {
         if (!this.stopped) {  // there may be some errors in the initialisation
             this.setRunning();
             if (LAUNCH_ASSIST) {
@@ -75,7 +75,7 @@ public class Simulation implements SimulationInterface {
      * back to initial instance, as if the program was restarted
      */
     @Override
-    public final void reset() {
+    public void reset() {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         CURRENT_TIME = 0;
@@ -95,7 +95,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final void stop() {
+    public void stop() {
         this.stopped = true;
         this.running = false;
         this.paused = false;
@@ -108,7 +108,7 @@ public class Simulation implements SimulationInterface {
      * to help solving concurrency problems, to enhance data visibility and instruction ordering.
      */
     @Override
-    public final synchronized void loop() {
+    public synchronized void loop() {
         if (this.running) {
             this.updateState();
             if (ENABLE_GRAPHICS)
@@ -131,7 +131,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final synchronized void startUpdater() {
+    public synchronized void startUpdater() {
         this.updater.start();
     }
 
@@ -148,7 +148,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final synchronized void startGraphics() {
+    public synchronized void startGraphics() {
         this.graphics.start();
     }
 
@@ -168,7 +168,7 @@ public class Simulation implements SimulationInterface {
 
 
     @Override
-    public final synchronized void startAssist() {
+    public synchronized void startAssist() {
         this.assist.start();
     }
 
@@ -194,7 +194,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final synchronized void startSystem() {
+    public synchronized void startSystem() {
         this.system.start();
     }
 
@@ -210,7 +210,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final synchronized void startReport() {
+    public synchronized void startReport() {
         this.reporter.start();
     }
 
@@ -226,7 +226,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final synchronized void setRunning() {
+    public synchronized void setRunning() {
         if (!this.running)
             this.running = true;
     }
@@ -237,12 +237,12 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public final synchronized void setWaiting(boolean isWaiting) {
+    public synchronized void setWaiting(boolean isWaiting) {
         this.paused = isWaiting;
     }
 
     @Override
-    public final synchronized void setStopped(boolean stopped) {
+    public synchronized void setStopped(boolean stopped) {
         this.stopped = stopped;
     }
 
@@ -250,7 +250,7 @@ public class Simulation implements SimulationInterface {
      * updates instance of simulation to the next state
      */
     @Override
-    public final synchronized void updateState() {
+    public synchronized void updateState() {
         if (!CHECK_COLLISIONS) return;
         for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {
             if (getSystem().getCelestialBodies().get(i).isCollided()) {

@@ -153,6 +153,54 @@ public class HelpSupportWindow extends JDesktopPane {
         public boolean isStretched() {
             return stretched;
         }
+
+        /**
+         * Gets image.
+         *
+         * @return the image
+         */
+        public java.awt.Image getImage() {
+            return image;
+        }
+
+
+        /**
+         * Gets x coordinate.
+         *
+         * @return the x coordinate
+         */
+        public int getXCoordinate() {
+            return xCoordinate;
+        }
+
+        /**
+         * Sets x coodinate.
+         *
+         * @param xCoordinate the x coordinate
+         */
+        public void setXCoodinate(int xCoordinate) {
+            this.xCoordinate = xCoordinate;
+        }
+
+        /**
+         * Gets y coordinate.
+         *
+         * @return the y coordinate
+         */
+        public int getYCoordinate() {
+            return yCoordinate;
+        }
+
+        /**
+         * Sets y coodinate.
+         *
+         * @param yCoordinate the y coordinate
+         */
+        public void setYCoodinate(int yCoordinate) {
+            this.yCoordinate = yCoordinate;
+            repaint();
+        }
+
     }
 
 }
