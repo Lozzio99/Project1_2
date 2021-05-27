@@ -156,6 +156,7 @@ public class RocketSchedule {
      */
     public void setPlan(Clock time, Vector3dInterface v) {
         if (time == null || v == null) return;
+        if (v.isZero()) v = new Vector3D(1e-300, 0, 0);
         Vector3dInterface vOld = this.shiftAtTime.remove(time);
         this.shiftAtTime.put(time, v);
     }
@@ -168,6 +169,7 @@ public class RocketSchedule {
      */
     public void setPlan(StateInterface s, Vector3dInterface v) {
         if (s == null || v == null) return;
+        if (v.isZero()) v = new Vector3D(1e-300, 0, 0);
         this.shiftAtLocation.put(s, v);
     }
 
@@ -179,6 +181,7 @@ public class RocketSchedule {
      */
     public void setPlan(Vector3dInterface d, Vector3dInterface v) {
         if (d == null || v == null) return;
+        if (v.isZero()) v = new Vector3D(1e-300, 0, 0);
         this.shiftAtDistance.put(d, v);
     }
 }
