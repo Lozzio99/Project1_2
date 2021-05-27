@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PerformanceWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">PerformanceWindow.java</span></div><h1>PerformanceWindow.java</h1><pre class="source lang-java linenums">package group17.Graphics.Assist;
+
+import com.sun.management.OperatingSystemMXBean;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.util.Set;
+//import java.lang.management.OperatingSystemMXBean;
+
+
+/**
+ * * * FUTURE feature * * *
+ * &lt;p&gt;
+ * &lt;p&gt;
+ * class to handle possible overloading of the memory,
+ * such as heap out of memory or managing subprocesses
+ */
+<span class="nc bnc" id="L21" title="All 2 branches missed.">public class PerformanceWindow extends JPanel {</span>
+    private static volatile JTextArea text;
+
+    /**
+     * Instantiates a new Performance window.
+     */
+<span class="nc" id="L27">    public PerformanceWindow() {</span>
+<span class="nc" id="L28">        this.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));</span>
+<span class="nc" id="L29">        this.setLayout(new GridLayout(2, 1, 20, 20));</span>
+<span class="nc" id="L30">        this.init();</span>
+<span class="nc" id="L31">        this.add(new JPanel());</span>
+        //this.add(new JPanel());
+<span class="nc" id="L33">    }</span>
+
+    /**
+     * Print usage.
+     *
+     * @param runtime the runtime
+     */
+    public static void printUsage(Runtime runtime) {
+        long total, free, used;
+<span class="nc" id="L42">        int mb = 1024 * 1024;</span>
+<span class="nc" id="L43">        total = runtime.totalMemory();</span>
+<span class="nc" id="L44">        free = runtime.freeMemory();</span>
+<span class="nc" id="L45">        used = total - free;</span>
+<span class="nc" id="L46">        log(&quot;Total Memory: &quot; + total / mb + &quot;MB&quot;);</span>
+<span class="nc" id="L47">        log(&quot;\tMemory Used: &quot; + used / mb + &quot;MB&quot;);</span>
+<span class="nc" id="L48">        log(&quot;\tMemory Free: &quot; + free / mb + &quot;MB&quot;);</span>
+<span class="nc" id="L49">        log(&quot;\tPercent Used: &quot; + ((double) used / (double) total) * 100 + &quot;%&quot;);</span>
+<span class="nc" id="L50">        log(&quot;\tPercent Free: &quot; + ((double) free / (double) total) * 100 + &quot;%&quot;);</span>
+<span class="nc" id="L51">    }</span>
+
+    /**
+     * Log.
+     *
+     * @param message the message
+     */
+    public static void log(Object message) {
+<span class="nc" id="L59">        text.append(&quot;\t\t&quot; + message + &quot;\n&quot;);</span>
+<span class="nc" id="L60">    }</span>
+
+    /**
+     * Calc cpu int.
+     *
+     * @param cpuStartTime     the cpu start time
+     * @param elapsedStartTime the elapsed start time
+     * @param cpuCount         the cpu count
+     * @return the int
+     */
+    public static int calcCPU(long cpuStartTime, long elapsedStartTime, int cpuCount, long threadId) {
+<span class="nc" id="L71">        long end = System.nanoTime();</span>
+<span class="nc" id="L72">        long totalAvailCPUTime = cpuCount * (end - elapsedStartTime);</span>
+<span class="nc" id="L73">        long totalUsedCPUTime = ManagementFactory.getThreadMXBean().getThreadCpuTime(threadId) - cpuStartTime;</span>
+<span class="nc" id="L74">        log(&quot;Total CPU Time:&quot; + totalUsedCPUTime + &quot; ns.&quot;);</span>
+<span class="nc" id="L75">        log(&quot;Total Avail CPU Time:&quot; + totalAvailCPUTime + &quot; ns.&quot;);</span>
+<span class="nc" id="L76">        float per = ((float) totalUsedCPUTime * 100) / (float) totalAvailCPUTime;</span>
+<span class="nc" id="L77">        log(per);</span>
+<span class="nc" id="L78">        return (int) per;</span>
+    }
+
+    /**
+     * Test physical memory.
+     */
+    public static void testPhysicalMemory() {
+        /* PHYSICAL MEMORY USAGE */
+<span class="nc" id="L86">        log(&quot;\n**** Sizes in Mega Bytes ****\n&quot;);</span>
+        OperatingSystemMXBean os = (OperatingSystemMXBean)
+<span class="nc" id="L88">                ManagementFactory.getOperatingSystemMXBean();</span>
+<span class="nc" id="L89">        long physicalMemorySize = os.getTotalMemorySize();</span>
+<span class="nc" id="L90">        int mb = 1024 * 1024;</span>
+<span class="nc" id="L91">        int gb = 1024 * 1024 * 1024;</span>
+<span class="nc" id="L92">        log(&quot;PHYSICAL MEMORY DETAILS \n&quot;);</span>
+<span class="nc" id="L93">        log(&quot;\ttotal physicalMemory memory : &quot; + physicalMemorySize / mb + &quot;MB &quot;);</span>
+<span class="nc" id="L94">        long physicalfreeMemorySize = os.getFreeMemorySize();</span>
+<span class="nc" id="L95">        log(&quot;\ttotal free physicalMemory memory : &quot; + physicalfreeMemorySize / mb + &quot;MB&quot;);</span>
+        /* DISC SPACE DETAILS */
+<span class="nc" id="L97">        File diskPartition = new File(&quot;C:&quot;);</span>
+<span class="nc" id="L98">        File diskPartition1 = new File(&quot;D:&quot;);</span>
+<span class="nc" id="L99">        File diskPartition2 = new File(&quot;E:&quot;);</span>
+<span class="nc" id="L100">        long totalCapacity = diskPartition.getTotalSpace() / gb;</span>
+<span class="nc" id="L101">        long totalCapacity1 = diskPartition1.getTotalSpace() / gb;</span>
+<span class="nc" id="L102">        double freePartitionSpace = diskPartition.getFreeSpace() / gb;</span>
+<span class="nc" id="L103">        double freePartitionSpace1 = diskPartition1.getFreeSpace() / gb;</span>
+<span class="nc" id="L104">        double freePartitionSpace2 = diskPartition2.getFreeSpace() / gb;</span>
+<span class="nc" id="L105">        double usablePatitionSpace = diskPartition.getUsableSpace() / gb;</span>
+<span class="nc" id="L106">        log(&quot;**** Sizes in Giga Bytes ****\n&quot;);</span>
+<span class="nc" id="L107">        log(&quot;DISC SPACE DETAILS \n&quot;);</span>
+<span class="nc" id="L108">        log(&quot;\tTotal C partition size : &quot; + totalCapacity + &quot;GB&quot;);</span>
+<span class="nc" id="L109">        log(&quot;\tUsable Space : &quot; + usablePatitionSpace + &quot;GB&quot;);</span>
+<span class="nc" id="L110">        log(&quot;\tFree Space in drive C: : &quot; + freePartitionSpace + &quot;GB&quot;);</span>
+<span class="nc" id="L111">        log(&quot;\tFree Space in drive D:  : &quot; + freePartitionSpace1 + &quot;GB&quot;);</span>
+<span class="nc" id="L112">        log(&quot;\tFree Space in drive E: &quot; + freePartitionSpace2 + &quot;GB&quot;);</span>
+<span class="nc bnc" id="L113" title="All 4 branches missed.">        if (freePartitionSpace &lt;= totalCapacity % 10 || freePartitionSpace1 &lt;= totalCapacity1 % 10)</span>
+<span class="nc" id="L114">            log(&quot; !!!! ALERT- PC OUT OF MEMORY !!!!&quot;);</span>
+        else
+<span class="nc" id="L116">            log(&quot;no alert&quot;);</span>
+<span class="nc" id="L117">    }</span>
+
+    /**
+     * Test mx bean threads.
+     */
+    public static void testMXBeanThreads() {
+<span class="nc" id="L123">        log(&quot;\n **THREADS DETAILS  ** \n&quot;);</span>
+<span class="nc" id="L124">        long[] ids = ManagementFactory.getThreadMXBean().getAllThreadIds();</span>
+<span class="nc" id="L125">        ThreadInfo[] threads = ManagementFactory.getThreadMXBean().getThreadInfo(ids, true, true, 20);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        for (ThreadInfo t : threads) {</span>
+            try {
+<span class="nc" id="L128">                log(t.getThreadName());</span>
+<span class="nc" id="L129">                log(&quot;Daemon: &quot; + t.isDaemon());</span>
+<span class="nc" id="L130">                log(&quot;Priority: &quot; + t.getPriority());</span>
+<span class="nc" id="L131">                log(&quot;Lock: &quot; + t.getLockName());</span>
+<span class="nc" id="L132">                log(&quot;State: &quot; + t.getThreadState());</span>
+<span class="nc" id="L133">                log(&quot;~~~~~~~~~~~~~~~~~~~~~~&quot;);</span>
+<span class="nc" id="L134">                Thread.sleep(1000);</span>
+<span class="nc" id="L135">            } catch (Exception ignored) {</span>
+<span class="nc" id="L136">            }</span>
+        }
+        try {
+<span class="nc" id="L139">            Thread.sleep(500);</span>
+<span class="nc" id="L140">        } catch (Exception ignored) {</span>
+<span class="nc" id="L141">        }</span>
+<span class="nc" id="L142">    }</span>
+
+    /**
+     * Test runtime memory.
+     */
+    public static void testRuntimeMemory() {
+
+
+<span class="nc" id="L150">        int cpuCount = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();</span>
+<span class="nc" id="L151">        log(&quot;\n \n CPU USAGE DETAILS \n\n&quot;);</span>
+<span class="nc" id="L152">        long[] ids = ManagementFactory.getThreadMXBean().getAllThreadIds();</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        for (long id : ids) {</span>
+            try {
+<span class="nc" id="L155">                log(&quot;THREAD : &quot; + ManagementFactory.getThreadMXBean().getThreadInfo(id).getThreadName() + &quot;\t&quot;);</span>
+<span class="nc" id="L156">                long startCPUTime = ManagementFactory.getThreadMXBean().getThreadCpuTime(id);</span>
+<span class="nc" id="L157">                long start = System.nanoTime();</span>
+<span class="nc" id="L158">                float cpuPercent = calcCPU(startCPUTime, start, cpuCount, id);</span>
+<span class="nc" id="L159">                log(&quot;CPU USAGE : &quot; + cpuPercent + &quot; % &quot;);</span>
+<span class="nc" id="L160">                log(&quot;~~~~~~~~~~~~~~~~~~~~~~&quot;);</span>
+<span class="nc" id="L161">                Thread.sleep(1000);</span>
+<span class="nc" id="L162">            } catch (InterruptedException ignored) {</span>
+<span class="nc" id="L163">            }</span>
+        }
+        try {
+<span class="nc" id="L166">            Thread.sleep(500);</span>
+<span class="nc" id="L167">        } catch (Exception ignored) {</span>
+<span class="nc" id="L168">        }</span>
+<span class="nc" id="L169">    }</span>
+
+    /**
+     * Test and clean runtime garbage.
+     */
+    public static void freeRuntimeGarbage() {
+        Runtime runtime;
+        byte[] bytes;
+<span class="nc" id="L177">        log(&quot;\n **MEMORY DETAILS  ** \n&quot;);</span>
+<span class="nc" id="L178">        runtime = Runtime.getRuntime();     // Print initial memory usage.</span>
+<span class="nc" id="L179">        printUsage(runtime);</span>
+<span class="nc" id="L180">        log(&quot;Allocating 1 MB&quot;);</span>
+<span class="nc" id="L181">        bytes = new byte[1024 * 1024];  // Allocate a 1 Megabyte and print memory usage</span>
+<span class="nc" id="L182">        printUsage(runtime);</span>
+<span class="nc" id="L183">        log(&quot;Freeing up space&quot;);</span>
+<span class="nc" id="L184">        bytes = null;</span>
+<span class="nc" id="L185">        runtime.gc();   // Invoke garbage collector to reclaim the allocated memory.</span>
+        // Wait 5 seconds to give garbage collector a chance to run
+        try {
+<span class="nc" id="L188">            Thread.sleep(5000);</span>
+<span class="nc" id="L189">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L190">            log(e.getMessage());</span>
+<span class="nc" id="L191">        }</span>
+<span class="nc" id="L192">        printUsage(runtime);</span>
+<span class="nc" id="L193">    }</span>
+
+    private static void testRuntimeThreads() {
+<span class="nc" id="L196">        log(&quot;\n **THREADS DETAILS  ** \n&quot;);</span>
+<span class="nc" id="L197">        String s = Thread.currentThread().getThreadGroup().toString();</span>
+<span class="nc" id="L198">        log(s);</span>
+<span class="nc" id="L199">        Set&lt;Thread&gt; allThreads = Thread.getAllStackTraces().keySet();</span>
+<span class="nc" id="L200">        loopThreads(allThreads);</span>
+<span class="nc" id="L201">    }</span>
+
+    private static void loopThreads(Set&lt;Thread&gt; set) {
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        for (Thread t : set) {</span>
+            try {
+<span class="nc" id="L206">                log(t.getName());</span>
+<span class="nc" id="L207">                log(&quot;Daemon: &quot; + t.isDaemon());</span>
+<span class="nc" id="L208">                log(&quot;Priority: &quot; + t.getPriority());</span>
+<span class="nc" id="L209">                log(&quot;Group: &quot; + t.getThreadGroup());</span>
+<span class="nc" id="L210">                log(&quot;Group count: &quot; + t.getThreadGroup().activeCount());</span>
+<span class="nc" id="L211">                log(&quot;State: &quot; + t.getState());</span>
+<span class="nc" id="L212">                log(&quot;~~~~~~~~~~~~~~~~~~~~~~&quot;);</span>
+<span class="nc" id="L213">                Thread.sleep(1000);</span>
+<span class="nc" id="L214">            } catch (Exception ignored) {</span>
+<span class="nc" id="L215">            }</span>
+<span class="nc" id="L216">        }</span>
+        try {
+<span class="nc" id="L218">            Thread.sleep(500);</span>
+<span class="nc" id="L219">        } catch (Exception ignored) {</span>
+<span class="nc" id="L220">        }</span>
+<span class="nc" id="L221">    }</span>
+
+    /**
+     * Init.
+     */
+    public void init() {
+<span class="nc" id="L227">        JPanel top = new JPanel();</span>
+<span class="nc" id="L228">        text = new JTextArea(10, 30);</span>
+<span class="nc" id="L229">        JScrollPane pane = new JScrollPane(text);</span>
+<span class="nc" id="L230">        pane.setSize(600, 400);</span>
+<span class="nc" id="L231">        JButton testRuntime = new JButton(&quot;free garbage&quot;);</span>
+<span class="nc" id="L232">        testRuntime.addActionListener(x -&gt; start(0));</span>
+<span class="nc" id="L233">        JButton runtimeMemory = new JButton(&quot;runtimeMemory usage&quot;);</span>
+<span class="nc" id="L234">        runtimeMemory.addActionListener(x -&gt; start(1));</span>
+<span class="nc" id="L235">        JButton physicalMemory = new JButton(&quot;physical memory&quot;);</span>
+<span class="nc" id="L236">        physicalMemory.addActionListener(x -&gt; start(2));</span>
+<span class="nc" id="L237">        JButton threadsInfo = new JButton(&quot;MXBean threads&quot;);</span>
+<span class="nc" id="L238">        threadsInfo.addActionListener(x -&gt; start(3));</span>
+<span class="nc" id="L239">        JButton runtimeThreads = new JButton(&quot;Runtime threads&quot;);</span>
+<span class="nc" id="L240">        runtimeThreads.addActionListener(x -&gt; start(4));</span>
+<span class="nc" id="L241">        JPanel buttons = new JPanel();</span>
+<span class="nc" id="L242">        GroupLayout group = new GroupLayout(top);</span>
+<span class="nc" id="L243">        top.setLayout(group);</span>
+<span class="nc" id="L244">        group.setAutoCreateGaps(true);</span>
+<span class="nc" id="L245">        group.setAutoCreateContainerGaps(true);</span>
+<span class="nc" id="L246">        group.setVerticalGroup(</span>
+<span class="nc" id="L247">                group.createParallelGroup(GroupLayout.Alignment.CENTER)</span>
+<span class="nc" id="L248">                        .addGroup(group.createSequentialGroup()</span>
+<span class="nc" id="L249">                                .addComponent(testRuntime)</span>
+<span class="nc" id="L250">                                .addComponent(runtimeMemory)</span>
+<span class="nc" id="L251">                                .addComponent(physicalMemory)</span>
+<span class="nc" id="L252">                                .addComponent(threadsInfo)</span>
+<span class="nc" id="L253">                                .addComponent(runtimeThreads)</span>
+<span class="nc" id="L254">                                .addContainerGap())</span>
+<span class="nc" id="L255">                        .addGroup(group.createSequentialGroup()</span>
+<span class="nc" id="L256">                                .addComponent(pane)</span>
+                        )
+        );
+
+<span class="nc" id="L260">        group.setHorizontalGroup(</span>
+<span class="nc" id="L261">                group.createParallelGroup(GroupLayout.Alignment.LEADING)</span>
+<span class="nc" id="L262">                        .addGroup(group.createSequentialGroup()</span>
+<span class="nc" id="L263">                                .addGroup(group.createParallelGroup()</span>
+<span class="nc" id="L264">                                        .addComponent(testRuntime)</span>
+<span class="nc" id="L265">                                        .addComponent(runtimeMemory)</span>
+<span class="nc" id="L266">                                        .addComponent(physicalMemory)</span>
+<span class="nc" id="L267">                                        .addComponent(threadsInfo)</span>
+<span class="nc" id="L268">                                        .addComponent(runtimeThreads))</span>
+<span class="nc" id="L269">                                .addGroup(group.createParallelGroup()</span>
+<span class="nc" id="L270">                                        .addComponent(pane))));</span>
+<span class="nc" id="L271">        top.add(buttons);</span>
+<span class="nc" id="L272">        top.add(pane);</span>
+<span class="nc" id="L273">        this.add(top);</span>
+<span class="nc" id="L274">    }</span>
+
+    /**
+     * Start.
+     *
+     * @param i the
+     */
+    public void start(int i) {
+<span class="nc" id="L282">        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));</span>
+<span class="nc" id="L283">        Thread t = null;</span>
+<span class="nc bnc" id="L284" title="All 6 branches missed.">        switch (i) {</span>
+<span class="nc" id="L285">            case 0 -&gt; t = new Thread(() -&gt; {</span>
+<span class="nc" id="L286">                text.setText(&quot;&quot;);</span>
+<span class="nc" id="L287">                freeRuntimeGarbage();</span>
+<span class="nc" id="L288">                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L289">            });</span>
+<span class="nc" id="L290">            case 1 -&gt; t = new Thread(() -&gt; {</span>
+<span class="nc" id="L291">                text.setText(&quot;&quot;);</span>
+<span class="nc" id="L292">                testRuntimeMemory();</span>
+<span class="nc" id="L293">                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L294">            });</span>
+<span class="nc" id="L295">            case 2 -&gt; t = new Thread(() -&gt; {</span>
+<span class="nc" id="L296">                text.setText(&quot;&quot;);</span>
+<span class="nc" id="L297">                testPhysicalMemory();</span>
+<span class="nc" id="L298">                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L299">            });</span>
+<span class="nc" id="L300">            case 3 -&gt; t = new Thread(() -&gt; {</span>
+<span class="nc" id="L301">                text.setText(&quot;&quot;);</span>
+<span class="nc" id="L302">                testMXBeanThreads();</span>
+<span class="nc" id="L303">                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L304">            });</span>
+<span class="nc" id="L305">            case 4 -&gt; t = new Thread(() -&gt; {</span>
+<span class="nc" id="L306">                text.setText(&quot;&quot;);</span>
+<span class="nc" id="L307">                testRuntimeThreads();</span>
+<span class="nc" id="L308">                this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));</span>
+<span class="nc" id="L309">            });</span>
+        }
+<span class="nc bnc" id="L311" title="All 4 branches missed.">        assert t != null;</span>
+<span class="nc" id="L312">        t.start();</span>
+<span class="nc" id="L313">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

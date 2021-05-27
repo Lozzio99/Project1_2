@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Vector3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">Vector3D.java</span></div><h1>Vector3D.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+
+import group17.Interfaces.Vector3dInterface;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import static java.lang.StrictMath.*;
+
+
+/**
+ * The type Vector 3 d.
+ */
+public class Vector3D implements Vector3dInterface {
+
+
+    /**
+     * The X.
+     */
+    protected double x,
+    /**
+     * The Y.
+     */
+    y,
+    /**
+     * The Z.
+     */
+    z;
+
+    /**
+     * Instantiates a new Vector 3 d.
+     */
+<span class="nc" id="L33">    public Vector3D() {</span>
+<span class="nc" id="L34">        this.x = this.y = this.z = 0;</span>
+<span class="nc" id="L35">    }</span>
+
+
+    /**
+     * Instantiates a new Vector 3 d.
+     *
+     * @param x the x
+     * @param y the y
+     * @param z the z
+     */
+<span class="nc" id="L45">    public Vector3D(double x, double y, double z) {</span>
+<span class="nc" id="L46">        this.x = x;</span>
+<span class="nc" id="L47">        this.y = y;</span>
+<span class="nc" id="L48">        this.z = z;</span>
+<span class="nc" id="L49">    }</span>
+
+
+    /**
+     * Instantiates a new Vector 3 d.
+     *
+     * @param p the p
+     */
+<span class="nc" id="L57">    public Vector3D(Point3D p) {</span>
+<span class="nc" id="L58">        this.x = p.x;</span>
+<span class="nc" id="L59">        this.y = p.y;</span>
+<span class="nc" id="L60">        this.z = p.z;</span>
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * Instantiates a new Vector 3 d.
+     *
+     * @param p1 the p 1
+     * @param p2 the p 2
+     */
+<span class="nc" id="L69">    public Vector3D(Point3D p1, Point3D p2) {</span>
+<span class="nc" id="L70">        this.x = p2.x - p1.x;</span>
+<span class="nc" id="L71">        this.y = p2.y - p1.y;</span>
+<span class="nc" id="L72">        this.z = p2.z - p1.z;</span>
+<span class="nc" id="L73">    }</span>
+
+    /**
+     * Gets the distance between two vectors.
+     *
+     * @param first the first
+     * @param other the other
+     * @return double double
+     */
+    public static double dist(Vector3dInterface first, Vector3dInterface other) {
+<span class="nc" id="L83">        double v1 = pow(other.getX() - first.getX(), 2);</span>
+<span class="nc" id="L84">        double v2 = pow(other.getY() - first.getY(), 2);</span>
+<span class="nc" id="L85">        double v3 = pow(other.getZ() - first.getZ(), 2);</span>
+<span class="nc" id="L86">        return sqrt(v1 + v2 + v3);</span>
+    }
+
+    /**
+     * Gets the unit vector between two vectors.
+     *
+     * @param from the from
+     * @param to   the to
+     * @return vector 3 d interface
+     */
+    public static Vector3dInterface unitVectorDistance(Vector3dInterface from, Vector3dInterface to) {
+<span class="nc" id="L97">        return normalize(new Vector3D(</span>
+<span class="nc" id="L98">                from.getX() - to.getX(),</span>
+<span class="nc" id="L99">                from.getY() - to.getY(),</span>
+<span class="nc" id="L100">                from.getZ() - to.getZ()));</span>
+    }
+
+    /**
+     * Returns the dot product of two vectors.
+     *
+     * @param v1 the v 1
+     * @param v2 the v 2
+     * @return double double
+     */
+    public static double dot(Vector3dInterface v1, Vector3dInterface v2) {
+<span class="nc" id="L111">        return v1.getX() * v2.getX() + v1.getY() * v2.getY() + v1.getZ() * v2.getZ();</span>
+    }
+
+    /**
+     * Returns the cross of two vectors.
+     *
+     * @param v1 the v 1
+     * @param v2 the v 2
+     * @return vector 3 d interface
+     */
+    @Contract(&quot;_, _ -&gt; new&quot;)
+    public static @NotNull Vector3dInterface cross(Vector3dInterface v1, Vector3dInterface v2) {
+<span class="nc" id="L123">        return new Vector3D(</span>
+<span class="nc" id="L124">                v1.getY() * v2.getZ() - v1.getZ() * v2.getY(),</span>
+<span class="nc" id="L125">                v1.getZ() * v2.getX() - v1.getX() * v2.getZ(),</span>
+<span class="nc" id="L126">                v1.getX() * v2.getY() - v1.getY() * v2.getX());</span>
+    }
+
+    /**
+     * Normalises the vector.
+     *
+     * @param v the v
+     * @return vector 3 d interface
+     */
+    public static Vector3dInterface normalize(Vector3dInterface v) {
+<span class="nc" id="L136">        Vector3dInterface v2 = new Vector3D();</span>
+<span class="nc" id="L137">        double magnitude = sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());</span>
+<span class="nc" id="L138">        v2.setX(v.getX() / magnitude);</span>
+<span class="nc" id="L139">        v2.setY(v.getY() / magnitude);</span>
+<span class="nc" id="L140">        v2.setZ(v.getZ() / magnitude);</span>
+<span class="nc" id="L141">        return v2;</span>
+    }
+
+    /**
+     * Adds another vector onto this vector.
+     *
+     * @return a new Vector3d
+     */
+    @Override
+    public Vector3dInterface add(Vector3dInterface other) {
+<span class="nc" id="L151">        return new Vector3D</span>
+<span class="nc" id="L152">                (this.getX() + other.getX(),</span>
+<span class="nc" id="L153">                        this.getY() + other.getY(),</span>
+<span class="nc" id="L154">                        this.getZ() + other.getZ());</span>
+    }
+
+    /**
+     * Subtracts this vector from another vector.
+     *
+     * @return a new Vector3d
+     */
+    @Override
+    public Vector3dInterface sub(Vector3dInterface other) {
+
+<span class="nc" id="L165">        return new Vector3D(this.getX() - other.getX(),</span>
+<span class="nc" id="L166">                this.getY() - other.getY(),</span>
+<span class="nc" id="L167">                this.getZ() - other.getZ());</span>
+    }
+
+    /**
+     * @return the result of |this-other|
+     */
+    public Vector3dInterface absSub(Vector3dInterface other) {
+<span class="nc" id="L174">        return new Vector3D(abs(this.getX() - other.getX()),</span>
+<span class="nc" id="L175">                abs(this.getY() - other.getY()),</span>
+<span class="nc" id="L176">                abs(this.getZ() - other.getZ()));</span>
+    }
+
+    /**
+     * Multiplies this vector by a scalar.
+     *
+     * @return a new Vector3d
+     */
+    @Override
+    public Vector3dInterface mul(double scalar) {
+<span class="nc" id="L186">        return new Vector3D(this.x * scalar,</span>
+                this.y * scalar,
+                this.z * scalar);
+    }
+
+    @Override
+    public Vector3dInterface div(Vector3dInterface vector) {
+<span class="nc" id="L193">        return new Vector3D(this.x / vector.getX(),</span>
+<span class="nc" id="L194">                this.y / vector.getY(),</span>
+<span class="nc" id="L195">                this.z / vector.getZ());</span>
+    }
+
+    @Override
+    public Vector3dInterface multiply(Vector3dInterface other) {
+<span class="nc" id="L200">        return new Vector3D(this.x * other.getX(),</span>
+<span class="nc" id="L201">                this.y * other.getY(),</span>
+<span class="nc" id="L202">                this.z * other.getZ());</span>
+    }
+
+    /**
+     * Divides this vector by a scalar.
+     *
+     * @return a new Vector3d
+     */
+    @Override
+    public Vector3dInterface div(double scalar) {
+<span class="nc" id="L212">        return new Vector3D(this.x / scalar,</span>
+                this.y / scalar,
+                this.z / scalar);
+    }
+
+    /**
+     * Adds another vector onto this one after it is multiplied by a scalar.
+     *
+     * @return a new Vector3d
+     */
+    @Override
+    public Vector3dInterface addMul(double scalar, Vector3dInterface other) {
+<span class="nc" id="L224">        Vector3dInterface newV = other.mul(scalar);</span>
+<span class="nc" id="L225">        return this.add(newV);</span>
+    }
+
+    /**
+     * Gets the norm of a vector.
+     */
+    @Override
+    public double norm() {
+<span class="nc" id="L233">        double x = pow(this.getX(), 2);</span>
+<span class="nc" id="L234">        double y = pow(this.getY(), 2);</span>
+<span class="nc" id="L235">        double z = pow(this.getZ(), 2);</span>
+<span class="nc" id="L236">        return sqrt(x + y + z);</span>
+    }
+
+    /**
+     * Gets the distance between this and another vector.
+     */
+    @Override
+    public double dist(Vector3dInterface other) {
+<span class="nc" id="L244">        double v1 = pow(other.getX() - this.getX(), 2);</span>
+<span class="nc" id="L245">        double v2 = pow(other.getY() - this.getY(), 2);</span>
+<span class="nc" id="L246">        double v3 = pow(other.getZ() - this.getZ(), 2);</span>
+<span class="nc" id="L247">        return sqrt(v1 + v2 + v3);</span>
+    }
+
+    /**
+     * Converts a vector to a string.
+     */
+    @Override
+    public String toString() {
+<span class="nc" id="L255">        return &quot;(&quot; +</span>
+<span class="nc" id="L256">                this.getX() + &quot;,&quot; +</span>
+<span class="nc" id="L257">                this.getY() + &quot;,&quot; +</span>
+<span class="nc" id="L258">                this.getZ() + &quot;)&quot;;</span>
+    }
+
+    /**
+     * Return a point3D from a Vector
+     *
+     * @return a new Point3D object
+     */
+    @Override
+    public Point3D fromVector() {
+<span class="nc" id="L268">        return new Point3D(this.getX(), this.getY(), this.getZ());</span>
+    }
+
+    /**
+     * Clones a Vector3dInterface.
+     */
+    @Override
+    public Vector3dInterface clone() {
+<span class="nc" id="L276">        return new Vector3D(this.getX(), this.getY(), this.getZ());</span>
+    }
+
+
+    /**
+     * Radian mode
+     *
+     * @return Angle of rotation for 2D vectors
+     */
+    @Override
+    public double heading() {
+<span class="nc" id="L287">        return Math.atan2(this.getY(), this.getX());</span>
+    }
+
+    @Override
+    public double getX() {
+<span class="nc" id="L292">        return this.x;</span>
+    }
+
+    @Override
+    public void setX(double x) {
+<span class="nc" id="L297">        this.x = x;</span>
+<span class="nc" id="L298">    }</span>
+
+    @Override
+    public double getY() {
+<span class="nc" id="L302">        return this.y;</span>
+    }
+
+    @Override
+    public void setY(double y) {
+<span class="nc" id="L307">        this.y = y;</span>
+<span class="nc" id="L308">    }</span>
+
+    @Override
+    public double getZ() {
+<span class="nc" id="L312">        return this.z;</span>
+    }
+
+    @Override
+    public void setZ(double z) {
+<span class="nc" id="L317">        this.z = z;</span>
+<span class="nc" id="L318">    }</span>
+
+    @Override
+    public boolean isZero() {
+<span class="nc bnc" id="L322" title="All 6 branches missed.">        return this.x == 0 &amp;&amp; this.y == 0 &amp;&amp; this.z == 0;</span>
+    }
+
+
+    /**
+     * Implementation of the equals and HashCode methods for the scheduling purpose.
+     * Vector decisions are stored in an hashmap linked to a Clock as a key or a StateInterface,
+     * we therefore want the key to be mapped and retrieved in an approximate situation, to avoid
+     * such an uniqueness in the hashcode of the Vectors there we therefore
+     * decided to hash the first 8 significant figures and to compare vectors by an accuracy of 10^-8
+     */
+    @Override
+    public int hashCode() {
+<span class="nc" id="L335">        int hash = 11;</span>
+<span class="nc" id="L336">        hash = 31 * hash + Double.hashCode(this.x);</span>
+<span class="nc" id="L337">        hash = 31 * hash + Double.hashCode(this.y);</span>
+<span class="nc" id="L338">        hash = 31 * hash + Double.hashCode(this.z);</span>
+<span class="nc" id="L339">        return hash;</span>
+    }
+
+    /**
+     * Actual accuracy is 10^-8 here too
+     *
+     * @param o the object to be compared to
+     * @return true if the vector is equal up to a certain accuracy
+     */
+
+    @Contract(value = &quot;null -&gt; false&quot;, pure = true)
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L352" title="All 2 branches missed.">        if (o instanceof Vector3dInterface) {</span>
+<span class="nc" id="L353">            Vector3dInterface v = (Vector3dInterface) o;</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">            return v.getX() == this.x &amp;&amp;</span>
+<span class="nc bnc" id="L355" title="All 2 branches missed.">                    v.getY() == this.y &amp;&amp;</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">                    v.getZ() == this.z;</span>
+        }
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (o instanceof ApproxV3D) {</span>
+<span class="nc" id="L359">            return new ApproxV3D(this).equals(o);</span>
+        }
+<span class="nc" id="L361">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

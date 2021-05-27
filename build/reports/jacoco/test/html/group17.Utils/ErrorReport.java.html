@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorReport.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Utils</a> &gt; <span class="el_source">ErrorReport.java</span></div><h1>ErrorReport.java</h1><pre class="source lang-java linenums">package group17.Utils;
+
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Lib.Vector3D;
+import org.jetbrains.annotations.Contract;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static group17.Main.simulation;
+import static group17.Main.userDialog;
+import static group17.Utils.Config.*;
+
+/**
+ * Represents Observer class for the Errors
+ *   of Simulation
+ */
+public class ErrorReport implements Runnable {
+
+<span class="nc" id="L26">    public final static String[] solvers = new String[]{&quot;&quot;, &quot;E&quot;, &quot;Rk+&quot;, &quot;Vve&quot;, &quot;Vst&quot;, &quot;M&quot;, &quot;Rk-&quot;, &quot;RkL&quot;};</span>
+    /**
+     * The constant monthIndex.
+     */
+<span class="nc" id="L30">    private static final AtomicInteger monthIndex = new AtomicInteger(-1);</span>
+<span class="nc" id="L31">    public static boolean testingAccuracy = false;</span>
+    private final List&lt;Vector3dInterface&gt; avgPosErrorMonth;
+    private final ErrorData state;
+    private final List&lt;Vector3dInterface&gt; avgVelErrorMonth;
+    private Writer fileWriter;
+    private List&lt;Vector3dInterface&gt; absPosition, absVelocity;
+    private List&lt;Vector3dInterface&gt; relPosition, relVelocity;
+
+    /**
+     * Instantiates a new Error report.
+     *
+     * @param state the state
+     */
+    @Contract(pure = true)
+<span class="nc" id="L45">    private ErrorReport(final ErrorData state) {</span>
+        //make a copy of the references
+<span class="nc" id="L47">        this.state = state;</span>
+<span class="nc" id="L48">        this.avgPosErrorMonth = new ArrayList&lt;&gt;(13);</span>
+<span class="nc" id="L49">        this.avgVelErrorMonth = new ArrayList&lt;&gt;(13);</span>
+<span class="nc" id="L50">    }</span>
+
+    /**
+     * Instantiates a new Error report.
+     *
+     * @param fw        the fw
+     * @param errorData the error data
+     */
+    @Contract(pure = true)
+    public ErrorReport(final AtomicReference&lt;? extends Writer&gt; fw, final ErrorData errorData) {
+<span class="nc" id="L60">        this(errorData);</span>
+<span class="nc" id="L61">        fileWriter = fw.get();</span>
+<span class="nc" id="L62">    }</span>
+
+    public static synchronized int monthIndex() {
+<span class="nc" id="L65">        return monthIndex.get();</span>
+    }
+
+    public static void setMonthIndex(int value) {
+        while (true) {
+<span class="nc" id="L70">            int exist = monthIndex();</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (monthIndex.compareAndSet(exist, value)) return;</span>
+<span class="nc" id="L72">        }</span>
+    }
+
+    public static void incrementMonth() {
+        while (true) {
+<span class="nc" id="L77">            int exist = monthIndex();</span>
+<span class="nc" id="L78">            int newValue = exist + 1;</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (monthIndex.compareAndSet(exist, newValue)) return;</span>
+<span class="nc" id="L80">        }</span>
+    }
+
+    public static String makeMonthDirectories(Class&lt;?&gt; klass) {
+<span class="nc" id="L84">        return extractDir() + &quot;\\MONTH&quot; + monthIndex + &quot;.&quot;;</span>
+    }
+
+    private static String extractDir() {
+<span class="nc" id="L88">        String path = &quot;src\\main\\resources\\ErrorData&quot;;</span>
+<span class="nc" id="L89">        path += &quot;\\&quot; + solvers[DEFAULT_SOLVER] + &quot;\\&quot; + ((int) STEP_SIZE);</span>
+<span class="nc" id="L90">        File dir = new File(path);</span>
+<span class="nc" id="L91">        dir.mkdirs();</span>
+<span class="nc" id="L92">        return path;</span>
+    }
+
+    /**
+     * Start.
+     */
+    public void start() {
+<span class="nc bnc" id="L99" title="All 4 branches missed.">        if (monthIndex() &lt; 13 &amp;&amp; monthIndex() &gt;= 0) new Thread(this, &quot;Error Log&quot;).start();</span>
+<span class="nc" id="L100">    }</span>
+
+    @Override
+    public void run() {
+<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (userDialog != null) userDialog.disable(6);</span>
+        //ASSUMING [ NO ] ROCKET HERE
+<span class="nc" id="L106">        absPosition = new ArrayList&lt;&gt;(11);</span>
+<span class="nc" id="L107">        absVelocity = new ArrayList&lt;&gt;(11);</span>
+<span class="nc" id="L108">        relPosition = new ArrayList&lt;&gt;(11);</span>
+<span class="nc" id="L109">        relVelocity = new ArrayList&lt;&gt;(11);</span>
+<span class="nc" id="L110">        Vector3dInterface averageErrorPosition = new Vector3D();</span>
+<span class="nc" id="L111">        Vector3dInterface averageErrorVelocity = new Vector3D();</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        if (DEBUG) {</span>
+<span class="nc" id="L113">            System.out.println(&quot;********************        SOE     **************************&quot;);</span>
+<span class="nc" id="L114">            System.out.println(&quot;MONTH &quot; + monthIndex);</span>
+        }
+
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        for (int i = 0; i &lt; state.getPositions().size(); i++) {</span>
+<span class="nc" id="L118">            absPosition.add(state.getPositions().get(i)</span>
+<span class="nc" id="L119">                    .absSub(ORIGINAL_DATA[monthIndex()].getPositions().get(i)));</span>
+<span class="nc" id="L120">            absVelocity.add(state.getVelocities().get(i)</span>
+<span class="nc" id="L121">                    .absSub(ORIGINAL_DATA[monthIndex()].getVelocities().get(i)));</span>
+<span class="nc" id="L122">            relPosition.add(absPosition.get(i)</span>
+<span class="nc" id="L123">                    .div(ORIGINAL_DATA[monthIndex()].getPositions().get(i)));</span>
+<span class="nc" id="L124">            relVelocity.add(absVelocity.get(i)</span>
+<span class="nc" id="L125">                    .div(ORIGINAL_DATA[monthIndex()].getVelocities().get(i)));</span>
+<span class="nc" id="L126">            Vector3dInterface subPos = state.getPositions().get(i).sub(ORIGINAL_DATA[monthIndex()].getPositions().get(i));</span>
+<span class="nc" id="L127">            Vector3dInterface subVel = state.getVelocities().get(i).sub(ORIGINAL_DATA[monthIndex()].getVelocities().get(i));</span>
+
+
+<span class="nc" id="L130">            averageErrorPosition = averageErrorPosition.add(subPos.multiply(subPos));//not sure if must do this comparing all planets</span>
+<span class="nc" id="L131">            averageErrorVelocity = averageErrorVelocity.add(subVel.multiply(subVel));</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">            if (DEBUG) {</span>
+<span class="nc" id="L134">                System.out.println(&quot;PLANET &quot; + simulation.getSystem().getCelestialBodies().get(i).toString() + &quot;~~~~~~~~&quot;);</span>
+                //System.out.println(&quot;ORIGINAL PV : &quot; + ORIGINAL_DATA[monthIndex].getPositions().get(i));
+                //System.out.println(&quot;SIMULATED PV: &quot; + state.getPositions().get(i));
+<span class="nc" id="L137">                System.out.println(&quot;ABS ERROR POSIT : &quot; + absPosition.get(i));</span>
+<span class="nc" id="L138">                System.out.println(&quot;ABS ERROR VEL   : &quot; + absVelocity.get(i));</span>
+                //System.out.println(&quot;ORIGINAL VV : &quot; + ORIGINAL_DATA[monthIndex].getVelocities().get(i));
+                //System.out.println(&quot;SIMULATED VV:&quot; + state.getVelocities().get(i));
+<span class="nc" id="L141">                System.out.println(&quot;REL ERROR POS : &quot; + relPosition.get(i));</span>
+<span class="nc" id="L142">                System.out.println(&quot;REL ERROR VEL : &quot; + relVelocity.get(i));</span>
+<span class="nc" id="L143">                System.out.println(&quot;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&quot;);</span>
+            }
+        }
+
+
+<span class="nc" id="L148">        averageErrorPosition = averageErrorPosition.div(state.getPositions().size());</span>
+<span class="nc" id="L149">        averageErrorVelocity = averageErrorVelocity.div(state.getVelocities().size());</span>
+<span class="nc" id="L150">        avgPosErrorMonth.add(averageErrorPosition);</span>
+<span class="nc" id="L151">        avgVelErrorMonth.add(averageErrorVelocity);</span>
+
+<span class="nc bnc" id="L153" title="All 2 branches missed.">        if (DEBUG) {</span>
+<span class="nc" id="L154">            System.out.println(&quot;AVERAGE ERROR POSIT : &quot; + averageErrorPosition);</span>
+<span class="nc" id="L155">            System.out.println(&quot;AVERAGE ERROR VEL   : &quot; + averageErrorVelocity);</span>
+<span class="nc" id="L156">            System.out.println(&quot;********************        EOE     **************************&quot;);</span>
+        }
+
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        if (userDialog != null) {</span>
+<span class="nc" id="L161">            userDialog.getErrorWindow().updateLabels(new ErrorData(absPosition, absVelocity), true);</span>
+<span class="nc" id="L162">            userDialog.getErrorWindow().updateLabels(new ErrorData(relPosition, relVelocity), false);</span>
+<span class="nc" id="L163">            userDialog.enable(6);</span>
+        }
+
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (fileWriter != null) {</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (fileWriter instanceof FileWriter) writeFileTxt();</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">            else if (fileWriter instanceof ErrorExportCSV) writeFileCsv();</span>
+        }
+<span class="nc" id="L170">    }</span>
+
+    /**
+     * Gets average errors.
+     *
+     * @return the average errors
+     */
+    public ErrorData getAverageErrors() {
+<span class="nc" id="L178">        return new ErrorData(avgPosErrorMonth, avgVelErrorMonth);</span>
+    }
+
+    public void writeFileTxt() {
+        try {
+<span class="nc bnc" id="L183" title="All 2 branches missed.">            if (DEBUG) System.out.println(&quot;Writing on txt file&quot;);</span>
+<span class="nc" id="L184">            fileWriter.write(&quot;********************************        SOE     **************************************\n&quot;);</span>
+<span class="nc" id="L185">            fileWriter.write(&quot;MONTH &quot; + monthIndex + &quot;\n&quot;);</span>
+<span class="nc bnc" id="L186" title="All 2 branches missed.">            for (int i = 0; i &lt; state.getPositions().size(); i++) {</span>
+<span class="nc" id="L187">                fileWriter.write(&quot;PLANET &quot; + simulation.getSystem().getCelestialBodies().get(i).toString() + &quot;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n&quot;);</span>
+                //fileWriter.get().write(&quot;ABS ERROR POSIT : &quot; + absPosition.get(i) + &quot;\n&quot;);
+                //fileWriter.get().write(&quot;ABS ERROR VEL   : &quot; + absVelocity.get(i)+ &quot;\n&quot;);
+<span class="nc" id="L190">                fileWriter.write(&quot;REL ERROR POS : &quot; + relPosition.get(i) + &quot;\n&quot;);</span>
+<span class="nc" id="L191">                fileWriter.write(&quot;REL ERROR VEL : &quot; + relVelocity.get(i) + &quot;\n&quot;);</span>
+            }
+            //fileWriter.get().write(&quot;\n&quot; + &quot;AVERAGE ERROR POSIT : &quot; + averageErrorPosition + &quot;\n&quot;);
+            //fileWriter.get().write(&quot;AVERAGE ERROR VEL   : &quot; + averageErrorVelocity + &quot;\n&quot;);
+<span class="nc" id="L195">            fileWriter.write(&quot;********************************        EOE     **************************************\n&quot;);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if (!testingAccuracy) fileWriter.close();</span>
+<span class="nc" id="L197">        } catch (IOException e) {</span>
+<span class="nc" id="L198">            e.printStackTrace();</span>
+<span class="nc" id="L199">        }</span>
+<span class="nc" id="L200">    }</span>
+
+    public void writeFileCsv() {
+        try {
+<span class="nc bnc" id="L204" title="All 2 branches missed.">            if (DEBUG) System.out.println(&quot;Writing on csv file&quot;);</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">            for (int i = 0; i &lt; state.getPositions().size(); i++) {</span>
+<span class="nc" id="L206">                ((ErrorExportCSV) fileWriter).addErrorData(</span>
+                        solvers[DEFAULT_SOLVER],
+<span class="nc" id="L208">                        monthIndex(),</span>
+<span class="nc" id="L209">                        simulation.getSystem().getCelestialBodies().get(i).toString(),</span>
+<span class="nc" id="L210">                        relPosition.get(i),</span>
+<span class="nc" id="L211">                        relVelocity.get(i)</span>
+                );
+            }
+<span class="nc bnc" id="L214" title="All 2 branches missed.">            if (!testingAccuracy) fileWriter.close();</span>
+<span class="nc" id="L215">        } catch (IOException e) {</span>
+<span class="nc" id="L216">            e.printStackTrace();</span>
+<span class="nc" id="L217">        }</span>
+
+<span class="nc" id="L219">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

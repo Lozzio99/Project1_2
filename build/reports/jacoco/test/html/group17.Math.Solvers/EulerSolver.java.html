@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EulerSolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Solvers</a> &gt; <span class="el_source">EulerSolver.java</span></div><h1>EulerSolver.java</h1><pre class="source lang-java linenums">package group17.Math.Solvers;
+
+
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.StateInterface;
+import group17.Math.Lib.GravityFunction;
+
+
+/**
+ * The type Euler solver.
+ * First Order Solver
+ */
+public class EulerSolver implements ODESolverInterface {
+
+    /**
+     * The Single core f.
+     */
+    private final ODEFunctionInterface f;
+
+    /**
+     * Instantiates a new Euler solver.
+     *
+     * @param f the f
+     */
+<span class="nc" id="L26">    public EulerSolver(final ODEFunctionInterface f) {</span>
+<span class="nc" id="L27">        this.f = f;</span>
+<span class="nc" id="L28">    }</span>
+
+    /**
+     *  Formula
+     *  y1 = y0 + h*f(t,y0);
+     *
+     * @param f the function representing Newton's Gravitational law
+     * @param y the instance  of the Simulation
+     * @return the next state of the simulation based on a Euler Step
+     */
+    @Override
+    public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
+<span class="nc" id="L40">        GravityFunction.setChecked(false);</span>
+<span class="nc" id="L41">        GravityFunction.setCurrentTime(currentTime - stepSize);</span>
+<span class="nc" id="L42">        return y.addMul(stepSize, f.call(currentTime, y));</span>
+    }
+
+    @Override
+    public ODEFunctionInterface getFunction() {
+<span class="nc" id="L47">        return f;</span>
+    }
+
+
+    @Override
+    public String toString() {
+<span class="nc" id="L53">        return &quot;EulerSolver{&quot; +</span>
+                &quot;function used =&quot; + f +
+                '}';
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

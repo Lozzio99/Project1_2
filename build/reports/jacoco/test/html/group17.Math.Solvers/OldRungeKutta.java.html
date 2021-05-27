@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OldRungeKutta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Solvers</a> &gt; <span class="el_source">OldRungeKutta.java</span></div><h1>OldRungeKutta.java</h1><pre class="source lang-java linenums">package group17.Math.Solvers;
+
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
+
+import static group17.Utils.Config.DEBUG;
+
+/**
+ *
+ * The type Old runge kutta.
+ * Fourth order solver for second order ODE
+ */
+public class OldRungeKutta implements ODESolverInterface {
+
+    private final ODEFunctionInterface f;
+    private boolean checked;
+    private double currentTime;
+
+    /**
+     * Instantiates a new Old runge kutta.
+     * @param f the f
+     */
+<span class="nc" id="L25">    public OldRungeKutta(final ODEFunctionInterface f) {</span>
+<span class="nc" id="L26">        this.f = f;</span>
+<span class="nc" id="L27">    }</span>
+
+    /**
+     * Step of Rk4 for 2nd order ODE
+     *
+     * &lt;a href=https://www.youtube.com/watch?v=TjZgQa2kec0&amp;t=381s&amp;ab_channel=LettherebemathLettherebemath&gt;source link&lt;/a&gt;
+     * Formula:
+     *  dx/dt=xÂ Ì‡=v;   dx = vâˆ—dt;
+     *  dv/dt=vÂ Ì‡=a=F(t,x,v);     dv = a*dt = F(t,x,v)âˆ—dt;
+     *
+     * dx1=hâˆ—k_x1=hâˆ—v;		       dv1=hâˆ—k_v1=hâˆ—F(t,x,v);
+     * dx2=hâˆ—k_x2=hâˆ—(v+(dâˆ—v1)/2);   dv2=hâˆ—k_v2=hâˆ—F(t+h/2,x+dx1/2,v+dv1/2);
+     * dx3=hâˆ—k_x3=hâˆ—(v+(dâˆ—v2)/2);   dv3=hâˆ—k_v3=hâˆ—F(t+h/2,x+dx2/2,v+dv2/2);
+     * dx4=hâˆ—k_x4=hâˆ—(v+dv_3);	   dv4=hâˆ—k_v4=hâˆ—F(t+h,x+dx3,v+dv1);
+     *
+     * dx=(dx1+2âˆ—dx2+2âˆ—dx3+dx4)/6    dv=(dv1+2âˆ—dv2+2âˆ—dv3+dv4)/6
+     * x(t+h)=x(t)+dx;    		 v(t+h)=v(t)+vx;
+     *
+     *
+     * @param f the function representing Newton's Gravitational law
+     * @param y the instance of the Simulation
+     * @param h stepSize
+     * @return the next state of the simulation based on Runge-Kutta 4 Step
+     */
+    @Override
+    public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
+        StateInterface k1, k2, k3, k4, kk;
+<span class="nc" id="L54">        checked = false;</span>
+<span class="nc" id="L55">        RateInterface velocity = y.getRateOfChange();</span>
+<span class="nc" id="L56">        k1 = y.getState(velocity);</span>
+<span class="nc" id="L57">        k1.setRateOfChange(f.call(h, y));</span>
+<span class="nc" id="L58">        k2 = y.getState(velocity.add(k1.getRateOfChange().multiply(h / 2))); //!!</span>
+<span class="nc" id="L59">        k2.setRateOfChange(f.call(h, y.add(k1.multiply(h / 2))));</span>
+<span class="nc" id="L60">        k3 = y.getState(velocity.add(k2.getRateOfChange().multiply(h / 2)));</span>
+<span class="nc" id="L61">        k3.setRateOfChange(f.call(h, y.add(k2.multiply(h / 2))));</span>
+<span class="nc" id="L62">        k4 = y.getState(velocity.add(k3.getRateOfChange().multiply(h)));</span>
+<span class="nc" id="L63">        k4.setRateOfChange(f.call(h, y.add(k3.multiply(h))));</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (DEBUG) {</span>
+<span class="nc" id="L65">            System.out.println(&quot;k11&quot;);</span>
+<span class="nc" id="L66">            System.out.println(k1);</span>
+<span class="nc" id="L67">            System.out.println(&quot;k12&quot;);</span>
+<span class="nc" id="L68">            System.out.println(k2);</span>
+<span class="nc" id="L69">            System.out.println(&quot;k13&quot;);</span>
+<span class="nc" id="L70">            System.out.println(k3);</span>
+<span class="nc" id="L71">            System.out.println(&quot;k14&quot;);</span>
+<span class="nc" id="L72">            System.out.println(k4);</span>
+        }
+<span class="nc" id="L74">        k2 = k2.multiply(2);</span>
+<span class="nc" id="L75">        k3 = k3.multiply(2);</span>
+<span class="nc" id="L76">        kk = ((k1.add(k2).add(k3).add(k4)));</span>
+<span class="nc" id="L77">        return y.add(kk.multiply(h / 6));</span>
+    }
+
+    /**
+     * Gets old f.
+     *
+     * @return the old f
+     */
+    @Override
+    public ODEFunctionInterface getFunction() {
+<span class="nc" id="L87">        return this.f;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

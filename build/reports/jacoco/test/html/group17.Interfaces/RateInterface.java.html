@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RateInterface.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Interfaces</a> &gt; <span class="el_source">RateInterface.java</span></div><h1>RateInterface.java</h1><pre class="source lang-java linenums">package group17.Interfaces;
+
+import group17.Math.Lib.Vector3D;
+import group17.Simulation.System.State.RateOfChange;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static group17.Main.simulation;
+
+/**
+ *  An interface representing the time-derivative (rate-of-change) of the state of a system.
+ */
+public interface RateInterface {
+
+
+    /**
+     * List of velocity vectors for the next state up to be updated
+     *
+     * @return the velocity vectors of all bodies
+     * @see StateInterface
+     */
+    List&lt;Vector3dInterface&gt; getVelocities();
+
+    /**
+     * Sets velocities.
+     *
+     * @param vel the vel
+     */
+    void setVelocities(List&lt;Vector3dInterface&gt; vel);
+
+    /**
+     * Multiply rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
+    default RateInterface multiply(double scalar) {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (this.getVelocities().size() == 0)</span>
+<span class="nc" id="L40">            throw new RuntimeException(&quot; Nothing to multiply &quot;);</span>
+
+<span class="nc" id="L42">        RateInterface rate = new RateOfChange();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for (int i = 0; i &lt; this.getVelocities().size(); i++) {</span>
+<span class="nc" id="L44">            rate.getVelocities().add(this.getVelocities().get(i).mul(scalar));</span>
+        }
+<span class="nc" id="L46">        return rate;</span>
+    }
+
+    /**
+     * Sub rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
+    default RateInterface sub(double scalar) {
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (this.getVelocities().size() == 0)</span>
+<span class="nc" id="L57">            throw new RuntimeException(&quot; Nothing to multiply &quot;);</span>
+<span class="nc" id="L58">        RateInterface rate = new RateOfChange();</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        for (int i = 0; i &lt; this.getVelocities().size(); i++) {</span>
+<span class="nc" id="L60">            rate.getVelocities().add(this.getVelocities().get(i).add(new Vector3D(-scalar, -scalar, -scalar)));</span>
+        }
+<span class="nc" id="L62">        return rate;</span>
+    }
+
+    /**
+     * Add rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
+    default RateInterface add(double scalar) {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (this.getVelocities().size() == 0)</span>
+<span class="nc" id="L73">            throw new RuntimeException(&quot; Nothing to multiply &quot;);</span>
+<span class="nc" id="L74">        RateInterface rate = new RateOfChange();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (int i = 0; i &lt; this.getVelocities().size(); i++) {</span>
+<span class="nc" id="L76">            rate.getVelocities().add(this.getVelocities().get(i).add(new Vector3D(scalar, scalar, scalar)));</span>
+        }
+<span class="nc" id="L78">        return rate;</span>
+    }
+
+    /**
+     * Div rate interface.
+     *
+     * @param scalar the scalar
+     * @return the rate interface
+     */
+    default RateInterface div(double scalar) {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (this.getVelocities().size() == 0)</span>
+<span class="nc" id="L89">            throw new RuntimeException(&quot; Nothing to multiply &quot;);</span>
+<span class="nc" id="L90">        RateInterface rate = new RateOfChange();</span>
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        for (int i = 0; i &lt; this.getVelocities().size(); i++) {</span>
+<span class="nc" id="L93">            rate.getVelocities().add(this.getVelocities().get(i).div(scalar));</span>
+        }
+<span class="nc" id="L95">        return rate;</span>
+    }
+
+    /**
+     * Copy rate interface.
+     *
+     * @return the rate interface
+     */
+    default RateInterface copy() {
+<span class="nc" id="L104">        RateInterface s = new RateOfChange();</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        for (Vector3dInterface v : this.getVelocities()) {</span>
+<span class="nc" id="L106">            s.getVelocities().add(v.clone());</span>
+<span class="nc" id="L107">        }</span>
+<span class="nc" id="L108">        return s;</span>
+    }
+
+    /**
+     * Add rate interface.
+     *
+     * @param tobeAdded the tobe added
+     * @return the rate interface
+     */
+    default RateInterface add(RateInterface tobeAdded) {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (this.getVelocities().size() == 0)</span>
+<span class="nc" id="L119">            throw new RuntimeException(&quot; Nothing to add &quot;);</span>
+<span class="nc" id="L120">        RateInterface rate = new RateOfChange();</span>
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        for (int i = 0; i &lt; this.getVelocities().size(); i++) {</span>
+<span class="nc" id="L123">            rate.getVelocities().add(this.getVelocities().get(i).add(tobeAdded.getVelocities().get(i)));</span>
+        }
+<span class="nc" id="L125">        return rate;</span>
+    }
+
+    /**
+     * Sum of rate interfaces.
+     *
+     * @param states the states
+     * @return the rate interface
+     */
+    default RateInterface sumOf(RateInterface... states) {
+<span class="nc" id="L135">        RateInterface rate = new RateOfChange();</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        for (int i = 0; i &lt; states[0].getVelocities().size(); i++) {</span>
+<span class="nc" id="L137">            Vector3dInterface velsum = this.getVelocities().get(i);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">            for (RateInterface r : states) {</span>
+<span class="nc" id="L139">                velsum = velsum.add(r.getVelocities().get(i));</span>
+            }
+<span class="nc" id="L141">            rate.getVelocities().add(velsum);</span>
+        }
+<span class="nc" id="L143">        return rate;</span>
+    }
+
+    /**
+     * Initial rate rate interface.
+     *
+     * @return the rate interface
+     */
+    default RateInterface initialRate() {
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (this.getVelocities().size() != 0)</span>
+<span class="nc" id="L153">            this.setVelocities(new ArrayList&lt;&gt;(11));</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        for (int i = 0; i &lt; simulation.getSystem().systemState().getPositions().size(); i++) {</span>
+<span class="nc" id="L155">            this.getVelocities().add(simulation.getSystem().getCelestialBodies().get(i).getVectorVelocity());</span>
+        }
+<span class="nc" id="L157">        return this;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

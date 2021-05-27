@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StateTestClass.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation.System.State</a> &gt; <span class="el_source">StateTestClass.java</span></div><h1>StateTestClass.java</h1><pre class="source lang-java linenums">package group17.Simulation.System.State;
+
+import group17.Interfaces.*;
+
+import java.util.List;
+
+/**
+ * Concrete Test class for the StateInterface
+ */
+public class StateTestClass implements StateTest {
+    private RateTest testDy;
+    private double y;
+
+<span class="nc" id="L14">    public StateTestClass() {</span>
+<span class="nc" id="L15">    }</span>
+
+    @Override
+    public StateTest addMul(double h, RateInterface r) {
+<span class="nc" id="L19">        StateTestClass state = new StateTestClass();</span>
+<span class="nc" id="L20">        double dy = ((RateTest) r).getDy();</span>
+<span class="nc" id="L21">        state.setY(this.getY() + (h * dy));</span>
+<span class="nc" id="L22">        state.getRateOfChange().setDy(h * dy);</span>
+<span class="nc" id="L23">        return state;</span>
+    }
+
+    public double getY() {
+<span class="nc" id="L27">        return y;</span>
+    }
+
+    @Override
+    public void setY(double y) {
+<span class="nc" id="L32">        this.y = y;</span>
+<span class="nc" id="L33">    }</span>
+
+    @Override
+    public RateTest getRateOfChange() {
+<span class="nc bnc" id="L37" title="All 2 branches missed.">        if (testDy == null) testDy = new RateTestClass();</span>
+<span class="nc" id="L38">        return testDy;</span>
+    }
+
+    @Override
+    public void setRateOfChange(RateInterface newRate) {
+<span class="nc" id="L43">        this.testDy = (RateTest) newRate;</span>
+<span class="nc" id="L44">    }</span>
+
+
+    @Override
+    public StateInterface rateMul(double step, RateInterface rate) {
+<span class="nc" id="L49">        StateTest newState = new StateTestClass();</span>
+<span class="nc" id="L50">        double dy = ((RateTest) rate).getDy();</span>
+<span class="nc" id="L51">        newState.setY(dy * step);</span>
+<span class="nc" id="L52">        newState.getRateOfChange().setDy(0);</span>
+<span class="nc" id="L53">        return newState;</span>
+    }
+
+    @Override
+    public StateInterface copy() {
+<span class="nc" id="L58">        StateTest state = new StateTestClass();</span>
+<span class="nc" id="L59">        state.setY(this.getY());</span>
+<span class="nc" id="L60">        state.getRateOfChange().setDy(this.getRateOfChange().getDy());</span>
+<span class="nc" id="L61">        return state;</span>
+    }
+
+    @Override
+    public StateInterface multiply(double scalar) {
+<span class="nc" id="L66">        StateTestClass state = new StateTestClass();</span>
+<span class="nc" id="L67">        state.setY(this.getY() * scalar);</span>
+<span class="nc" id="L68">        return state;</span>
+    }
+
+    @Override
+    public StateInterface div(double scalar) {
+<span class="nc" id="L73">        StateTestClass state = new StateTestClass();</span>
+<span class="nc" id="L74">        state.setY(this.getY() / scalar);</span>
+<span class="nc" id="L75">        return state;</span>
+    }
+
+    @Override
+    public StateInterface add(StateInterface scalar) {
+<span class="nc" id="L80">        StateTestClass state = new StateTestClass();</span>
+<span class="nc" id="L81">        state.setY(this.getY() + ((StateTest) scalar).getY());</span>
+<span class="nc" id="L82">        return state;</span>
+    }
+
+    @Override
+    public StateInterface sumOf(StateInterface... states) {
+<span class="nc" id="L87">        StateTest rate = new StateTestClass();</span>
+<span class="nc" id="L88">        rate.setY(this.getY());</span>
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        for (StateInterface r : states) {</span>
+<span class="nc" id="L90">            rate.setY(rate.getY() + ((StateTest) r).getY());</span>
+        }
+<span class="nc" id="L92">        return rate;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L97">        return &quot;State{&quot; +</span>
+                &quot;y=&quot; + y +
+                &quot; ,\n &quot; + testDy +
+                '}';
+    }
+
+    @Override
+    public List&lt;Vector3dInterface&gt; getPositions() {
+<span class="nc" id="L105">        return null;</span>
+    }
+
+    @Override
+    public void setPositions(List&lt;Vector3dInterface&gt; v) {
+<span class="nc" id="L110">    }</span>
+
+    @Override
+    public StateInterface getState(RateInterface rate) {
+<span class="nc" id="L114">        StateTest newState = new StateTestClass();</span>
+<span class="nc" id="L115">        newState.setY(((RateTest) rate).getDy());</span>
+<span class="nc" id="L116">        return newState;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

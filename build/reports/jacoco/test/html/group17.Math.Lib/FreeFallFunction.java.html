@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FreeFallFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">FreeFallFunction.java</span></div><h1>FreeFallFunction.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
+
+/**
+ * Implements a free fall ODE
+ * Solution to this function is a free fall equation: x = v*t - 0.5*g*t^2
+ * Where x - position, v - velocity, t - time, g - gravitational constant of Earth
+ * Used for testing Verlet Solvers
+ */
+<span class="nc" id="L13">public class FreeFallFunction implements ODEFunctionInterface {</span>
+
+    /**
+     * The constant CONSTANT_G.
+     */
+    public static final double CONSTANT_G = 9.81998;
+
+    @Override
+    public RateInterface call(double t, StateInterface y) {
+<span class="nc" id="L22">        Vector3D next_vector = new Vector3D();</span>
+<span class="nc" id="L23">        next_vector.setX(y.getPositions().get(0).getX());</span>
+<span class="nc" id="L24">        next_vector.setY(y.getPositions().get(0).getY());</span>
+<span class="nc" id="L25">        next_vector.setZ(-CONSTANT_G);</span>
+<span class="nc" id="L26">        RateInterface next_rate = y.copy().getRateOfChange();</span>
+<span class="nc" id="L27">        next_rate.getVelocities().set(0, next_vector);</span>
+<span class="nc" id="L28">        return next_rate;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

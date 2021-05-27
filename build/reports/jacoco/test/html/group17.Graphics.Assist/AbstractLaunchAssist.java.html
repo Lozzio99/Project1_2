@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractLaunchAssist.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">AbstractLaunchAssist.java</span></div><h1>AbstractLaunchAssist.java</h1><pre class="source lang-java linenums">
+
+package group17.Graphics.Assist;
+
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Lib.Vector3D;
+import group17.Simulation.System.Clock;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
+import static group17.Graphics.Scenes.Scene.SceneType.STARTING_SCENE;
+import static group17.Main.simulation;
+import static group17.Main.userDialog;
+import static group17.Utils.Config.*;
+
+/**
+ * This class represents the dialog frame, which is opened upon start.
+ *
+ * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevanâ€‹
+ * @version 1.0
+ * @since 19 /02/2021
+ */
+public abstract class AbstractLaunchAssist extends JPanel implements Runnable {
+
+<span class="nc" id="L30">    private static int t = 0;</span>
+    /**
+     * The Dialog thread.
+     */
+<span class="nc" id="L34">    protected final AtomicReference&lt;Thread&gt; dialogThread = new AtomicReference&lt;&gt;();</span>
+    /**
+     * The Text area.
+     */
+<span class="nc" id="L38">    protected final JTextArea textArea = new JTextArea(10, 30);</span>
+    /**
+     * The Dd field.
+     */
+<span class="nc" id="L42">    protected final JLabel ddField = new JLabel();</span>
+    /**
+     * The Mm field.
+     */
+<span class="nc" id="L46">    protected final JLabel mmField = new JLabel();</span>
+    /**
+     * The Yy field.
+     */
+<span class="nc" id="L50">    protected final JLabel yyField = new JLabel();</span>
+
+    /**
+     * The Hh field.
+     */
+<span class="nc" id="L55">    protected final JLabel hhField = new JLabel();</span>
+    /**
+     * The M field.
+     */
+<span class="nc" id="L59">    protected final JLabel mField = new JLabel();</span>
+    /**
+     * The Ss field.
+     */
+<span class="nc" id="L63">    protected final JLabel ssField = new JLabel();</span>
+
+<span class="nc" id="L65">    protected static boolean overrideExistingVelocity = false;</span>
+    /**
+     * The Frame.
+     */
+    protected JFrame frame;
+    /**
+     * The Output window.
+     */
+    protected SimulationDataWindow outputWindow;
+
+    /**
+     * Instantiates a new Abstract launch assist.
+     */
+<span class="nc" id="L78">    public AbstractLaunchAssist() {</span>
+        //this.setFrame();
+<span class="nc" id="L80">    }</span>
+
+
+    /**
+     * Initialises the frame.
+     */
+    public abstract void init();
+
+    /**
+     * Creates the setup panel.
+     *
+     * @return j panel
+     */
+    protected abstract JPanel createSetUpPanel();
+
+    /**
+     * Sets output window.
+     *
+     * @param w the w
+     */
+    public void setOutputWindow(SimulationDataWindow w) {
+<span class="nc" id="L101">        this.outputWindow = w;</span>
+<span class="nc" id="L102">    }</span>
+
+    /**
+     * Sets date.
+     */
+    public void setDate() {
+<span class="nc" id="L108">        this.setSsField(&quot;&quot; + simulation.getSystem().getClock().getSec());</span>
+<span class="nc" id="L109">        this.setMinuteField(&quot;&quot; + simulation.getSystem().getClock().getMin());</span>
+<span class="nc" id="L110">        this.setHhField(&quot;&quot; + simulation.getSystem().getClock().getHour());</span>
+<span class="nc" id="L111">        this.setDdField(&quot;&quot; + simulation.getSystem().getClock().getDays());</span>
+<span class="nc" id="L112">        this.setMonthField(&quot;&quot; + simulation.getSystem().getClock().getMonths());</span>
+<span class="nc" id="L113">        this.setYyField(&quot;&quot; + simulation.getSystem().getClock().getYears());</span>
+<span class="nc" id="L114">    }</span>
+
+<span class="nc" id="L116">    protected final JTextField xVelSlider = new JTextField();</span>
+<span class="nc" id="L117">    protected final JTextField yVelSlider = new JTextField();</span>
+<span class="nc" id="L118">    protected final JTextField zVelSlider = new JTextField();</span>
+
+    /**
+     * Method to append text to output.
+     *
+     * @param message the message
+     */
+    public void appendToOutput(String message) {
+<span class="nc" id="L126">        textArea.append(message + &quot;\n&quot;);</span>
+<span class="nc" id="L127">    }</span>
+
+
+    /**
+     * Sets the output.
+     *
+     * @param toString the to string
+     */
+    public void setOutput(String toString) {
+<span class="nc" id="L136">        textArea.setText(toString + &quot;\n&quot;);</span>
+<span class="nc" id="L137">    }</span>
+
+    /**
+     * Show assist parameters.
+     */
+    public void showAssistParameters() {
+        //this.setStepField(&quot;&quot; + STEP_SIZE);
+<span class="nc" id="L144">        this.setDate();</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (INSERT_ROCKET) {</span>
+<span class="nc" id="L146">            String ready = (&quot;READY TO START\n&quot;) +</span>
+<span class="nc" id="L147">                    (&quot;initial mass         :&quot; + simulation.getSystem().getCelestialBodies().get(11).getMASS() + &quot;\n&quot;) +</span>
+                    (&quot;starting coordinates : &quot;) +
+<span class="nc" id="L149">                    (simulation.getSystem().getCelestialBodies().get(11).getVectorLocation().toString()) +</span>
+                    (&quot;\nstarting velocity  : &quot;) +
+<span class="nc" id="L151">                    (simulation.getSystem().getCelestialBodies().get(11).getVectorVelocity().toString());</span>
+<span class="nc" id="L152">            ready += &quot;\n&quot; + simulation.toString() + &quot;\n&quot;;</span>
+<span class="nc" id="L153">            this.setOutput(ready);</span>
+        }
+<span class="nc" id="L155">    }</span>
+
+    /**
+     * Acquire data.
+     */
+    public void acquireData() {
+        //STEP_SIZE = getTimeStepSize();
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (INSERT_ROCKET) {</span>
+<span class="nc" id="L163">            Vector3dInterface v = new Vector3D(</span>
+<span class="nc" id="L164">                    getLaunchVelocityX(),</span>
+<span class="nc" id="L165">                    getLaunchVelocityY(),</span>
+<span class="nc" id="L166">                    getLaunchVelocityZ());</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">            if (!v.isZero()) {</span>
+<span class="nc" id="L168">                final boolean f = ERROR_EVALUATION;</span>
+<span class="nc" id="L169">                ERROR_EVALUATION = false;</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                if (overrideExistingVelocity)</span>
+<span class="nc" id="L171">                    simulation.getUpdater().getSchedule().setPlan(new Clock().setLaunchDay(), v);</span>
+                else
+<span class="nc" id="L173">                    simulation.getUpdater().getSchedule().addToPlan(new Clock().setLaunchDay(), v);</span>
+<span class="nc" id="L174">                ERROR_EVALUATION = f;</span>
+<span class="nc" id="L175">            } else {</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                if (overrideExistingVelocity) {</span>
+<span class="nc" id="L177">                    simulation.getUpdater().getSchedule().setPlan(new Clock().setLaunchDay(), v);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">                    if (REPORT)</span>
+<span class="nc" id="L179">                        simulation.getReporter().report(&quot;Zero Vector Decision won't be displayed for logical reasons&quot;);</span>
+                }
+            }
+        }
+<span class="nc" id="L183">    }</span>
+
+    /**
+     * Sets month field.
+     *
+     * @param mmField the mm field
+     */
+    public void setMonthField(String mmField) {
+<span class="nc" id="L191">        this.mmField.setText(&quot;      &quot; + mmField);</span>
+<span class="nc" id="L192">    }</span>
+
+    /**
+     * Sets minute field.
+     *
+     * @param mField the m field
+     */
+    public void setMinuteField(String mField) {
+<span class="nc" id="L200">        this.mField.setText(&quot;       &quot; + mField);</span>
+<span class="nc" id="L201">    }</span>
+
+    /**
+     * Returns the amount of velocity on the X axis of a probe upon launch.
+     *
+     * @return launch velocity x
+     */
+    public double getLaunchVelocityX() {
+
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        return this.xVelSlider.getText().equals(&quot;&quot;) ? 0 : Double.parseDouble(this.xVelSlider.getText());</span>
+    }
+
+    /**
+     * Returns the amount of velocity on the Y axis of a probe upon launch.
+     *
+     * @return launch velocity y
+     */
+    public double getLaunchVelocityY() {
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        return this.yVelSlider.getText().equals(&quot;&quot;) ? 0 : Double.parseDouble(this.yVelSlider.getText());</span>
+    }
+
+    /**
+     * Returns the amount of velocity on the Z axis of a probe upon launch.
+     *
+     * @return launch velocity z
+     */
+    public double getLaunchVelocityZ() {
+<span class="nc bnc" id="L228" title="All 2 branches missed.">        return this.zVelSlider.getText().equals(&quot;&quot;) ? 0 : Double.parseDouble(this.zVelSlider.getText());</span>
+    }
+
+
+    @Override
+    public synchronized void run() {
+<span class="nc bnc" id="L234" title="All 4 branches missed.">        if (simulation != null &amp;&amp; !simulation.waiting()) {</span>
+<span class="nc" id="L235">            this.setDate();</span>
+<span class="nc bnc" id="L236" title="All 2 branches missed.">            if (t &gt; 50) {</span>
+                try {
+<span class="nc" id="L238">                    this.outputWindow.setOutput(simulation.getSystem().toString());</span>
+<span class="nc" id="L239">                } catch (NullPointerException | IndexOutOfBoundsException ignored) {</span>
+<span class="nc" id="L240">                }</span>
+<span class="nc" id="L241">                t = 0;</span>
+<span class="nc" id="L242">            } else t++;</span>
+        }
+<span class="nc" id="L244">    }</span>
+
+    /**
+     * Start.
+     */
+    public void start() {
+<span class="nc" id="L250">        this.dialogThread.set(new Thread(Thread.currentThread().getThreadGroup(), this, &quot;Dialog Thread&quot;, 10));</span>
+<span class="nc" id="L251">        this.dialogThread.get().setPriority(4);</span>
+<span class="nc" id="L252">        this.dialogThread.get().setDaemon(true);</span>
+<span class="nc" id="L253">        this.dialogThread.get().start();</span>
+<span class="nc" id="L254">    }</span>
+
+    /**
+     * Gets frame.
+     *
+     * @return the frame
+     */
+    public JFrame getFrame() {
+<span class="nc" id="L262">        return this.frame;</span>
+    }
+
+
+
+    /**
+     * Nested class representing the ActionListener, when the clear button is clicked.
+     *
+     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevanâ€‹
+     * @version 1.0
+     * @since 19 /02/2021
+     */
+<span class="nc" id="L274">    class resetBtnListener implements ActionListener {</span>
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L278" title="All 2 branches missed.">            if (simulation.waiting())</span>
+<span class="nc" id="L279">                return;</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">            if (REPORT) simulation.getReporter().report(&quot;RESET SIMULATION&quot;);</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">            if (ENABLE_GRAPHICS)</span>
+<span class="nc" id="L282">                simulation.getGraphics().changeScene(STARTING_SCENE);</span>
+<span class="nc bnc" id="L283" title="All 2 branches missed.">            if (LAUNCH_ASSIST)</span>
+<span class="nc" id="L284">                userDialog.getMainPane().setSelectedIndex(1);</span>
+<span class="nc" id="L285">            simulation.reset();</span>
+<span class="nc" id="L286">        }</span>
+
+    }
+
+    /**
+     * Nested class for the ActionListener.
+     *
+     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevanâ€‹
+     * @version 1.0
+     * @since 19 /02/2021
+     */
+<span class="nc" id="L297">    class startBtnListener implements ActionListener {</span>
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L301" title="All 2 branches missed.">            if (!simulation.waiting()) return;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">            if (ENABLE_GRAPHICS) {</span>
+<span class="nc" id="L303">                simulation.getGraphics().changeScene(SIMULATION_SCENE);</span>
+<span class="nc" id="L304">                simulation.getGraphics().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));</span>
+            }
+<span class="nc bnc" id="L306" title="All 2 branches missed.">            if (REPORT) simulation.getReporter().report(&quot;START SIMULATION&quot;);</span>
+<span class="nc" id="L307">            acquireData();</span>
+<span class="nc" id="L308">            new Thread(() -&gt; {       // wait 3 sec without stopping AWT event queue</span>
+                try {
+<span class="nc" id="L310">                    Thread.sleep(3000);</span>
+<span class="nc" id="L311">                } catch (InterruptedException ex) {</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">                    if (REPORT) simulation.getReporter().report(Thread.currentThread(), ex);</span>
+<span class="nc" id="L313">                }</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">                if (ENABLE_GRAPHICS)</span>
+<span class="nc" id="L315">                    simulation.getGraphics().getFrame().setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));</span>
+<span class="nc" id="L316">                simulation.setWaiting(false);</span>
+<span class="nc" id="L317">            }, &quot;CountDown&quot;).start();</span>
+<span class="nc" id="L318">        }</span>
+    }
+
+
+    /**
+     * The type Pause btn listener.
+     */
+<span class="nc" id="L325">    class pauseBtnListener implements ActionListener {</span>
+        @Override
+        public void actionPerformed(ActionEvent e) {
+<span class="nc bnc" id="L328" title="All 2 branches missed.">            if (!simulation.waiting()) {</span>
+<span class="nc" id="L329">                ((JButton) e.getSource()).setText(&quot;RESUME&quot;);</span>
+<span class="nc" id="L330">                simulation.setWaiting(true);</span>
+            } else {
+<span class="nc" id="L332">                ((JButton) e.getSource()).setText(&quot;PAUSE&quot;);</span>
+<span class="nc" id="L333">                simulation.setWaiting(false);</span>
+            }
+<span class="nc" id="L335">        }</span>
+    }
+
+    /**
+     * Sets dd field.
+     *
+     * @param ddField the dd field
+     */
+    public void setDdField(String ddField) {
+<span class="nc" id="L344">        this.ddField.setText(&quot;      &quot; + ddField);</span>
+<span class="nc" id="L345">    }</span>
+
+    /**
+     * Sets yy field.
+     *
+     * @param yyField the yy field
+     */
+    public void setYyField(String yyField) {
+<span class="nc" id="L353">        this.yyField.setText(&quot;  &quot; + yyField);</span>
+<span class="nc" id="L354">    }</span>
+
+    /**
+     * Sets hh field.
+     *
+     * @param hhField the hh field
+     */
+    public void setHhField(String hhField) {
+<span class="nc" id="L362">        this.hhField.setText(&quot;      &quot; + hhField);</span>
+<span class="nc" id="L363">    }</span>
+
+    /**
+     * Sets ss field.
+     *
+     * @param ssField the ss field
+     */
+    public void setSsField(String ssField) {
+<span class="nc" id="L371">        this.ssField.setText(&quot;      &quot; + ssField);</span>
+<span class="nc" id="L372">    }</span>
+
+
+    /*
+
+     * Nested class representing the update label on the right side of the dialog frame.
+     *
+     * @author Dan Parii, Lorenzo Pompigna, Nikola Prianikov, Axel Rozental, Konstantin Sandfort, Abhinandan Vasudevanâ€‹
+     * @version 1.0
+     * @since 19 /02/2021
+
+    class updateLabel implements ChangeListener {
+        private final JLabel jLabel;
+        private final JSlider jSlider;
+
+
+         * Instantiates a new Update label.
+         *
+         * @param jSlider the j slider
+         * @param jLabel  the j label
+
+        public updateLabel(JSlider jSlider, JLabel jLabel) {
+            this.jLabel = jLabel;
+            this.jSlider = jSlider;
+        }
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            jLabel.setText(String.valueOf(velocitySliderW * jSlider.getValue()));
+        }
+
+    }
+    */
+
+
+
+    /*
+     * Returns the time in seconds.
+     *
+     * @return time ss
+
+    public double getTimeSS() {
+        return Double.parseDouble(ssField.getText());
+    }
+    //protected final JTextField stSizeField = new JTextField();
+    //protected final JTextField massSizeField = new JTextField();
+    //protected final JTextField lXCoordField = new JTextField();
+    //protected final JTextField lYCoordField = new JTextField();
+    //protected final JTextField lZCoordField = new JTextField();
+    */
+    /*
+     * Returns the day of the current date.
+     *
+     * @return date dd
+
+    public double getDateDD() {
+        return Double.parseDouble(ddField.getText());
+    }
+
+
+     * Returns the month of the current date.
+     *
+     * @return date mm
+
+    public double getDateMM() {
+        return Double.parseDouble(mmField.getText());
+    }
+
+
+     * Returns the year of the current date.
+     *
+     * @return date yyyy
+
+    public double getDateYYYY() {
+        return Double.parseDouble(yyField.getText());
+    }
+
+
+     * Returns the time in hours.
+     *
+     * @return time hh
+
+    public double getTimeHH() {
+        return Double.parseDouble(hhField.getText());
+    }
+
+
+     * Returns the time in minutes.
+     *
+     * @return time min
+
+    public double getTimeMin() {
+        return Double.parseDouble(mField.getText());
+    }
+     */
+    /*
+
+    private void setFrame() {
+        this.frame = new JFrame();
+        this.frame.setSize(700, 300);
+        this.frame.setTitle(&quot;Dialog window&quot;);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+     * Sets step field.
+     *
+     * @param ssField the ss field
+
+    public void setStepField(String ssField) {
+        this.stSizeField.setText(ssField);
+    }
+
+       * Get the step size.
+       *
+       * @return time step size
+      public double getTimeStepSize() {
+          if (stSizeField.getText().equals(&quot;&quot;))
+              return 0;
+          return Double.parseDouble(stSizeField.getText());
+      }
+
+       * Get the mass of a probe.
+       *
+       * @return probe mass
+
+      public double getProbeMass() {
+          if (massSizeField.getText().equals(&quot;&quot;))
+              return 0;
+          return Double.parseDouble(massSizeField.getText());
+      }
+      *
+       * Get the X coordinate of the launch.
+       *
+       * @return launch x
+
+      public double getLaunchX() {
+          if (lXCoordField.getText().equals(&quot;&quot;))
+              return 0;
+          return Double.parseDouble(lXCoordField.getText());
+      }
+
+
+       * Get the Y coordinate of the launch.
+       *
+       * @return launch y
+
+      public double getLaunchY() {
+          if (lYCoordField.getText().equals(&quot;&quot;))
+              return 0;
+          return Double.parseDouble(lYCoordField.getText());
+      }
+
+
+       * Get the Z coordinate of the launch.
+       *
+       * @return launch z
+
+      public double getLaunchZ() {
+          if (lZCoordField.getText().equals(&quot;&quot;))
+              return 0;
+          return Double.parseDouble(lZCoordField.getText());
+      }
+
+
+     * Sets probe field.
+     *
+     * @param ssField the ss field
+
+    public void setProbeField(String ssField) {
+        this.massSizeField.setText(ssField);
+    }
+    */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

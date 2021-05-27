@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimulationReporter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation</a> &gt; <span class="el_source">SimulationReporter.java</span></div><h1>SimulationReporter.java</h1><pre class="source lang-java linenums">package group17.Simulation;
+
+import group17.Interfaces.ReporterInterface;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.*;
+
+/**
+ * Reporter Class for the Simulation, outputs exceptions,intended to be implemented
+ * by giving with fitting details, an explanation about the problem that occurred, and the
+ * possible fix for it.
+ */
+<span class="nc" id="L19">public class SimulationReporter implements ReporterInterface, Thread.UncaughtExceptionHandler {</span>
+
+    private Thread thread;
+    private volatile Map&lt;LocalDateTime, String&gt; report, exceptions;
+
+
+    @Override
+    public synchronized void run() {
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (simulation != null) {</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">            if (LAUNCH_ASSIST) {</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">                if (simulation.getAssist() != null) {</span>
+<span class="nc" id="L30">                    this.reportToAssist();</span>
+                }
+            }
+        }
+<span class="nc" id="L34">        this.report();</span>
+<span class="nc" id="L35">    }</span>
+
+    @Override
+    public void init() {
+<span class="nc" id="L39">        this.report = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L40">        this.exceptions = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L41">    }</span>
+
+    @Override
+    public void start() {
+<span class="nc" id="L45">        this.thread = new Thread(Thread.currentThread().getThreadGroup(), this, &quot;Simulation Reporter&quot;, 10);</span>
+<span class="nc" id="L46">        this.thread.setDaemon(true);</span>
+<span class="nc" id="L47">        this.thread.setUncaughtExceptionHandler(this);</span>
+<span class="nc" id="L48">        this.thread.start();</span>
+<span class="nc" id="L49">    }</span>
+
+    @Override
+    public void report() {
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        for (Entry&lt;LocalDateTime, String&gt; s : this.report.entrySet()) {</span>
+<span class="nc" id="L54">            System.out.println(&quot;{ &quot; + s.getKey() + &quot; -&gt; &quot; + s.getValue() + &quot; }&quot;);</span>
+<span class="nc" id="L55">        }</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        for (Entry&lt;LocalDateTime, String&gt; s : this.exceptions.entrySet()) {</span>
+<span class="nc" id="L57">            System.err.println(&quot;{ &quot; + s.getKey() + &quot; -&gt; &quot; + s.getValue() + &quot; }&quot;);</span>
+<span class="nc" id="L58">        }</span>
+<span class="nc" id="L59">        this.report.clear();</span>
+<span class="nc" id="L60">        this.exceptions.clear();</span>
+<span class="nc" id="L61">    }</span>
+
+    @Override
+    public void reportToAssist() {
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (Entry&lt;LocalDateTime, String&gt; s : this.report.entrySet()) {</span>
+<span class="nc" id="L66">            simulation.getAssist().appendToOutput(&quot;{ &quot; + s.getKey() + &quot; -&gt; &quot; + s.getValue() + &quot; }&quot;);</span>
+<span class="nc" id="L67">        }</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        for (Entry&lt;LocalDateTime, String&gt; s : this.exceptions.entrySet()) {</span>
+<span class="nc" id="L69">            simulation.getAssist().appendToOutput(&quot;{ &quot; + s.getKey() + &quot; -&gt; &quot; + s.getValue() + &quot; }&quot;);</span>
+<span class="nc" id="L70">        }</span>
+<span class="nc" id="L71">    }</span>
+
+
+    @Override
+    public void report(String string) {
+<span class="nc" id="L76">        this.report.put(LocalDateTime.now(), string);</span>
+<span class="nc" id="L77">    }</span>
+
+    @Override
+    public void report(List&lt;String&gt; strings) {
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        for (String s : strings)</span>
+<span class="nc" id="L82">            this.report.put(LocalDateTime.now(), s);</span>
+<span class="nc" id="L83">    }</span>
+
+    @Override
+    public void report(Throwable e) {
+<span class="nc" id="L87">        final String s = this.parseException(e.getMessage());</span>
+<span class="nc" id="L88">        this.exceptions.put(LocalDateTime.now(), s);</span>
+<span class="nc" id="L89">    }</span>
+
+    @Override
+    public void report(Thread t, Throwable e) {
+<span class="nc" id="L93">        final String s = this.parseException(e.getMessage() + &quot; from Thread :&quot; + t.getName());</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (!s.equals(&quot;EXCEPTION&quot;))</span>
+<span class="nc" id="L95">            this.exceptions.put(LocalDateTime.now(), s);</span>
+        else
+<span class="nc" id="L97">            this.exceptions.put(LocalDateTime.now(), e.getMessage() + &quot; from Thread :&quot; + t.getName());</span>
+<span class="nc" id="L98">    }</span>
+
+
+    @Override
+    public String parseException(String message) {
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (message != null) {</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (message.startsWith(&quot;STOP&quot;)) {</span>
+<span class="nc" id="L105">                return &quot;\tStopped simulation due to bad initialisation configuration&quot;;</span>
+            }
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (message.startsWith(&quot;UPDATER&quot;)) {</span>
+<span class="nc" id="L108">                if (message.substring(8)  // there's a slash /</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                        .startsWith(&quot;DEFAULT_SOLVER&quot;)) {</span>
+<span class="nc" id="L110">                    int solver = Integer.parseInt(message.substring(message.length() - 1));</span>
+<span class="nc bnc" id="L111" title="All 5 branches missed.">                    String s = switch (solver) {</span>
+<span class="nc" id="L112">                        case RUNGE_KUTTA_SOLVER -&gt; &quot;RUNGE_KUTTA4TH&quot;;</span>
+<span class="nc" id="L113">                        case EULER_SOLVER -&gt; &quot;EULER&quot;;</span>
+<span class="nc" id="L114">                        case VERLET_VEL_SOLVER -&gt; &quot;VERLET_VEL&quot;;</span>
+<span class="nc" id="L115">                        case VERLET_STD_SOLVER -&gt; &quot;VERLET_STD&quot;;</span>
+<span class="nc" id="L116">                        default -&gt; &quot;&quot;;</span>
+                    };
+<span class="nc" id="L118">                    return &quot;\tMissing solver configuration or wrong level selected, select in range [1,4]\n ~ will switch to default : &quot; + s;</span>
+                }
+            }
+
+        }
+<span class="nc" id="L123">        return &quot;EXCEPTION&quot;;</span>
+    }
+
+
+    @Override
+    public void uncaughtException(Thread t, Throwable e) {
+<span class="nc" id="L129">        this.report(t, e);</span>
+<span class="nc" id="L130">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

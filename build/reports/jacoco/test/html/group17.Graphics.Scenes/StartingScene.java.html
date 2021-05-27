@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StartingScene.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Scenes</a> &gt; <span class="el_source">StartingScene.java</span></div><h1>StartingScene.java</h1><pre class="source lang-java linenums">package group17.Graphics.Scenes;
+
+import group17.Math.Lib.Point3DConverter;
+
+import java.awt.*;
+import java.awt.geom.Line2D;
+
+/**
+ * The type Starting scene.
+ */
+<span class="nc" id="L11">public class StartingScene extends Scene {</span>
+
+    /**
+     * The X axis.
+     */
+    Line2D.Double xAxis, /**
+     * The Y axis.
+     */
+    yAxis, /**
+     * The Z axis.
+     */
+    zAxis;
+
+    @Override
+    public void paintComponent(Graphics graphics) {
+<span class="nc" id="L26">        super.paintComponent(graphics);</span>
+<span class="nc" id="L27">        Graphics2D g = (Graphics2D) graphics;</span>
+<span class="nc" id="L28">        g.setFont(new Font(&quot;Monospaced&quot;, Font.PLAIN, 15));</span>
+<span class="nc" id="L29">        g.setColor(new Color(255, 255, 255, 255));</span>
+<span class="nc" id="L30">        g.drawString(&quot;x Axis&quot;, 20, 20);</span>
+<span class="nc" id="L31">        g.draw(xAxis);</span>
+<span class="nc" id="L32">        g.drawString(&quot;- Left click drag to rotate along the Y axis &quot;, 1000, 20);</span>
+<span class="nc" id="L33">        g.drawString(&quot;- Right click drag to rotate along the X axis &quot;, 1000, 35);</span>
+<span class="nc" id="L34">        g.drawString(&quot;- Pinch in-out or wheel scroll to zoom in-out &quot;, 1000, 50);</span>
+<span class="nc" id="L35">        g.setColor(new Color(255, 42, 42, 255));</span>
+<span class="nc" id="L36">        g.drawString(&quot;y Axis&quot;, 20, 30);</span>
+<span class="nc" id="L37">        g.draw(yAxis);</span>
+<span class="nc" id="L38">        g.setColor(new Color(120, 255, 108, 255));</span>
+<span class="nc" id="L39">        g.drawString(&quot;z Axis&quot;, 20, 40);</span>
+<span class="nc" id="L40">        g.draw(zAxis);</span>
+<span class="nc" id="L41">    }</span>
+
+    @Override
+    public void init() {
+<span class="nc" id="L45">        xAxis = new Line2D.Double(Point3DConverter.convertPoint(left), Point3DConverter.convertPoint(right));</span>
+<span class="nc" id="L46">        yAxis = new Line2D.Double(Point3DConverter.convertPoint(top), Point3DConverter.convertPoint(bottom));</span>
+<span class="nc" id="L47">        zAxis = new Line2D.Double(Point3DConverter.convertPoint(rear), Point3DConverter.convertPoint(front));</span>
+<span class="nc" id="L48">    }</span>
+
+    @Override
+    public void update() {
+<span class="nc" id="L52">        super.update();</span>
+<span class="nc" id="L53">        xAxis.setLine(Point3DConverter.convertPoint(left), Point3DConverter.convertPoint(right));</span>
+<span class="nc" id="L54">        yAxis.setLine(Point3DConverter.convertPoint(top), Point3DConverter.convertPoint(bottom));</span>
+<span class="nc" id="L55">        zAxis.setLine(Point3DConverter.convertPoint(rear), Point3DConverter.convertPoint(front));</span>
+<span class="nc" id="L56">        super.resetMouse();</span>
+<span class="nc" id="L57">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L61">        return &quot;StartingScene{}&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

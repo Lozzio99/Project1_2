@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimulationScene.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Scenes</a> &gt; <span class="el_source">SimulationScene.java</span></div><h1>SimulationScene.java</h1><pre class="source lang-java linenums">package group17.Graphics.Scenes;
+
+
+import group17.Math.Lib.Point3D;
+import group17.Math.Lib.Point3DConverter;
+import org.jetbrains.annotations.Contract;
+
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.util.Arrays;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.*;
+
+/**
+ * The type Simulation scene.
+ */
+<span class="nc" id="L19">public class SimulationScene extends Scene {</span>
+    /**
+     * The Planets positions.
+     */
+    volatile Point3D[] planetsPositions;
+    /**
+     * The Radius.
+     */
+    volatile double[] radius;
+    /**
+     * The Trajectories.
+     */
+    volatile Bag[] trajectories;
+
+
+    @Override
+    public void paintComponent(Graphics graphics) {
+<span class="nc" id="L36">        Graphics2D g = (Graphics2D) graphics;</span>
+<span class="nc" id="L37">        super.paintComponent(g);</span>
+        try {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            for (int i = 0; i &lt; this.planetsPositions.length; i++) {</span>
+<span class="nc" id="L40">                final Point p = Point3DConverter.convertPoint(this.planetsPositions[i]);</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">                if (NAMES) {</span>
+<span class="nc" id="L42">                    g.setColor(Color.WHITE);</span>
+<span class="nc" id="L43">                    g.setFont(new Font(&quot;Monospaced&quot;, Font.PLAIN, 10));</span>
+<span class="nc" id="L44">                    g.drawString(simulation.getSystem().getCelestialBodies().get(i).toString(), p.x, p.y);</span>
+                }
+<span class="nc" id="L46">                g.setColor(simulation.getSystem().getCelestialBodies().get(i).getColour());</span>
+<span class="nc" id="L47">                g.fill(planetShape(this.planetsPositions[i], this.radius[i]));</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">                if (DRAW_TRAJECTORIES) {</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">                    for (int k = this.trajectories[i].insert; k &lt; this.trajectories[i].getTrajectories().length - 1; k++) {</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">                        if (this.trajectories[i].getTrajectories()[k + 1] == null)</span>
+<span class="nc" id="L51">                            break;</span>
+<span class="nc" id="L52">                        g.draw(new Line2D.Double(</span>
+<span class="nc" id="L53">                                Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k]),</span>
+<span class="nc" id="L54">                                Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k + 1])));</span>
+                    }
+<span class="nc bnc" id="L56" title="All 2 branches missed.">                    for (int k = 0; k &lt; this.trajectories[i].insert - 1; k++) {</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">                        if (this.trajectories[i].getTrajectories()[k + 1] == null)</span>
+<span class="nc" id="L58">                            break;</span>
+<span class="nc" id="L59">                        g.draw(new Line2D.Double(</span>
+<span class="nc" id="L60">                                Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k]),</span>
+<span class="nc" id="L61">                                Point3DConverter.convertPoint(this.trajectories[i].getTrajectories()[k + 1])));</span>
+                    }
+                }
+
+            }
+<span class="nc" id="L66">        } catch (NullPointerException | IndexOutOfBoundsException e) {</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            if (REPORT)</span>
+<span class="nc" id="L68">                simulation.getReporter().report(&quot;Removed body from graphics&quot;);</span>
+<span class="nc" id="L69">            this.init();</span>
+<span class="nc" id="L70">        }</span>
+<span class="nc" id="L71">    }</span>
+
+    @Override
+    public void init() {
+<span class="nc" id="L75">        this.planetsPositions = new Point3D[simulation.getSystem().getCelestialBodies().size()];</span>
+<span class="nc" id="L76">        this.radius = new double[simulation.getSystem().getCelestialBodies().size()];</span>
+<span class="nc" id="L77">        this.trajectories = new Bag[this.planetsPositions.length];</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (int i = 0; i &lt; this.planetsPositions.length; i++) {</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (DRAW_TRAJECTORIES)</span>
+<span class="nc" id="L80">                this.trajectories[i] = new Bag();</span>
+<span class="nc" id="L81">            this.planetsPositions[i] = simulation.getSystem().systemState().getPositions().get(i).fromVector();</span>
+<span class="nc" id="L82">            this.planetsPositions[i].scale(scale);</span>
+<span class="nc" id="L83">            radius[i] = (simulation.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;</span>
+        }
+<span class="nc" id="L85">    }</span>
+
+    /**
+     * Get planet positions point 3 d [ ].
+     *
+     * @return the point 3 d [ ]
+     */
+    public Point3D[] getPlanetPositions() {
+<span class="nc" id="L93">        return this.planetsPositions;</span>
+    }
+
+    public void update() {
+<span class="nc" id="L97">        super.update();</span>
+        try {
+<span class="nc" id="L99">            this.updateBodies();</span>
+<span class="nc" id="L100">        } catch (NullPointerException | IndexOutOfBoundsException e) {</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (simulation != null)</span>
+                try {
+<span class="nc" id="L103">                    this.init();</span>
+<span class="nc" id="L104">                } catch (NullPointerException ignored) {</span>
+<span class="nc" id="L105">                }</span>
+<span class="nc" id="L106">        }</span>
+<span class="nc" id="L107">        super.resetMouse();</span>
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * Update bodies.
+     */
+    public void updateBodies() {
+
+        //TODO : try translate planetPositions points by Vector.sub(oldPosition)
+<span class="nc" id="L116">        double x = totalXDif / mouseSensitivity, y = totalYDif / mouseSensitivity, dx = deltaX / mouseSensitivity, dy = deltaY / mouseSensitivity;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        for (int i = 0; i &lt; this.planetsPositions.length; i++) {</span>
+<span class="nc" id="L118">            this.planetsPositions[i] = simulation.getSystem().systemState().getPositions().get(i).fromVector();</span>
+<span class="nc" id="L119">            this.planetsPositions[i].scale(scale);</span>
+<span class="nc" id="L120">            radius[i] = (simulation.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * Point3DConverter.getScale() * radiusMag;</span>
+<span class="nc" id="L121">            Point3DConverter.rotateAxisY(this.planetsPositions[i], false, x);</span>
+<span class="nc" id="L122">            Point3DConverter.rotateAxisX(this.planetsPositions[i], false, y);</span>
+
+<span class="nc bnc" id="L124" title="All 2 branches missed.">            if (DRAW_TRAJECTORIES) {</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                if (!simulation.waiting())</span>
+<span class="nc" id="L126">                    this.trajectories[i].add(this.planetsPositions[i]);</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">                for (int k = 0; k &lt; this.trajectories[i].getTrajectories().length; k++) {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                    if (this.trajectories[i].getTrajectories()[k] == null)</span>
+<span class="nc" id="L129">                        break;</span>
+                    //most pleasant &quot;bug&quot; of my life - change delta x and y to be xdiff and ydiff - rotate the scene
+<span class="nc" id="L131">                    Point3DConverter.rotateAxisY(this.trajectories[i].getTrajectories()[k], false, dx);</span>
+<span class="nc" id="L132">                    Point3DConverter.rotateAxisX(this.trajectories[i].getTrajectories()[k], false, dy);</span>
+                }
+            }
+        }
+
+<span class="nc" id="L137">    }</span>
+
+
+    /**
+     * Planet shape ellipse 2 d . double.
+     *
+     * @param position the position
+     * @param radius   the radius
+     * @return the ellipse 2 d . double
+     */
+    Ellipse2D.Double planetShape(Point3D position, double radius) {
+<span class="nc" id="L148">        Point p = Point3DConverter.convertPoint(position);</span>
+<span class="nc" id="L149">        return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L154">        return &quot;SimulationScene{&quot; +</span>
+<span class="nc" id="L155">                &quot;planetsPositions=&quot; + Arrays.toString(planetsPositions) +</span>
+                '}';
+    }
+
+
+    /**
+     * The type Bag.
+     */
+    class Bag {
+        /**
+         * The Trajectories.
+         */
+        final Point3D[] trajectories;
+        /**
+         * The Insert.
+         */
+        int insert;
+        /**
+         * The Loop.
+         */
+        boolean loop;
+
+        /**
+         * Instantiates a new Bag.
+         */
+        @Contract(pure = true)
+<span class="nc" id="L181">        Bag() {</span>
+<span class="nc" id="L182">            this.trajectories = new Point3D[TRAJECTORY_LENGTH];</span>
+<span class="nc" id="L183">            this.insert = 0;</span>
+<span class="nc" id="L184">            this.loop = false;</span>
+<span class="nc" id="L185">        }</span>
+
+        /**
+         * Add.
+         *
+         * @param p the p
+         */
+        void add(final Point3D p) {
+<span class="nc" id="L193">            this.trajectories[this.insert] = p;</span>
+<span class="nc" id="L194">            this.insert++;</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">            if (this.insert == this.trajectories.length) {</span>
+<span class="nc" id="L196">                this.insert = 0;</span>
+            }
+<span class="nc" id="L198">        }</span>
+
+        /**
+         * Get trajectories point 3 d [ ].
+         *
+         * @return the point 3 d [ ]
+         */
+        Point3D[] getTrajectories() {
+<span class="nc" id="L206">            return this.trajectories;</span>
+        }
+
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

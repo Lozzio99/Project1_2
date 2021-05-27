@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ControllersWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">ControllersWindow.java</span></div><h1>ControllersWindow.java</h1><pre class="source lang-java linenums">package group17.Graphics.Assist;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Objects;
+
+import static java.awt.BorderLayout.SOUTH;
+import static java.awt.BorderLayout.WEST;
+
+/**
+ * The type Controllers window.
+ */
+public class ControllersWindow extends JDesktopPane {
+
+    //TODO : Maybe this will be HELP / INFO / DEMO
+
+<span class="nc" id="L17">    private final String text = &quot;\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n&quot;;</span>
+    /**
+     * The Color of the background.
+     */
+<span class="nc" id="L21">    Color color = new Color(77, 142, 255);</span>
+
+
+    /**
+     * Instantiates a new Controllers window.
+     */
+<span class="nc" id="L27">    public ControllersWindow() {</span>
+<span class="nc" id="L28">        this.setBorder(BorderFactory.createLineBorder(color, 10));</span>
+
+<span class="nc" id="L30">        this.init();</span>
+<span class="nc" id="L31">    }</span>
+
+    /**
+     * Init.
+     */
+    public void init() {
+
+<span class="nc" id="L38">        JInternalFrame intFrame = new JInternalFrame(&quot;TUTORIAL&quot;, true, true, true, true);</span>
+<span class="nc" id="L39">        intFrame.setBounds(50, 90, 600, 450);</span>
+<span class="nc" id="L40">        intFrame.setLocation(20, 20);</span>
+<span class="nc" id="L41">        intFrame.setVisible(true);</span>
+<span class="nc" id="L42">        intFrame.setFrameIcon(new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource(&quot;icons/death.png&quot;)).getFile()));</span>
+        /*
+        JTextArea textArea = new JTextArea(text,10,30);
+        textArea.setEditable(true);
+        JScrollPane pane = new JScrollPane(textArea);
+        intFrame.add(pane);
+         */
+
+<span class="nc" id="L50">        intFrame.add(this.CreateImage());</span>
+
+<span class="nc" id="L52">        this.add(intFrame, WEST);</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Create image j panel.
+     *
+     * @return the j panel
+     */
+    public JPanel CreateImage() {
+
+<span class="nc" id="L62">        JPanel panel = new JPanel();</span>
+<span class="nc" id="L63">        panel.setLayout(new BorderLayout());</span>
+<span class="nc" id="L64">        JPanel southPanel = new JPanel();</span>
+<span class="nc" id="L65">        southPanel.setLayout(new GridLayout(1, 2));</span>
+<span class="nc" id="L66">        southPanel.add(new JButton(&quot;&lt;&lt;&quot;));</span>
+<span class="nc" id="L67">        southPanel.add(new JButton(&quot;&lt;&quot;));</span>
+<span class="nc" id="L68">        southPanel.add(new JButton(&quot;&gt;&quot;));</span>
+<span class="nc" id="L69">        southPanel.add(new JButton(&quot;&gt;&gt;&quot;));</span>
+<span class="nc" id="L70">        panel.add(southPanel, SOUTH);</span>
+<span class="nc" id="L71">        Image image1 = new ImageIcon(Objects.requireNonNull(this.getClass().getClassLoader().getResource(&quot;icons/death.png&quot;)).getFile()).getImage();</span>
+
+        /*
+        Image image2 = new ImageIcon(&quot;joe.jpg&quot;).getImage();
+        Image image3 = new ImageIcon(&quot;sidney.jpg&quot;).getImage();
+        Image image4 = new ImageIcon(&quot;bugs.gif&quot;).getImage();
+        Image image5 = new ImageIcon(&quot;mac.jpg&quot;).getImage();
+        Image image6 = new ImageIcon(&quot;snooki.jpg&quot;).getImage();
+         */
+
+<span class="nc" id="L81">        panel.add(new ImageViewer(image1));</span>
+
+        /*add(new ImageViewer(image2));// &lt;== extra lines form first viewer attempt
+         add(new ImageViewer(image3)); //, &lt;== which showed all images at once.
+         add(new ImageViewer(image4));// &lt;== only need one image and to flip
+         add(new ImageViewer(image5));// &lt;== to a random image
+         add(new ImageViewer(image6));// &lt;==     */
+
+<span class="nc" id="L89">        return panel;</span>
+    }
+
+    /**
+     * The type Image viewer.
+     */
+    public class ImageViewer extends JPanel {
+        private java.awt.Image image;
+<span class="nc" id="L97">        private boolean stretched = true;</span>
+        private int xCoordinate;
+        private int yCoordinate;
+
+        /**
+         * Instantiates a new Image viewer.
+         */
+<span class="nc" id="L104">        public ImageViewer() {</span>
+<span class="nc" id="L105">        }</span>
+
+        /**
+         * Instantiates a new Image viewer.
+         *
+         * @param image the image
+         */
+<span class="nc" id="L112">        public ImageViewer(Image image) {</span>
+<span class="nc" id="L113">            this.image = image;</span>
+<span class="nc" id="L114">        }</span>
+
+        protected void paintComponent(Graphics g) {
+<span class="nc" id="L117">            super.paintComponent(g);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if (image != null)</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">                if (isStretched())</span>
+<span class="nc" id="L120">                    g.drawImage(image, xCoordinate, yCoordinate, getWidth(), getHeight(), this);</span>
+                else
+<span class="nc" id="L122">                    g.drawImage(image, xCoordinate, yCoordinate, this);</span>
+<span class="nc" id="L123">        }</span>
+
+        /**
+         * Gets image.
+         *
+         * @return the image
+         */
+        public java.awt.Image getImage() {
+<span class="nc" id="L131">            return image;</span>
+        }
+
+        /**
+         * Sets image.
+         *
+         * @param image the image
+         */
+        public void setImage(java.awt.Image image) {
+<span class="nc" id="L140">            this.image = image;</span>
+<span class="nc" id="L141">            repaint();</span>
+<span class="nc" id="L142">        }</span>
+
+        /**
+         * Is stretched boolean.
+         *
+         * @return the boolean
+         */
+        public boolean isStretched() {
+<span class="nc" id="L150">            return stretched;</span>
+        }
+
+        /**
+         * Sets stretched.
+         *
+         * @param stretched the stretched
+         */
+        public void setStretched(boolean stretched) {
+<span class="nc" id="L159">            this.stretched = stretched;</span>
+<span class="nc" id="L160">            repaint();</span>
+<span class="nc" id="L161">        }</span>
+
+        /**
+         * Gets x coordinate.
+         *
+         * @return the x coordinate
+         */
+        public int getXCoordinate() {
+<span class="nc" id="L169">            return xCoordinate;</span>
+        }
+
+        /**
+         * Sets x coodinate.
+         *
+         * @param xCoordinate the x coordinate
+         */
+        public void setXCoodinate(int xCoordinate) {
+<span class="nc" id="L178">            this.xCoordinate = xCoordinate;</span>
+<span class="nc" id="L179">        }</span>
+
+        /**
+         * Gets y coordinate.
+         *
+         * @return the y coordinate
+         */
+        public int getYCoordinate() {
+<span class="nc" id="L187">            return yCoordinate;</span>
+        }
+
+        /**
+         * Sets y coodinate.
+         *
+         * @param yCoordinate the y coordinate
+         */
+        public void setYCoodinate(int yCoordinate) {
+<span class="nc" id="L196">            this.yCoordinate = yCoordinate;</span>
+<span class="nc" id="L197">            repaint();</span>
+<span class="nc" id="L198">        }</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RocketSimulator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation.Rocket</a> &gt; <span class="el_source">RocketSimulator.java</span></div><h1>RocketSimulator.java</h1><pre class="source lang-java linenums">package group17.Simulation.Rocket;
+
+import group17.Interfaces.RocketInterface;
+import group17.Interfaces.StateInterface;
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Lib.Vector3D;
+import group17.Simulation.System.Bodies.CelestialBody;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.STEP_SIZE;
+import static java.lang.Double.NaN;
+
+/**
+ * The type Rocket simulator.
+ */
+<span class="nc bnc" id="L19" title="All 2 branches missed.">public class RocketSimulator extends CelestialBody implements RocketInterface {</span>
+
+
+// Variables
+<span class="nc" id="L23">    double startFuel = 2e4;</span>
+
+    double fuelMass;
+
+    double totalMass;
+
+<span class="nc" id="L29">    double exhaustVelocity = 2e4;</span>
+
+<span class="nc" id="L31">    double maxThrust = 3e7;</span>
+
+    Vector3dInterface localAcceleration;
+
+
+    /**
+     * Instantiates a new Rocket simulator.
+     */
+<span class="nc" id="L39">    public RocketSimulator() {</span>
+<span class="nc" id="L40">        this.localAcceleration = new Vector3D();</span>
+<span class="nc" id="L41">    }</span>
+
+    /**
+     * Add acceleration.
+     *
+     * @param toAdd the to add
+     */
+    public void addAcceleration(Vector3dInterface toAdd) {
+<span class="nc" id="L49">        this.localAcceleration = this.localAcceleration.add(toAdd);</span>
+<span class="nc" id="L50">    }</span>
+
+    /**
+     * Gets local acceleration.
+     *
+     * @return the local acceleration
+     */
+    public Vector3dInterface getLocalAcceleration() {
+<span class="nc" id="L58">        return localAcceleration;</span>
+    }
+
+    /**
+     * Sets local acceleration.
+     *
+     * @param localAcceleration the local acceleration
+     */
+    public void setLocalAcceleration(Vector3dInterface localAcceleration) {
+<span class="nc" id="L67">        this.localAcceleration = localAcceleration;</span>
+<span class="nc" id="L68">    }</span>
+
+    /**
+     * Evaluate loss double.
+     *
+     * source : https://www.narom.no/undervisningsressurser/sarepta/rocket-theory/rocket-engines/the-rocket-equation/
+     *
+     *M(t)=M_(start )âˆ’mÂ Ì‡  ;mÂ Ì‡=  Î”m/Î”t
+     *M(t)âˆ—a(t)= mÂ Ì‡âˆ—V_e=F_max;
+     *a(t)=  F_max/(Mstartâˆ’mÂ Ì‡âˆ—t);
+     *âˆ«a(t)dt=v(t); V_eâˆ—ln(Mstart/M(t) ;
+     *Î”m=M_startâˆ—(1 âˆ’ e^(âˆ’Î”v/V_e ));
+     *Î”m - Propellant Consumed for One Step
+     * @param desiredVelocity the desired velocity
+     * @param actualVelocity  the actual velocity
+     * @return Î”m, propellant consumed
+     */
+    public double evaluateLoss(Vector3dInterface desiredVelocity, Vector3dInterface actualVelocity) {
+<span class="nc" id="L86">        double deltaV = desiredVelocity.sub(actualVelocity).norm();</span>
+
+<span class="nc" id="L88">        double propellantConsumed = (fuelMass * deltaV) / (this.exhaustVelocity + deltaV);</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (exhaustVelocity * (propellantConsumed / STEP_SIZE) &gt; maxThrust) {</span>
+<span class="nc" id="L91">            System.out.println(&quot;Max Thrust exceeded!!!&quot;);</span>
+        }
+
+
+<span class="nc" id="L95">        simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11, desiredVelocity);</span>
+<span class="nc" id="L96">        updateMass(propellantConsumed);</span>
+<span class="nc" id="L97">        return propellantConsumed;</span>
+    }
+
+
+    /**
+     * Update mass.
+     *
+     * @param propellantConsumed the propellant consumed
+     */
+    public void updateMass(double propellantConsumed) {
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (this.getFuelMass() - propellantConsumed &gt;= 0) {</span>
+<span class="nc" id="L108">            this.setMASS(this.totalMass - propellantConsumed);</span>
+<span class="nc" id="L109">            this.setFuelMass(this.fuelMass - propellantConsumed);</span>
+        } else {
+<span class="nc" id="L111">            System.out.println(&quot;Out of fuel!&quot;);</span>
+        }
+<span class="nc" id="L113">    }</span>
+
+    @Override
+    public double getFuelMass() {
+<span class="nc" id="L117">        return this.fuelMass;</span>
+    }
+
+    @Override
+    public void setFuelMass(double m) {
+<span class="nc" id="L122">        this.fuelMass = m;</span>
+<span class="nc" id="L123">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L127">        return &quot;ROCKET&quot;;</span>
+    }
+
+    /**
+     * Info string.
+     *
+     * @return the string
+     */
+    public String info() {
+<span class="nc" id="L136">        return &quot;Dry Mass: &quot; + this.getMASS() + &quot;\n&quot; +</span>
+                &quot;Fuel Mass: &quot; + this.fuelMass + &quot;\n&quot;;
+    }
+
+    @Override
+    public void update() {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        if (!this.isCollided()) {</span>
+<span class="nc" id="L143">            simulation.getSystem().systemState().getRateOfChange().getVelocities().set(11,</span>
+<span class="nc" id="L144">                    simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11).addMul(STEP_SIZE, localAcceleration));</span>
+        }
+<span class="nc" id="L146">    }</span>
+
+    @Override
+    public void initProperties() {
+<span class="nc" id="L150">        this.setMASS(7.8e4);</span>
+<span class="nc" id="L151">        this.setRADIUS(1e2);</span>
+<span class="nc" id="L152">        this.setColour(Color.GREEN);</span>
+<span class="nc" id="L153">        this.setVectorLocation(new Vector3D(-1.4717856245318698E11,-2.861154627637646E10,8032437.618829092)); //earth</span>
+        // this.getVectorLocation().add(new Vector3D(6.372e6, 0, 0));
+<span class="nc" id="L155">        this.setVectorVelocity(new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));</span>
+<span class="nc" id="L156">        this.localAcceleration = new Vector3D();</span>
+<span class="nc" id="L157">        this.fuelMass = this.startFuel;</span>
+<span class="nc" id="L158">        this.totalMass = this.startFuel + this.getMASS();</span>
+<span class="nc" id="L159">        this.setMASS(this.totalMass);</span>
+<span class="nc" id="L160">    }</span>
+
+    @Override
+    public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
+<span class="nc bnc" id="L164" title="All 4 branches missed.">        assert (simulation.getSystem() != null);</span>
+<span class="nc" id="L165">        StateInterface[] seq = simulation.getUpdater().getSolver().solve(</span>
+<span class="nc" id="L166">                simulation.getUpdater().getSolver().getFunction(),</span>
+<span class="nc" id="L167">                simulation.getSystem().systemState(),</span>
+                ts);
+
+<span class="nc" id="L170">        return getSequence(seq);</span>
+    }
+
+    @NotNull
+    private Vector3dInterface[] getSequence(StateInterface[] seq) {
+<span class="nc" id="L175">        Vector3dInterface[] trajectory = new Vector3dInterface[seq.length];</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        for (int i = 0; i &lt; trajectory.length; i++) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            if (seq[i].getPositions().size() &lt; 11)        //may have collided</span>
+<span class="nc" id="L178">                trajectory[i] = new Vector3D(NaN, NaN, NaN);</span>
+<span class="nc" id="L179">            trajectory[i] = seq[i].getPositions().get(11);</span>
+        }
+<span class="nc" id="L181">        return trajectory;</span>
+    }
+
+    @Override
+    public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
+<span class="nc bnc" id="L186" title="All 4 branches missed.">        assert (simulation.getSystem() != null);</span>
+<span class="nc" id="L187">        StateInterface[] seq = simulation.getUpdater().getSolver().solve(</span>
+<span class="nc" id="L188">                simulation.getUpdater().getSolver().getFunction(),</span>
+<span class="nc" id="L189">                simulation.getSystem().systemState(),</span>
+                tf, h);
+
+<span class="nc" id="L192">        return getSequence(seq);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

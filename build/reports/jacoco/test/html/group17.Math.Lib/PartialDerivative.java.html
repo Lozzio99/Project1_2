@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PartialDerivative.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">PartialDerivative.java</span></div><h1>PartialDerivative.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+import group17.Interfaces.NewtRaphFunction;
+import group17.Interfaces.Vector3dInterface;
+
+/**
+ * The type Partial derivative.
+ */
+<span class="nc" id="L9">public class PartialDerivative {</span>
+
+<span class="nc" id="L11">    private static final double[][] H = new double[][]{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};</span>
+
+    /**
+     * Method computes partial derivatives of a 3-d vector function
+     *
+     * @param fX 3-d vector function
+     * @param v  point at which to compute derivatives
+     * @param h  step size
+     * @param n  number of variable, regarding which partial derivatives are computed (e.g. df1/dx, dfn/dx)
+     * @return vector of partial derivatives
+     */
+    public static Vector3D getPartialDerivatives(NewtRaphFunction fX, Vector3D v, double h, int n) {
+<span class="nc" id="L23">        Vector3dInterface diff = fX.modelFx(new Vector3D(v.getX()+H[n][0]*h, v.getY()+H[n][1]*h, v.getZ()+H[n][2]*h))</span>
+<span class="nc" id="L24">                .sub(fX.modelFx(new Vector3D(v.getX()-H[n][0]*h, v.getY()-H[n][1]*h, v.getZ()-H[n][2]*h)));</span>
+<span class="nc" id="L25">        return (Vector3D) diff.div(2*h);</span>
+    }
+
+    /**
+     * Computes all first partial derivatives of a target function
+     *
+     * @param fX the f x
+     * @param v  vector value
+     * @param h  the h
+     * @return Jacobian matrix
+     */
+    public static double[][] getJacobianMatrix(NewtRaphFunction fX, Vector3D v, double h) {
+<span class="nc" id="L37">        double[][] m = new double[3][3];</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        for (int i = 0; i &lt; m.length; i++) {</span>
+<span class="nc" id="L39">            Vector3dInterface res = getPartialDerivatives(fX, v, h, i);</span>
+<span class="nc" id="L40">            m[0][i] = res.getX();</span>
+<span class="nc" id="L41">            m[1][i] = res.getY();</span>
+<span class="nc" id="L42">            m[2][i] = res.getZ();</span>
+        }
+<span class="nc" id="L44">        return m;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

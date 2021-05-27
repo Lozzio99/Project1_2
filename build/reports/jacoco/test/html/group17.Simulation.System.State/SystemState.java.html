@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SystemState.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation.System.State</a> &gt; <span class="el_source">SystemState.java</span></div><h1>SystemState.java</h1><pre class="source lang-java linenums">package group17.Simulation.System.State;
+
+import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
+import group17.Interfaces.Vector3dInterface;
+import org.jetbrains.annotations.Contract;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static group17.Main.simulation;
+
+
+/**
+ * Concrete State Class, Represents the state of a system described by a differential equation
+ */
+public class SystemState implements StateInterface {
+
+    /**
+     * The Positions.
+     */
+    List&lt;Vector3dInterface&gt; positions;
+    /**
+     * The Rate of change.
+     */
+    RateInterface rateOfChange;
+
+    /**
+     * Instantiates a new System state.
+     */
+<span class="nc" id="L31">    public SystemState() {</span>
+<span class="nc" id="L32">        this.positions = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L33">        this.rateOfChange = new RateOfChange();</span>
+<span class="nc" id="L34">    }</span>
+
+    /**
+     * Instantiates a new System state.
+     *
+     * @param copy the copy
+     */
+<span class="nc" id="L41">    public SystemState(StateInterface copy) {</span>
+<span class="nc" id="L42">        this.positions = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L43">        this.rateOfChange = new RateOfChange();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        for (int i = 0; i &lt; copy.getPositions().size(); i++) {</span>
+<span class="nc" id="L45">            this.positions.add(copy.getPositions().get(i).clone());</span>
+<span class="nc" id="L46">            this.rateOfChange.getVelocities().add(copy.getRateOfChange().getVelocities().get(i).clone());</span>
+        }
+<span class="nc" id="L48">    }</span>
+
+    /**
+     * Instantiates a new System state.
+     *
+     * @param copy the copy
+     * @param rate the rate
+     */
+<span class="nc" id="L56">    public SystemState(StateInterface copy, RateInterface rate) {</span>
+<span class="nc" id="L57">        this.positions = copy.getPositions();</span>
+<span class="nc" id="L58">        this.rateOfChange = new RateOfChange();</span>
+<span class="nc" id="L59">        this.rateOfChange.setVelocities(rate.getVelocities());</span>
+<span class="nc" id="L60">    }</span>
+
+    /**
+     * Instantiates a new System state.
+     *
+     * @param positions  the positions
+     * @param velocities the velocities
+     */
+    @Contract(pure = true)
+<span class="nc" id="L69">    public SystemState(List&lt;Vector3dInterface&gt; positions, List&lt;Vector3dInterface&gt; velocities) {</span>
+<span class="nc" id="L70">        this.positions = positions;</span>
+<span class="nc" id="L71">        this.rateOfChange = new RateOfChange();</span>
+<span class="nc" id="L72">        rateOfChange.setVelocities(velocities);</span>
+<span class="nc" id="L73">    }</span>
+
+
+    @Override
+    public List&lt;Vector3dInterface&gt; getPositions() {
+<span class="nc" id="L78">        return this.positions;</span>
+    }
+
+    @Override
+    public void setPositions(List&lt;Vector3dInterface&gt; pos) {
+<span class="nc" id="L83">        this.positions = pos;</span>
+<span class="nc" id="L84">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L88">        StringBuilder s = new StringBuilder();</span>
+<span class="nc" id="L89">        s.append(&quot;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n&quot;);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (simulation == null) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">            for (Vector3dInterface position : this.positions) {</span>
+<span class="nc" id="L92">                s.append(&quot;PV:\t&quot;);</span>
+<span class="nc" id="L93">                s.append(position.toString()).append(&quot;\n&quot;);</span>
+<span class="nc" id="L94">            }</span>
+        } else {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            for (int i = 0; i &lt; this.positions.size(); i++) {</span>
+<span class="nc" id="L97">                s.append(simulation.getSystem().getCelestialBodies().get(i).toString());</span>
+<span class="nc" id="L98">                s.append(&quot;\tPV:\t&quot;);</span>
+<span class="nc" id="L99">                s.append(this.positions.get(i).toString()).append(&quot;\n&quot;);</span>
+<span class="nc" id="L100">                s.append(&quot;\tVV:\t&quot;);</span>
+<span class="nc" id="L101">                s.append(this.rateOfChange.getVelocities().get(i).toString()).append(&quot;\n&quot;);</span>
+            }
+        }
+<span class="nc" id="L104">        s.append(&quot;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&quot;);</span>
+<span class="nc" id="L105">        return s.toString().trim();</span>
+    }
+
+    @Override
+    public RateInterface getRateOfChange() {
+<span class="nc" id="L110">        return this.rateOfChange;</span>
+    }
+
+    @Override
+    public void setRateOfChange(RateInterface rateOfChange) {
+<span class="nc" id="L115">        this.rateOfChange = rateOfChange;</span>
+<span class="nc" id="L116">    }</span>
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L120">        int hash = 31;</span>
+<span class="nc" id="L121">        hash = 31 * hash + this.positions.hashCode();</span>
+<span class="nc" id="L122">        hash = 31 * hash + this.rateOfChange.getVelocities().hashCode();</span>
+<span class="nc" id="L123">        return hash;</span>
+    }
+
+    @Contract(value = &quot;null -&gt; false&quot;, pure = true)
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (obj instanceof StateInterface) {</span>
+<span class="nc" id="L130">            StateInterface s = (StateInterface) obj;</span>
+<span class="nc bnc" id="L131" title="All 2 branches missed.">            return this.hashCode() == s.hashCode();</span>
+        }
+<span class="nc" id="L133">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

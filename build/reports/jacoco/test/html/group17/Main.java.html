@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">package group17;
+
+import group17.Graphics.UserDialogWindow;
+import group17.Interfaces.SimulationInterface;
+
+/**
+ * Driver class of Program
+ * The purpose of this class is to initialise the user dialog window
+ * which will take care of the initialisation, and allowing
+ * the user selecting some initial preferences.
+ */
+<span class="nc" id="L12">public class Main extends UserDialogWindow {</span>
+
+    /**
+     * The singleton instance of the simulation.
+     * Kept on the Main memory heap to avoid the instance
+     * moving around registers and help solving concurrency issues
+     * on possible cached values.
+     * Improves accessibility from external threads and allows direct
+     * reading-writing actions from external monitors without compromising
+     * the threading flow.
+     * In order to do this, it is necessary to write on the instance whenever
+     * there's need to flush updated information and instruction on the main
+     * heap, and this will be automatically done from any thread it is
+     * writing on the simulation instance.
+     * To avoid bad ordering of the passed instructions,it is therefore necessary
+     * to contains logical blocks within the instructions updating
+     * on the simulation cached instance.
+     * A good advantage of this is the happens-before condition which is
+     * implicit in the volatile keyword: meaning all instruction
+     * written before of the actual writing on this instance will be
+     * kept in the same ordering as they are passed, due to the uniqueness
+     * of the information pool, leading to stability when forking tasks
+     * and then applying them in order.
+     */
+    public static volatile SimulationInterface simulation;
+    /**
+     * The instance of the userDialog Window.
+     */
+<span class="nc" id="L40">    public static UserDialogWindow userDialog = new UserDialogWindow();</span>
+
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
+<span class="nc" id="L48">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

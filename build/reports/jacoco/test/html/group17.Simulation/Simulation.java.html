@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Simulation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation</a> &gt; <span class="el_source">Simulation.java</span></div><h1>Simulation.java</h1><pre class="source lang-java linenums">package group17.Simulation;
+
+import group17.Graphics.Assist.ErrorWindow;
+import group17.Graphics.Assist.LaunchAssistWindow;
+import group17.Graphics.GraphicsManager;
+import group17.Graphics.UserDialogWindow;
+import group17.Interfaces.GraphicsInterface;
+import group17.Interfaces.SimulationInterface;
+import group17.Interfaces.SystemInterface;
+import group17.Interfaces.UpdaterInterface;
+import group17.Math.Solvers.StandardVerletSolver;
+import group17.Simulation.System.Bodies.CelestialBody;
+import group17.Simulation.System.SolarSystem;
+import group17.Utils.ErrorReport;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
+/**
+ * Base class interface of program, the simulation of the solar system
+ * This class is the owner of the main pool thread which will run the simulation.
+ */
+<span class="nc" id="L27">public class Simulation implements SimulationInterface {</span>
+    private UpdaterInterface updater;
+    private GraphicsInterface graphics;
+    private LaunchAssistWindow assist;
+    private ErrorWindow errorUI;
+    private volatile SystemInterface system;
+    private SimulationReporter reporter;
+<span class="nc" id="L34">    private volatile boolean running, paused = true, stopped = false;</span>
+
+
+    @Override
+    public void init() {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (REPORT) this.initReporter();   //first thing, will check all exceptions</span>
+
+<span class="nc" id="L41">        this.initSystem();  // before graphics and userDialog (clock, positions init, ...)</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (LAUNCH_ASSIST) this.initAssist();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (ENABLE_GRAPHICS) this.initGraphics();</span>
+
+<span class="nc" id="L45">        this.initUpdater();  //last thing, will start the simulation if it's the only one running</span>
+<span class="nc" id="L46">    }</span>
+
+    @Override
+    public void start() {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (!this.stopped) {  // there may be some errors in the initialisation</span>
+<span class="nc" id="L51">            this.setRunning();</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if (LAUNCH_ASSIST) {</span>
+<span class="nc" id="L53">                this.getAssist().showAssistParameters();</span>
+            }
+<span class="nc" id="L55">            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());</span>
+            //8 ms should be fine as delay,
+<span class="nc" id="L57">            service.scheduleWithFixedDelay(this::loop, 30, 9, MILLISECONDS);</span>
+<span class="nc" id="L58">        } else {</span>
+<span class="nc bnc" id="L59" title="All 4 branches missed.">            if (DEBUG || REPORT) this.getReporter().report(new RuntimeException(&quot;STOP&quot;));</span>
+        }
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * resets the whole simulation,reverts everything
+     * back to initial instance, as if the program was restarted
+     */
+    @Override
+    public void reset() {
+<span class="nc" id="L69">        this.setWaiting(true);   //first of all</span>
+<span class="nc" id="L70">        this.getSystem().reset();</span>
+<span class="nc" id="L71">        CURRENT_TIME = 0;</span>
+<span class="nc" id="L72">        ErrorReport.setMonthIndex(0);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (!LAUNCH_ASSIST) {</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">            if (REPORT) this.getReporter().report(&quot;START SIMULATION&quot;);</span>
+            try {
+<span class="nc" id="L76">                Thread.sleep(3000);  /* will wait 3 sec */</span>
+<span class="nc" id="L77">            } catch (InterruptedException ex) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                if (REPORT) simulation.getReporter().report(Thread.currentThread(), ex);</span>
+<span class="nc" id="L79">            }</span>
+<span class="nc" id="L80">            this.setWaiting(false);</span>
+        }
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (DEFAULT_SOLVER == VERLET_STD_SOLVER) ((StandardVerletSolver) this.getUpdater().getSolver()).setFirst();</span>
+<span class="nc" id="L83">        this.getUpdater().getSchedule().init();</span>
+<span class="nc" id="L84">        this.getUpdater().getSchedule().prepare();</span>
+<span class="nc" id="L85">    }</span>
+
+    @Override
+    public void stop() {
+<span class="nc" id="L89">        this.stopped = true;</span>
+<span class="nc" id="L90">        this.running = false;</span>
+<span class="nc" id="L91">        this.paused = false;</span>
+<span class="nc" id="L92">    }</span>
+
+
+    /**
+     * Main simulation loop, synchronized under the control of static Monitor object of the class
+     * All instance methods invoked here are also encapsulated within these blocks
+     * to help solving concurrency problems, to enhance data visibility and instruction ordering.
+     */
+    @Override
+    public synchronized void loop() {
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (this.running) {</span>
+<span class="nc" id="L103">            this.updateState();</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if (ENABLE_GRAPHICS)</span>
+<span class="nc" id="L105">                this.startGraphics();</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (REPORT)</span>
+<span class="nc" id="L107">                this.startReport();</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (LAUNCH_ASSIST)</span>
+<span class="nc" id="L109">                this.startAssist();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">            if (!waiting()) {</span>
+<span class="nc" id="L111">                this.startUpdater();</span>
+<span class="nc" id="L112">                this.startSystem();</span>
+            }
+        }
+<span class="nc" id="L115">    }</span>
+
+    @Override
+    public void initUpdater() {
+<span class="nc" id="L119">        this.updater = new SimulationUpdater();</span>
+<span class="nc" id="L120">        this.updater.init();</span>
+<span class="nc" id="L121">    }</span>
+
+    @Override
+    public synchronized void startUpdater() {
+<span class="nc" id="L125">        this.updater.start();</span>
+<span class="nc" id="L126">    }</span>
+
+    @Override
+    public UpdaterInterface getUpdater() {
+<span class="nc" id="L130">        return this.updater;</span>
+    }
+
+
+    @Override
+    public void initGraphics() {
+<span class="nc" id="L136">        this.graphics = new GraphicsManager();</span>
+<span class="nc" id="L137">        this.graphics.init();</span>
+<span class="nc" id="L138">    }</span>
+
+    @Override
+    public synchronized void startGraphics() {
+<span class="nc" id="L142">        this.graphics.start();</span>
+<span class="nc" id="L143">    }</span>
+
+    @Override
+    public GraphicsInterface getGraphics() {
+<span class="nc" id="L147">        return this.graphics;</span>
+    }
+
+
+    @Override
+    public void initAssist() {
+<span class="nc" id="L153">        this.assist.init();</span>
+<span class="nc" id="L154">        this.errorUI.makeTable();</span>
+<span class="nc" id="L155">        this.errorUI.initButtons();</span>
+        //making the first report to check if positions are correct
+<span class="nc" id="L157">    }</span>
+
+
+    @Override
+    public synchronized void startAssist() {
+<span class="nc" id="L162">        this.assist.start();</span>
+<span class="nc" id="L163">    }</span>
+
+    @Override
+    public LaunchAssistWindow getAssist() {
+<span class="nc" id="L167">        return this.assist;</span>
+    }
+
+    @Override
+    public void setAssist(UserDialogWindow assist) {
+<span class="nc" id="L172">        this.assist = assist.getLaunchAssist();</span>
+<span class="nc" id="L173">        this.assist.setOutputWindow(assist.getOutputWindow());</span>
+<span class="nc" id="L174">        this.errorUI = assist.getErrorWindow();</span>
+<span class="nc" id="L175">    }</span>
+
+    @Override
+    public void initSystem() {
+<span class="nc" id="L179">        this.system = new SolarSystem();</span>
+<span class="nc" id="L180">        this.system.initClock();</span>
+<span class="nc" id="L181">        this.system.initPlanets();</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (INSERT_ROCKET) this.system.initRocket();</span>
+<span class="nc" id="L183">        this.system.initialState();</span>
+<span class="nc" id="L184">    }</span>
+
+    @Override
+    public synchronized void startSystem() {
+<span class="nc" id="L188">        this.system.start();</span>
+<span class="nc" id="L189">    }</span>
+
+    @Override
+    public SimulationReporter getReporter() {
+<span class="nc" id="L193">        return this.reporter;</span>
+    }
+
+    @Override
+    public void initReporter() {
+<span class="nc" id="L198">        this.reporter = new SimulationReporter();</span>
+<span class="nc" id="L199">        this.reporter.init();</span>
+<span class="nc" id="L200">    }</span>
+
+    @Override
+    public synchronized void startReport() {
+<span class="nc" id="L204">        this.reporter.start();</span>
+<span class="nc" id="L205">    }</span>
+
+    @Override
+    public SystemInterface getSystem() {
+<span class="nc" id="L209">        return this.system;</span>
+    }
+
+
+    @Override
+    public boolean running() {
+<span class="nc" id="L215">        return this.running;</span>
+    }
+
+    @Override
+    public synchronized void setRunning() {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">        if (!this.running)</span>
+<span class="nc" id="L221">            this.running = true;</span>
+<span class="nc" id="L222">    }</span>
+
+    @Override
+    public boolean waiting() {
+<span class="nc" id="L226">        return this.paused;</span>
+    }
+
+    @Override
+    public synchronized void setWaiting(boolean isWaiting) {
+<span class="nc" id="L231">        this.paused = isWaiting;</span>
+<span class="nc" id="L232">    }</span>
+
+    @Override
+    public synchronized void setStopped(boolean stopped) {
+<span class="nc" id="L236">        this.stopped = stopped;</span>
+<span class="nc" id="L237">    }</span>
+
+    /**
+     *  updates instance of simulation to the next state
+     */
+    @Override
+    public synchronized void updateState() {
+<span class="nc bnc" id="L244" title="All 2 branches missed.">        if (!CHECK_COLLISIONS) return;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        for (int i = 0; i &lt; getSystem().getCelestialBodies().size(); i++) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            if (getSystem().getCelestialBodies().get(i).isCollided()) {</span>
+<span class="nc" id="L247">                getSystem().systemState().getPositions().remove(i);</span>
+<span class="nc" id="L248">                getSystem().systemState().getRateOfChange().getVelocities().remove(i);</span>
+            }
+        }
+<span class="nc" id="L251">        getSystem().getCelestialBodies().removeIf(CelestialBody::isCollided);</span>
+<span class="nc" id="L252">    }</span>
+
+
+    @Override
+    public String toString() {
+<span class="nc" id="L257">        return &quot;Simulation{&quot; +</span>
+                &quot;running=&quot; + running +
+                &quot;,paused=&quot; + paused +
+<span class="nc" id="L260">                &quot;,nThreads=&quot; + Thread.currentThread().getThreadGroup().activeCount() +</span>
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

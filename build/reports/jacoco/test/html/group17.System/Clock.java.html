@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Clock.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.System</a> &gt; <span class="el_source">Clock.java</span></div><h1>Clock.java</h1><pre class="source lang-java linenums">package group17.System;
+
+import group17.Utils.ErrorReport;
+import org.jetbrains.annotations.Contract;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.ERROR_EVALUATION;
+import static group17.Utils.Config.REPORT;
+
+/**
+ * The type Clock.
+ */
+public class Clock {
+
+    /**
+     * The constant DAY.
+     */
+
+    public static final double DAY = 86400.0;
+<span class="nc" id="L20">    private static final String[] monthStrings =</span>
+            {&quot;January&quot;, &quot;February&quot;, &quot;March&quot;, &quot;April&quot;, &quot;May&quot;, &quot;June&quot;,
+                    &quot;July&quot;, &quot;August&quot;, &quot;September&quot;, &quot;October&quot;, &quot;November&quot;, &quot;December&quot;};
+    private int sec, min, hour, days, months, years;
+    private boolean leap;
+    private int[] daysInMonths;
+
+    /**
+     * Instantiates a new Clock.
+     */
+<span class="nc" id="L30">    public Clock() {</span>
+<span class="nc" id="L31">        sec = 0;</span>
+<span class="nc" id="L32">        min = 0;</span>
+<span class="nc" id="L33">        hour = 0;</span>
+<span class="nc" id="L34">        days = 0;</span>
+<span class="nc" id="L35">        months = 0;</span>
+<span class="nc" id="L36">        years = 0;</span>
+<span class="nc" id="L37">    }</span>
+
+
+    /**
+     * Sets launch day.
+     *
+     * @return the launch day
+     */
+    public Clock setLaunchDay() {
+<span class="nc" id="L46">        setInitialDay(1, 4, 2020);</span>
+<span class="nc" id="L47">        setInitialTime(0, 0, 0);</span>
+<span class="nc" id="L48">        checkLeap();</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (ERROR_EVALUATION) checkFirst();</span>
+<span class="nc" id="L50">        return this;</span>
+    }
+
+    /**
+     * Sets initial day.
+     *
+     * @param days  the days
+     * @param month the month
+     * @param years the years
+     * @return the initial day
+     */
+    public Clock setInitialDay(int days, int month, int years) {
+<span class="nc" id="L62">        this.days = days;</span>
+<span class="nc" id="L63">        this.months = month;</span>
+<span class="nc" id="L64">        this.years = years;</span>
+<span class="nc" id="L65">        return this;</span>
+    }
+
+    /**
+     * Sets initial time.
+     *
+     * @param sec   the sec
+     * @param min   the min
+     * @param hours the hours
+     * @return the initial time
+     */
+    public Clock setInitialTime(int sec, int min, int hours) {
+<span class="nc" id="L77">        this.sec = sec;</span>
+<span class="nc" id="L78">        this.min = min;</span>
+<span class="nc" id="L79">        this.hour = hours;</span>
+<span class="nc" id="L80">        return this;</span>
+    }
+
+    /**
+     * Step boolean.
+     *
+     * @param secStep the sec step
+     * @return the boolean
+     */
+    public synchronized boolean step(double secStep) {
+<span class="nc" id="L90">        int step = (int) secStep;</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (step != 0)</span>
+<span class="nc" id="L92">            secStep(step);</span>
+<span class="nc" id="L93">        checkLeap();</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (!ERROR_EVALUATION) return false;</span>
+<span class="nc" id="L95">        return checkFirst();</span>
+    }
+
+    private boolean checkFirst() {
+<span class="nc bnc" id="L99" title="All 8 branches missed.">        if (this.days == 1 &amp;&amp; this.hour == 0 &amp;&amp; this.min == 0 &amp;&amp; this.sec == 0) {</span>
+<span class="nc" id="L100">            ErrorReport.incrementMonth();</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (REPORT) simulation.getReporter().report(&quot;FIRST OF MONTH - EVALUATING ERRORS&quot;);</span>
+<span class="nc" id="L102">            return true;</span>
+        }
+<span class="nc" id="L104">        return false;</span>
+    }
+
+    private synchronized void secStep(int secStep) {
+<span class="nc" id="L108">        int minutes = secStep / 60;</span>
+<span class="nc" id="L109">        this.sec += secStep % 60;</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        if (this.sec &gt;= 60) {</span>
+<span class="nc" id="L111">            minutes += this.sec / 60;</span>
+<span class="nc" id="L112">            this.sec = this.sec % 60;</span>
+        }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (minutes != 0)</span>
+<span class="nc" id="L115">            minStep(minutes);</span>
+<span class="nc" id="L116">    }</span>
+
+    private synchronized void minStep(int minutes) {
+<span class="nc" id="L119">        int hours = minutes / 60;</span>
+<span class="nc" id="L120">        this.min += minutes % 60;</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (this.min &gt;= 60) {</span>
+<span class="nc" id="L122">            hours += this.min / 60;</span>
+<span class="nc" id="L123">            this.min = this.min % 60;</span>
+        }
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (hours != 0)</span>
+<span class="nc" id="L126">            hoursStep(hours);</span>
+<span class="nc" id="L127">    }</span>
+
+    private synchronized void hoursStep(int hours) {
+<span class="nc" id="L130">        int days = hours / 24;</span>
+<span class="nc" id="L131">        this.hour += hours % 24;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">        if (this.hour &gt;= 24) {</span>
+<span class="nc" id="L133">            days += this.hour / 24;</span>
+<span class="nc" id="L134">            this.hour = this.hour % 24;</span>
+        }
+<span class="nc bnc" id="L136" title="All 2 branches missed.">        if (days != 0)</span>
+<span class="nc" id="L137">            daysStep(days);</span>
+<span class="nc" id="L138">    }</span>
+
+    private synchronized void daysStep(int days) {
+<span class="nc" id="L141">        int months = days / this.daysInMonths[this.months - 1];</span>
+
+        //FIXME : problem here i guess,
+        //TODO : receive 365, return days == days ( if ! leap )
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (days &gt;= 365)</span>
+<span class="nc" id="L146">            this.days += (days % 365) % this.daysInMonths[this.months - 1];</span>
+        else
+<span class="nc" id="L148">            this.days += days % this.daysInMonths[this.months - 1];</span>
+
+
+<span class="nc bnc" id="L151" title="All 2 branches missed.">        if (this.days &gt; this.daysInMonths[this.months - 1]) {</span>
+<span class="nc" id="L152">            months += this.days / this.daysInMonths[this.months - 1];</span>
+<span class="nc" id="L153">            this.days = (this.days % this.daysInMonths[this.months - 1]);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">            this.days = this.days == 0 ? 1 : this.days;</span>
+        }
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        if (months != 0)</span>
+<span class="nc" id="L157">            monthsStep(months);</span>
+<span class="nc" id="L158">    }</span>
+
+    private synchronized void monthsStep(int months) {
+<span class="nc" id="L161">        int years = months / 12;</span>
+<span class="nc" id="L162">        this.months += months % 12;</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">        if (this.months &gt; 12) {</span>
+<span class="nc" id="L164">            years += this.months / 12;</span>
+<span class="nc" id="L165">            this.months = (this.months % 12);</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">            this.months = this.months == 0 ? 1 : this.months;</span>
+        }
+<span class="nc" id="L168">        yearsStep(years);</span>
+<span class="nc" id="L169">    }</span>
+
+    private synchronized void yearsStep(int years) {
+<span class="nc" id="L172">        this.years += years;</span>
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * Check leap.
+     */
+    public void checkLeap() {
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        leap = this.years % 4 == 0;</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">        daysInMonths = new int[]{31, (leap ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};</span>
+<span class="nc" id="L181">    }</span>
+
+    @Override
+    public synchronized String toString() {
+<span class="nc" id="L185">        return &quot;Clock { [ &quot; +</span>
+                hour / 10 + hour % 10 + &quot; : &quot; +
+                min / 10 + min % 10 + &quot; : &quot; +
+                sec / 10 + sec % 10 + &quot; ]     &quot; +
+                days / 10 + days % 10 + &quot; / &quot; +
+                months / 10 + months % 10 + &quot; / &quot; +
+                this.years + &quot;  }&quot;;
+    }
+
+    /**
+     * Gets sec.
+     *
+     * @return the sec
+     */
+    public int getSec() {
+<span class="nc" id="L200">        return sec;</span>
+    }
+
+    /**
+     * Gets min.
+     *
+     * @return the min
+     */
+    public int getMin() {
+<span class="nc" id="L209">        return min;</span>
+    }
+
+    /**
+     * Gets hour.
+     *
+     * @return the hour
+     */
+    public int getHour() {
+<span class="nc" id="L218">        return hour;</span>
+    }
+
+    /**
+     * Gets days.
+     *
+     * @return the days
+     */
+    public int getDays() {
+<span class="nc" id="L227">        return days;</span>
+    }
+
+    /**
+     * Gets months.
+     *
+     * @return the months
+     */
+    public int getMonths() {
+<span class="nc" id="L236">        return months;</span>
+    }
+
+    /**
+     * Gets years.
+     *
+     * @return the years
+     */
+    public int getYears() {
+<span class="nc" id="L245">        return years;</span>
+    }
+
+    /**
+     * Get days in months int [ ].
+     *
+     * @return the int [ ]
+     */
+    public int[] getDaysInMonths() {
+<span class="nc" id="L254">        return daysInMonths;</span>
+    }
+
+    /**
+     * Month string string.
+     *
+     * @return the string
+     */
+    public String monthString() {
+<span class="nc" id="L263">        return monthStrings[months - 1];</span>
+    }
+
+    /**
+     * Gets date.
+     *
+     * @return the date
+     */
+    public final Date getDate() {
+<span class="nc" id="L272">        final Date d = new Date();</span>
+<span class="nc" id="L273">        d.sec = this.sec;</span>
+<span class="nc" id="L274">        d.min = this.min;</span>
+<span class="nc" id="L275">        d.hours = this.hour;</span>
+<span class="nc" id="L276">        d.days = this.days;</span>
+<span class="nc" id="L277">        d.months = this.months;</span>
+<span class="nc" id="L278">        d.years = this.years;</span>
+<span class="nc" id="L279">        return d;</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L284">        int hash = 7;</span>
+<span class="nc" id="L285">        hash = 31 * hash + Integer.hashCode(sec);</span>
+<span class="nc" id="L286">        hash = 31 * hash + Integer.hashCode(min);</span>
+<span class="nc" id="L287">        hash = 31 * hash + Integer.hashCode(hour);</span>
+<span class="nc" id="L288">        hash = 31 * hash + Integer.hashCode(days);</span>
+<span class="nc" id="L289">        hash = 31 * hash + Integer.hashCode(months);</span>
+<span class="nc" id="L290">        hash = 31 * hash + Integer.hashCode(years);</span>
+<span class="nc" id="L291">        return hash;</span>
+    }
+
+    @Contract(value = &quot;null -&gt; false&quot;, pure = true)
+    @Override
+    public boolean equals(Object obj) {
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (obj instanceof Clock) {</span>
+<span class="nc" id="L298">            Clock o = (Clock) obj;</span>
+<span class="nc bnc" id="L299" title="All 12 branches missed.">            return sec == o.sec &amp;&amp; min == o.min &amp;&amp;</span>
+                    hour == o.hour &amp;&amp; days == o.days &amp;&amp;
+                    months == o.months &amp;&amp; years == o.years;
+        }
+<span class="nc" id="L303">        return false;</span>
+    }
+
+    /**
+     * The type Date.
+     */
+<span class="nc" id="L309">    public static class Date {</span>
+        /**
+         * The Sec.
+         */
+        public double sec;
+        /**
+         * The Min.
+         */
+        public double min;
+        /**
+         * The Hours.
+         */
+        public double hours;
+        /**
+         * The Days.
+         */
+        public double days;
+        /**
+         * The Months.
+         */
+        public double months;
+        /**
+         * The Years.
+         */
+        public double years;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

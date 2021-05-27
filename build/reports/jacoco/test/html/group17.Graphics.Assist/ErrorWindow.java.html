@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">ErrorWindow.java</span></div><h1>ErrorWindow.java</h1><pre class="source lang-java linenums">package group17.Graphics.Assist;
+
+import au.com.bytecode.opencsv.CSVWriter;
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Lib.Vector3D;
+import group17.Simulation.System.Bodies.CelestialBody;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorReport;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.io.*;
+import java.util.List;
+import java.util.*;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.ORIGINAL_DATA;
+import static group17.Utils.Config.REPORT;
+
+
+/**
+ * The Error window.
+ * &lt;a href=&quot;https://ssd.jpl.nasa.gov/horizons.cgi:C&quot;&gt;ORIGINAL SOURCE LINK&lt;/a&gt;Source
+ */
+public class ErrorWindow extends JPanel {
+
+<span class="nc" id="L35">    private final JTable originalDataTable = new JTable();</span>
+<span class="nc" id="L36">    private final JScrollPane dataTableScrollPane = new JScrollPane();</span>
+<span class="nc" id="L37">    private final String dir = &quot;trajectoryData/&quot;;</span>
+    private String DateOfOriginalDataProvided;
+    private JComboBox&lt;CelestialBody&gt; planetBox;
+    private static final int WINDOWS = 0, MAC = 1, LINUX = 2;
+<span class="nc" id="L41">    private final JTextArea[] planetViewValues = new JTextArea[4];</span>
+    private ErrorData ABS_ERROR_DATA_CURRENT_MONTH, REL_ERROR_DATA_CURRENT_MONTH;
+
+    /**
+     * Instantiates a new Error window.
+     */
+<span class="nc" id="L47">    public ErrorWindow() {</span>
+<span class="nc" id="L48">        TitledBorder titledBorder = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(10, 40, 10, 40), &quot;Horizon Original Data&quot;);</span>
+<span class="nc" id="L49">        titledBorder.setTitlePosition(TitledBorder.TOP);</span>
+<span class="nc" id="L50">        this.setBorder(titledBorder);</span>
+<span class="nc" id="L51">        this.setLayout(new GridLayout(2, 1));</span>
+<span class="nc" id="L52">        this.parseOriginal();</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Parse original.
+     */
+    @Deprecated(forRemoval = true)
+    /* Making csv from txt file  + creating error data array */
+    public void parseOriginal() {
+        FileReader fr;
+        FileWriter fw;
+        try {
+<span class="nc" id="L64">            File nasaFile = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource(dir + &quot;NASA_HORIZON_MONTHS.txt&quot;)).getFile()),</span>
+<span class="nc" id="L65">                    csvFile = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource(dir + &quot;ORIGINAL_MONTHS.csv&quot;)).getFile());</span>
+<span class="nc" id="L66">            fr = new FileReader(nasaFile);</span>
+<span class="nc" id="L67">            Scanner scan = new Scanner(fr);</span>
+<span class="nc" id="L68">            fw = new FileWriter(csvFile);</span>
+<span class="nc" id="L69">            CSVWriter csvWriter = new CSVWriter(fw, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.DEFAULT_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.DEFAULT_LINE_END);</span>
+<span class="nc" id="L70">            List&lt;String[]&gt; all = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L71">            String[] columns = new String[]{&quot;MONTH&quot;, &quot;PLANET&quot;, &quot;PX&quot;, &quot;PY&quot;, &quot;PZ&quot;, &quot;VX&quot;, &quot;VY&quot;, &quot;VZ&quot;};</span>
+<span class="nc" id="L72">            String[] planets = new String[]{&quot;SUN&quot;, &quot;MERCURY&quot;, &quot;VENUS&quot;, &quot;EARTH&quot;, &quot;MOON&quot;, &quot;MARS&quot;, &quot;JUPITER&quot;, &quot;SATURN&quot;, &quot;TITAN&quot;, &quot;URANUS&quot;, &quot;NEPTUNE&quot;};</span>
+<span class="nc" id="L73">            all.add(columns);</span>
+<span class="nc" id="L74">            int monthIndex = 0;</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">            if (scan.hasNextLine()) this.DateOfOriginalDataProvided = scan.nextLine();</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            while (scan.hasNextLine()) {</span>
+<span class="nc" id="L77">                String[][] monthRecord = new String[11][8]; //11 planets, 8 data values</span>
+<span class="nc" id="L78">                List&lt;Vector3dInterface&gt; pos = new ArrayList&lt;&gt;(11), vel = new ArrayList&lt;&gt;(11);</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">                for (int i = 0; i &lt; 11; i++) {</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">                    if (i == 0) monthRecord[i][0] = scan.nextLine(); //add the month label</span>
+<span class="nc" id="L81">                    else monthRecord[i][0] = &quot;*&quot;;</span>
+<span class="nc" id="L82">                    monthRecord[i][1] = planets[i];</span>
+<span class="nc" id="L83">                    String[] vectorPos = scan.nextLine().split(&quot; &quot;);</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                    if (vectorPos.length &gt; 3) vectorPos = removeSpaces(vectorPos);</span>
+<span class="nc" id="L85">                    pos.add(parseVector(vectorPos));</span>
+<span class="nc" id="L86">                    monthRecord[i][2] = vectorPos[0];</span>
+<span class="nc" id="L87">                    monthRecord[i][3] = vectorPos[1];</span>
+<span class="nc" id="L88">                    monthRecord[i][4] = vectorPos[2];</span>
+                }
+<span class="nc" id="L90">                String whiteLine = scan.nextLine();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                for (int i = 0; i &lt; 11; i++) {</span>
+<span class="nc" id="L92">                    String[] vectorVel = scan.nextLine().split(&quot; &quot;);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">                    if (vectorVel.length &gt; 3) vectorVel = removeSpaces(vectorVel);</span>
+<span class="nc" id="L94">                    vel.add(parseVector(vectorVel));</span>
+<span class="nc" id="L95">                    monthRecord[i][5] = vectorVel[0];</span>
+<span class="nc" id="L96">                    monthRecord[i][6] = vectorVel[1];</span>
+<span class="nc" id="L97">                    monthRecord[i][7] = vectorVel[2];</span>
+                }
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                if (scan.hasNextLine()) scan.nextLine(); //white line</span>
+<span class="nc" id="L100">                ORIGINAL_DATA[monthIndex] = new ErrorData().setData(pos, vel);</span>
+<span class="nc" id="L101">                monthIndex++;</span>
+<span class="nc" id="L102">                all.addAll(Arrays.asList(monthRecord));</span>
+<span class="nc" id="L103">            }</span>
+<span class="nc" id="L104">            csvWriter.writeAll(all);</span>
+<span class="nc" id="L105">            fw.close();</span>
+<span class="nc" id="L106">            fr.close();</span>
+<span class="nc" id="L107">        } catch (Exception e) {</span>
+<span class="nc" id="L108">            e.printStackTrace();</span>
+<span class="nc" id="L109">        }</span>
+<span class="nc" id="L110">    }</span>
+
+    @Contract(&quot;_ -&gt; new&quot;)
+    private @NotNull Vector3dInterface parseVector(final String @NotNull [] vectorVel) {
+<span class="nc" id="L114">        return new Vector3D(Double.parseDouble(vectorVel[0]), Double.parseDouble(vectorVel[1]), Double.parseDouble(vectorVel[2]));</span>
+    }
+
+    /**
+     * Make table.
+     */
+    public void makeTable() {
+<span class="nc" id="L121">        originalDataTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);</span>
+<span class="nc" id="L122">        DefaultTableModel csv_model = new DefaultTableModel();</span>
+<span class="nc" id="L123">        File csv = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource(&quot;trajectoryData/ORIGINAL_MONTHS.csv&quot;)).getFile());</span>
+        try {
+<span class="nc" id="L125">            InputStreamReader isr = new InputStreamReader(new FileInputStream(csv));</span>
+<span class="nc" id="L126">            CSVParser cp = CSVFormat.DEFAULT.parse(isr);</span>
+<span class="nc" id="L127">            boolean f = true;</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">            for (CSVRecord c : cp) {</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">                if (f) {</span>
+<span class="nc" id="L130">                    f = false; //first line</span>
+<span class="nc" id="L131">                    csv_model.addColumn(c.get(0));</span>
+<span class="nc" id="L132">                    csv_model.addColumn(c.get(1));</span>
+<span class="nc" id="L133">                    csv_model.addColumn(c.get(2));</span>
+<span class="nc" id="L134">                    csv_model.addColumn(c.get(3));</span>
+<span class="nc" id="L135">                    csv_model.addColumn(c.get(4));</span>
+<span class="nc" id="L136">                    csv_model.addColumn(c.get(5));</span>
+<span class="nc" id="L137">                    csv_model.addColumn(c.get(6));</span>
+<span class="nc" id="L138">                    csv_model.addColumn(c.get(7));</span>
+                } else {
+<span class="nc" id="L140">                    Vector&lt;String&gt; row = new Vector&lt;&gt;();</span>
+<span class="nc" id="L141">                    row.add(c.get(0));</span>
+<span class="nc" id="L142">                    row.add(c.get(1));</span>
+<span class="nc" id="L143">                    row.add(c.get(2));</span>
+<span class="nc" id="L144">                    row.add(c.get(3));</span>
+<span class="nc" id="L145">                    row.add(c.get(4));</span>
+<span class="nc" id="L146">                    row.add(c.get(5));</span>
+<span class="nc" id="L147">                    row.add(c.get(6));</span>
+<span class="nc" id="L148">                    row.add(c.get(7));</span>
+<span class="nc" id="L149">                    csv_model.addRow(row);</span>
+                }
+<span class="nc" id="L151">            }</span>
+<span class="nc" id="L152">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">            if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);</span>
+<span class="nc" id="L154">        }</span>
+<span class="nc" id="L155">        originalDataTable.setModel(csv_model);</span>
+<span class="nc" id="L156">        originalDataTable.setDragEnabled(true);</span>
+<span class="nc" id="L157">        originalDataTable.setDropMode(DropMode.ON_OR_INSERT);</span>
+<span class="nc" id="L158">        dataTableScrollPane.getViewport().add(originalDataTable);</span>
+<span class="nc" id="L159">        this.add(dataTableScrollPane, 0);</span>
+<span class="nc" id="L160">    }</span>
+
+    /**
+     * Init buttons.
+     */
+    public void initButtons() {
+<span class="nc" id="L166">        JPanel bottomPanel = new JPanel();</span>
+<span class="nc" id="L167">        bottomPanel.setLayout(new GridLayout(6, 1, 5, 5));</span>
+<span class="nc" id="L168">        createEditorPane(bottomPanel);</span>
+<span class="nc" id="L169">        createComboSelect(bottomPanel);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">        for (int i = 0; i &lt; 4; i++)</span>
+<span class="nc" id="L171">            createVectorTextArea(bottomPanel, i);</span>
+<span class="nc" id="L172">        this.add(bottomPanel);</span>
+<span class="nc" id="L173">    }</span>
+
+    private void createVectorTextArea(JPanel bottomPanel, int i) {
+<span class="nc" id="L176">        bottomPanel.add(planetViewValues[i] = new JTextArea());</span>
+<span class="nc" id="L177">    }</span>
+
+
+    @Contract(pure = true)
+    private String[] removeSpaces(String @NotNull [] vec) {
+<span class="nc" id="L182">        String[] t = new String[3];</span>
+<span class="nc" id="L183">        int k = 0;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">        for (String s : vec) {</span>
+<span class="nc bnc" id="L185" title="All 6 branches missed.">            if (!s.equals(&quot;&quot;) &amp;&amp; !s.equals(&quot; &quot;) &amp;&amp; !s.equals(&quot;  &quot;)) {</span>
+<span class="nc" id="L186">                t[k] = s;</span>
+<span class="nc" id="L187">                k++;</span>
+            }
+        }
+<span class="nc" id="L190">        return t;</span>
+    }
+
+    private void createComboSelect(JPanel bottomPanel) {
+<span class="nc" id="L194">        this.planetBox = new JComboBox&lt;&gt;();</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        for (CelestialBody c : simulation.getSystem().getCelestialBodies())</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if (!c.toString().equals(&quot;ROCKET&quot;)) this.planetBox.addItem(c);</span>
+
+<span class="nc" id="L198">        this.planetBox.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">            if (ErrorReport.monthIndex() &gt;= 13) return;  //no data after april '22</span>
+<span class="nc" id="L200">            int planetBoxSelectedIndex = this.planetBox.getSelectedIndex();</span>
+<span class="nc" id="L201">            int monthIndex = ErrorReport.monthIndex();</span>
+<span class="nc" id="L202">            this.originalDataTable.setAutoscrolls(true);</span>
+<span class="nc" id="L203">            this.originalDataTable.setRowSelectionInterval((monthIndex * 11) + planetBoxSelectedIndex, (monthIndex * 11) + planetBoxSelectedIndex);</span>
+<span class="nc" id="L204">            originalDataTable.scrollRectToVisible(new Rectangle(originalDataTable.getCellRect(((monthIndex * 11) +</span>
+                    planetBoxSelectedIndex) + 3, 0, true)));
+<span class="nc" id="L206">            showValues(planetBoxSelectedIndex);</span>
+<span class="nc" id="L207">        });</span>
+<span class="nc" id="L208">        bottomPanel.add(this.planetBox);</span>
+<span class="nc" id="L209">    }</span>
+
+    private void createEditorPane(JPanel bottomPanel) {
+        JEditorPane textPane;
+<span class="nc" id="L213">        textPane = new JEditorPane();</span>
+<span class="nc" id="L214">        textPane.setEditorKit(JEditorPane.createEditorKitForContentType(&quot;text/html&quot;));</span>
+<span class="nc" id="L215">        textPane.setEditable(false);</span>
+<span class="nc" id="L216">        textPane.setText(&quot;&lt;a href=\&quot;https://ssd.jpl.nasa.gov/horizons.cgi:C\&quot;&gt;ORIGINAL SOURCE LINK&lt;/a&gt;&quot; +</span>
+                &quot;\tfor the error evaluation (last update  &quot; + DateOfOriginalDataProvided + &quot;) ... more info about this here ...&quot;);
+<span class="nc" id="L218">        textPane.addHyperlinkListener(e -&gt; {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {</span>
+                try {
+<span class="nc" id="L221">                    Runtime runtime = Runtime.getRuntime();</span>
+<span class="nc" id="L222">                    String url = &quot;https://ssd.jpl.nasa.gov/horizons.cgi&quot;;</span>
+<span class="nc bnc" id="L223" title="All 4 branches missed.">                    switch (getPlatform()) {</span>
+<span class="nc" id="L224">                        case WINDOWS -&gt; runtime.exec(&quot;rundll32 url.dll,FileProtocolHandler &quot; + url);</span>
+<span class="nc" id="L225">                        case MAC -&gt; runtime.exec(&quot;open &quot; + url);</span>
+
+<span class="nc" id="L227">                        case LINUX -&gt; {</span>
+<span class="nc" id="L228">                            String[] browsers = {&quot;epiphany&quot;, &quot;firefox&quot;, &quot;mozilla&quot;, &quot;konqueror&quot;, &quot;netscape&quot;, &quot;opera&quot;, &quot;links&quot;, &quot;lynx&quot;};</span>
+<span class="nc" id="L229">                            StringBuffer cmd = new StringBuffer();</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">                            for (int i = 0; i &lt; browsers.length; i++) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">                                if (i == 0) cmd.append(String.format(&quot;%s \&quot;%s\&quot;&quot;, browsers[i], url));</span>
+<span class="nc" id="L232">                                else cmd.append(String.format(&quot; || %s \&quot;%s\&quot;&quot;, browsers[i], url));</span>
+                            }
+
+<span class="nc" id="L235">                            runtime.exec(new String[]{&quot;sh&quot;, &quot;-color&quot;, cmd.toString()});</span>
+
+                        }
+                        default -&gt; {
+<span class="nc bnc" id="L239" title="All 2 branches missed.">                            if (REPORT) simulation.getReporter().report(&quot;System OS not recognised&quot;);</span>
+                        }
+                    }
+<span class="nc" id="L242">                } catch (IOException ioException) {</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">                    if (REPORT) simulation.getReporter().report(Thread.currentThread(), ioException);</span>
+
+<span class="nc" id="L245">                }</span>
+            }
+<span class="nc" id="L247">        });</span>
+<span class="nc" id="L248">        bottomPanel.add(textPane);</span>
+<span class="nc" id="L249">    }</span>
+
+
+    private int getPlatform() {
+<span class="nc" id="L253">        String os = System.getProperty(&quot;os.name&quot;).toLowerCase();</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        if (os.contains(&quot;win&quot;)) return 0;</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (os.contains(&quot;mac&quot;)) return 1;</span>
+<span class="nc bnc" id="L256" title="All 4 branches missed.">        if (os.contains(&quot;nix&quot;) || os.contains(&quot;nux&quot;)) return 2;</span>
+<span class="nc" id="L257">        return -1;</span>
+    }
+
+    private void showValues(int planetIndex) {
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (ABS_ERROR_DATA_CURRENT_MONTH == null) return;</span>
+<span class="nc" id="L262">        planetViewValues[0].setText(&quot;Abs. error with original position &quot; + ABS_ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());</span>
+<span class="nc" id="L263">        planetViewValues[1].setText(&quot;Abs. error with original velocity &quot; + ABS_ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());</span>
+<span class="nc" id="L264">        planetViewValues[2].setText(&quot;Rel. error with original position &quot; + REL_ERROR_DATA_CURRENT_MONTH.getPositions().get(planetIndex).toString());</span>
+<span class="nc" id="L265">        planetViewValues[3].setText(&quot;Rel. error with original velocity &quot; + REL_ERROR_DATA_CURRENT_MONTH.getVelocities().get(planetIndex).toString());</span>
+<span class="nc" id="L266">    }</span>
+
+    /**
+     * Update labels.
+     *
+     * @param data the data
+     */
+    public void updateLabels(ErrorData data, boolean absolute) {
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (absolute) this.ABS_ERROR_DATA_CURRENT_MONTH = data;</span>
+<span class="nc" id="L275">        else this.REL_ERROR_DATA_CURRENT_MONTH = data;</span>
+<span class="nc" id="L276">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

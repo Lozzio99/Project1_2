@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDialogWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics</a> &gt; <span class="el_source">UserDialogWindow.java</span></div><h1>UserDialogWindow.java</h1><pre class="source lang-java linenums">package group17.Graphics;
+
+import group17.Graphics.Assist.*;
+import group17.Simulation.Simulation;
+
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.StrokeBorder;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.*;
+
+/**
+ * UI assist class to show detailed information about the
+ * simulation which is running, helps the user by giving him
+ * a lot of freedom in setting configurations and application properties
+ */
+public class UserDialogWindow {
+<span class="nc" id="L25">    private static final List&lt;String&gt; tabs = new ArrayList&lt;&gt;(), tips = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L26">    private static final List&lt;Color&gt; backGrounds = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L27">    private static final List&lt;ImageIcon&gt; icons = new ArrayList&lt;&gt;();</span>
+
+    static {
+<span class="nc" id="L30">        tabs.add(&quot;MENU&quot;);</span>
+<span class="nc" id="L31">        backGrounds.add(new Color(204, 122, 255, 211));</span>
+<span class="nc" id="L32">        icons.add(loadIcon(&quot;home.png&quot;));</span>
+<span class="nc" id="L33">        tips.add(&quot;HOME&quot;);</span>
+<span class="nc" id="L34">        tabs.add(&quot;LAUNCH&quot;);</span>
+<span class="nc" id="L35">        backGrounds.add(new Color(52, 52, 52, 215));</span>
+<span class="nc" id="L36">        icons.add(loadIcon(&quot;launch.png&quot;));</span>
+<span class="nc" id="L37">        tips.add(&quot;Launch settings and infos&quot;);</span>
+<span class="nc" id="L38">        tabs.add(&quot;STATS&quot;);</span>
+<span class="nc" id="L39">        backGrounds.add(new Color(122, 202, 255, 211));</span>
+<span class="nc" id="L40">        icons.add(loadIcon(&quot;stats.png&quot;));</span>
+<span class="nc" id="L41">        tips.add(&quot;Stats and evaluations&quot;);</span>
+<span class="nc" id="L42">        tabs.add(&quot;PLOT&quot;);</span>
+<span class="nc" id="L43">        backGrounds.add(new Color(114, 184, 255, 211));</span>
+<span class="nc" id="L44">        icons.add(loadIcon(&quot;plot.png&quot;));</span>
+<span class="nc" id="L45">        tips.add(&quot;Visual plot&quot;);</span>
+<span class="nc" id="L46">        tabs.add(&quot;ROCKET&quot;);</span>
+<span class="nc" id="L47">        backGrounds.add(new Color(181, 252, 233, 211));</span>
+<span class="nc" id="L48">        icons.add(loadIcon(&quot;rocket.png&quot;));</span>
+<span class="nc" id="L49">        tips.add(&quot;Rocket flight and mission infos&quot;);</span>
+<span class="nc" id="L50">        tabs.add(&quot;PERFORMANCE&quot;);</span>
+<span class="nc" id="L51">        backGrounds.add(new Color(201, 101, 255, 211));</span>
+<span class="nc" id="L52">        icons.add(loadIcon(&quot;performance.png&quot;));</span>
+<span class="nc" id="L53">        tips.add(&quot;Cpu level and performance&quot;);</span>
+<span class="nc" id="L54">        tabs.add(&quot;ERRORS&quot;);</span>
+<span class="nc" id="L55">        backGrounds.add(new Color(195, 255, 220, 211));</span>
+<span class="nc" id="L56">        icons.add(loadIcon(&quot;errors.png&quot;));</span>
+<span class="nc" id="L57">        tips.add(&quot;Evaluation errors&quot;);</span>
+<span class="nc" id="L58">        tabs.add(&quot;HELP&quot;);</span>
+<span class="nc" id="L59">        backGrounds.add(new Color(94, 231, 255, 211));</span>
+<span class="nc" id="L60">        icons.add(loadIcon(&quot;help.png&quot;));</span>
+<span class="nc" id="L61">        tips.add(&quot;HELP&quot;);</span>
+<span class="nc" id="L62">        tabs.add(&quot;SETTINGS&quot;);</span>
+<span class="nc" id="L63">        backGrounds.add(new Color(76, 77, 78, 211));</span>
+<span class="nc" id="L64">        icons.add(loadIcon(&quot;settings.png&quot;));</span>
+<span class="nc" id="L65">        tips.add(&quot;Configure settings&quot;);</span>
+
+<span class="nc" id="L67">    }</span>
+
+    private final JFrame frame;
+    private JTabbedPane mainPane;
+    private LaunchAssistWindow assist;
+    private SimulationDataWindow dataWindow;
+    private ErrorWindow errorWindow;
+    private AbstractMainMenu menu;
+
+    /**
+     * Instantiates a new User dialog window.
+     */
+<span class="nc" id="L79">    public UserDialogWindow() {</span>
+        try {
+            //UIManager.setLookAndFeel(&quot;com.sun.java.swing.plaf.windows.WindowsLookAndFeel&quot;);
+
+           /*
+            UIManager.setLookAndFeel(&quot;javax.swing.plaf.metal.MetalLookAndFeel&quot;);
+            MetalLookAndFeel.setCurrentTheme(new DefaultMetalTheme());
+            MetalLookAndFeel.setCurrentTheme(new OceanTheme());
+             */
+            //UIManager.setLookAndFeel(&quot;com.sun.java.swing.plaf.motif.MotifLookAndFeel&quot;);
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            //
+<span class="nc" id="L92">            UIManager.setLookAndFeel(&quot;javax.swing.plaf.nimbus.NimbusLookAndFeel&quot;);</span>
+
+<span class="nc" id="L94">        } catch (UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException | ClassNotFoundException ex) {</span>
+            //ex.printStackTrace();
+<span class="nc" id="L96">        }</span>
+
+<span class="nc" id="L98">        this.frame = new JFrame();</span>
+<span class="nc" id="L99">        this.frame.setSize(new Dimension(1280, 620));</span>
+<span class="nc" id="L100">        this.frame.setIconImage(loadIcon(&quot;17.png&quot;).getImage());</span>
+<span class="nc" id="L101">        this.frame.getContentPane().add(makeTabs(), BorderLayout.CENTER);</span>
+<span class="nc" id="L102">        this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L103">        this.frame.setVisible(true);</span>
+<span class="nc" id="L104">    }</span>
+
+
+    private Component makeTabs() {
+<span class="nc" id="L108">        this.mainPane = new JTabbedPane();</span>
+<span class="nc" id="L109">        this.mainPane.setBackground(new Color(193, 204, 255, 228));</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        for (int i = 0; i &lt; tabs.size(); i++) {</span>
+<span class="nc" id="L111">            this.mainPane.addTab(tabs.get(i), configCard(i));</span>
+<span class="nc" id="L112">            this.mainPane.setIconAt(i, icons.get(i));</span>
+<span class="nc" id="L113">            this.mainPane.setEnabledAt(i, false);</span>
+<span class="nc" id="L114">            this.mainPane.getComponentAt(i).setBackground(backGrounds.get(i));</span>
+<span class="nc" id="L115">            this.mainPane.setToolTipTextAt(i, tips.get(i));</span>
+        }
+<span class="nc" id="L117">        this.config();</span>
+<span class="nc" id="L118">        return this.mainPane;</span>
+    }
+
+    private static ImageIcon loadIcon(String path) {
+<span class="nc" id="L122">        ImageIcon i = new ImageIcon(Objects.requireNonNull(UserDialogWindow.class.getClassLoader().getResource(&quot;icons/&quot; + path)).getFile());</span>
+<span class="nc" id="L123">        Image scaled = i.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);</span>
+<span class="nc" id="L124">        i.setImage(scaled);</span>
+<span class="nc" id="L125">        return i;</span>
+    }
+
+    private void config() {
+<span class="nc" id="L129">        this.enable(0, 7);</span>
+<span class="nc" id="L130">        Color c = new Color(11, 255, 3), w = new Color(135, 0, 255), c2 = new Color(0, 255, 255);</span>
+<span class="nc" id="L131">        Border b = new CompoundBorder(new StrokeBorder(new BasicStroke(8.f), w), new BevelBorder(BevelBorder.RAISED, c, c2, w.darker(), c2.darker()));</span>
+<span class="nc" id="L132">        this.mainPane.setBorder(b);</span>
+<span class="nc" id="L133">        this.mainPane.setTabPlacement(JTabbedPane.TOP);</span>
+<span class="nc" id="L134">        this.mainPane.setRequestFocusEnabled(true);</span>
+<span class="nc" id="L135">        this.mainPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Config card component.
+     *
+     * @param index the index
+     * @return the component
+     */
+    public Component configCard(int index) {
+<span class="nc bnc" id="L145" title="All 10 branches missed.">        switch (index) {</span>
+            case 0 -&gt; {
+<span class="nc" id="L147">                return initMenu();</span>
+            }
+            case 1 -&gt; {
+<span class="nc" id="L150">                return this.assist = new LaunchAssistWindow();</span>
+            }
+            case 2 -&gt; {
+<span class="nc" id="L153">                return this.dataWindow = new SimulationDataWindow();</span>
+            }
+            case 3 -&gt; {
+<span class="nc" id="L156">                return new PlotWindow().init();</span>
+            }
+            case 4 -&gt; {
+<span class="nc" id="L159">                return new RocketWindow();</span>
+            }
+            case 5 -&gt; {
+<span class="nc" id="L162">                return new PerformanceWindow();</span>
+            }
+            case 6 -&gt; {
+<span class="nc" id="L165">                return this.errorWindow = new ErrorWindow();</span>
+            }
+            case 7 -&gt; {
+<span class="nc" id="L168">                return new HelpSupportWindow();</span>
+            }
+            case 8 -&gt; {
+<span class="nc" id="L171">                return new ConfigWindow();</span>
+            }
+            default -&gt; {
+<span class="nc" id="L174">                return new JPanel();</span>
+            }
+        }
+    }
+
+    private Component initMenu() {
+<span class="nc" id="L180">        UserDialogWindow d = this;</span>
+<span class="nc" id="L181">        this.menu = new AbstractMainMenu() {</span>
+            @Override
+            public void startSimulation() {
+<span class="nc" id="L184">                DEFAULT_SOLVER = currentSolver;</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                if (simulation == null) {</span>
+<span class="nc" id="L186">                    simulation = new Simulation();</span>
+<span class="nc" id="L187">                    simulation.setAssist(d);</span>
+<span class="nc" id="L188">                    simulation.init();</span>
+<span class="nc" id="L189">                    simulation.start();</span>
+                }
+<span class="nc" id="L191">                enableTabs();</span>
+<span class="nc" id="L192">                mainPane.setSelectedIndex(1);</span>
+<span class="nc" id="L193">                disable(0);</span>
+<span class="nc" id="L194">            }</span>
+        };
+<span class="nc" id="L196">        return this.menu.configFrame(new JPanel());</span>
+    }
+
+    /**
+     * Enable.
+     *
+     * @param i the index of the window
+     */
+    public void enable(int... i) {
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        for (int j : i) this.mainPane.setEnabledAt(j, true);</span>
+<span class="nc" id="L206">    }</span>
+
+    /**
+     * Disable.
+     *
+     * @param i the index of the window
+     */
+    public void disable(int... i) {
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        for (int j : i) this.mainPane.setEnabledAt(j, false);</span>
+<span class="nc" id="L215">    }</span>
+
+    /**
+     * Enable tabs.
+     */
+    public void enableTabs() {
+<span class="nc bnc" id="L221" title="All 2 branches missed.">        if (LAUNCH_ASSIST) enable(1);</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        if (REPORT) enable(2);</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">        if (PLOT) enable(3);</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (ROCKET_INFO) enable(4);</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">        if (PERFORMANCE) enable(5);</span>
+<span class="nc bnc" id="L226" title="All 2 branches missed.">        if (ERROR_EVALUATION) enable(6);</span>
+<span class="nc" id="L227">        enable(8);</span>
+<span class="nc" id="L228">    }</span>
+
+
+    /**
+     * Gets main menu.
+     *
+     * @return the main menu
+     */
+    public AbstractMainMenu getMainMenu() {
+<span class="nc" id="L237">        return menu;</span>
+    }
+
+    /**
+     * Gets launch assist.
+     *
+     * @return the launch assist
+     */
+    public LaunchAssistWindow getLaunchAssist() {
+<span class="nc" id="L246">        return assist;</span>
+    }
+
+    /**
+     * Gets main pane.
+     *
+     * @return the main pane
+     */
+    public JTabbedPane getMainPane() {
+<span class="nc" id="L255">        return mainPane;</span>
+    }
+
+    /**
+     * Gets output window.
+     *
+     * @return the output window
+     */
+    public SimulationDataWindow getOutputWindow() {
+<span class="nc" id="L264">        return this.dataWindow;</span>
+    }
+
+    /**
+     * Gets error window.
+     *
+     * @return the error window
+     */
+    public ErrorWindow getErrorWindow() {
+<span class="nc" id="L273">        return errorWindow;</span>
+    }
+
+
+    /**
+     * Gets frame.
+     *
+     * @return the frame
+     */
+    public JFrame getFrame() {
+<span class="nc" id="L283">        return this.frame;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

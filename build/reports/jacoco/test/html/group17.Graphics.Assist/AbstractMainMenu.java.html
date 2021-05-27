@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractMainMenu.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">AbstractMainMenu.java</span></div><h1>AbstractMainMenu.java</h1><pre class="source lang-java linenums">package group17.Graphics.Assist;
+
+import org.jetbrains.annotations.Contract;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static group17.Utils.Config.*;
+
+/**
+ * The type Main menu.
+ */
+@SuppressWarnings(&quot;rawtypes&quot;)
+public abstract class AbstractMainMenu {
+    /**
+     * The constant SIMULATION_TYPES.
+     */
+// Variables
+<span class="nc" id="L19">    static final String[] SIMULATION_TYPES = {&quot;Rocket Simulation&quot;, &quot;Pendulum Simulation&quot;, &quot;Particles Simulation&quot;};</span>
+    /**
+     * The Cpu levels.
+     */
+<span class="nc" id="L23">    static final String[] CPU_LEVELS = {&quot;Min CPU&quot;, &quot;Max CPU&quot;};</span>
+    /**
+     * The Solvers.
+     */
+<span class="nc" id="L27">    static final String[] SOLVERS = {&quot;Euler&quot;, &quot;Lazy Runge Kutta&quot;, &quot;Verlet (VEL)&quot;, &quot;Verlet (STD)&quot;, &quot;Midpoint&quot;, &quot;Greedy Runge Kutta&quot;};</span>
+    static private final int FRAME_WIDTH = 1000;
+    static private final int FRAME_HEIGHT = 600;
+    /**
+     * The Current solver.
+     */
+<span class="nc" id="L33">    static protected int currentSolver = DEFAULT_SOLVER;</span>
+    /**
+     * The Current simulation type.
+     */
+<span class="nc" id="L37">    static protected int currentSimulationType = SIMULATION_LEVEL;</span>
+    /**
+     * The Current cpu level.
+     */
+<span class="nc" id="L41">    static protected int currentCPULevel = CPU_LEVEL;</span>
+    /**
+     * The Frame.
+     */
+    static JFrame frame;
+    /**
+     * The Title label.
+     */
+    JLabel titleLabel;
+
+
+    /**
+     * Constructor
+     */
+    @Contract(pure = true)
+<span class="nc" id="L56">    public AbstractMainMenu() {</span>
+        //this.setFrame();
+<span class="nc" id="L58">    }</span>
+
+
+    /**
+     * Sets frame.
+     */
+    public void setFrame() {
+<span class="nc" id="L65">        frame = new JFrame(&quot;Project 1.2 - Group 17&quot;);</span>
+<span class="nc" id="L66">        frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);</span>
+<span class="nc" id="L67">        frame.setLayout(null);</span>
+<span class="nc" id="L68">        frame.add(configFrame(new JPanel()));</span>
+<span class="nc" id="L69">        titleLabel = new JLabel(&quot;Space Simulation&quot;);</span>
+<span class="nc" id="L70">        titleLabel.setFont(new Font(&quot;Arial&quot;, Font.PLAIN, 24));</span>
+<span class="nc" id="L71">        titleLabel.setBounds(10, 10, 300, 30);</span>
+<span class="nc" id="L72">        frame.getContentPane().add(titleLabel, BorderLayout.NORTH);</span>
+<span class="nc" id="L73">        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="nc" id="L74">        frame.setVisible(true);</span>
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * Config frame component.
+     *
+     * @param controlPanel the control panel
+     * @return the component
+     */
+    public Component configFrame(Container controlPanel) {
+        //frame.setLocationRelativeTo(null);
+
+<span class="nc" id="L86">        controlPanel.setPreferredSize(new Dimension(700, 300));</span>
+<span class="nc" id="L87">        GroupLayout groupLayout = new GroupLayout(controlPanel);</span>
+<span class="nc" id="L88">        groupLayout.setAutoCreateGaps(true);</span>
+<span class="nc" id="L89">        groupLayout.setAutoCreateContainerGaps(true);</span>
+
+<span class="nc" id="L91">        controlPanel.setLayout(groupLayout);</span>
+<span class="nc" id="L92">        controlPanel.setBackground(new Color(150, 150, 200));</span>
+
+        JLabel simulationTypeLabel, cpuLevelLabel, solverLabel;
+
+
+<span class="nc" id="L97">        simulationTypeLabel = new JLabel(&quot;Simulation Type&quot;);</span>
+<span class="nc" id="L98">        cpuLevelLabel = new JLabel(&quot;CPU Level&quot;);</span>
+<span class="nc" id="L99">        solverLabel = new JLabel(&quot;Solver&quot;);</span>
+
+
+        JComboBox simulationTypeDropdown, cpuLevelDropdown, solverDropdown;
+
+<span class="nc" id="L104">        simulationTypeDropdown = new JComboBox&lt;&gt;(SIMULATION_TYPES);</span>
+<span class="nc" id="L105">        simulationTypeDropdown.setSelectedIndex(SIMULATION_LEVEL);</span>
+<span class="nc" id="L106">        cpuLevelDropdown = new JComboBox&lt;&gt;(CPU_LEVELS);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        cpuLevelDropdown.setSelectedIndex(CPU_LEVEL == MIN_CPU ? 0 : 1);</span>
+<span class="nc" id="L108">        solverDropdown = new JComboBox&lt;&gt;(SOLVERS);</span>
+<span class="nc bnc" id="L109" title="All 5 branches missed.">        solverDropdown.setSelectedIndex(</span>
+                switch (DEFAULT_SOLVER) {
+<span class="nc" id="L111">                    case RUNGE_KUTTA_SOLVER -&gt; 1;</span>
+<span class="nc" id="L112">                    case VERLET_VEL_SOLVER -&gt; 2;</span>
+<span class="nc" id="L113">                    case VERLET_STD_SOLVER -&gt; 3;</span>
+<span class="nc" id="L114">                    case MIDPOINT_SOLVER -&gt; 4;</span>
+<span class="nc" id="L115">                    default -&gt; 0;</span>
+                }
+        );
+
+
+<span class="nc" id="L120">        JSlider trajectoryLengthSlider = new JSlider();</span>
+<span class="nc" id="L121">        trajectoryLengthSlider.setMinimum(0);</span>
+<span class="nc" id="L122">        trajectoryLengthSlider.setMaximum(10000);</span>
+<span class="nc" id="L123">        trajectoryLengthSlider.setToolTipText(&quot;Length&quot;);</span>
+
+
+<span class="nc" id="L126">        JButton startButton = new JButton(&quot;Start Simulation&quot;);</span>
+
+<span class="nc" id="L128">        startButton.addActionListener(e -&gt; {</span>
+            // --- Select the correct simulation ---
+<span class="nc bnc" id="L130" title="All 3 branches missed.">            currentSimulationType = switch (simulationTypeDropdown.getSelectedItem().toString()) {</span>
+<span class="nc" id="L131">                case (&quot;Pendulum Simulation&quot;) -&gt; PENDULUM_SIMULATION;</span>
+<span class="nc" id="L132">                case (&quot;Particles Simulation&quot;) -&gt; PARTICLES_SIMULATION;</span>
+<span class="nc" id="L133">                default -&gt; ROCKET_SIMULATION;</span>
+            };
+            // --- Select the correct CPU type ---
+<span class="nc bnc" id="L136" title="All 2 branches missed.">            currentCPULevel = switch (cpuLevelDropdown.getSelectedItem().toString()) {</span>
+<span class="nc" id="L137">                case (&quot;Max CPU&quot;) -&gt; MAX_CPU;</span>
+<span class="nc" id="L138">                default -&gt; MIN_CPU;</span>
+            };
+
+            // --- Select the correct solver ---
+<span class="nc bnc" id="L142" title="All 6 branches missed.">            currentSolver = switch (solverDropdown.getSelectedItem().toString()) {</span>
+<span class="nc" id="L143">                case (&quot;Lazy Runge Kutta&quot;) -&gt; RUNGE_KUTTA_SOLVER;</span>
+<span class="nc" id="L144">                case (&quot;Verlet (VEL)&quot;) -&gt; VERLET_VEL_SOLVER;</span>
+<span class="nc" id="L145">                case (&quot;Verlet (STD)&quot;) -&gt; VERLET_STD_SOLVER;</span>
+<span class="nc" id="L146">                case (&quot;Midpoint&quot;) -&gt; MIDPOINT_SOLVER;</span>
+<span class="nc" id="L147">                case (&quot;Greedy Runge Kutta&quot;) -&gt; GREEDY_RUNGE_KUTTA;</span>
+<span class="nc" id="L148">                default -&gt; EULER_SOLVER;</span>
+            };
+
+<span class="nc" id="L151">            startSimulation();</span>
+
+<span class="nc" id="L153">        });</span>
+
+
+<span class="nc" id="L156">        controlPanel.setBounds(10, 50, FRAME_WIDTH - 67, FRAME_HEIGHT - 97);</span>
+
+
+        // --- Horizontal Groups ---
+<span class="nc" id="L160">        groupLayout.setHorizontalGroup(</span>
+<span class="nc" id="L161">                groupLayout.createSequentialGroup()</span>
+<span class="nc" id="L162">                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)</span>
+<span class="nc" id="L163">                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)</span>
+<span class="nc" id="L164">                                .addComponent(simulationTypeLabel)</span>
+<span class="nc" id="L165">                                .addGap(400)</span>
+<span class="nc" id="L166">                                .addComponent(cpuLevelLabel)</span>
+<span class="nc" id="L167">                                .addGap(400)</span>
+<span class="nc" id="L168">                                .addComponent(solverLabel)</span>
+<span class="nc" id="L169">                                .addGap(400))</span>
+<span class="nc" id="L170">                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING)</span>
+<span class="nc" id="L171">                                .addComponent(simulationTypeDropdown)</span>
+<span class="nc" id="L172">                                .addGap(200)</span>
+<span class="nc" id="L173">                                .addComponent(cpuLevelDropdown)</span>
+<span class="nc" id="L174">                                .addGap(200)</span>
+<span class="nc" id="L175">                                .addComponent(solverDropdown)</span>
+<span class="nc" id="L176">                                .addGap(300)</span>
+<span class="nc" id="L177">                                .addComponent(startButton)</span>
+<span class="nc" id="L178">                                .addGap(300))</span>
+<span class="nc" id="L179">                        .addContainerGap()</span>
+        );
+
+        // --- Vertical Groups ---
+<span class="nc" id="L183">        groupLayout.setVerticalGroup(</span>
+<span class="nc" id="L184">                groupLayout.createSequentialGroup()</span>
+<span class="nc" id="L185">                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="nc" id="L186">                                .addComponent(simulationTypeLabel)</span>
+<span class="nc" id="L187">                                .addGap(20)</span>
+<span class="nc" id="L188">                                .addComponent(simulationTypeDropdown))</span>
+<span class="nc" id="L189">                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="nc" id="L190">                                .addComponent(cpuLevelLabel)</span>
+<span class="nc" id="L191">                                .addGap(20)</span>
+<span class="nc" id="L192">                                .addComponent(cpuLevelDropdown))</span>
+<span class="nc" id="L193">                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="nc" id="L194">                                .addComponent(solverLabel)</span>
+<span class="nc" id="L195">                                .addGap(20)</span>
+<span class="nc" id="L196">                                .addComponent(solverDropdown)</span>
+<span class="nc" id="L197">                                .addGap(300))</span>
+<span class="nc" id="L198">                        .addGroup(groupLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)</span>
+<span class="nc" id="L199">                                .addComponent(startButton))</span>
+        );
+<span class="nc" id="L201">        return controlPanel;</span>
+    }
+
+    /**
+     * Start simulation.
+     */
+    public abstract void startSimulation();
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

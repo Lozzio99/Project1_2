@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RocketSchedule.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation.Rocket</a> &gt; <span class="el_source">RocketSchedule.java</span></div><h1>RocketSchedule.java</h1><pre class="source lang-java linenums">package group17.Simulation.Rocket;
+
+import group17.Interfaces.StateInterface;
+import group17.Interfaces.SystemInterface;
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Lib.Vector3D;
+import group17.Simulation.System.Clock;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static group17.Utils.Config.ERROR_EVALUATION;
+
+/**
+ * Schedules Shifts/Thrusts of Rocket based on Newton-Raphson
+ */
+<span class="nc" id="L17">public class RocketSchedule {</span>
+
+    /**
+     * The Shift at time.
+     */
+    Map&lt;Clock, Vector3dInterface&gt; shiftAtTime;
+    /**
+     * The Shift at location.
+     */
+    Map&lt;StateInterface, Vector3dInterface&gt; shiftAtLocation;
+    /**
+     * The Shift at distance.
+     */
+    Map&lt;Vector3dInterface, Vector3dInterface&gt; shiftAtDistance;
+
+
+
+    /**
+     * Init.
+     */
+    public void init() {
+<span class="nc" id="L38">        this.shiftAtTime = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L39">        this.shiftAtLocation = new ConcurrentHashMap&lt;&gt;();</span>
+<span class="nc" id="L40">        this.shiftAtDistance = new ConcurrentHashMap&lt;&gt;();</span>
+        //put all things here, even if they are later in the simulation
+        //once we know them we just plan them here
+<span class="nc" id="L43">    }</span>
+
+    /**
+     * Preparing the scheduling in advance.
+     * Link to desired keys the corresponding vector decisions,
+     * which will be then applied, whenever one of these keys will
+     * be &quot;present&quot; in the system.
+     * Example: by linking a Clock with a specified date and time to
+     * a certain decision,it is then possible to retrieve this when the
+     * clock instance in the system will return true from the implemented
+     * equals(Object o) method.
+     */
+    public void prepare() {
+<span class="nc" id="L56">        final boolean f = ERROR_EVALUATION;</span>
+<span class="nc" id="L57">        ERROR_EVALUATION = false; // avoid making error reports</span>
+<span class="nc" id="L58">        this.setPlan(new Clock().setLaunchDay(), new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));</span>
+        //this.setPlan(new Clock().setInitialTime(0,0,0).setInitialTime(0,0,0),new Vector3D(0,0,0));
+<span class="nc" id="L60">        this.addToPlan(new Clock().setLaunchDay(), new Vector3D(5053.8397726433905,-42680.243107188355,-2383.2465825823965));</span>
+<span class="nc" id="L61">        this.addToPlan(new Clock().setInitialDayAndTime(0, 0, 6, 16, 11, 2023), new Vector3D(-8466.431731294904,3689.7962745433374,363.6276188737569));</span>
+<span class="nc" id="L62">        ERROR_EVALUATION = f;</span>
+<span class="nc" id="L63">    }</span>
+
+
+    /**
+     * Shift vector 3 d interface.
+     *
+     * @param system the system
+     * @return the vector 3 d interface
+     */
+    public Vector3dInterface shift(SystemInterface system) {
+<span class="nc" id="L73">        return this.getDesiredVelocity(system.getClock()).</span>
+                //see if there's something linked with the clock date key
+
+<span class="nc" id="L76">                        add(this.getDesiredVelocity(system.systemState())).</span>
+                //see if there's something linked with this state key
+
+<span class="nc" id="L79">                        add(this.getDesiredVelocity(system.systemState().getPositions().get(8).absSub(system.systemState().getPositions().get(11))));</span>
+        //see if there's something linked to this distance vector key
+
+
+        //eventually everything null this will return a vector (0,0,0)
+    }
+
+    /**
+     * Gets desired velocity.
+     *
+     * @param clock the clock
+     * @return the desired velocity
+     */
+    public Vector3dInterface getDesiredVelocity(Clock clock) {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (clock == null) return new Vector3D();</span>
+<span class="nc" id="L94">        Vector3dInterface v = shiftAtTime.getOrDefault(clock, new Vector3D());</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        return v == null ? new Vector3D() : v;</span>
+    }
+
+    /**
+     * Gets desired velocity.
+     *
+     * @param thisState the this state
+     * @return the desired velocity
+     */
+    public Vector3dInterface getDesiredVelocity(StateInterface thisState) {
+<span class="nc bnc" id="L105" title="All 2 branches missed.">        if (thisState == null) return new Vector3D();</span>
+<span class="nc" id="L106">        Vector3dInterface v = shiftAtLocation.get(thisState);</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        return v == null ? new Vector3D() : v;</span>
+    }
+
+    /**
+     * Gets desired velocity.
+     *
+     * @param distanceToSomething the distance to something
+     * @return the desired velocity
+     */
+    public Vector3dInterface getDesiredVelocity(Vector3dInterface distanceToSomething) {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (distanceToSomething == null) return new Vector3D();</span>
+<span class="nc" id="L118">        Vector3dInterface v = shiftAtDistance.get(distanceToSomething);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        return v == null ? new Vector3D() : v;</span>
+    }
+
+    /**
+     * Add to plan.
+     *
+     * @param clock    the clock
+     * @param decision the decision
+     */
+    public void addToPlan(Clock clock, Vector3dInterface decision) {
+<span class="nc" id="L129">        Vector3dInterface v = this.shiftAtTime.put(clock, decision);</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (v != null) this.shiftAtTime.put(clock, v.add(decision));</span>
+<span class="nc" id="L131">    }</span>
+
+    /**
+     * Add to plan.
+     *
+     * @param state    the state
+     * @param decision the decision
+     */
+    public void addToPlan(StateInterface state, Vector3dInterface decision) {
+<span class="nc" id="L140">        Vector3dInterface v = this.shiftAtLocation.put(state, decision);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        if (v != null) this.shiftAtLocation.put(state, v.add(decision));</span>
+<span class="nc" id="L142">    }</span>
+
+    /**
+     * Add to plan.
+     *
+     * @param distance the distance
+     * @param decision the decision
+     */
+    public void addToPlan(Vector3dInterface distance, Vector3dInterface decision) {
+<span class="nc" id="L151">        Vector3dInterface v = this.shiftAtDistance.put(distance, decision);</span>
+<span class="nc bnc" id="L152" title="All 2 branches missed.">        if (v != null) this.shiftAtDistance.put(distance, v.add(decision));</span>
+<span class="nc" id="L153">    }</span>
+
+    /**
+     * Sets plan.
+     *
+     * @param time the time
+     * @param v    the v
+     */
+    public void setPlan(Clock time, Vector3dInterface v) {
+<span class="nc bnc" id="L162" title="All 4 branches missed.">        if (time == null || v == null) return;</span>
+<span class="nc" id="L163">        Vector3dInterface vOld = this.shiftAtTime.remove(time);</span>
+<span class="nc" id="L164">        this.shiftAtTime.put(time, v);</span>
+<span class="nc" id="L165">    }</span>
+
+    /**
+     * Sets plan.
+     *
+     * @param s the s
+     * @param v the v
+     */
+    public void setPlan(StateInterface s, Vector3dInterface v) {
+<span class="nc bnc" id="L174" title="All 4 branches missed.">        if (s == null || v == null) return;</span>
+<span class="nc" id="L175">        this.shiftAtLocation.put(s, v);</span>
+<span class="nc" id="L176">    }</span>
+
+    /**
+     * Sets plan.
+     *
+     * @param d the d
+     * @param v the v
+     */
+    public void setPlan(Vector3dInterface d, Vector3dInterface v) {
+<span class="nc bnc" id="L185" title="All 4 branches missed.">        if (d == null || v == null) return;</span>
+<span class="nc" id="L186">        this.shiftAtDistance.put(d, v);</span>
+<span class="nc" id="L187">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

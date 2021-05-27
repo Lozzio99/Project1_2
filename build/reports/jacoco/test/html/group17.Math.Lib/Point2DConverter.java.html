@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Point2DConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">Point2DConverter.java</span></div><h1>Point2DConverter.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+import group17.Graphics.GraphicsManager;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import java.awt.Point;
+
+import static group17.Main.simulation;
+
+/**
+ * The type Point 2 d converter.
+ */
+<span class="nc" id="L14">public class Point2DConverter {</span>
+    private static final double zoomFactor = 1.05;
+<span class="nc" id="L16">    private static final int WIDTH = GraphicsManager.screen.width, HEIGHT = GraphicsManager.screen.height;</span>
+<span class="nc" id="L17">    private static java.awt.Point ORIGIN = new java.awt.Point(WIDTH / 2, HEIGHT / 2);</span>
+<span class="nc" id="L18">    private static double scale = 1.5d;</span>
+    private static double xMoved, yMoved;
+
+    /**
+     * Zoom in.
+     */
+    public static void zoomIn() {
+<span class="nc" id="L25">        scale *= zoomFactor;</span>
+<span class="nc" id="L26">    }</span>
+
+    /**
+     * Zoom out.
+     */
+    public static void zoomOut() {
+<span class="nc" id="L32">        scale /= zoomFactor;</span>
+<span class="nc" id="L33">    }</span>
+
+    /**
+     * Gets scale.
+     *
+     * @return the scale
+     */
+    @Contract(pure = true)
+    public static double getScale() {
+<span class="nc" id="L42">        return scale;</span>
+    }
+
+    /**
+     * Convert point point.
+     *
+     * @param point3D the point 3 d
+     * @return the point
+     */
+    @Contract(&quot;_ -&gt; new&quot;)
+    public static @NotNull Point convertPoint(@NotNull Point3D point3D) {
+<span class="nc" id="L53">        return new Point((int) (ORIGIN.getX() + point3D.getXCoordinate()), (int) (ORIGIN.getY() - point3D.getYCoordinate()));</span>
+    }
+
+    /**
+     * Translate.
+     *
+     * @param xFactor the x factor
+     * @param yFactor the y factor
+     */
+    public static void translate(double xFactor, double yFactor) {
+<span class="nc" id="L63">        xMoved = xFactor;</span>
+<span class="nc" id="L64">        yMoved = yFactor;</span>
+<span class="nc" id="L65">        ORIGIN.move((int) (ORIGIN.getX() + xFactor), (int) (ORIGIN.getY() - yFactor));</span>
+<span class="nc" id="L66">    }</span>
+
+    /**
+     * Resize.
+     */
+    public static void resize() {
+<span class="nc" id="L72">        ORIGIN = new java.awt.Point(simulation.getGraphics().getFrame().getWidth() / 2, simulation.getGraphics().getFrame().getHeight() / 2);</span>
+<span class="nc" id="L73">        translate(xMoved, yMoved);</span>
+<span class="nc" id="L74">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

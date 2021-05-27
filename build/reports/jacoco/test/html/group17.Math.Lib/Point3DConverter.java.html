@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Point3DConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">Point3DConverter.java</span></div><h1>Point3DConverter.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+import group17.Graphics.GraphicsManager;
+import org.jetbrains.annotations.Contract;
+
+/**
+ * The type Point 3 d converter.
+ */
+<span class="nc" id="L9">public class Point3DConverter {</span>
+    private static final double ZoomFactor = 1.05;
+<span class="nc" id="L11">    private static final int SCREEN_WIDTH = GraphicsManager.screen.width, SCREEN_HEIGHT = GraphicsManager.screen.height;</span>
+<span class="nc" id="L12">    private static double scale = 1.5d;</span>
+
+    /**
+     * Zooms in by a factor.
+     */
+    public static void zoomIn() {
+<span class="nc" id="L18">        scale *= ZoomFactor;</span>
+<span class="nc" id="L19">    }</span>
+
+    /**
+     * Zooms out by a factor.
+     */
+    public static void zoomOut() {
+<span class="nc" id="L25">        scale /= ZoomFactor;</span>
+<span class="nc" id="L26">    }</span>
+
+    /**
+     * Returns the scale.
+     *
+     * @return scale scale
+     */
+    @Contract(pure = true)
+    public static double getScale() {
+<span class="nc" id="L35">        return scale;</span>
+    }
+
+    /**
+     * Converts a point with respect to the scale.
+     *
+     * @param point3D the point 3 d
+     * @return java . awt . point
+     */
+    public static java.awt.Point convertPoint(Point3D point3D) {
+<span class="nc" id="L45">        double x3d = point3D.getXCoordinate() * scale;</span>
+<span class="nc" id="L46">        double y3d = point3D.getYCoordinate() * scale;</span>
+<span class="nc" id="L47">        double depth = point3D.getZCoordinate() * scale;</span>
+<span class="nc" id="L48">        double[] newVal = scale(x3d, y3d, depth);</span>
+<span class="nc" id="L49">        int x2d = (int) (SCREEN_WIDTH / 2 + newVal[0]);</span>
+<span class="nc" id="L50">        int y2d = (int) (SCREEN_HEIGHT / 2 - newVal[1]);</span>
+<span class="nc" id="L51">        return new java.awt.Point(x2d, y2d);</span>
+    }
+
+    /**
+     * Returns an array of double variables which represent a scale.
+     *
+     * @param x3d   the x value
+     * @param y3d   the y value
+     * @param depth the depth of the scene
+     * @return an array containing the x,y point coordinates
+     */
+    private static double[] scale(double x3d, double y3d, double depth) {
+<span class="nc" id="L63">        double dist = Math.sqrt(x3d * x3d + y3d * y3d);</span>
+<span class="nc" id="L64">        double theta = Math.atan2(y3d, x3d);</span>
+<span class="nc" id="L65">        double depth2 = 15 - depth;</span>
+<span class="nc" id="L66">        double localScale = Math.abs(1400 / (depth2 + 1400));</span>
+<span class="nc" id="L67">        dist *= localScale;</span>
+<span class="nc" id="L68">        double[] newVal = new double[2];</span>
+<span class="nc" id="L69">        newVal[0] = dist * Math.cos(theta);</span>
+<span class="nc" id="L70">        newVal[1] = dist * Math.sin(theta);</span>
+<span class="nc" id="L71">        return newVal;</span>
+    }
+
+    /**
+     * Rotates a point around the X axis.
+     *
+     * @param p       the p
+     * @param CW      the cw
+     * @param degrees the degrees
+     */
+    public static void rotateAxisX(final Point3D p, boolean CW, double degrees) {
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (degrees == 0) return;</span>
+<span class="nc" id="L83">        double radius = Math.sqrt(p.y * p.y + p.z * p.z);</span>
+<span class="nc" id="L84">        double theta = Math.atan2(p.z, p.y);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        theta += 2 * Math.PI / 360 * degrees * (CW ? -1 : 1);</span>
+<span class="nc" id="L86">        p.y = (radius * Math.cos(theta));</span>
+<span class="nc" id="L87">        p.z = (radius * Math.sin(theta));</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Rotates a point around the Y axis.
+     *
+     * @param p       the p
+     * @param CW      the cw
+     * @param degrees the degrees
+     */
+    public static void rotateAxisY(Point3D p, boolean CW, double degrees) {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">        if (degrees == 0) return;</span>
+<span class="nc" id="L99">        double radius = Math.sqrt(p.z * p.z + p.x * p.x);</span>
+<span class="nc" id="L100">        double theta = Math.atan2(p.z, p.x);</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        theta += 2 * Math.PI / 360 * degrees * (CW ? -1 : 1);</span>
+<span class="nc" id="L102">        p.z = (radius * Math.sin(theta));</span>
+<span class="nc" id="L103">        p.x = (radius * Math.cos(theta));</span>
+<span class="nc" id="L104">    }</span>
+
+    /**
+     * Rotates a point around the Z axis.
+     *
+     * @param p       the p
+     * @param CW      the cw
+     * @param degrees the degrees
+     */
+    public static void rotateAxisZ(Point3D p, boolean CW, double degrees) {
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if (degrees == 0) return;</span>
+<span class="nc" id="L115">        double radius = Math.sqrt(p.y * p.y + p.x * p.x);</span>
+<span class="nc" id="L116">        double theta = Math.atan2(p.y, p.x);</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        theta += 2 * Math.PI / 360 * degrees * (CW ? -1 : 1);</span>
+<span class="nc" id="L118">        p.y = (radius * Math.sin(theta));</span>
+<span class="nc" id="L119">        p.x = (radius * Math.cos(theta));</span>
+<span class="nc" id="L120">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

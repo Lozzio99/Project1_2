@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorData.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Utils</a> &gt; <span class="el_source">ErrorData.java</span></div><h1>ErrorData.java</h1><pre class="source lang-java linenums">package group17.Utils;
+
+import group17.Interfaces.StateInterface;
+import group17.Interfaces.Vector3dInterface;
+import org.jetbrains.annotations.Contract;
+
+import java.util.List;
+
+/**
+ * Represents Data used in calculating errors of simulation
+ */
+public class ErrorData {
+    private List&lt;Vector3dInterface&gt; positions, velocities;
+
+    /**
+     * Instantiates a new Error data.
+     */
+    @Contract(pure = true)
+<span class="nc" id="L19">    public ErrorData() {</span>
+<span class="nc" id="L20">    }</span>
+
+    /**
+     * Instantiates a new Error data.
+     *
+     * @param state the state
+     */
+<span class="nc" id="L27">    public ErrorData(StateInterface state) {</span>
+<span class="nc" id="L28">        StateInterface copy = state.copy();</span>
+<span class="nc" id="L29">        this.positions = copy.getPositions();</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (this.positions.size() &gt;= 12) this.positions.remove(11);</span>
+<span class="nc" id="L31">        this.velocities = copy.getRateOfChange().getVelocities();</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (this.velocities.size() &gt;= 12) this.velocities.remove(11);</span>
+<span class="nc" id="L33">    }</span>
+
+    /**
+     * Instantiates a new Error data.
+     *
+     * @param positions  the positions
+     * @param velocities the velocities
+     */
+<span class="nc" id="L41">    public ErrorData(List&lt;Vector3dInterface&gt; positions, List&lt;Vector3dInterface&gt; velocities) {</span>
+<span class="nc" id="L42">        this.positions = List.copyOf(positions);</span>
+<span class="nc" id="L43">        this.velocities = List.copyOf(velocities);</span>
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * Sets data.
+     *
+     * @param positions  the positions
+     * @param velocities the velocities
+     * @return the data
+     */
+    public ErrorData setData(List&lt;Vector3dInterface&gt; positions, List&lt;Vector3dInterface&gt; velocities) {
+<span class="nc" id="L54">        this.positions = positions;</span>
+<span class="nc" id="L55">        this.velocities = velocities;</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (this.positions.size() &gt;= 12) {</span>
+<span class="nc" id="L57">            this.positions.remove(11);</span>
+<span class="nc" id="L58">            this.velocities.remove(11);//removing rocket , no data to compare for it</span>
+        }
+<span class="nc" id="L60">        return this;</span>
+    }
+
+
+    /**
+     * Gets positions.
+     *
+     * @return the positions
+     */
+    public List&lt;Vector3dInterface&gt; getPositions() {
+<span class="nc" id="L70">        return positions;</span>
+    }
+
+    /**
+     * Gets velocities.
+     *
+     * @return the velocities
+     */
+    public List&lt;Vector3dInterface&gt; getVelocities() {
+<span class="nc" id="L79">        return velocities;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimulationUpdater.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation</a> &gt; <span class="el_source">SimulationUpdater.java</span></div><h1>SimulationUpdater.java</h1><pre class="source lang-java linenums">package group17.Simulation;
+
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.UpdaterInterface;
+import group17.Interfaces.Vector3dInterface;
+import group17.Math.Lib.GravityFunction;
+import group17.Math.Solvers.*;
+import group17.Simulation.Rocket.RocketSchedule;
+import group17.Utils.ErrorData;
+import group17.Utils.ErrorExportCSV;
+import group17.Utils.ErrorReport;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static group17.Graphics.Scenes.Scene.SceneType.SIMULATION_SCENE;
+import static group17.Main.simulation;
+import static group17.Utils.Config.*;
+import static group17.Utils.ErrorReport.testingAccuracy;
+
+/**
+ * Updater class of Simulation, updates body position based on solvers
+ * Responsible to initialise a external/internal report about the errors
+ * from the solvers and the original data acquired.
+ */
+<span class="nc" id="L29">public class SimulationUpdater implements UpdaterInterface {</span>
+
+    private RocketSchedule schedule;
+    private ODESolverInterface solver;
+    private Thread updaterThread;
+<span class="nc" id="L34">    private volatile AtomicReference&lt;Writer&gt; fileWriter = new AtomicReference&lt;&gt;();</span>
+
+    @Override
+    public void init() {
+        //make all the planning
+<span class="nc" id="L39">        this.schedule = new RocketSchedule();</span>
+<span class="nc" id="L40">        this.schedule.init();</span>
+<span class="nc" id="L41">        this.schedule.prepare();</span>
+
+
+<span class="nc bnc" id="L44" title="All 8 branches missed.">        switch (DEFAULT_SOLVER) {</span>
+<span class="nc" id="L45">            case EULER_SOLVER -&gt; this.solver = new EulerSolver(new GravityFunction().getEvaluateCurrentVelocity());</span>
+<span class="nc" id="L46">            case RUNGE_KUTTA_SOLVER -&gt; this.solver = new RungeKuttaSolver(new GravityFunction().getEvaluateCurrentVelocity());</span>
+<span class="nc" id="L47">            case VERLET_VEL_SOLVER -&gt; this.solver = new VerletVelocitySolver(new GravityFunction().getEvaluateRateOfChange());</span>
+<span class="nc" id="L48">            case VERLET_STD_SOLVER -&gt; this.solver = new StandardVerletSolver(new GravityFunction().getEvaluateRateOfChange());</span>
+<span class="nc" id="L49">            case MIDPOINT_SOLVER -&gt; this.solver = new MidPointSolver(new GravityFunction().getEvaluateCurrentVelocity());</span>
+<span class="nc" id="L50">            case GREEDY_RUNGE_KUTTA -&gt; this.solver = new OldRungeKutta(new GravityFunction().getEvaluateRateOfChange());</span>
+<span class="nc" id="L51">            case TESTS_RUNGE_KUTTA -&gt; this.solver = new LazyRungeKutta(new GravityFunction().getEvaluateCurrentVelocity());</span>
+            default -&gt; {
+<span class="nc" id="L53">                this.solver = new EulerSolver(new GravityFunction().getEvaluateCurrentVelocity());</span>
+<span class="nc bnc" id="L54" title="All 2 branches missed.">                if (REPORT)</span>
+<span class="nc" id="L55">                    simulation.getReporter().report(new IllegalStateException(&quot;UPDATER/DEFAULT_SOLVER/&quot; + EULER_SOLVER));</span>
+            }
+        }
+
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (ERROR_EVALUATION) {</span>
+<span class="nc" id="L60">            this.initWriter();</span>
+<span class="nc" id="L61">            new ErrorReport(fileWriter, new ErrorData(simulation.getSystem().systemState())).start();</span>
+
+        }
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (!LAUNCH_ASSIST) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (ENABLE_GRAPHICS) simulation.getGraphics().changeScene(SIMULATION_SCENE);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            if (REPORT) simulation.getReporter().report(&quot;START SIMULATION&quot;);</span>
+<span class="nc" id="L68">            simulation.setWaiting(false);</span>
+        }
+
+<span class="nc" id="L71">    }</span>
+
+    @Override
+    public synchronized void start() {
+<span class="nc" id="L75">        this.updaterThread = new Thread(Thread.currentThread().getThreadGroup(), this, &quot;Simulation Updater&quot;, 6);</span>
+<span class="nc" id="L76">        this.updaterThread.setDaemon(true);</span>
+<span class="nc" id="L77">        this.updaterThread.setPriority(8);</span>
+<span class="nc" id="L78">        this.updaterThread.start();</span>
+<span class="nc" id="L79">    }</span>
+
+
+    @Override
+    public void setFileWriter(AtomicReference&lt;Writer&gt; fileWriter) {
+<span class="nc" id="L84">        this.fileWriter = fileWriter;</span>
+<span class="nc" id="L85">    }</span>
+
+    @Override
+    public synchronized void run() {
+        // ROCKET DECISION
+        try {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">            if (INSERT_ROCKET) {</span>
+<span class="nc" id="L92">                Vector3dInterface decision = this.schedule.shift(simulation.getSystem());</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">                if (!decision.isZero()) {</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">                    if (REPORT) simulation.getReporter().report(&quot;DECISION -&gt; &quot; + decision);</span>
+<span class="nc" id="L95">                    simulation.getSystem().getRocket().evaluateLoss(decision,</span>
+<span class="nc" id="L96">                            simulation.getSystem().systemState().getRateOfChange().getVelocities().get(11));</span>
+                }
+            }
+            //ErrorData prev = new ErrorData(simulation.getSystem().systemState());
+            /*
+             * Technically here in systemState.update we could also pass the result of a more complex evaluation
+             * like the last state of the solve method (with new stepsize = prevStepsize / size of solution)
+             * but i think this would be a problem for the graphics + here we check if bodies are collided maybe
+             * better to do that in system (in main thread from executor) and then pass it in here once solved
+             */
+
+
+<span class="nc" id="L108">            simulation.getSystem().systemState().update(this.solver.step(this.solver.getFunction(), CURRENT_TIME, simulation.getSystem().systemState(), STEP_SIZE));</span>
+<span class="nc" id="L109">            CURRENT_TIME += STEP_SIZE;</span>
+<span class="nc bnc" id="L110" title="All 4 branches missed.">            if (simulation.getSystem().getClock().step(STEP_SIZE) &amp;&amp; ERROR_EVALUATION) {</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                if (!testingAccuracy) initWriter(); //will make a different output from the testing one</span>
+<span class="nc" id="L112">                new ErrorReport(Objects.requireNonNullElseGet(fileWriter, AtomicReference::new), new ErrorData(simulation.getSystem().systemState())).start();</span>
+            }
+
+<span class="nc" id="L115">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">            if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);</span>
+<span class="nc" id="L117">        }</span>
+<span class="nc" id="L118">    }</span>
+
+    @Override
+    public ODESolverInterface getSolver() {
+<span class="nc" id="L122">        return solver;</span>
+    }
+
+    @Override
+    public RocketSchedule getSchedule() {
+<span class="nc" id="L127">        return schedule;</span>
+    }
+
+    @Override
+    public AtomicReference&lt;Writer&gt; initWriter() {
+<span class="nc" id="L132">        String path = ErrorReport.makeMonthDirectories(getClass());  //build/resources/main</span>
+        File file;
+        try {
+<span class="nc bnc" id="L135" title="All 3 branches missed.">            switch (FORMAT) {</span>
+<span class="nc" id="L136">                case TXT -&gt; {</span>
+<span class="nc" id="L137">                    path += &quot;txt&quot;;</span>
+<span class="nc" id="L138">                    file = new File(path);</span>
+<span class="nc" id="L139">                    fileWriter.set(new FileWriter(file));</span>
+                }
+<span class="nc" id="L141">                case CSV -&gt; {</span>
+<span class="nc" id="L142">                    path += &quot;csv&quot;;</span>
+<span class="nc" id="L143">                    file = new File(path);</span>
+<span class="nc" id="L144">                    fileWriter.set(new ErrorExportCSV(file));</span>
+                }
+                default -&gt; {
+                }
+            }
+<span class="nc" id="L149">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">            if (REPORT) simulation.getReporter().report(Thread.currentThread(), e);</span>
+<span class="nc" id="L151">        }</span>
+<span class="nc" id="L152">        return fileWriter;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

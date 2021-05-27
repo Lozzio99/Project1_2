@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LazyRungeKutta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Solvers</a> &gt; <span class="el_source">LazyRungeKutta.java</span></div><h1>LazyRungeKutta.java</h1><pre class="source lang-java linenums">package group17.Math.Solvers;
+
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
+import group17.Math.Lib.GravityFunction;
+import org.jetbrains.annotations.Contract;
+
+/**
+ * The type Lazy runge kutta.
+ * ** WORKING WITH NUMERICAL TEST RUNGE KUTTA
+ * *** NOT WORKING WITHIN THE SIMULATION (goes to NaN very quickly)
+ */
+public class LazyRungeKutta implements ODESolverInterface {
+    private final ODEFunctionInterface f;
+
+    /**
+     * Instantiates a new Lazy runge kutta.
+     *
+     * @param f the f
+     */
+    @Contract(pure = true)
+<span class="nc" id="L24">    public LazyRungeKutta(final ODEFunctionInterface f) {</span>
+<span class="nc" id="L25">        this.f = f;</span>
+<span class="nc" id="L26">    }</span>
+
+    /**
+     * Formula
+     * k1=f(tn,yn)
+     * k2=f(tn+h2,yn+h/2*k1)
+     * k3=f(tn+h2,yn+h/2*k2)
+     * k4=hf(tn+h,yn+h*k3)
+     * kk = (k1 + 2*k2 + 2*k3 + k4)/6
+     *
+     *
+     * @param f the function representing Newton's Gravitational law
+     * @param y the instance of the Simulation
+     * @param h stepSize
+     * @return the next state of the simulation based on Runge-Kutta 4 Step
+     */
+    @Override
+    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+<span class="nc" id="L44">        GravityFunction.setCurrentTime(t);</span>
+<span class="nc" id="L45">        GravityFunction.setChecked(false);</span>
+<span class="nc" id="L46">        RateInterface k1 = f.call(t, y).multiply(h);</span>
+<span class="nc" id="L47">        RateInterface k2 = f.call(t + 0.5 * h, y.addMul(0.5, k1)).multiply(h);</span>
+<span class="nc" id="L48">        RateInterface k3 = f.call(t + 0.5 * h, y.addMul(0.5, k2)).multiply(h);</span>
+<span class="nc" id="L49">        RateInterface k4 = f.call(t + h, y.addMul(1, k3)).multiply(h);</span>
+<span class="nc" id="L50">        RateInterface newRate = k1.sumOf(k2.multiply(2), k3.multiply(2), k4).div(6);</span>
+<span class="nc" id="L51">        return y.addMul(h, newRate.div(h));</span>
+    }
+
+    @Override
+    public ODEFunctionInterface getFunction() {
+<span class="nc" id="L56">        return this.f;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

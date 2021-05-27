@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Point3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">Point3D.java</span></div><h1>Point3D.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+import org.jetbrains.annotations.Contract;
+
+/**
+ * The type Point 3 d.
+ */
+public class Point3D {
+    /**
+     * The X.
+     */
+    public double x, /**
+     * The Y.
+     */
+    y, /**
+     * The Z.
+     */
+    z;
+    /**
+     * The X offset.
+     */
+    public double xOffset, /**
+     * The Y offset.
+     */
+    yOffset, /**
+     * The Z offset.
+     */
+    zOffset;
+
+    /**
+     * Instantiates a new Point 3 d.
+     *
+     * @param x the x
+     * @param y the y
+     * @param z the z
+     */
+<span class="nc" id="L37">    public Point3D(double x, double y, double z) {</span>
+<span class="nc" id="L38">        this.x = x;</span>
+<span class="nc" id="L39">        this.y = y;</span>
+<span class="nc" id="L40">        this.z = z;</span>
+<span class="nc" id="L41">        this.xOffset = 0;</span>
+<span class="nc" id="L42">        this.yOffset = 0;</span>
+<span class="nc" id="L43">        this.zOffset = 0;</span>
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * Euclid dist double.
+     *
+     * @param p1 the p 1
+     * @param p2 the p 2
+     * @return the double
+     */
+    public static double euclidDist(Point3D p1, Point3D p2) {
+<span class="nc" id="L54">        double x2 = Math.pow(p1.x - p2.x, 2);</span>
+<span class="nc" id="L55">        double y2 = Math.pow(p1.y - p2.y, 2);</span>
+<span class="nc" id="L56">        double z2 = Math.pow(p1.z - p2.z, 2);</span>
+<span class="nc" id="L57">        return Math.sqrt(x2 + y2 + z2);</span>
+    }
+
+    /**
+     * Gets x coordinate.
+     *
+     * @return the x coordinate
+     */
+    public double getXCoordinate() {
+<span class="nc" id="L66">        return this.x + this.xOffset;</span>
+    }
+
+    /**
+     * Gets y coordinate.
+     *
+     * @return the y coordinate
+     */
+    public double getYCoordinate() {
+<span class="nc" id="L75">        return this.y + this.yOffset;</span>
+    }
+
+    /**
+     * Gets z coordinate.
+     *
+     * @return the z coordinate
+     */
+    public double getZCoordinate() {
+<span class="nc" id="L84">        return this.z + this.zOffset;</span>
+    }
+
+    /**
+     * Euclid dist double.
+     *
+     * @param p2 the p 2
+     * @return the double
+     */
+    public double euclidDist(Point3D p2) {
+<span class="nc" id="L94">        double x2 = Math.pow(this.x - p2.x, 2);</span>
+<span class="nc" id="L95">        double y2 = Math.pow(this.y - p2.y, 2);</span>
+<span class="nc" id="L96">        double z2 = Math.pow(this.z - p2.z, 2);</span>
+<span class="nc" id="L97">        return Math.sqrt(x2 + y2 + z2);</span>
+    }
+
+    /**
+     * Scale.
+     *
+     * @param scale the scale
+     */
+    public void scale(double scale) {
+<span class="nc" id="L106">        this.x /= scale;</span>
+<span class="nc" id="L107">        this.y /= scale;</span>
+<span class="nc" id="L108">        this.z /= scale;</span>
+<span class="nc" id="L109">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L113">        return &quot;( &quot; + this.getXCoordinate() + &quot; , &quot; + this.getYCoordinate() + &quot; , &quot; + this.getZCoordinate() + &quot; )&quot;;</span>
+    }
+
+    /**
+     * Translate point 3 d.
+     *
+     * @param x the x
+     * @param y the y
+     * @param z the z
+     * @return the point 3 d
+     */
+    public Point3D translate(double x, double y, double z) {
+<span class="nc" id="L125">        this.xOffset += x;</span>
+<span class="nc" id="L126">        this.yOffset += y;</span>
+<span class="nc" id="L127">        this.zOffset += z;</span>
+<span class="nc" id="L128">        return this;</span>
+    }
+
+    /**
+     * Heading double.
+     *
+     * @return the double
+     */
+    public double heading() {
+<span class="nc" id="L137">        return Math.atan2(this.getYCoordinate(), this.getZCoordinate());</span>
+    }
+
+
+    @Contract(value = &quot;null -&gt; false&quot;, pure = true)
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L144" title="All 2 branches missed.">        if (o instanceof Point3D) {</span>
+<span class="nc" id="L145">            Point3D p = (Point3D) o;</span>
+<span class="nc bnc" id="L146" title="All 12 branches missed.">            return this.x == p.x &amp;&amp; this.y == p.y &amp;&amp; this.z == p.z &amp;&amp;</span>
+                    this.xOffset == p.xOffset &amp;&amp; this.yOffset == p.yOffset &amp;&amp; this.zOffset == p.zOffset;
+        }
+<span class="nc" id="L149">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

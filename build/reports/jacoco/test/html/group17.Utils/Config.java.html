@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Config.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Utils</a> &gt; <span class="el_source">Config.java</span></div><h1>Config.java</h1><pre class="source lang-java linenums">package group17.Utils;
+
+import group17.Simulation.System.Clock;
+
+/**
+ * The type Config.
+ */
+<span class="nc" id="L8">public class Config {</span>
+
+    //             FINAL CONFIGURATIONS
+
+    /**
+     * Global enum for the accuracy output,
+     * NO_OUTPUT for suppressing file generation
+     * or TXT, CSV
+     *
+     * @see Format
+     * @see ErrorReport
+     */
+<span class="nc" id="L20">    public static final Format FORMAT = Format.NO_OUTPUT;</span>
+
+
+    /**
+     * The constant ROCKET_SIMULATION.
+     */
+    public static final int ROCKET_SIMULATION = 0;
+    /**
+     * The constant PENDULUM_SIMULATION.
+     */
+    public static final int PENDULUM_SIMULATION = 1;
+
+    /**
+     * The constant PARTICLES_SIMULATION.
+     */
+    public static final int PARTICLES_SIMULATION = 2;
+    /**
+     * The constant EULER_SOLVER.
+     */
+    public static final int EULER_SOLVER = 1;
+    /**
+     * The constant RUNGE_KUTTA_SOLVER.
+     */
+    public static final int RUNGE_KUTTA_SOLVER = 2;
+    /**
+     * The constant VERLET_VEL_SOLVER.
+     */
+    public static final int VERLET_VEL_SOLVER = 3;
+    /**
+     * The constant VERLET_STD_SOLVER.
+     */
+    public static final int VERLET_STD_SOLVER = 4;
+    /**
+     * The constant MIDPOINT_SOLVER.
+     */
+    public static final int MIDPOINT_SOLVER = 5;
+    /**
+     * TESTING SOLVERS
+     */
+    public static final int GREEDY_RUNGE_KUTTA = 6;
+    /**
+     * The Lazy runge.
+     */
+    public static final int TESTS_RUNGE_KUTTA = 7;
+    /**
+     * The constant MIN_CPU.
+     */
+    public static final int MIN_CPU = 1;
+    /**
+     * The constant MAX_CPU.
+     */
+    public static final int MAX_CPU = 5;
+    /**
+     * The constant ORIGINAL_DATA.
+     */
+<span class="nc" id="L75">    public static final ErrorData[] ORIGINAL_DATA = new ErrorData[13];</span>
+    //default global array for imported original data values (loaded when launching the simulation)
+
+    /**
+     * The constant LAUNCH_DATE.
+     */
+<span class="nc" id="L81">    public static final Clock LAUNCH_DATE = new Clock();  //set to launch day in runtime</span>
+
+
+    /**
+     * BOOLEAN CONFIGURATIONS
+     * available in assist window
+     */
+    //                 EDITABLE  (in runtime too)
+<span class="nc" id="L89">    public static Boolean LAUNCH_ASSIST = true;</span>
+    /**
+     * The constant ENABLE_GRAPHICS.
+     */
+<span class="nc" id="L93">    public static Boolean ENABLE_GRAPHICS = true;</span>
+    /**
+     * The constant REPORT.
+     */
+<span class="nc" id="L97">    public static Boolean REPORT = true;</span>
+    /**
+     * The constant DEBUG.
+     */
+<span class="nc" id="L101">    public static Boolean DEBUG = false;</span>
+    /**
+     * The constant INSERT_ROCKET.
+     */
+<span class="nc" id="L105">    public static Boolean INSERT_ROCKET = true;</span>
+    /**
+     * The constant ROCKET_INFO.
+     */
+<span class="nc" id="L109">    public static Boolean ROCKET_INFO = true;</span>
+    /**
+     * The constant PERFORMANCE.
+     */
+<span class="nc" id="L113">    public static Boolean PERFORMANCE = true;</span>
+    /**
+     * The constant ERROR_EVALUATION.
+     */
+<span class="nc" id="L117">    public static Boolean ERROR_EVALUATION = true;</span>
+    /**
+     * The constant CHECK_COLLISIONS.
+     */
+<span class="nc" id="L121">    public static Boolean CHECK_COLLISIONS = false;</span>
+    /**
+     * The constant PLOT.
+     */
+<span class="nc" id="L125">    public static Boolean PLOT = false;</span>
+    /**
+     * The constant DRAW_TRAJECTORIES.
+     */
+<span class="nc" id="L129">    public static Boolean DRAW_TRAJECTORIES = true;</span>
+    /**
+     * The constant NAMES.
+     */
+<span class="nc" id="L133">    public static Boolean NAMES = true;</span>
+    /**
+     * The constant DEFAULT_SOLVER.
+     */
+<span class="nc" id="L137">    public static int DEFAULT_SOLVER = GREEDY_RUNGE_KUTTA;  //editable in main menu</span>
+
+
+    /**
+     * NUMERICAL CONFIGURATIONS
+     */
+    //                      EDITABLE (not in runtime)
+<span class="nc" id="L144">    public static double FPS = 0;</span>
+    /**
+     * The constant SIMULATION_LEVEL.
+     */
+<span class="nc" id="L148">    public static int SIMULATION_LEVEL = 0;//which simulation is going to run</span>
+    /**
+     * The constant STEP_SIZE.
+     */
+<span class="nc" id="L152">    public static double STEP_SIZE = 7200;</span>
+    /**
+     * The constant CURRENT_TIME.
+     */
+<span class="nc" id="L156">    public static double CURRENT_TIME = 0;</span>
+    /**
+     * The constant TRAJECTORY_LENGTH.
+     */
+<span class="nc" id="L160">    public static int TRAJECTORY_LENGTH = 2000;</span>
+
+    /**
+     * The constant CPU_LEVEL.
+     */
+<span class="nc" id="L165">    public static int CPU_LEVEL = 1;</span>
+    /**
+     * The constant G.
+     */
+<span class="nc" id="L169">    public static double G = 6.67408e-11;</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Satellite.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.System.Bodies</a> &gt; <span class="el_source">Satellite.java</span></div><h1>Satellite.java</h1><pre class="source lang-java linenums">package group17.System.Bodies;
+
+
+import group17.Math.Lib.Vector3D;
+
+import java.awt.*;
+
+/**
+ * The type Satellite.
+ */
+public class Satellite extends CelestialBody {
+    /**
+     * The Name.
+     */
+    SatellitesEnum name;
+
+    /**
+     * Instantiates a new Satellite.
+     *
+     * @param name the name
+     */
+<span class="nc" id="L22">    public Satellite(SatellitesEnum name) {</span>
+<span class="nc" id="L23">        this.name = name;</span>
+<span class="nc" id="L24">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L28">        return name.name();</span>
+    }
+
+    @Override
+    public void initProperties() {
+<span class="nc bnc" id="L33" title="All 3 branches missed.">        switch (name) {</span>
+<span class="nc" id="L34">            case MOON -&gt; {</span>
+<span class="nc" id="L35">                this.setMASS(7.349e22);</span>
+<span class="nc" id="L36">                this.setRADIUS(1.7371e6);</span>
+<span class="nc" id="L37">                this.setColour(Color.gray);</span>
+<span class="nc" id="L38">                this.setVectorLocation(new Vector3D(-1.472343904597218e+11, -2.822578361503422e+10, 1.052790970065631e+07));</span>
+<span class="nc" id="L39">                this.setVectorVelocity(new Vector3D(4433.121575882713, -29484.53616031408, 88.96594867343843));</span>
+            }
+            case TITAN -&gt; {
+<span class="nc" id="L42">                this.setMASS(1.34553e23);</span>
+<span class="nc" id="L43">                this.setRADIUS(2575.5e3);</span>
+<span class="nc" id="L44">                this.setColour(Color.gray);</span>
+<span class="nc" id="L45">                this.setVectorLocation(new Vector3D(6.332873118527889e+11, -1.357175556995868e+12, -2.134637041453660e+09));</span>
+<span class="nc" id="L46">                this.setVectorVelocity(new Vector3D(3056.87794615761, 6125.612917224867, -952.3587319894634));</span>
+            }
+        }
+<span class="nc" id="L49">    }</span>
+
+    /**
+     * The enum Satellites enum.
+     */
+<span class="nc" id="L54">    public enum SatellitesEnum {</span>
+        /**
+         * Moon satellites enum.
+         */
+<span class="nc" id="L58">        MOON,</span>
+        /**
+         * Titan satellites enum.
+         */
+<span class="nc" id="L62">        TITAN,</span>
+        /**
+         * Asteroid satellites enum.
+         */
+<span class="nc" id="L66">        ASTEROID</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

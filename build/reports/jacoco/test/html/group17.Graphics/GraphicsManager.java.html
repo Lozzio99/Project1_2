@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GraphicsManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics</a> &gt; <span class="el_source">GraphicsManager.java</span></div><h1>GraphicsManager.java</h1><pre class="source lang-java linenums">package group17.Graphics;
+
+import group17.Graphics.Scenes.MouseInput;
+import group17.Graphics.Scenes.Scene;
+import group17.Graphics.Scenes.SimulationScene;
+import group17.Graphics.Scenes.StartingScene;
+import group17.Interfaces.GraphicsInterface;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.DEBUG;
+import static group17.Utils.Config.FPS;
+
+
+/**
+ * The main graphics threads/scenes handler
+ */
+<span class="nc" id="L23">public class GraphicsManager extends Canvas implements GraphicsInterface, Runnable {</span>
+
+    /**
+     * The Main graphics thread.
+     */
+<span class="nc" id="L28">    protected final AtomicReference&lt;Thread&gt; mainGraphicsTh = new AtomicReference&lt;&gt;();</span>
+    /**
+     * The Mouse.
+     */
+    protected MouseInput mouse;
+    /**
+     * The Current scene.
+     */
+    protected Scene currentScene;
+    /**
+     * The Frames.
+     */
+<span class="nc" id="L40">    int frames = 0;</span>
+    /**
+     * The T.
+     */
+<span class="nc" id="L44">    double t = System.currentTimeMillis();</span>
+    private JFrame frame;
+    private WindowEvent listen;
+
+    @Override
+    public void init() {
+<span class="nc" id="L50">        this.frame = new JFrame(&quot;Solar System &quot;);</span>
+<span class="nc" id="L51">        this.frame.setSize(screen);</span>
+<span class="nc" id="L52">        this.frame.add(this);</span>
+<span class="nc" id="L53">        this.setWindowProperties();</span>
+<span class="nc" id="L54">        this.frame.setVisible(true);</span>
+<span class="nc" id="L55">        Cursor c = new Cursor(Cursor.MOVE_CURSOR);</span>
+<span class="nc" id="L56">        this.frame.setCursor(c);</span>
+        //this.frame.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+        //this.frame.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Sets window properties.
+     */
+    protected void setWindowProperties() {
+<span class="nc" id="L65">        final var closed = new WindowAdapter() {</span>
+            @Override
+            public void windowClosing(WindowEvent e) {
+<span class="nc" id="L68">                listen = new WindowEvent(frame, 201);</span>
+<span class="nc" id="L69">                Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(listen);</span>
+<span class="nc" id="L70">                simulation.stop();</span>
+<span class="nc" id="L71">                System.out.println(&quot;System closed by user&quot;);</span>
+<span class="nc" id="L72">                System.exit(0);</span>
+<span class="nc" id="L73">            }</span>
+        };
+<span class="nc" id="L75">        this.frame.addWindowListener(closed);</span>
+<span class="nc" id="L76">        this.frame.setResizable(true);</span>
+<span class="nc" id="L77">        this.frame.setLocationRelativeTo(null);// Center window</span>
+<span class="nc" id="L78">        this.mouse = new MouseInput();</span>
+<span class="nc" id="L79">        this.changeScene(Scene.SceneType.STARTING_SCENE);</span>
+<span class="nc" id="L80">    }</span>
+
+    @Override
+    public void start() {
+<span class="nc" id="L84">        this.mainGraphicsTh.set(new Thread(Thread.currentThread().getThreadGroup(), this, &quot;Main Graphics&quot;, 10));</span>
+<span class="nc" id="L85">        this.mainGraphicsTh.get().setDaemon(true);</span>
+<span class="nc" id="L86">        this.mainGraphicsTh.get().setPriority(7);</span>
+<span class="nc" id="L87">        this.mainGraphicsTh.get().start();</span>
+<span class="nc" id="L88">    }</span>
+
+    @Override
+    public JFrame getFrame() {
+<span class="nc" id="L92">        return this.frame;</span>
+    }
+
+    @Override
+    public MouseInput getMouse() {
+<span class="nc" id="L97">        return this.mouse;</span>
+    }
+
+    @Override
+    public Scene getScene() {
+<span class="nc" id="L102">        return this.currentScene;</span>
+    }
+
+    @Override
+    public void changeScene(Scene.SceneType scene) {
+<span class="nc bnc" id="L107" title="All 3 branches missed.">        switch (scene) {</span>
+<span class="nc" id="L108">            case STARTING_SCENE -&gt; this.currentScene = new StartingScene();</span>
+<span class="nc" id="L109">            case SIMULATION_SCENE -&gt; this.currentScene = new SimulationScene();</span>
+        }
+<span class="nc" id="L111">        this.frame.remove(this.currentScene);</span>
+<span class="nc" id="L112">        this.currentScene.init();</span>
+<span class="nc" id="L113">        this.currentScene.addMouseControl(this.mouse);</span>
+<span class="nc" id="L114">        this.currentScene.addMouseListener(this.mouse);</span>
+<span class="nc" id="L115">        this.currentScene.addMouseWheelListener(this.mouse);</span>
+<span class="nc" id="L116">        this.currentScene.addMouseMotionListener(this.mouse);</span>
+<span class="nc" id="L117">        this.frame.add(this.currentScene);</span>
+<span class="nc" id="L118">        this.frame.setVisible(true);</span>
+<span class="nc" id="L119">        this.frame.repaint();  //call fast the ui</span>
+        //optional
+<span class="nc" id="L121">    }</span>
+
+    @Override
+    public void update() {
+<span class="nc" id="L125">        this.currentScene.update();</span>
+<span class="nc" id="L126">    }</span>
+
+    @Override
+    public void reset() {
+
+<span class="nc" id="L131">    }</span>
+
+    @Override
+    public void stop() {
+        try {
+<span class="nc" id="L136">            this.mainGraphicsTh.get().join(100);</span>
+<span class="nc" id="L137">        } catch (InterruptedException e) {</span>
+<span class="nc" id="L138">            e.printStackTrace();</span>
+<span class="nc" id="L139">        }</span>
+<span class="nc" id="L140">    }</span>
+
+    @Override
+    public synchronized void run() {
+
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (DEBUG) {</span>
+<span class="nc" id="L146">            frames++;</span>
+<span class="nc" id="L147">            double v = System.currentTimeMillis();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">            if (v - t &gt; 1000) {</span>
+<span class="nc" id="L149">                FPS = frames;</span>
+<span class="nc" id="L150">                System.out.println(&quot;FPS :: &quot; + FPS);</span>
+<span class="nc" id="L151">                t = v;</span>
+<span class="nc" id="L152">                frames = 0;</span>
+            }
+        }
+
+<span class="nc" id="L156">        this.update();</span>
+<span class="nc" id="L157">        this.currentScene.repaint();</span>
+<span class="nc" id="L158">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L162">        return &quot;GraphicsManager{&quot; +</span>
+<span class="nc" id="L163">                &quot;currentScene=&quot; + currentScene.toString() +</span>
+                &quot;, FPS=&quot; + FPS +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

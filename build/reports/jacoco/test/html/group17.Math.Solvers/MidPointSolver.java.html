@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MidPointSolver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Solvers</a> &gt; <span class="el_source">MidPointSolver.java</span></div><h1>MidPointSolver.java</h1><pre class="source lang-java linenums">package group17.Math.Solvers;
+
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.StateInterface;
+import group17.Math.Lib.GravityFunction;
+import org.jetbrains.annotations.Contract;
+
+/**
+ * The type Mid point solver.
+ * Second order Solver
+ */
+public class MidPointSolver implements ODESolverInterface {
+    private final ODEFunctionInterface f;
+
+    /**
+     * Instantiates a new Mid point solver.
+     *
+     * @param f the f
+     */
+    @Contract(pure = true)
+<span class="nc" id="L22">    public MidPointSolver(final ODEFunctionInterface f) {</span>
+<span class="nc" id="L23">        this.f = f;</span>
+<span class="nc" id="L24">    }</span>
+
+    /**
+     *
+     * @param f the function representing Newton's Gravitational law
+     * @param y the instance  of the Simulation
+     * @param h stepSize
+     * @return the next state of the simulation based on A Midpoint Step
+     */
+    @Override
+    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+<span class="nc" id="L35">        GravityFunction.setCurrentTime(t);</span>
+<span class="nc" id="L36">        GravityFunction.setChecked(false);</span>
+<span class="nc" id="L37">        return y.addMul(h,</span>
+<span class="nc" id="L38">                f.call(t + (h / 2), y.addMul(h / 2,</span>
+<span class="nc" id="L39">                        f.call(t, y))));</span>
+    }
+
+    @Override
+    public ODEFunctionInterface getFunction() {
+<span class="nc" id="L44">        return this.f;</span>
+    }
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

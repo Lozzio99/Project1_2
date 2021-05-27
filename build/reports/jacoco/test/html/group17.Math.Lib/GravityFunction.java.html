@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GravityFunction.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">GravityFunction.java</span></div><h1>GravityFunction.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
+import group17.Interfaces.Vector3dInterface;
+import group17.Simulation.System.State.RateOfChange;
+import group17.Utils.CollisionDetector;
+import org.jetbrains.annotations.Contract;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.CHECK_COLLISIONS;
+import static group17.Utils.Config.G;
+import static java.lang.StrictMath.pow;
+import static java.lang.StrictMath.sqrt;
+
+/**
+ * The type Gravity function.
+ */
+public final class GravityFunction {
+    private static volatile boolean checkedCollisions;
+    private static volatile double currentTime;
+
+    /**
+     * Function that returns the rate of change of a state at a point in time
+     */
+<span class="nc" id="L27">    private final ODEFunctionInterface evalRateOfChange = (h, y) -&gt; {</span>
+<span class="nc" id="L28">        final RateInterface newRate = new RateOfChange();</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        for (int i = 0; i &lt; y.getPositions().size(); i++) {</span>
+<span class="nc" id="L30">            newRate.getVelocities().add(</span>
+<span class="nc" id="L31">                    velocityFromAcceleration(i, y, 1)); // changed to 1 from h for OldRk</span>
+        }
+<span class="nc" id="L33">        return newRate;</span>
+    };
+
+    /**
+     * Function that returns the rate of change of a state at a point in time, added
+     * to the current state velocities
+     */
+<span class="nc" id="L40">    private final ODEFunctionInterface evalCurrVelocity = (t, y) -&gt; {</span>
+<span class="nc" id="L41">        final RateInterface newRate = new RateOfChange();</span>
+<span class="nc" id="L42">        double dt = t - currentTime;</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for (int i = 0; i &lt; y.getPositions().size(); i++) {</span>
+<span class="nc" id="L44">            newRate.getVelocities().add(</span>
+<span class="nc" id="L45">                    y.getRateOfChange().getVelocities().get(i)</span>
+<span class="nc" id="L46">                            .add(velocityFromAcceleration(i, y, dt)));</span>
+        }
+<span class="nc" id="L48">        return newRate;</span>
+    };
+
+    /**
+     * Instantiates a new Gravity function.
+     */
+    @Contract(pure = true)
+<span class="nc" id="L55">    public GravityFunction() {</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Sets checked.
+     *
+     * @param value the value
+     */
+    public static void setChecked(boolean value) {
+<span class="nc" id="L64">        checkedCollisions = value;</span>
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Sets current time.
+     *
+     * @param ct the ct
+     */
+    public static void setCurrentTime(double ct) {
+<span class="nc" id="L73">        currentTime = ct;</span>
+<span class="nc" id="L74">    }</span>
+
+    private static Vector3dInterface velocityFromAcceleration(int i, final StateInterface y, double h) {
+<span class="nc" id="L77">        Vector3dInterface totalAcc = new Vector3D(0, 0, 0);</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        for (int k = 0; k &lt; y.getPositions().size(); k++) {</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (i != k) {</span>
+<span class="nc" id="L80">                Vector3dInterface acc = y.getPositions().get(i).clone();</span>
+<span class="nc" id="L81">                double squareDist = pow(y.getPositions().get(i).dist(y.getPositions().get(k)), 2);</span>
+<span class="nc" id="L82">                acc = y.getPositions().get(k).sub(acc); // Get the force vector</span>
+<span class="nc" id="L83">                double den = sqrt(squareDist);</span>
+
+<span class="nc bnc" id="L85" title="All 4 branches missed.">                if (!checkedCollisions &amp;&amp; CHECK_COLLISIONS)</span>
+<span class="nc" id="L86">                    CollisionDetector.checkCollided(simulation.getSystem().getCelestialBodies().get(i), simulation.getSystem().getCelestialBodies().get(k), den);</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                if (den != 0) {</span>
+<span class="nc" id="L89">                    acc = acc.mul(1 / den); // Normalise to length 1</span>
+<span class="nc" id="L90">                    acc = acc.mul((G * simulation.getSystem().getCelestialBodies().get(k).getMASS()) / squareDist); // Convert force to acceleration</span>
+                }
+
+<span class="nc" id="L93">                totalAcc = totalAcc.addMul(h, acc);</span>
+                // p = h*acc(derivative of velocity)
+            }
+        }
+<span class="nc" id="L97">        checkedCollisions = true;</span>
+<span class="nc" id="L98">        return totalAcc;</span>
+    }
+
+    /**
+     * Gets evaluate current velocity.
+     *
+     * @return the evaluate current velocity
+     */
+    @Contract(pure = true)
+    public ODEFunctionInterface getEvaluateCurrentVelocity() {
+<span class="nc" id="L108">        return evalCurrVelocity;</span>
+    }
+
+    /**
+     * Gets evaluate rate of change.
+     *
+     * @return the evaluate rate of change
+     */
+    @Contract(pure = true)
+    public ODEFunctionInterface getEvaluateRateOfChange() {
+<span class="nc" id="L118">        return this.evalRateOfChange;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

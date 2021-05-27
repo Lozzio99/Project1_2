@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CelestialBody.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation.System.Bodies</a> &gt; <span class="el_source">CelestialBody.java</span></div><h1>CelestialBody.java</h1><pre class="source lang-java linenums">package group17.Simulation.System.Bodies;
+
+
+import group17.Interfaces.Vector3dInterface;
+import org.jetbrains.annotations.Contract;
+
+import java.awt.*;
+
+/**
+ * Represents a Celestial Body, with fields for all physics attributes
+ * as well as GUI attributes
+ */
+public abstract class CelestialBody {
+    private Color color;
+
+    private double MASS;
+    private double RADIUS;
+    private double DENSITY;
+
+
+    private Vector3dInterface vectorVelocity;
+    private Vector3dInterface vectorLocation;
+
+    private boolean collided;
+
+    /**
+     * Instantiates a new Celestial body.
+     */
+    @Contract(pure = true)
+<span class="nc" id="L30">    public CelestialBody() {</span>
+<span class="nc" id="L31">        collided = false;</span>
+<span class="nc" id="L32">    }</span>
+
+    // --- Set-Methods ---
+
+    /**
+     * Sets the density.
+     *
+     * @param DENSITY the density
+     */
+    public void setDENSITY(double DENSITY) {
+<span class="nc" id="L42">        this.DENSITY = DENSITY;</span>
+<span class="nc" id="L43">    }</span>
+
+    /**
+     * Gets the mass.
+     *
+     * @return mass mass
+     */
+    public double getMASS() {
+<span class="nc" id="L51">        return this.MASS;</span>
+    }
+
+    /**
+     * Sets the mass.
+     *
+     * @param mass the mass
+     */
+    public void setMASS(double mass) {
+<span class="nc" id="L60">        this.MASS = mass;</span>
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * Gets the radius.
+     *
+     * @return radius radius
+     */
+    public double getRADIUS() {
+<span class="nc" id="L69">        return this.RADIUS;</span>
+    }
+
+    // --- Get-Methods ---
+
+    /**
+     * Sets the radius.
+     *
+     * @param RADIUS the radius
+     */
+    public void setRADIUS(double RADIUS) {
+<span class="nc" id="L80">        this.RADIUS = RADIUS;</span>
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Gets the density.
+     *
+     * @return the density
+     */
+    public double getDensity() {
+<span class="nc" id="L89">        return this.DENSITY;</span>
+    }
+
+    /**
+     * Returns the colour of a body.
+     *
+     * @return colour colour
+     */
+    public Color getColour() {
+<span class="nc" id="L98">        return color;</span>
+    }
+
+    /**
+     * Sets the colour of a body.
+     *
+     * @param col the col
+     */
+    public void setColour(Color col) {
+<span class="nc" id="L107">        this.color = col;</span>
+<span class="nc" id="L108">    }</span>
+
+    /**
+     * Converts the body to a string.
+     */
+    public abstract String toString();
+
+    /**
+     * Init properties.
+     */
+    public abstract void initProperties();
+
+    /**
+     * Is collided boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isCollided() {
+<span class="nc" id="L126">        return collided;</span>
+    }
+
+    /**
+     * Sets collided.
+     *
+     * @param bool the bool
+     */
+    public void setCollided(boolean bool) {
+<span class="nc" id="L135">        this.collided = bool;</span>
+<span class="nc" id="L136">    }</span>
+
+    /**
+     * Gets vector location.
+     *
+     * @return the vector location
+     */
+    public Vector3dInterface getVectorLocation() {
+<span class="nc" id="L144">        return this.vectorLocation;</span>
+    }
+
+    /**
+     * Sets vector location.
+     *
+     * @param vector3D the vector 3 d
+     */
+    public void setVectorLocation(Vector3dInterface vector3D) {
+<span class="nc" id="L153">        this.vectorLocation = vector3D;</span>
+<span class="nc" id="L154">    }</span>
+
+    /**
+     * Gets vector velocity.
+     *
+     * @return the vector velocity
+     */
+    public Vector3dInterface getVectorVelocity() {
+<span class="nc" id="L162">        return this.vectorVelocity;</span>
+    }
+
+    /**
+     * Sets vector velocity.
+     *
+     * @param vector3D the vector 3 d
+     */
+    public void setVectorVelocity(Vector3dInterface vector3D) {
+<span class="nc" id="L171">        this.vectorVelocity = vector3D;</span>
+<span class="nc" id="L172">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

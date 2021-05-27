@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfigWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">ConfigWindow.java</span></div><h1>ConfigWindow.java</h1><pre class="source lang-java linenums">package group17.Graphics.Assist;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static group17.Main.simulation;
+import static group17.Main.userDialog;
+import static group17.Utils.Config.*;
+
+/**
+ * The type Config window.
+ */
+public class ConfigWindow extends JPanel {
+    //launch - stats - plot - rocket - performance - errors - controllers
+<span class="nc" id="L17">    private static final String[] s = {&quot;ENABLED&quot;, &quot;DISABLED&quot;};</span>
+<span class="nc" id="L18">    static final JButton[] buttons = new JButton[11];</span>
+<span class="nc" id="L19">    private static final JLabel[] texts = new JLabel[11];</span>
+<span class="nc" id="L20">    private static final List&lt;String&gt; bStrings = new ArrayList&lt;&gt;();</span>
+
+    static {
+<span class="nc" id="L23">        bStrings.add(&quot;GRAPHICS&quot;);</span>
+<span class="nc" id="L24">        bStrings.add(&quot;LAUNCH ASSIST&quot;);</span>
+<span class="nc" id="L25">        bStrings.add(&quot;REPORT&quot;);</span>
+<span class="nc" id="L26">        bStrings.add(&quot;PLOT&quot;);</span>
+<span class="nc" id="L27">        bStrings.add(&quot;ROCKET INFO&quot;);</span>
+<span class="nc" id="L28">        bStrings.add(&quot;PERFORMANCE&quot;);</span>
+<span class="nc" id="L29">        bStrings.add(&quot;ERRORS&quot;);</span>
+<span class="nc" id="L30">        bStrings.add(&quot;INSERT ROCKET&quot;);</span>
+<span class="nc" id="L31">        bStrings.add(&quot;DRAW TRAJECTORIES&quot;);</span>
+<span class="nc" id="L32">        bStrings.add(&quot;DRAW NAMES&quot;);</span>
+<span class="nc" id="L33">        bStrings.add(&quot;DEBUG&quot;);</span>
+<span class="nc" id="L34">    }</span>
+
+<span class="nc" id="L36">    private final Color r = new Color(255, 0, 0), g = new Color(0, 255, 35);</span>
+
+
+    /**
+     * Instantiates a new Config window.
+     */
+<span class="nc" id="L42">    public ConfigWindow() {</span>
+
+
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for (int i = 0; i &lt; bStrings.size(); i++) {</span>
+<span class="nc" id="L46">            JButton j = new JButton(bStrings.get(i));</span>
+<span class="nc" id="L47">            j.setSize(new Dimension(90, 50));</span>
+<span class="nc" id="L48">            texts[i] = (new JLabel(bStrings.get(i)));</span>
+<span class="nc" id="L49">            configButton(j, i);</span>
+<span class="nc" id="L50">            buttons[i] = (j);</span>
+        }
+
+
+        //pane.setSize(new Dimension(600,500));
+<span class="nc" id="L55">        this.setBorder(BorderFactory.createRaisedSoftBevelBorder());</span>
+<span class="nc" id="L56">        this.setLayout(new GridLayout(6, 4, 40, 80));</span>
+
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (int i = 0; i &lt; buttons.length; i++) {</span>
+<span class="nc" id="L59">            this.add(buttons[i]);</span>
+<span class="nc" id="L60">            this.add(texts[i]);</span>
+        }
+
+<span class="nc" id="L63">    }</span>
+
+
+    /**
+     * THIS IS THE ONLY WAY I KNOW TO DO THIS:
+     * METHODS (JAVA CREATES COPIES)
+     * LISTS( JAVA CREATES COPIES)
+     * STATIC BLOCKS( JAVA CREATES COPIES)
+     * ATOMIC VARIABLES (JAVA CREATES COPIES)
+     * ARRAYS ( JAVA CREATES COPIES)
+     * THERE WAS NO WAY TO MAKE THEM UPDATE FROM
+     * A COPY WITHOUT EXPLICITLY CALLING THE DESIRED VARIABLE
+     * btw ive tried everything of the above feel free to change my mind
+     */
+    private void configButton(JButton j, int i) {
+
+<span class="nc bnc" id="L79" title="All 12 branches missed.">        switch (i) {</span>
+<span class="nc" id="L80">            case 0 -&gt; {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">                texts[i].setText(ENABLE_GRAPHICS ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                texts[i].setForeground(ENABLE_GRAPHICS ? g : r);</span>
+<span class="nc" id="L83">                j.addActionListener(e -&gt; {</span>
+                    //this is necessary
+<span class="nc bnc" id="L85" title="All 2 branches missed.">                    if (ENABLE_GRAPHICS) {</span>
+<span class="nc bnc" id="L86" title="All 4 branches missed.">                        if (simulation.getGraphics() != null &amp;&amp; REPORT) {</span>
+<span class="nc" id="L87">                            simulation.getReporter().report(Thread.currentThread(), new UnsupportedOperationException(&quot;GRAPHICS WILL BE SET NOT VISIBLE&quot;));</span>
+<span class="nc" id="L88">                            simulation.getGraphics().getFrame().setVisible(false);</span>
+                        }
+                    } else {
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                        if (simulation.getGraphics() == null) {</span>
+<span class="nc" id="L92">                            simulation.initGraphics();</span>
+<span class="nc" id="L93">                            simulation.reset();</span>
+                        } else {
+<span class="nc" id="L95">                            simulation.getGraphics().getFrame().setVisible(true);</span>
+                        }
+                    }
+<span class="nc bnc" id="L98" title="All 2 branches missed.">                    ENABLE_GRAPHICS = !ENABLE_GRAPHICS;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">                    texts[i].setText(ENABLE_GRAPHICS ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">                    texts[i].setForeground(ENABLE_GRAPHICS ? g : r);</span>
+<span class="nc" id="L101">                });</span>
+            }
+<span class="nc" id="L103">            case 1 -&gt; {</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">                texts[i].setText(LAUNCH_ASSIST ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L105" title="All 2 branches missed.">                texts[i].setForeground(LAUNCH_ASSIST ? g : r);</span>
+<span class="nc" id="L106">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L107" title="All 2 branches missed.">                    LAUNCH_ASSIST = !LAUNCH_ASSIST;</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                    texts[i].setText(LAUNCH_ASSIST ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                    texts[i].setForeground(LAUNCH_ASSIST ? g : r);</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">                    if (!simulation.waiting()) simulation.reset();</span>
+<span class="nc" id="L111">                });</span>
+<span class="nc" id="L112">                j.addChangeListener(e -&gt; {</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">                    if (LAUNCH_ASSIST)</span>
+<span class="nc" id="L114">                        userDialog.enable(1);</span>
+                    else
+<span class="nc" id="L116">                        userDialog.disable(1);</span>
+<span class="nc" id="L117">                });</span>
+            }
+<span class="nc" id="L119">            case 2 -&gt; {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">                texts[i].setText(REPORT ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">                texts[i].setForeground(REPORT ? g : r);</span>
+<span class="nc" id="L122">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">                    REPORT = !REPORT;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                    texts[i].setText(REPORT ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                    texts[i].setForeground(REPORT ? g : r);</span>
+<span class="nc" id="L126">                });</span>
+<span class="nc" id="L127">                j.addChangeListener(e -&gt; {</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">                    if (REPORT)</span>
+<span class="nc" id="L129">                        userDialog.enable(2);</span>
+                    else
+<span class="nc" id="L131">                        userDialog.disable(2);</span>
+<span class="nc" id="L132">                });</span>
+            }
+<span class="nc" id="L134">            case 3 -&gt; {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                texts[i].setText(PLOT ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">                texts[i].setForeground(PLOT ? g : r);</span>
+<span class="nc" id="L137">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">                    PLOT = !PLOT;</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">                    texts[i].setText(PLOT ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">                    texts[i].setForeground(PLOT ? g : r);</span>
+<span class="nc" id="L141">                });</span>
+<span class="nc" id="L142">                j.addChangeListener(e -&gt; {</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                    if (PLOT)</span>
+<span class="nc" id="L144">                        userDialog.enable(3);</span>
+                    else
+<span class="nc" id="L146">                        userDialog.disable(3);</span>
+<span class="nc" id="L147">                });</span>
+            }
+<span class="nc" id="L149">            case 4 -&gt; {</span>
+<span class="nc bnc" id="L150" title="All 2 branches missed.">                texts[i].setText(ROCKET_INFO ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">                texts[i].setForeground(ROCKET_INFO ? g : r);</span>
+<span class="nc" id="L152">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">                    ROCKET_INFO = !ROCKET_INFO;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                    texts[i].setText(ROCKET_INFO ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">                    texts[i].setForeground(ROCKET_INFO ? g : r);</span>
+<span class="nc" id="L156">                });</span>
+<span class="nc" id="L157">                j.addChangeListener(e -&gt; {</span>
+<span class="nc bnc" id="L158" title="All 2 branches missed.">                    if (ROCKET_INFO)</span>
+<span class="nc" id="L159">                        userDialog.enable(4);</span>
+                    else
+<span class="nc" id="L161">                        userDialog.disable(4);</span>
+<span class="nc" id="L162">                });</span>
+            }
+<span class="nc" id="L164">            case 5 -&gt; {</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                texts[i].setText(PERFORMANCE ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                texts[i].setForeground(PERFORMANCE ? g : r);</span>
+<span class="nc" id="L167">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                    PERFORMANCE = !PERFORMANCE;</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                    texts[i].setText(PERFORMANCE ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                    texts[i].setForeground(PERFORMANCE ? g : r);</span>
+<span class="nc" id="L171">                });</span>
+<span class="nc" id="L172">                j.addChangeListener(e -&gt; {</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">                    if (PERFORMANCE)</span>
+<span class="nc" id="L174">                        userDialog.enable(5);</span>
+                    else
+<span class="nc" id="L176">                        userDialog.disable(5);</span>
+<span class="nc" id="L177">                });</span>
+            }
+<span class="nc" id="L179">            case 6 -&gt; {</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                texts[i].setText(ERROR_EVALUATION ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                texts[i].setForeground(ERROR_EVALUATION ? g : r);</span>
+<span class="nc" id="L182">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L183" title="All 2 branches missed.">                    ERROR_EVALUATION = !ERROR_EVALUATION;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                    texts[i].setText(ERROR_EVALUATION ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                    texts[i].setForeground(ERROR_EVALUATION ? g : r);</span>
+<span class="nc" id="L186">                });</span>
+<span class="nc" id="L187">                j.addChangeListener(e -&gt; {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">                    if (ERROR_EVALUATION)</span>
+<span class="nc" id="L189">                        userDialog.enable(6);</span>
+                    else
+<span class="nc" id="L191">                        userDialog.disable(6);</span>
+<span class="nc" id="L192">                });</span>
+            }
+<span class="nc" id="L194">            case 7 -&gt; {</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">                texts[i].setText(INSERT_ROCKET ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">                texts[i].setForeground(INSERT_ROCKET ? g : r);</span>
+<span class="nc" id="L197">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L198" title="All 2 branches missed.">                    INSERT_ROCKET = !INSERT_ROCKET;</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">                    texts[i].setText(INSERT_ROCKET ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L200" title="All 2 branches missed.">                    texts[i].setForeground(INSERT_ROCKET ? g : r);</span>
+<span class="nc" id="L201">                    simulation.reset();</span>
+<span class="nc" id="L202">                });</span>
+<span class="nc" id="L203">                j.addChangeListener(e -&gt; {</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">                    if (INSERT_ROCKET) {</span>
+<span class="nc" id="L205">                        userDialog.enable(4);</span>
+                    } else
+<span class="nc" id="L207">                        userDialog.disable(4);</span>
+<span class="nc" id="L208">                });</span>
+            }
+<span class="nc" id="L210">            case 8 -&gt; {</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">                texts[i].setText(DRAW_TRAJECTORIES ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">                texts[i].setForeground(DRAW_TRAJECTORIES ? g : r);</span>
+<span class="nc" id="L213">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                    DRAW_TRAJECTORIES = !DRAW_TRAJECTORIES;</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">                    texts[i].setText(DRAW_TRAJECTORIES ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">                    texts[i].setForeground(DRAW_TRAJECTORIES ? g : r);</span>
+<span class="nc" id="L217">                });</span>
+            }
+<span class="nc" id="L219">            case 9 -&gt; {</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">                texts[i].setText(NAMES ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">                texts[i].setForeground(NAMES ? g : r);</span>
+<span class="nc" id="L222">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">                    NAMES = !NAMES;</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">                    texts[i].setText(NAMES ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">                    texts[i].setForeground(NAMES ? g : r);</span>
+<span class="nc" id="L226">                });</span>
+            }
+            case 10 -&gt; {
+<span class="nc bnc" id="L229" title="All 2 branches missed.">                texts[i].setText(DEBUG ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">                texts[i].setForeground(DEBUG ? g : r);</span>
+<span class="nc" id="L231">                j.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">                    DEBUG = !DEBUG;</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">                    texts[i].setText(DEBUG ? s[0] : s[1]);</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">                    texts[i].setForeground(DEBUG ? g : r);</span>
+<span class="nc" id="L235">                });</span>
+            }
+        }
+
+
+<span class="nc" id="L240">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ErrorExportCSV.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Utils</a> &gt; <span class="el_source">ErrorExportCSV.java</span></div><h1>ErrorExportCSV.java</h1><pre class="source lang-java linenums">package group17.Utils;
+
+import group17.Interfaces.Vector3dInterface;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+import static group17.Utils.Config.DEBUG;
+
+/**
+ * This class takes care of exporting the calculated errors to a .csv file.
+ * The folder must be present in the project.
+ */
+public class ErrorExportCSV extends PrintWriter {
+    // Variables
+    StringBuilder sb;
+
+    /**
+     * Private constructor of a singleton.
+     */
+    public ErrorExportCSV(File path) throws FileNotFoundException {
+<span class="nc" id="L23">        super(path);</span>
+        // Build file path (according to solver and step size)
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (DEBUG) System.out.println(&quot;Old .csv file deleted!&quot;);</span>
+        // Create instances to write into file
+<span class="nc" id="L27">        writeHeader();</span>
+<span class="nc" id="L28">    }</span>
+
+    public void writeHeader() {
+        try {
+<span class="nc" id="L32">            StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L33">            this.write(&quot;SOLVER;MONTH;PLANET;RELATIVE P. ERROR;RELATIVE V. ERROR;R.P.E. NORM;R.V.E. NORM\n&quot;);</span>
+<span class="nc" id="L34">            this.write(sb.toString());</span>
+<span class="nc" id="L35">            this.flush();</span>
+<span class="nc" id="L36">        } catch (Exception e) {</span>
+<span class="nc" id="L37">        }</span>
+<span class="nc" id="L38">    }</span>
+
+    /**
+     * Add a set of error data to the CSV file.
+     *
+     * @param month
+     * @param planet
+     * @param relErrorPos
+     * @param relErrorVel
+     */
+    public void addErrorData(String solver, int month, String planet, Vector3dInterface relErrorPos, Vector3dInterface relErrorVel) {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (DEBUG) System.out.println(&quot;Log data to CSV: &quot; + month + &quot; &quot; + planet);</span>
+<span class="nc" id="L50">        this.write(solver + &quot;;&quot; + month + &quot;;&quot; + planet + &quot;;&quot; + relErrorPos + &quot;;&quot; + relErrorVel + &quot;;&quot; + relErrorPos.norm() + &quot;;&quot; + relErrorVel.norm() + &quot;\n&quot;);</span>
+<span class="nc" id="L51">        this.flush();</span>
+<span class="nc" id="L52">    }</span>
+
+
+    /**
+     * Closes the file.
+     */
+    @Override
+    public void close() {
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (DEBUG) System.out.println(&quot;Close file&quot;);</span>
+<span class="nc" id="L61">        super.close();</span>
+<span class="nc" id="L62">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

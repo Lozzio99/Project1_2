@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RocketWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">RocketWindow.java</span></div><h1>RocketWindow.java</h1><pre class="source lang-java linenums">package group17.Graphics.Assist;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * * * FUTURE feature * * *
+ * &lt;p&gt;
+ * &lt;p&gt;
+ * class to display valuable information about the rocket,
+ * such as fuel left, heading, acceleration...
+ */
+@Deprecated(forRemoval = false)
+public class RocketWindow extends JPanel {
+<span class="nc" id="L15">    private final Color[] fuelState = new Color[]{</span>
+            new Color(117, 255, 97),
+            new Color(255, 230, 0),
+            new Color(255, 140, 0),
+            new Color(255, 0, 0)
+    };
+<span class="nc" id="L21">    private int baseFuelConsumed = 0, baseFuel = 0, lightFuelConsumed = 0, lightFuel = 0;</span>
+
+    /**
+     * Instantiates a new Rocket window.
+     */
+<span class="nc" id="L26">    public RocketWindow() {</span>
+<span class="nc" id="L27">        this.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), &quot;Rocket Info&quot;));</span>
+
+        /*
+        JButton j = new JButton(&quot;update base&quot;);
+        j.setSize(200, 50);
+        this.add(j);
+        RocketWindow p = this;
+        j.addActionListener(e -&gt; {
+            p.updateBaseFuel();
+            p.update(p.getGraphics());
+        });
+
+        JButton j2 = new JButton(&quot;update light&quot;);
+        j2.setSize(200, 50);
+        this.add(j2);
+
+        j2.addActionListener(e -&gt; {
+            p.updateLightFuel();
+            p.update(p.getGraphics());
+        });
+        */
+<span class="nc" id="L48">    }</span>
+
+    /**
+     * Update base fuel.
+     */
+    public void updateBaseFuel() {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (baseFuel == 4)</span>
+<span class="nc" id="L55">            return;</span>
+<span class="nc" id="L56">        baseFuelConsumed += 100; //4 steps to finish it</span>
+<span class="nc" id="L57">        baseFuel++;</span>
+<span class="nc" id="L58">    }</span>
+
+    /**
+     * Update light fuel.
+     */
+    public void updateLightFuel() {
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (lightFuel == 4)</span>
+<span class="nc" id="L65">            return;</span>
+<span class="nc" id="L66">        lightFuelConsumed += 100; //4 steps to finish it</span>
+<span class="nc" id="L67">        lightFuel++;</span>
+<span class="nc" id="L68">    }</span>
+
+    /**
+     * Reset.
+     */
+    public void reset() {
+<span class="nc" id="L74">        baseFuel = lightFuelConsumed = baseFuelConsumed = lightFuel = 0;</span>
+<span class="nc" id="L75">    }</span>
+
+    @Override
+    public void paint(Graphics graphics) {
+<span class="nc" id="L79">        super.paint(graphics);</span>
+<span class="nc" id="L80">        Graphics2D g = (Graphics2D) graphics;</span>
+<span class="nc" id="L81">        int[] baseX = new int[]{400, 800, 800, 400}, baseY = {350, 350, 200, 200};</span>
+<span class="nc" id="L82">        int[] topX = new int[]{150, 200, 400, 400, 200}, topY = {275, 350, 350, 200, 200};</span>
+<span class="nc" id="L83">        int[] rThrustX = new int[]{500, 900, 950, 550}, rThrustY = {200, 200, 100, 100};</span>
+<span class="nc" id="L84">        int[] lThrustX = new int[]{550, 950, 900, 500}, lThrustY = {450, 450, 350, 350};</span>
+
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (baseFuel &lt; 4) {</span>
+<span class="nc" id="L88">            g.setColor(fuelState[baseFuel]);</span>
+<span class="nc" id="L89">            fillFuel(g, baseX, baseY, 800, baseFuelConsumed);</span>
+        }
+
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (lightFuel &lt; 4) {</span>
+<span class="nc" id="L93">            g.setColor(fuelState[lightFuel]);</span>
+<span class="nc" id="L94">            fillFuel(g, lThrustX, lThrustY, 950, lightFuelConsumed);</span>
+<span class="nc" id="L95">            fillFuel(g, rThrustX, rThrustY, 950, lightFuelConsumed);</span>
+        }
+
+<span class="nc" id="L98">        g.setColor(new Color(25, 143, 255));</span>
+<span class="nc" id="L99">        fillShape(g, topX, topY);</span>
+
+<span class="nc" id="L101">        g.setColor(new Color(0, 0, 0));</span>
+<span class="nc" id="L102">        drawShape(g, baseX, baseY);</span>
+<span class="nc" id="L103">        drawShape(g, topX, topY);</span>
+<span class="nc" id="L104">        drawShape(g, rThrustX, rThrustY);</span>
+<span class="nc" id="L105">        drawShape(g, lThrustX, lThrustY);</span>
+<span class="nc" id="L106">    }</span>
+
+    private void drawShape(Graphics2D g, int[] xs, int[] ys) {
+<span class="nc" id="L109">        Polygon p = new Polygon();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        for (int i = 0; i &lt; xs.length; i++) {</span>
+<span class="nc" id="L111">            p.addPoint(xs[i], ys[i]);</span>
+        }
+<span class="nc" id="L113">        g.setStroke(new BasicStroke(4.f));</span>
+<span class="nc" id="L114">        g.draw(p);</span>
+<span class="nc" id="L115">    }</span>
+
+    private void fillFuel(Graphics2D g, int[] xs, int[] ys, int max, int fuelConsumed) {
+<span class="nc" id="L118">        Polygon p = new Polygon();</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        for (int i = 0; i &lt; xs.length; i++) {</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (xs[i] + fuelConsumed &gt; max)</span>
+<span class="nc" id="L121">                p.addPoint(xs[i], ys[i]);</span>
+            else
+<span class="nc" id="L123">                p.addPoint(xs[i] + fuelConsumed, ys[i]);</span>
+        }
+<span class="nc" id="L125">        g.fill(p);</span>
+<span class="nc" id="L126">    }</span>
+
+    /**
+     * Fill shape.
+     *
+     * @param g  the g
+     * @param xs the xs
+     * @param ys the ys
+     */
+    public void fillShape(Graphics2D g, int[] xs, int[] ys) {
+<span class="nc" id="L136">        Polygon p = new Polygon();</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">        for (int i = 0; i &lt; xs.length; i++) {</span>
+<span class="nc" id="L138">            p.addPoint(xs[i], ys[i]);</span>
+        }
+<span class="nc" id="L140">        g.fill(p);</span>
+<span class="nc" id="L141">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

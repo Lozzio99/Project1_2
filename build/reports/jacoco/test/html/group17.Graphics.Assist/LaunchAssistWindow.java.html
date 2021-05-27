@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LaunchAssistWindow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Graphics.Assist</a> &gt; <span class="el_source">LaunchAssistWindow.java</span></div><h1>LaunchAssistWindow.java</h1><pre class="source lang-java linenums">package group17.Graphics.Assist;
+
+import javax.swing.*;
+import java.awt.*;
+
+/**
+ * The type Launch assist.
+ */
+public class LaunchAssistWindow extends AbstractLaunchAssist {
+
+    /**
+     * Instantiates a new Launch assist.
+     */
+    public LaunchAssistWindow() {
+<span class="nc" id="L15">        super();</span>
+<span class="nc" id="L16">    }</span>
+
+
+    @Override
+    public void init() {
+<span class="nc" id="L21">        this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+<span class="nc" id="L22">        this.setPreferredSize(new Dimension(1000, 500));</span>
+<span class="nc" id="L23">        this.setLayout(new GridLayout(1, 2, 20, 20));</span>
+<span class="nc" id="L24">        this.add(createSetUpPanel());</span>
+<span class="nc" id="L25">        textArea.setFont(Font.decode(Font.MONOSPACED));</span>
+<span class="nc" id="L26">        JScrollPane scrollPane = new JScrollPane(textArea);</span>
+<span class="nc" id="L27">        this.add(scrollPane);</span>
+<span class="nc" id="L28">        this.setFocusable(true);</span>
+<span class="nc" id="L29">        this.outputWindow.init();</span>
+<span class="nc" id="L30">    }</span>
+
+    @Override
+    public JPanel createSetUpPanel() {
+<span class="nc" id="L34">        JPanel inputPanel = new JPanel();</span>
+<span class="nc" id="L35">        inputPanel.setBackground(new Color(101, 101, 101, 226));</span>
+<span class="nc" id="L36">        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));</span>
+<span class="nc" id="L37">        inputPanel.setLayout(new GridLayout(4, 1, 10, 20));</span>
+<span class="nc" id="L38">        inputPanel.add(launchVelocityPanel());</span>
+<span class="nc" id="L39">        inputPanel.add(launchDatePanel());</span>
+<span class="nc" id="L40">        inputPanel.add(launchTimePanel());</span>
+<span class="nc" id="L41">        inputPanel.add(buttonsPanel());</span>
+<span class="nc" id="L42">        return inputPanel;</span>
+    }
+
+    /**
+     * Launch date panel j panel.
+     *
+     * @return the j panel
+     */
+    public JPanel launchDatePanel() {
+<span class="nc" id="L51">        JPanel inputDatePanel = new JPanel();</span>
+<span class="nc" id="L52">        inputDatePanel.setLayout(new GridLayout(1, 4, 20, 20));</span>
+<span class="nc" id="L53">        inputDatePanel.add(new JLabel(&quot;Date (dd/mm/yyyy) &quot;));</span>
+<span class="nc" id="L54">        createClockLabels(inputDatePanel, ddField, mmField, yyField);</span>
+<span class="nc" id="L55">        return (inputDatePanel);</span>
+    }
+
+    /**
+     * Launch time panel j panel.
+     *
+     * @return the j panel
+     */
+    public JPanel launchTimePanel() {
+<span class="nc" id="L64">        JPanel inputTimePanel = new JPanel();</span>
+<span class="nc" id="L65">        inputTimePanel.setLayout(new GridLayout(1, 4, 20, 20));</span>
+<span class="nc" id="L66">        inputTimePanel.add(new JLabel(&quot;Time (hh/mm/ss) &quot;));</span>
+<span class="nc" id="L67">        createClockLabels(inputTimePanel, hhField, mField, ssField);</span>
+<span class="nc" id="L68">        return inputTimePanel;</span>
+    }
+
+    private void createClockLabels(JPanel inputTimePanel, JLabel hhField, JLabel mField, JLabel ssField) {
+<span class="nc" id="L72">        hhField.setOpaque(true);</span>
+<span class="nc" id="L73">        mField.setOpaque(true);</span>
+<span class="nc" id="L74">        ssField.setOpaque(true);</span>
+<span class="nc" id="L75">        Font f = hhField.getFont();</span>
+<span class="nc" id="L76">        Color background = new Color(0, 0, 0), text = new Color(245, 245, 245);</span>
+<span class="nc" id="L77">        hhField.setFont(new Font(f.getName(), Font.PLAIN, 30));</span>
+<span class="nc" id="L78">        hhField.setBackground(background);</span>
+<span class="nc" id="L79">        hhField.setForeground(text);</span>
+<span class="nc" id="L80">        mField.setFont(new Font(f.getName(), Font.PLAIN, 30));</span>
+<span class="nc" id="L81">        mField.setBackground(background);</span>
+<span class="nc" id="L82">        mField.setForeground(text);</span>
+<span class="nc" id="L83">        ssField.setFont(new Font(f.getName(), Font.PLAIN, 30));</span>
+<span class="nc" id="L84">        ssField.setBackground(background);</span>
+<span class="nc" id="L85">        ssField.setForeground(text);</span>
+<span class="nc" id="L86">        inputTimePanel.add(hhField);</span>
+<span class="nc" id="L87">        inputTimePanel.add(mField);</span>
+<span class="nc" id="L88">        inputTimePanel.add(ssField);</span>
+<span class="nc" id="L89">    }</span>
+
+
+    /**
+     * Buttons panel j panel.
+     *
+     * @return the j panel
+     */
+    public JPanel buttonsPanel() {
+<span class="nc" id="L98">        JPanel btnPanel = new JPanel();</span>
+<span class="nc" id="L99">        btnPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));</span>
+<span class="nc" id="L100">        btnPanel.setLayout(new GridLayout(1, 3, 30, 0));</span>
+<span class="nc" id="L101">        JButton startButton = new JButton(&quot;LAUNCH&quot;);</span>
+<span class="nc" id="L102">        startButton.addActionListener(new startBtnListener());</span>
+<span class="nc" id="L103">        btnPanel.add(startButton);</span>
+<span class="nc" id="L104">        JButton clearButton = new JButton(&quot;RESET&quot;);</span>
+<span class="nc" id="L105">        clearButton.addActionListener(new resetBtnListener());</span>
+<span class="nc" id="L106">        btnPanel.add(clearButton);</span>
+<span class="nc" id="L107">        JButton pauseButton = new JButton(&quot;PAUSE&quot;);</span>
+<span class="nc" id="L108">        pauseButton.addActionListener(new pauseBtnListener());</span>
+<span class="nc" id="L109">        btnPanel.add(pauseButton);</span>
+<span class="nc" id="L110">        return btnPanel;</span>
+    }
+
+
+    public JPanel launchVelocityPanel() {
+<span class="nc" id="L115">        JPanel inputVarPanel2 = new JPanel();</span>
+<span class="nc" id="L116">        inputVarPanel2.setLayout(new GridLayout(3, 1));</span>
+<span class="nc" id="L117">        JLabel xVelLabel = new JLabel(&quot;X&quot;);</span>
+<span class="nc" id="L118">        JLabel yVelLabel = new JLabel(&quot;Y&quot;);</span>
+<span class="nc" id="L119">        JLabel zVelLabel = new JLabel(&quot;Z&quot;);</span>
+<span class="nc" id="L120">        inputVarPanel2.add(new JLabel(&quot; &quot;));</span>
+<span class="nc" id="L121">        inputVarPanel2.add(xVelSlider);</span>
+<span class="nc" id="L122">        inputVarPanel2.add(xVelLabel);</span>
+<span class="nc" id="L123">        JCheckBox overrideVel = new JCheckBox(&quot;override existing&quot;);</span>
+<span class="nc" id="L124">        overrideVel.addChangeListener(e -&gt; overrideExistingVelocity = overrideVel.isSelected());</span>
+<span class="nc" id="L125">        inputVarPanel2.add(overrideVel);</span>
+<span class="nc" id="L126">        inputVarPanel2.add(new JLabel(&quot;Launch velocity &quot;));</span>
+<span class="nc" id="L127">        inputVarPanel2.add(yVelSlider);</span>
+<span class="nc" id="L128">        inputVarPanel2.add(yVelLabel);</span>
+<span class="nc" id="L129">        inputVarPanel2.add(new JLabel(&quot; &quot;));</span>
+<span class="nc" id="L130">        inputVarPanel2.add(new JLabel(&quot; &quot;));</span>
+<span class="nc" id="L131">        inputVarPanel2.add(zVelSlider);</span>
+<span class="nc" id="L132">        inputVarPanel2.add(zVelLabel);</span>
+<span class="nc" id="L133">        return inputVarPanel2;</span>
+    }
+
+     /*
+     * Step size panel j panel.
+     *
+     * @return the j panel
+
+    public JPanel stepSizePanel() {
+        JPanel inputVarPanel1 = new JPanel();
+        inputVarPanel1.setLayout(new GridLayout(1, 2));
+        inputVarPanel1.add(new JLabel(&quot;Time step size &quot;));
+        inputVarPanel1.add(stSizeField);
+        return inputVarPanel1;
+    }
+
+     * Mass panel j panel.
+     *
+     * @return the j panel
+
+    public JPanel massPanel() {
+        JPanel inputVarPanel3 = new JPanel();
+        inputVarPanel3.setLayout(new GridLayout(1, 2));
+        inputVarPanel3.add(new JLabel(&quot;Mass &quot;));
+        inputVarPanel3.add(massSizeField);
+        return inputVarPanel3;
+    }
+
+
+
+
+     * Launch position panel j panel.
+     *
+     * @return the j panel
+
+    public JPanel launchPositionPanel() {
+        JPanel inputVectorPanel = new JPanel();
+        inputVectorPanel.setLayout(new GridLayout(1, 4));
+        inputVectorPanel.add(new JLabel(&quot;Launch position &quot;));
+        inputVectorPanel.add(lXCoordField);
+        inputVectorPanel.add(lYCoordField);
+        inputVectorPanel.add(lZCoordField);
+        return inputVectorPanel;
+    }
+    */
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

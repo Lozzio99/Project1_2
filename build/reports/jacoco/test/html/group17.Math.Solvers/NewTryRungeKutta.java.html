@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NewTryRungeKutta.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Solvers</a> &gt; <span class="el_source">NewTryRungeKutta.java</span></div><h1>NewTryRungeKutta.java</h1><pre class="source lang-java linenums">package group17.Math.Solvers;
+
+import group17.Interfaces.ODEFunctionInterface;
+import group17.Interfaces.ODESolverInterface;
+import group17.Interfaces.RateInterface;
+import group17.Interfaces.StateInterface;
+import group17.System.GravityFunction;
+import org.jetbrains.annotations.Contract;
+
+/**
+ * The type Runge kutta 4 th solver.
+ */
+
+//OK around 10^-2/10^-3 error
+public class NewTryRungeKutta implements ODESolverInterface {
+
+
+    private final ODEFunctionInterface f;
+
+    /**
+     * Instantiates a new Runge kutta 4 th solver.
+     *
+     * @param f the function
+     */
+    @Contract(pure = true)
+<span class="nc" id="L26">    public NewTryRungeKutta(final ODEFunctionInterface f) {</span>
+<span class="nc" id="L27">        this.f = f;</span>
+<span class="nc" id="L28">    }</span>
+
+
+    /**
+     * Testing rk state interface.
+     *
+     * @param f the f
+     * @param t the t
+     * @param y the y
+     * @param h the h
+     * @return the state interface
+     */
+    public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
+<span class="nc" id="L41">        GravityFunction.setCurrentTime(t);</span>
+<span class="nc" id="L42">        GravityFunction.setChecked(false);</span>
+        RateInterface k1, k2, k3, k4, k5;
+<span class="nc" id="L44">        k1 = f.call(t, y);</span>
+<span class="nc" id="L45">        k2 = f.call(t + (h / 2), y.addMul(0.5 * h, k1));</span>
+<span class="nc" id="L46">        k3 = f.call(t + (h / 2), y.addMul(0.5 * h, k2));</span>
+<span class="nc" id="L47">        k4 = f.call(t + h, y.addMul(h, k3));</span>
+<span class="nc" id="L48">        k5 = k1.sumOf(k2, k2, k3, k3, k4);</span>
+<span class="nc" id="L49">        return y.addMul(h, k5.div(6));</span>
+        //return y.addMul(1,(k5.div(6).multiply(h)));  //to make it work with the numerical test
+    }
+
+
+
+
+    @Override
+    public ODEFunctionInterface getFunction() {
+<span class="nc" id="L58">        return this.f;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L63">        return &quot;RungeKutta4thSolver{&quot; +</span>
+                &quot;function used =&quot; + f +
+                '}';
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Planet.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Simulation.System.Bodies</a> &gt; <span class="el_source">Planet.java</span></div><h1>Planet.java</h1><pre class="source lang-java linenums">package group17.Simulation.System.Bodies;
+
+
+import group17.Math.Lib.Vector3D;
+
+import java.awt.*;
+
+/**
+ * The type Planet.
+ */
+public class Planet extends CelestialBody {
+    /**
+     * The Planet.
+     */
+    PlanetsEnum planet;
+
+    /**
+     *
+     * Instantiates a new Planet.
+     * Repository Class for planets used in the Simulation
+     * Data from Project Manual
+     *
+     * @param planet the planet
+     */
+<span class="nc" id="L25">    public Planet(PlanetsEnum planet) {</span>
+<span class="nc" id="L26">        this.planet = planet;</span>
+<span class="nc" id="L27">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L31">        return planet.name();</span>
+    }
+
+    @Override
+    public void initProperties() {
+<span class="nc bnc" id="L36" title="All 9 branches missed.">        switch (planet) {</span>
+<span class="nc" id="L37">            case MERCURY -&gt; {</span>
+<span class="nc" id="L38">                this.setMASS(3.302e+23);</span>
+<span class="nc" id="L39">                this.setRADIUS(2.4397e6);</span>
+<span class="nc" id="L40">                this.setColour(new Color(92, 87, 87, 233));</span>
+<span class="nc" id="L41">                this.setVectorLocation(new Vector3D(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09));</span>
+<span class="nc" id="L42">                this.setVectorVelocity(new Vector3D(38925.85164132107, 2978.342227951605, -3327.96413011577));</span>
+            }
+<span class="nc" id="L44">            case VENUS -&gt; {</span>
+<span class="nc" id="L45">                this.setMASS(4.8685e24);</span>
+<span class="nc" id="L46">                this.setRADIUS(6.0518e6);</span>
+<span class="nc" id="L47">                this.setColour(new Color(172, 75, 1, 232));</span>
+<span class="nc" id="L48">                this.setVectorLocation(new Vector3D(-9.435345478592035e+10, 5.350359551033670e+10, 6.131453014410347e+09));</span>
+<span class="nc" id="L49">                this.setVectorVelocity(new Vector3D(-17264.04276675418, -30734.32498568155, 574.1783348533565));</span>
+            }
+<span class="nc" id="L51">            case EARTH -&gt; {</span>
+<span class="nc" id="L52">                this.setMASS(5.97219e24);</span>
+<span class="nc" id="L53">                this.setRADIUS(6.371e6);</span>
+<span class="nc" id="L54">                this.setColour(new Color(16, 54, 167, 232));</span>
+<span class="nc" id="L55">                this.setVectorLocation(new Vector3D(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06));</span>
+<span class="nc" id="L56">                this.setVectorVelocity(new Vector3D(5427.193371063864, -29310.56603506259, 0.6575428116074852));</span>
+            }
+<span class="nc" id="L58">            case MARS -&gt; {</span>
+<span class="nc" id="L59">                this.setMASS(6.4171e23);</span>
+<span class="nc" id="L60">                this.setRADIUS(3.3895e6);</span>
+<span class="nc" id="L61">                this.setColour(new Color(173, 77, 39, 237));</span>
+<span class="nc" id="L62">                this.setVectorLocation(new Vector3D(-3.615638921529161e+10, -2.167633037046744e+11, -3.687670305939779e+09));</span>
+<span class="nc" id="L63">                this.setVectorVelocity(new Vector3D(24815.51959239763, -1816.367993839315, -646.7321577627249));</span>
+            }
+<span class="nc" id="L65">            case JUPITER -&gt; {</span>
+<span class="nc" id="L66">                this.setMASS(1.89813e27);</span>
+<span class="nc" id="L67">                this.setRADIUS(6.9911e7);</span>
+<span class="nc" id="L68">                this.setColour(new Color(234, 161, 71, 228));</span>
+<span class="nc" id="L69">                this.setVectorLocation(new Vector3D(1.781303138592156E11, -7.551118436250294E11, -8.532838524470329E8));</span>
+<span class="nc" id="L70">                this.setVectorVelocity(new Vector3D(12558.52546626294, 3622.680182938116, -295.8620385189845));</span>
+            }
+<span class="nc" id="L72">            case SATURN -&gt; {</span>
+<span class="nc" id="L73">                this.setMASS(5.6834e26);</span>
+<span class="nc" id="L74">                this.setRADIUS(5.8232e7);</span>
+<span class="nc" id="L75">                this.setColour(new Color(165, 134, 107, 208));</span>
+<span class="nc" id="L76">                this.setVectorLocation(new Vector3D(6.328646641500651e+11, -1.358172804527507e+12, -1.578520137930810e+09));</span>
+<span class="nc" id="L77">                this.setVectorVelocity(new Vector3D(8220.8421339415, 4052.137353045929, -397.6224693819078));</span>
+            }
+<span class="nc" id="L79">            case URANUS -&gt; {</span>
+<span class="nc" id="L80">                this.setMASS(8.6813e25);</span>
+<span class="nc" id="L81">                this.setRADIUS(2.5362e7);</span>
+<span class="nc" id="L82">                this.setColour(new Color(201, 238, 238, 226));</span>
+<span class="nc" id="L83">                this.setVectorLocation(new Vector3D(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10));</span>
+<span class="nc" id="L84">                this.setVectorVelocity(new Vector3D(-4059.468609332644, 5187.467321685034, 71.82516190869795));</span>
+            }
+            case NEPTUNE -&gt; {
+<span class="nc" id="L87">                this.setMASS(1.02413e26);</span>
+<span class="nc" id="L88">                this.setRADIUS(2.4622e7);</span>
+<span class="nc" id="L89">                this.setColour(new Color(0, 71, 179, 240));</span>
+<span class="nc" id="L90">                this.setVectorLocation(new Vector3D(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10));</span>
+<span class="nc" id="L91">                this.setVectorVelocity(new Vector3D(1051.98951225787, 5358.319815712676, -134.4948707739122));</span>
+            }
+        }
+<span class="nc" id="L94">    }</span>
+
+
+    /**
+     * The enum Planets enum.
+     */
+<span class="nc" id="L100">    public enum PlanetsEnum {</span>
+        /**
+         * Mercury planets enum.
+         */
+<span class="nc" id="L104">        MERCURY,</span>
+        /**
+         * Venus planets enum.
+         */
+<span class="nc" id="L108">        VENUS,</span>
+        /**
+         * Earth planets enum.
+         */
+<span class="nc" id="L112">        EARTH,</span>
+        /**
+         * Mars planets enum.
+         */
+<span class="nc" id="L116">        MARS,</span>
+        /**
+         * Jupiter planets enum.
+         */
+<span class="nc" id="L120">        JUPITER,</span>
+        /**
+         * Saturn planets enum.
+         */
+<span class="nc" id="L124">        SATURN,</span>
+        /**
+         * Uranus planets enum.
+         */
+<span class="nc" id="L128">        URANUS,</span>
+        /**
+         * Neptune planets enum.
+         */
+<span class="nc" id="L132">        NEPTUNE</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

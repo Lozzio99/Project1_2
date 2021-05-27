@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CollisionDetector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Utils</a> &gt; <span class="el_source">CollisionDetector.java</span></div><h1>CollisionDetector.java</h1><pre class="source lang-java linenums">package group17.Utils;
+
+import group17.Interfaces.ReporterInterface;
+import group17.Interfaces.SystemInterface;
+import group17.Simulation.System.Bodies.CelestialBody;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
+import static group17.Main.simulation;
+import static group17.Utils.Config.CHECK_COLLISIONS;
+import static group17.Utils.Config.REPORT;
+
+
+/**
+ * Represents Observer class,
+ * checks if not collision of Celestial Bodies has ocurred
+ */
+<span class="nc" id="L18">public class CollisionDetector {</span>
+
+    private static boolean collision;
+    private static String output;
+
+
+    /**
+     * Check collided.
+     *
+     * @param a     Celestial Body a
+     * @param b     Celestial Body b
+     * @param distm distance between a and b
+     */
+    public static void checkCollided(CelestialBody a, CelestialBody b, double distm) {
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (!CHECK_COLLISIONS) return;</span>
+<span class="nc" id="L33">        output = &quot;&quot;;</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        if (distm &lt; (b.getRADIUS() + a.getRADIUS())) {</span>
+<span class="nc bnc" id="L35" title="All 4 branches missed.">            if (a.isCollided() || b.isCollided())</span>
+<span class="nc" id="L36">                return;</span>
+<span class="nc" id="L37">            collision = true;</span>
+<span class="nc" id="L38">            output += &quot;[ &quot; + a + &quot; - &quot; + b + &quot; ]&quot;;</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (b.getMASS() &lt; a.getMASS()) {</span>
+<span class="nc" id="L40">                b.setCollided(true);</span>
+<span class="nc" id="L41">                a.setMASS(a.getMASS() + b.getMASS()); // conservation of mass</span>
+<span class="nc" id="L42">                a.setRADIUS(a.getRADIUS() + b.getRADIUS());  //very very stupid</span>
+            } else {
+<span class="nc" id="L44">                a.setCollided(true);</span>
+<span class="nc" id="L45">                b.setMASS(b.getMASS() + a.getMASS());</span>
+<span class="nc" id="L46">                b.setRADIUS(b.getRADIUS() + a.getRADIUS());</span>
+            }
+        }
+<span class="nc bnc" id="L49" title="All 4 branches missed.">        if (REPORT &amp;&amp; collision)</span>
+<span class="nc" id="L50">            simulation.getReporter().report(&quot;COLLISION &quot; + output);</span>
+<span class="nc" id="L51">    }</span>
+
+    /**
+     * Check collisions system interface.
+     *
+     * @param system   the system
+     * @param reporter the reporter
+     * @return the system interface
+     */
+    @Contract(&quot;_, _ -&gt; param1&quot;)
+    public static SystemInterface checkCollisions(final @NotNull SystemInterface system, ReporterInterface reporter) {
+
+<span class="nc" id="L63">        collision = false;</span>
+<span class="nc" id="L64">        output = &quot;&quot;;</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (int i = 0; i &lt; system.getCelestialBodies().size(); i++) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">            for (int k = 0; k &lt; system.getCelestialBodies().size(); k++) {</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">                if (i != k) {</span>
+<span class="nc" id="L68">                    checkCollided(system.getCelestialBodies().get(i),</span>
+<span class="nc" id="L69">                            system.getCelestialBodies().get(k),</span>
+<span class="nc" id="L70">                            system.systemState().getPositions().get(i).dist(system.systemState().getPositions().get(k)));</span>
+
+                }
+            }
+        }
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (collision) {</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            if (REPORT)</span>
+<span class="nc" id="L77">                reporter.report(&quot;COLLISION &quot; + output);</span>
+        }
+<span class="nc" id="L79">        return system;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

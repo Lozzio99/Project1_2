@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Point.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Project_1.2</a> &gt; <a href="index.source.html" class="el_package">group17.Math.Lib</a> &gt; <span class="el_source">Point.java</span></div><h1>Point.java</h1><pre class="source lang-java linenums">package group17.Math.Lib;
+
+import org.jetbrains.annotations.Contract;
+
+import java.awt.*;
+
+
+/**
+ * The type Point.
+ */
+public class Point {
+    /**
+     * The constant scale.
+     */
+<span class="nc" id="L15">    public static double scale = 1.05;</span>
+    private static Dimension screen;
+    private static Point ORIGIN;
+    /**
+     * The X.
+     */
+    public double x, /**
+     * The Y.
+     */
+    y;
+    /**
+     * The X off.
+     */
+    public double xOff, /**
+     * The Y off.
+     */
+    yOff;
+
+
+    /**
+     * Instantiates a new Point.
+     *
+     * @param x the x
+     * @param y the y
+     */
+<span class="nc" id="L40">    public Point(double x, double y) {</span>
+<span class="nc" id="L41">        this.x = ORIGIN.getX() + (x * scale);</span>
+<span class="nc" id="L42">        this.y = ORIGIN.getY() - (y * scale);</span>
+<span class="nc" id="L43">    }</span>
+
+    /**
+     * Instantiates a new Point.
+     */
+<span class="nc" id="L48">    public Point() {</span>
+<span class="nc" id="L49">        this.x = screen.width / 2. + xOff;</span>
+<span class="nc" id="L50">        this.y = screen.height / 2. - yOff;</span>
+<span class="nc" id="L51">    }</span>
+
+    /**
+     * Sets screen.
+     *
+     * @param s the s
+     */
+    public static void setScreen(Dimension s) {
+<span class="nc" id="L59">        screen = s;</span>
+<span class="nc" id="L60">    }</span>
+
+    /**
+     * Sets origin.
+     *
+     * @param point the point
+     */
+    public static void setOrigin(Point point) {
+<span class="nc" id="L68">        ORIGIN = point;</span>
+<span class="nc" id="L69">    }</span>
+
+    /**
+     * Gets origin.
+     *
+     * @return the origin
+     */
+    @Contract(pure = true)
+    public static Point getORIGIN() {
+<span class="nc" id="L78">        return ORIGIN;</span>
+    }
+
+    /**
+     * Gets x.
+     *
+     * @return the x
+     */
+    public double getX() {
+<span class="nc" id="L87">        double x = (this.x + (xOff));</span>
+<span class="nc bnc" id="L88" title="All 4 branches missed.">        return ((x &gt; screen.width ? screen.width : x) &lt; 0 ? 0 : x);</span>
+    }
+
+    /**
+     * Gets y.
+     *
+     * @return the y
+     */
+    public double getY() {
+<span class="nc" id="L97">        double y = (this.y + (yOff));</span>
+<span class="nc bnc" id="L98" title="All 4 branches missed.">        return ((y &gt; screen.width ? screen.width : y) &lt; 0 ? 0 : y);</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L103">        return &quot;{&quot; +</span>
+                &quot;drawX=&quot; + x +
+                &quot;,drawY=&quot; + y +
+                '}';
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
