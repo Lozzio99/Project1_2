@@ -2,7 +2,7 @@ package group17.Utils;
 
 import group17.Graphics.UserDialogWindow;
 import group17.Interfaces.StateInterface;
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 import group17.Simulation.System.State.SystemState;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

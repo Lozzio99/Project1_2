@@ -21,7 +21,6 @@ public class HelpSupportWindow extends JDesktopPane {
     private JPanel panel;
     private JInternalFrame intFrame;
 
-
     /**
      * Instantiates a new Controllers window.
      */
@@ -123,16 +122,10 @@ public class HelpSupportWindow extends JDesktopPane {
      * The type Image viewer.
      */
     public class ImageViewer extends JPanel {
-        private java.awt.Image image;
-        private boolean stretched = true;
+        private final java.awt.Image image;
+        private final boolean stretched = true;
         private int xCoordinate;
         private int yCoordinate;
-
-        /**
-         * Instantiates a new Image viewer.
-         */
-        public ImageViewer() {
-        }
 
         /**
          * Instantiates a new Image viewer.
@@ -153,78 +146,12 @@ public class HelpSupportWindow extends JDesktopPane {
         }
 
         /**
-         * Gets image.
-         *
-         * @return the image
-         */
-        public java.awt.Image getImage() {
-            return image;
-        }
-
-        /**
-         * Sets image.
-         *
-         * @param image the image
-         */
-        public void setImage(java.awt.Image image) {
-            this.image = image;
-            repaint();
-        }
-
-        /**
          * Is stretched boolean.
          *
          * @return the boolean
          */
         public boolean isStretched() {
             return stretched;
-        }
-
-        /**
-         * Sets stretched.
-         *
-         * @param stretched the stretched
-         */
-        public void setStretched(boolean stretched) {
-            this.stretched = stretched;
-            repaint();
-        }
-
-        /**
-         * Gets x coordinate.
-         *
-         * @return the x coordinate
-         */
-        public int getXCoordinate() {
-            return xCoordinate;
-        }
-
-        /**
-         * Sets x coodinate.
-         *
-         * @param xCoordinate the x coordinate
-         */
-        public void setXCoodinate(int xCoordinate) {
-            this.xCoordinate = xCoordinate;
-        }
-
-        /**
-         * Gets y coordinate.
-         *
-         * @return the y coordinate
-         */
-        public int getYCoordinate() {
-            return yCoordinate;
-        }
-
-        /**
-         * Sets y coodinate.
-         *
-         * @param yCoordinate the y coordinate
-         */
-        public void setYCoodinate(int yCoordinate) {
-            this.yCoordinate = yCoordinate;
-            repaint();
         }
     }
 

@@ -1,7 +1,7 @@
 package group17.Utils;
 
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 import org.jetbrains.annotations.Contract;
 
 import java.io.File;
@@ -134,8 +134,8 @@ public class ErrorReport implements Runnable {
                 System.out.println("PLANET " + simulation.getSystem().getCelestialBodies().get(i).toString() + "~~~~~~~~");
                 //System.out.println("ORIGINAL PV : " + ORIGINAL_DATA[monthIndex].getPositions().get(i));
                 //System.out.println("SIMULATED PV: " + state.getPositions().get(i));
-                System.out.println("ABS ERROR POSIT : " + absPosition.get(i));
-                System.out.println("ABS ERROR VEL   : " + absVelocity.get(i));
+                //System.out.println("ABS ERROR POSIT : " + absPosition.get(i));
+                //System.out.println("ABS ERROR VEL   : " + absVelocity.get(i));
                 //System.out.println("ORIGINAL VV : " + ORIGINAL_DATA[monthIndex].getVelocities().get(i));
                 //System.out.println("SIMULATED VV:" + state.getVelocities().get(i));
                 System.out.println("REL ERROR POS : " + relPosition.get(i));

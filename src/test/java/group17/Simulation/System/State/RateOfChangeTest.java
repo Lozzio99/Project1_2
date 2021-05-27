@@ -4,7 +4,7 @@ import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 import group17.Simulation.Simulation;
 import group17.Simulation.System.Bodies.Particle;
 import group17.Simulation.System.SolarSystem;

@@ -3,9 +3,9 @@ package group17.Simulation;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.UpdaterInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Lib.GravityFunction;
-import group17.Math.Solvers.*;
-import group17.Simulation.Rocket.RocketSchedule;
+import group17.Math.GravityFunction;
+import group17.Rocket.RocketSchedule;
+import group17.Solvers.*;
 import group17.Utils.ErrorData;
 import group17.Utils.ErrorExportCSV;
 import group17.Utils.ErrorReport;
@@ -42,15 +42,17 @@ public class SimulationUpdater implements UpdaterInterface {
 
 
         switch (DEFAULT_SOLVER) {
-            case EULER_SOLVER -> this.solver = new EulerSolver(new GravityFunction().getEvaluateCurrentVelocity());
-            case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKuttaSolver(new GravityFunction().getEvaluateCurrentVelocity());
-            case VERLET_VEL_SOLVER -> this.solver = new VerletVelocitySolver(new GravityFunction().getEvaluateRateOfChange());
-            case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver(new GravityFunction().getEvaluateRateOfChange());
-            case MIDPOINT_SOLVER -> this.solver = new MidPointSolver(new GravityFunction().getEvaluateCurrentVelocity());
-            case GREEDY_RUNGE_KUTTA -> this.solver = new OldRungeKutta(new GravityFunction().getEvaluateRateOfChange());
-            case TESTS_RUNGE_KUTTA -> this.solver = new LazyRungeKutta(new GravityFunction().getEvaluateCurrentVelocity());
+            case EULER_SOLVER -> this.solver = new EulerSolver(new GravityFunction().evaluateCurrentVelocityFunction());
+            case RUNGE_KUTTA_SOLVER -> this.solver = new RungeKuttaSolver(new GravityFunction().evaluateCurrentVelocityFunction());
+            case VERLET_VEL_SOLVER -> this.solver = new VerletVelocitySolver(new GravityFunction().evaluateCurrentAccelerationFunction());
+            case VERLET_STD_SOLVER -> this.solver = new StandardVerletSolver(new GravityFunction().evaluateCurrentAccelerationFunction());
+            case MIDPOINT_SOLVER -> this.solver = new MidPointSolver(new GravityFunction().evaluateCurrentVelocityFunction());
+            case GREEDY_RUNGE_KUTTA -> this.solver = new RungeKuttaSolverGreedy(new GravityFunction().evaluateCurrentAccelerationFunction());
+            case TESTS_RUNGE_KUTTA -> {
+                this.solver = new RungeKuttaSolverLazy(new GravityFunction().evaluateCurrentVelocityFunction());
+            }
             default -> {
-                this.solver = new EulerSolver(new GravityFunction().getEvaluateCurrentVelocity());
+                this.solver = new VerletVelocitySolver(new GravityFunction().evaluateCurrentAccelerationFunction());
                 if (REPORT)
                     simulation.getReporter().report(new IllegalStateException("UPDATER/DEFAULT_SOLVER/" + EULER_SOLVER));
             }
@@ -59,7 +61,6 @@ public class SimulationUpdater implements UpdaterInterface {
         if (ERROR_EVALUATION) {
             this.initWriter();
             new ErrorReport(fileWriter, new ErrorData(simulation.getSystem().systemState())).start();
-
         }
 
         if (!LAUNCH_ASSIST) {

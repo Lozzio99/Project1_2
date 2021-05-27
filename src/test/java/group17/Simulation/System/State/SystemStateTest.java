@@ -2,7 +2,7 @@ package group17.Simulation.System.State;
 
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 import group17.Simulation.System.Bodies.CelestialBody;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

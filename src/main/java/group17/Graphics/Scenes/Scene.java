@@ -1,8 +1,8 @@
 package group17.Graphics.Scenes;
 
 
-import group17.Math.Lib.Point3D;
-import group17.Math.Lib.Point3DConverter;
+import group17.Math.Point3D;
+import group17.Math.Point3DConverter;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

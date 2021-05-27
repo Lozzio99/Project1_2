@@ -1,7 +1,7 @@
 package group17;
 
 import group17.Graphics.Assist.ErrorWindow;
-import group17.Math.Lib.GravityFunction;
+import group17.Math.GravityFunction;
 import group17.Simulation.Simulation;
 import group17.Utils.ErrorData;
 import group17.Utils.ErrorExportCSV;

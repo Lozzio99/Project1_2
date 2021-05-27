@@ -19,7 +19,9 @@ import java.util.Set;
  * such as heap out of memory or managing subprocesses
  */
 public class PerformanceWindow extends JPanel {
-    private static volatile JTextArea text;
+    private static final JTextArea text = new JTextArea();
+    private static final JScrollPane pane = new JScrollPane(text);
+
 
     /**
      * Instantiates a new Performance window.
@@ -27,8 +29,7 @@ public class PerformanceWindow extends JPanel {
     public PerformanceWindow() {
         this.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
         this.setLayout(new GridLayout(2, 1, 20, 20));
-        this.init();
-        this.add(new JPanel());
+        //this.add(new JPanel());
         //this.add(new JPanel());
     }
 
@@ -225,8 +226,6 @@ public class PerformanceWindow extends JPanel {
      */
     public void init() {
         JPanel top = new JPanel();
-        text = new JTextArea(10, 30);
-        JScrollPane pane = new JScrollPane(text);
         pane.setSize(600, 400);
         JButton testRuntime = new JButton("free garbage");
         testRuntime.addActionListener(x -> start(0));

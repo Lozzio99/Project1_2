@@ -173,8 +173,10 @@ public class Config{
 
 If this configuration is selected during the simulation process, the generated files will be collected in the
 resources/ErrorData folder, organised by solver and step size used If selected during tests (by enabling
-SolversAccuracyTest.java) these files will be collected in the test/java/resources/ErrorData folder,as by standard
+[SolversAccuracyTest.java]) these files will be collected in the test/java/resources/ErrorData folder,as by standard
 organization.
+
+[SolversAccuracyTest.java]: src/test/java/group17/SolversAccuracyTest.java
 
 NOTE : the ErrorData folder MUST be present in both cases, if this options is selected NOTE : to allow the report
 generation it is **_required_**  to let the simulation Clock to get to the **_first of the month at the exact time "00:

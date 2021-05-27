@@ -2,7 +2,7 @@ package group17.Graphics.Assist;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 import group17.Simulation.System.Bodies.CelestialBody;
 import group17.Utils.ErrorData;
 import group17.Utils.ErrorReport;

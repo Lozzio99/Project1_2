@@ -1,5 +1,7 @@
 package group17.Math.Lib;
 
+import group17.Math.Matrix;
+import group17.Math.Vector3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,6 +1,6 @@
 package group17.Interfaces;
 
-import group17.Simulation.Rocket.RocketSchedule;
+import group17.Rocket.RocketSchedule;
 
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;

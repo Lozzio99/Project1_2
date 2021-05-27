@@ -1,7 +1,7 @@
 package group17.Simulation.System.Bodies;
 
 
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 
 import java.awt.*;
 

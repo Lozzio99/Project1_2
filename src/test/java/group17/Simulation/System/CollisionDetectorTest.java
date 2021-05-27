@@ -1,7 +1,7 @@
 package group17.Simulation.System;
 
 import group17.Interfaces.SystemInterface;
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 import group17.Simulation.Simulation;
 import group17.Simulation.System.Bodies.CelestialBody;
 import group17.Simulation.System.Bodies.Particle;

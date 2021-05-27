@@ -435,7 +435,7 @@ class SimulationTest {
     @DisplayName("UpdateState")
     void UpdateState() {
         SimulationInterface simulation = new Simulation();
-        assertThrows(NullPointerException.class, simulation::updateState);
+        assertDoesNotThrow(simulation::updateState);
         simulation.initSystem();
         assertDoesNotThrow(simulation::updateState);
     }

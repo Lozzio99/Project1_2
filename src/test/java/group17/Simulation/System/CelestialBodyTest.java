@@ -1,6 +1,6 @@
 package group17.Simulation.System;
 
-import group17.Math.Lib.Vector3D;
+import group17.Math.Vector3D;
 import group17.Simulation.System.Bodies.CelestialBody;
 import group17.Simulation.System.Bodies.Particle;
 import group17.Simulation.System.Bodies.Star;

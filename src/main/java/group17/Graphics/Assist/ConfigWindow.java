@@ -40,8 +40,6 @@ public class ConfigWindow extends JPanel {
      * Instantiates a new Config window.
      */
     public ConfigWindow() {
-
-
         for (int i = 0; i < bStrings.size(); i++) {
             JButton j = new JButton(bStrings.get(i));
             j.setSize(new Dimension(90, 50));
@@ -64,15 +62,14 @@ public class ConfigWindow extends JPanel {
 
 
     /**
-     * THIS IS THE ONLY WAY I KNOW TO DO THIS:
      * METHODS (JAVA CREATES COPIES)
      * LISTS( JAVA CREATES COPIES)
      * STATIC BLOCKS( JAVA CREATES COPIES)
      * ATOMIC VARIABLES (JAVA CREATES COPIES)
      * ARRAYS ( JAVA CREATES COPIES)
-     * THERE WAS NO WAY TO MAKE THEM UPDATE FROM
-     * A COPY WITHOUT EXPLICITLY CALLING THE DESIRED VARIABLE
+     * TODO: MAKE THEM UPDATE FROM A COPY WITHOUT EXPLICITLY CALLING THE DESIRED VARIABLE BECAUSE IT IS A PRIMITIVE TYPE
      * btw ive tried everything of the above feel free to change my mind
+     * Update: i might have found a way we may pass here a reference handler
      */
     private void configButton(JButton j, int i) {
 

@@ -2,7 +2,7 @@ package group17.Simulation.System;
 
 import group17.Interfaces.StateInterface;
 import group17.Interfaces.SystemInterface;
-import group17.Simulation.Rocket.RocketSimulator;
+import group17.Rocket.RocketSimulator;
 import group17.Simulation.System.Bodies.CelestialBody;
 import group17.Simulation.System.Bodies.Planet;
 import group17.Simulation.System.Bodies.Satellite;

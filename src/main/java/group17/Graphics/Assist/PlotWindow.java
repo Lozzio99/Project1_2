@@ -1,6 +1,6 @@
 package group17.Graphics.Assist;
 
-import group17.Math.Lib.Point;
+import group17.Math.Point;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ import java.util.Arrays;
  * class to plot a valued function on two different graphs
  */
 
-@Deprecated(forRemoval = false)
+//@Deprecated(forRemoval = false)
 public class PlotWindow extends JPanel {
 
     /**

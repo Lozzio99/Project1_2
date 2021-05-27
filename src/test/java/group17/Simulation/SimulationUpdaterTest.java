@@ -1,9 +1,9 @@
 package group17.Simulation;
 
 import group17.Interfaces.UpdaterInterface;
-import group17.Math.Solvers.*;
-import group17.Simulation.Rocket.RocketSchedule;
+import group17.Rocket.RocketSchedule;
 import group17.Simulation.System.Clock;
+import group17.Solvers.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -46,18 +46,18 @@ class SimulationUpdaterTest {
         DEFAULT_SOLVER = GREEDY_RUNGE_KUTTA;
         updater = new SimulationUpdater();
         updater.init();
-        assertEquals(OldRungeKutta.class, updater.getSolver().getClass());
+        assertEquals(RungeKuttaSolverGreedy.class, updater.getSolver().getClass());
         DEFAULT_SOLVER = TESTS_RUNGE_KUTTA;
         updater = new SimulationUpdater();
         updater.init();
-        assertEquals(LazyRungeKutta.class, updater.getSolver().getClass());
+        assertEquals(RungeKuttaSolverLazy.class, updater.getSolver().getClass());
         DEFAULT_SOLVER = -1;
         updater = new SimulationUpdater();
         REPORT = false;
         updater.init();
         REPORT = true;
         updater.init();
-        assertEquals(EulerSolver.class, updater.getSolver().getClass());
+        assertEquals(VerletVelocitySolver.class, updater.getSolver().getClass());
     }
 
     @Test

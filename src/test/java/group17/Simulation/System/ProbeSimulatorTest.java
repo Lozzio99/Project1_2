@@ -2,8 +2,8 @@ package group17.Simulation.System;
 
 import group17.Interfaces.ProbeSimulatorInterface;
 import group17.Interfaces.Vector3dInterface;
-import group17.Math.Lib.Vector3D;
-import group17.Simulation.Rocket.RocketSimulator;
+import group17.Math.Vector3D;
+import group17.Rocket.RocketSimulator;
 import group17.Simulation.Simulation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

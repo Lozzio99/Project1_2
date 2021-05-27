@@ -159,7 +159,9 @@ public class UserDialogWindow {
                 return new RocketWindow();
             }
             case 5 -> {
-                return new PerformanceWindow();
+                PerformanceWindow pw = new PerformanceWindow();
+                pw.init();
+                return pw;
             }
             case 6 -> {
                 return this.errorWindow = new ErrorWindow();

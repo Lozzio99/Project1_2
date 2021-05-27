@@ -133,47 +133,5 @@ public class LaunchAssistWindow extends AbstractLaunchAssist {
         return inputVarPanel2;
     }
 
-     /*
-     * Step size panel j panel.
-     *
-     * @return the j panel
-
-    public JPanel stepSizePanel() {
-        JPanel inputVarPanel1 = new JPanel();
-        inputVarPanel1.setLayout(new GridLayout(1, 2));
-        inputVarPanel1.add(new JLabel("Time step size "));
-        inputVarPanel1.add(stSizeField);
-        return inputVarPanel1;
-    }
-
-     * Mass panel j panel.
-     *
-     * @return the j panel
-
-    public JPanel massPanel() {
-        JPanel inputVarPanel3 = new JPanel();
-        inputVarPanel3.setLayout(new GridLayout(1, 2));
-        inputVarPanel3.add(new JLabel("Mass "));
-        inputVarPanel3.add(massSizeField);
-        return inputVarPanel3;
-    }
-
-
-
-
-     * Launch position panel j panel.
-     *
-     * @return the j panel
-
-    public JPanel launchPositionPanel() {
-        JPanel inputVectorPanel = new JPanel();
-        inputVectorPanel.setLayout(new GridLayout(1, 4));
-        inputVectorPanel.add(new JLabel("Launch position "));
-        inputVectorPanel.add(lXCoordField);
-        inputVectorPanel.add(lYCoordField);
-        inputVectorPanel.add(lZCoordField);
-        return inputVectorPanel;
-    }
-    */
 }
 

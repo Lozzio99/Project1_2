@@ -1,6 +1,8 @@
 package group17.Math.Lib;
 
 import group17.Interfaces.Vector3dInterface;
+import group17.Math.Point3D;
+import group17.Math.Vector3D;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

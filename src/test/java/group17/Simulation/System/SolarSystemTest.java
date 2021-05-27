@@ -34,12 +34,16 @@ class SolarSystemTest {
     @DisplayName("GetRocket")
     void GetRocket() {
         assertNull(solarSystem.getRocket());
+        solarSystem.initRocket();
+        assertNotNull(solarSystem.getRocket());
     }
 
     @Test
     @DisplayName("InitPlanets")
     void InitPlanets() {
         solarSystem.initPlanets();
+        assertNotNull(solarSystem.getCelestialBodies());
+        assertNotEquals(0, solarSystem.getCelestialBodies().size());
         assertEquals("[SUN, MERCURY, VENUS, EARTH, MOON, MARS, JUPITER, SATURN, TITAN, URANUS, NEPTUNE]", solarSystem.getCelestialBodies().toString());
     }
 

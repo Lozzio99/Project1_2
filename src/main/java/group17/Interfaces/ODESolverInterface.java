@@ -7,7 +7,7 @@
 
 package group17.Interfaces;
 
-import group17.Math.Lib.GravityFunction;
+import group17.Math.GravityFunction;
 
 import static group17.Utils.Config.STEP_SIZE;
 

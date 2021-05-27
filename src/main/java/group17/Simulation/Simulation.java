@@ -8,9 +8,9 @@ import group17.Interfaces.GraphicsInterface;
 import group17.Interfaces.SimulationInterface;
 import group17.Interfaces.SystemInterface;
 import group17.Interfaces.UpdaterInterface;
-import group17.Math.Solvers.StandardVerletSolver;
 import group17.Simulation.System.Bodies.CelestialBody;
 import group17.Simulation.System.SolarSystem;
+import group17.Solvers.StandardVerletSolver;
 import group17.Utils.ErrorReport;
 
 import java.util.concurrent.Executors;
@@ -29,8 +29,18 @@ public class Simulation implements SimulationInterface {
     private GraphicsInterface graphics;
     private LaunchAssistWindow assist;
     private ErrorWindow errorUI;
-    private volatile SystemInterface system;
+    /**
+     * System instance, volatile writer delegate of the Main.simulation instance
+     *
+     * @see group17.Main
+     */
+    private SystemInterface system;
     private SimulationReporter reporter;
+
+    /**
+     * Volatile helpers for rapidly flushing the cached values from sub threads and
+     * handling concurrent updates of the simulation state.
+     */
     private volatile boolean running, paused = true, stopped = false;
 
 
@@ -46,7 +56,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void start() {
+    public final void start() {
         if (!this.stopped) {  // there may be some errors in the initialisation
             this.setRunning();
             if (LAUNCH_ASSIST) {
@@ -65,7 +75,7 @@ public class Simulation implements SimulationInterface {
      * back to initial instance, as if the program was restarted
      */
     @Override
-    public void reset() {
+    public final void reset() {
         this.setWaiting(true);   //first of all
         this.getSystem().reset();
         CURRENT_TIME = 0;
@@ -85,7 +95,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public void stop() {
+    public final void stop() {
         this.stopped = true;
         this.running = false;
         this.paused = false;
@@ -98,7 +108,7 @@ public class Simulation implements SimulationInterface {
      * to help solving concurrency problems, to enhance data visibility and instruction ordering.
      */
     @Override
-    public synchronized void loop() {
+    public final synchronized void loop() {
         if (this.running) {
             this.updateState();
             if (ENABLE_GRAPHICS)
@@ -121,7 +131,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public synchronized void startUpdater() {
+    public final synchronized void startUpdater() {
         this.updater.start();
     }
 
@@ -138,7 +148,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public synchronized void startGraphics() {
+    public final synchronized void startGraphics() {
         this.graphics.start();
     }
 
@@ -158,7 +168,7 @@ public class Simulation implements SimulationInterface {
 
 
     @Override
-    public synchronized void startAssist() {
+    public final synchronized void startAssist() {
         this.assist.start();
     }
 
@@ -184,7 +194,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public synchronized void startSystem() {
+    public final synchronized void startSystem() {
         this.system.start();
     }
 
@@ -200,7 +210,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public synchronized void startReport() {
+    public final synchronized void startReport() {
         this.reporter.start();
     }
 
@@ -216,7 +226,7 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public synchronized void setRunning() {
+    public final synchronized void setRunning() {
         if (!this.running)
             this.running = true;
     }
@@ -227,20 +237,20 @@ public class Simulation implements SimulationInterface {
     }
 
     @Override
-    public synchronized void setWaiting(boolean isWaiting) {
+    public final synchronized void setWaiting(boolean isWaiting) {
         this.paused = isWaiting;
     }
 
     @Override
-    public synchronized void setStopped(boolean stopped) {
+    public final synchronized void setStopped(boolean stopped) {
         this.stopped = stopped;
     }
 
     /**
-     *  updates instance of simulation to the next state
+     * updates instance of simulation to the next state
      */
     @Override
-    public synchronized void updateState() {
+    public final synchronized void updateState() {
         if (!CHECK_COLLISIONS) return;
         for (int i = 0; i < getSystem().getCelestialBodies().size(); i++) {
             if (getSystem().getCelestialBodies().get(i).isCollided()) {
