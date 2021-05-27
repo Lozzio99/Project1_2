@@ -3,7 +3,7 @@ package group17.Utils;
 import group17.Simulation.System.Clock;
 
 /**
- * The type Config.
+ * Simulation Configurations.
  */
 public class Config {
 

@@ -4,6 +4,7 @@ import group17.Interfaces.ODEFunctionInterface;
 import group17.Interfaces.ODESolverInterface;
 import group17.Interfaces.RateInterface;
 import group17.Interfaces.StateInterface;
+import org.jetbrains.annotations.Contract;
 
 import static group17.Utils.Config.DEBUG;
 
@@ -22,6 +23,7 @@ public class OldRungeKutta implements ODESolverInterface {
      * Instantiates a new Old runge kutta.
      * @param f the f
      */
+    @Contract(pure = true)
     public OldRungeKutta(final ODEFunctionInterface f) {
         this.f = f;
     }
