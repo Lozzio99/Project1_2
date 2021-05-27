@@ -30,7 +30,6 @@ public class RocketSchedule {
     Map<Vector3dInterface, Vector3dInterface> shiftAtDistance;
 
 
-
     /**
      * Init.
      */
