@@ -79,6 +79,27 @@ public class Clock {
     }
 
     /**
+     * Sets initial day.
+     *
+     * @param sec    the sec
+     * @param min    the min
+     * @param hour   the hours
+     * @param days   the days
+     * @param months the month
+     * @param years  the years
+     * @return the initial day
+     */
+    public Clock setInitialDayAndTime(int sec, int min, int hour, int days, int months, int years) {
+        this.sec = sec;
+        this.min = min;
+        this.hour = hour;
+        this.days = days;
+        this.months = months;
+        this.years = years;
+        return this;
+    }
+
+    /**
      * Step boolean.
      *
      * @param secStep the sec step

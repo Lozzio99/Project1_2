@@ -55,8 +55,8 @@ public class RocketSchedule {
     public void prepare() {
         final boolean f = ERROR_EVALUATION;
         ERROR_EVALUATION = false; // avoid making error reports
-        this.setPlan(new Clock().setLaunchDay(), new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
-        //this.setPlan(new Clock().setInitialTime(0,0,0).setInitialTime(0,0,0),new Vector3D(0,0,0));
+        this.addToPlan(new Clock().setLaunchDay(), new Vector3D(5053.8397726433905, -42680.243107188355, -2383.2465825823965));
+        this.addToPlan(new Clock().setInitialDayAndTime(0, 0, 6, 16, 11, 2023), new Vector3D(-8466.431731294904, 3689.7962745433374, 363.6276188737569));
         ERROR_EVALUATION = f;
     }
 

@@ -134,7 +134,7 @@ public class Config {
     /**
      * The constant DEFAULT_SOLVER.
      */
-    public static int DEFAULT_SOLVER = GREEDY_RUNGE_KUTTA;  //editable in main menu
+    public static int DEFAULT_SOLVER = VERLET_VEL_SOLVER;  //editable in main menu
 
 
     /**
@@ -149,7 +149,7 @@ public class Config {
     /**
      * The constant STEP_SIZE.
      */
-    public static double STEP_SIZE = 360;
+    public static double STEP_SIZE = 1440;
     /**
      * The constant CURRENT_TIME.
      */

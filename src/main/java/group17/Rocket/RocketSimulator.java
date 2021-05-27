@@ -147,9 +147,8 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
         this.setMASS(7.8e4);
         this.setRADIUS(1e2);
         this.setColour(Color.GREEN);
-        this.setVectorLocation(new Vector3D(-1.471922101663588e+12, -2.860995816266412e+10, 8.278183193596080e+06)); //earth
-        this.getVectorLocation().add(new Vector3D(6.372e6, 0, 0));
-        this.setVectorVelocity(new Vector3D(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01));
+        this.setVectorLocation(new Vector3D(-1.4717856245318698E11, -2.861154627637646E10, 8032437.618829092)); //earth
+        this.setVectorVelocity(new Vector3D(0, 0, 0));
         this.localAcceleration = new Vector3D();
         this.fuelMass = this.startFuel;
         this.totalMass = this.startFuel + this.getMASS();
