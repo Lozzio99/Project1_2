@@ -1,4 +1,4 @@
-package Module.System.Rocket;
+package Module.System.Module;
 
 import Module.Math.Vector3D;
 import Module.Math.Vector3dInterface;
@@ -9,12 +9,12 @@ import java.awt.*;
 
 import static Module.Config.STEP_SIZE;
 import static Module.Main.simulation;
-import static java.lang.Double.NaN;
 
 /**
  * The type Rocket simulator.
  */
 public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInterface {
+
 
 
     // Variables
@@ -91,7 +91,6 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
         }
 
 
-        simulation.getSystem().getState().getRateOfChange().getPositions().set(11, desiredVelocity);
         updateMass(propellantConsumed);
         return propellantConsumed;
     }
@@ -158,12 +157,10 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
         return getSequence(seq);
     }
 
-    private Vector3dInterface[] getSequence(StateInterface[] seq) {
+    private Vector3dInterface[] getSequence(StateInterface<Vector3dInterface>[] seq) {
         Vector3dInterface[] trajectory = new Vector3dInterface[seq.length];
         for (int i = 0; i < trajectory.length; i++) {
-            if (seq[i].getPositions().size() < 11)        //may have collided
-                trajectory[i] = new Vector3D(NaN, NaN, NaN);
-            trajectory[i] = seq[i].getPositions().get(11);
+            trajectory[i] = (Vector3dInterface) seq[i];
         }
         return trajectory;
     }

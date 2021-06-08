@@ -2,7 +2,7 @@ package Module.Math.Solvers;
 
 import Module.Math.*;
 
-import static Module.System.Rocket.RocketSimulatorModel.*;
+import static Module.System.Module.RocketSimulatorModel.*;
 
 /**
  * The Newton raphson solver.

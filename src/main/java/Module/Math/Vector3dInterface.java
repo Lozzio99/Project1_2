@@ -13,13 +13,6 @@ package Module.Math;
  */
 public interface Vector3dInterface {
 
-    /**
-     * From vector point 3 d.
-     *
-     * @return a Point3D from a given Vector
-     * @see Point3D
-     */
-    Point3D fromVector();
 
     /**
      * Gets x.
@@ -62,6 +55,10 @@ public interface Vector3dInterface {
      * @param z the z
      */
     void setZ(double z);
+
+    int getDim();
+
+    void set(double x, int i);
 
     /**
      * Sum the other vector and the current one
@@ -173,4 +170,10 @@ public interface Vector3dInterface {
     Vector3dInterface div(Vector3dInterface vector3dInterface);
 
     Vector3dInterface multiply(Vector3dInterface other);
+
+    double[] getVal();
+
+    double get(int i);
+
+    Vector3dInterface sumOf(Vector3dInterface... k2);
 }

@@ -5,7 +5,7 @@ import Module.Graphics.GraphicsManager;
 /**
  * The type Point 3 d converter.
  */
-public class Point3DConverter {
+public class Vector3DConverter {
     private static final double ZoomFactor = 1.05;
     private static final int SCREEN_WIDTH = GraphicsManager.screen.width, SCREEN_HEIGHT = GraphicsManager.screen.height;
     private static double scale = 1.5d;
@@ -39,10 +39,10 @@ public class Point3DConverter {
      * @param point3D the point 3 d
      * @return java . awt . point
      */
-    public static java.awt.Point convertPoint(Point3D point3D) {
-        double x3d = point3D.getXCoordinate() * scale;
-        double y3d = point3D.getYCoordinate() * scale;
-        double depth = point3D.getZCoordinate() * scale;
+    public static java.awt.Point convertVector(Vector3dInterface point3D) {
+        double x3d = point3D.get(0) * scale;
+        double y3d = point3D.get(1) * scale;
+        double depth = point3D.get(2) * scale;
         double[] newVal = scale(x3d, y3d, depth);
         int x2d = (int) (SCREEN_WIDTH / 2 + newVal[0]);
         int y2d = (int) (SCREEN_HEIGHT / 2 - newVal[1]);
@@ -76,13 +76,13 @@ public class Point3DConverter {
      * @param CW      the cw
      * @param degrees the degrees
      */
-    public static void rotateAxisX(final Point3D p, boolean CW, double degrees) {
+    public static void rotateAxisX(final Vector3dInterface p, boolean CW, double degrees) {
         if (degrees == 0) return;
-        double radius = Math.sqrt(p.y * p.y + p.z * p.z);
-        double theta = Math.atan2(p.z, p.y);
+        double radius = Math.sqrt(p.get(1) * p.get(1) + p.get(2) * p.get(2));
+        double theta = Math.atan2(p.get(2), p.get(1));
         theta += 2 * Math.PI / 360 * degrees * (CW ? -1 : 1);
-        p.y = (radius * Math.cos(theta));
-        p.z = (radius * Math.sin(theta));
+        p.set(radius * Math.cos(theta), 1);
+        p.set(radius * Math.sin(theta), 2);
     }
 
     /**
@@ -92,13 +92,13 @@ public class Point3DConverter {
      * @param CW      the cw
      * @param degrees the degrees
      */
-    public static void rotateAxisY(Point3D p, boolean CW, double degrees) {
+    public static void rotateAxisY(Vector3dInterface p, boolean CW, double degrees) {
         if (degrees == 0) return;
-        double radius = Math.sqrt(p.z * p.z + p.x * p.x);
-        double theta = Math.atan2(p.z, p.x);
+        double radius = Math.sqrt(p.get(2) * p.get(2) + p.get(0) * p.get(0));
+        double theta = Math.atan2(p.get(0), p.get(2));
         theta += 2 * Math.PI / 360 * degrees * (CW ? -1 : 1);
-        p.z = (radius * Math.sin(theta));
-        p.x = (radius * Math.cos(theta));
+        p.getVal()[2] = (radius * Math.cos(theta));
+        p.getVal()[0] = (radius * Math.sin(theta));
     }
 
     /**
@@ -108,13 +108,13 @@ public class Point3DConverter {
      * @param CW      the cw
      * @param degrees the degrees
      */
-    public static void rotateAxisZ(Point3D p, boolean CW, double degrees) {
+    public static void rotateAxisZ(Vector3dInterface p, boolean CW, double degrees) {
         if (degrees == 0) return;
-        double radius = Math.sqrt(p.y * p.y + p.x * p.x);
-        double theta = Math.atan2(p.y, p.x);
+        double radius = Math.sqrt(p.get(1) * p.get(1) + p.get(0) * p.get(0));
+        double theta = Math.atan2(p.get(1), p.get(0));
         theta += 2 * Math.PI / 360 * degrees * (CW ? -1 : 1);
-        p.y = (radius * Math.sin(theta));
-        p.x = (radius * Math.cos(theta));
+        p.getVal()[1] = (radius * Math.cos(theta));
+        p.getVal()[0] = (radius * Math.sin(theta));
     }
 
 }

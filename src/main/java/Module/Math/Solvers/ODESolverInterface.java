@@ -8,8 +8,8 @@
 package Module.Math.Solvers;
 
 
-import Module.Math.Gravity.GravityFunction;
-import Module.Math.Gravity.ODEFunctionInterface;
+import Module.Math.Functions.ModuleFunction;
+import Module.Math.Functions.ODEFunctionInterface;
 import Module.System.State.StateInterface;
 
 /**
@@ -17,7 +17,7 @@ import Module.System.State.StateInterface;
  * y(t) describes the state of the system at time t
  * f(t,y(t)) defines the derivative of y(t) with respect to time t
  */
-public interface ODESolverInterface {
+public interface ODESolverInterface<E> {
 
     /**
      * Solve state interface [ ].
@@ -35,8 +35,8 @@ public interface ODESolverInterface {
      * @param   ts      the times at which the states should be output, with ts[0] being the initial time
      * @return  an array of size ts.length with all intermediate states along the path
      */
-    default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
-        StateInterface[] states = new StateInterface[ts.length];
+    default StateInterface<E>[] solve(ODEFunctionInterface f, StateInterface<E> y0, double[] ts) {
+        StateInterface<E>[] states = new StateInterface[ts.length];
         double endTime = ts[ts.length - 1];
         double currTime = ts[0];
 
@@ -70,7 +70,7 @@ public interface ODESolverInterface {
      * @param   h       the size of step to be taken
      * @return  an array of size round(tf/h)+1 including all intermediate states along the path
      */
-    default StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
+    default StateInterface<E>[] solve(ODEFunctionInterface f, StateInterface<E> y0, double tf, double h) {
         StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 2];
         double currTime = 0;
         path[0] = y0;
@@ -101,7 +101,7 @@ public interface ODESolverInterface {
      * @param   h   the step size
      * @return  the new state after taking one step
      */
-    StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h);
+    StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h);
 
     /**
      * For Higher CPU usages, should return MaxCPUSolver object
@@ -109,9 +109,9 @@ public interface ODESolverInterface {
      * therefore will be consequently implemented in different ways
      *
      * @return the function used for calculations
-     * @see GravityFunction
+     * @see ModuleFunction
      */
-    ODEFunctionInterface getFunction();
+    ODEFunctionInterface<E> getFunction();
 
     String toString();
 

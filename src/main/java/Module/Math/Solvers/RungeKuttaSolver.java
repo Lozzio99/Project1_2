@@ -1,8 +1,10 @@
 package Module.Math.Solvers;
 
 
-import Module.Math.Gravity.ODEFunctionInterface;
+import Module.Math.Functions.ODEFunctionInterface;
+import Module.Math.Vector3dInterface;
 import Module.System.State.RateInterface;
+import Module.System.State.RateOfChange;
 import Module.System.State.StateInterface;
 
 /**
@@ -11,10 +13,10 @@ import Module.System.State.StateInterface;
  */
 
 //OK around 10^-2/10^-3 error
-public class RungeKuttaSolver implements ODESolverInterface {
+public class RungeKuttaSolver implements ODESolverInterface<Vector3dInterface> {
 
 
-    private final ODEFunctionInterface f;
+    private final ODEFunctionInterface<Vector3dInterface> f;
 
     /**
      * Instantiates a new Runge kutta 4 th solver.
@@ -40,20 +42,20 @@ public class RungeKuttaSolver implements ODESolverInterface {
      * @param h stepSize
      * @return the next state of the simulation based on Runge-Kutta 4 Step
      */
-    public StateInterface step(ODEFunctionInterface f, double t, final StateInterface y, double h) {
-        RateInterface k1, k2, k3, k4, k5;
+    public StateInterface<Vector3dInterface> step(ODEFunctionInterface<Vector3dInterface> f, double t, final StateInterface<Vector3dInterface> y, double h) {
+        RateInterface<Vector3dInterface> k1, k2, k3, k4, k5;
         k1 = f.call(t, y);
         k2 = f.call(t + (h / 2), y.addMul(0.5 * h, k1));
         k3 = f.call(t + (h / 2), y.addMul(0.5 * h, k2));
         k4 = f.call(t + h, y.addMul(h, k3));
-        k5 = (RateInterface) k1.sumOf(k2, k2, k3, k3, k4);
-        return y.addMul(h, (RateInterface) k5.div(6));
+        k5 = new RateOfChange(k1.get().sumOf(k2.get(), k2.get(), k3.get(), k3.get(), k4.get()));
+        return y.addMul(h, new RateOfChange(k5.get().div(6)));
         //return y.addMul(1,(k5.div(6).multiply(h)));  //to make it work with the numerical test
     }
 
 
     @Override
-    public ODEFunctionInterface getFunction() {
+    public ODEFunctionInterface<Vector3dInterface> getFunction() {
         return this.f;
     }
 

@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package Module.Math.Gravity;
+package Module.Math.Functions;
 
 import Module.System.State.RateInterface;
 import Module.System.State.StateInterface;
@@ -15,7 +15,7 @@ import Module.System.State.StateInterface;
  * differential equation dy/dt = f(t,y)
  */
 @FunctionalInterface
-public interface ODEFunctionInterface {
+public interface ODEFunctionInterface<E> {
 
     /*
      * This is an interface for the function f that represents the
@@ -39,7 +39,7 @@ public interface ODEFunctionInterface {
      * @param y the y
      * @return the rate interface
      */
-    RateInterface call(double t, StateInterface y);
+    RateInterface<E> call(double t, StateInterface<E> y);
 
 
 }

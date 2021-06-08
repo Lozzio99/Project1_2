@@ -1,5 +1,6 @@
 package Module.System;
 
+import Module.Math.Vector3D;
 import Module.System.Bodies.CelestialBody;
 import Module.System.Bodies.Satellite;
 import Module.System.State.StateInterface;
@@ -26,7 +27,7 @@ public class TitanSystem implements SystemInterface {
 
     @Override
     public void init() {
-        this.state = new SystemState();
+        this.state = new SystemState(new Vector3D());
         this.bodies = new ArrayList<>();
         this.bodies.add(new Satellite(Satellite.SatellitesEnum.TITAN));
     }

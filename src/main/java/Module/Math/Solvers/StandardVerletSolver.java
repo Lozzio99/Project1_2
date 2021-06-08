@@ -1,7 +1,8 @@
 package Module.Math.Solvers;
 
-import Module.Math.Gravity.GravityFunction;
-import Module.Math.Gravity.ODEFunctionInterface;
+import Module.Math.Functions.ModuleFunction;
+import Module.Math.Functions.ODEFunctionInterface;
+import Module.Math.Vector3dInterface;
 import Module.System.State.StateInterface;
 
 /**
@@ -40,19 +41,18 @@ public class StandardVerletSolver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
         // next position
-        GravityFunction.setChecked(false);
         StateInterface diff;
         if (first) {
-            ODESolverInterface solver = new RungeKuttaSolver(new GravityFunction().evaluateCurrentAccelerationFunction());
+            ODESolverInterface solver = new RungeKuttaSolver(new ModuleFunction().evaluateCurrentAccelerationFunction());
             diff = solver.step(solver.getFunction(), t, y, h);
             first = false;
         } else {
-            StateInterface subPrev = prevState.copy().multiply(-1);
-            StateInterface twiceY = y.copy().multiply(2.0);
-            StateInterface rateMulPart = y.copy().rateMul(h * h, f.call(1, y));
-            diff = subPrev.add(twiceY).add(rateMulPart);
+            StateInterface subPrev = (StateInterface) ((Vector3dInterface) prevState).mul(-1);
+            StateInterface twiceY = (StateInterface) ((Vector3dInterface) y).mul(2.0);
+            StateInterface rateMulPart = y.addMul(h * h, f.call(1, y));
+            diff = (StateInterface) ((Vector3dInterface) subPrev).sumOf(((Vector3dInterface) twiceY), ((Vector3dInterface) rateMulPart));
         }
-        prevState = y.copy();
+        prevState = (StateInterface) ((Vector3dInterface) y).clone();
         return diff;
     }
 

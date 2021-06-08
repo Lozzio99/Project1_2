@@ -5,7 +5,7 @@
  * This interface serves as the API for students in phase 1.
  */
 
-package Module.System.Rocket;
+package Module.System.Module;
 
 import Module.Math.Vector3dInterface;
 

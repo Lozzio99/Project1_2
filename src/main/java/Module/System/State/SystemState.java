@@ -1,30 +1,36 @@
 package Module.System.State;
 
+import Module.Math.Vector3D;
 import Module.Math.Vector3dInterface;
 
-import java.util.List;
+public class SystemState implements StateInterface<Vector3dInterface> {
+    Vector3dInterface position;
+    RateInterface<Vector3dInterface> vel;
 
-public class SystemState implements StateInterface {
-    private RateInterface rate;
-    private List<Vector3dInterface> positions;
-
-    @Override
-    public RateInterface getRateOfChange() {
-        return this.rate;
+    public SystemState(Vector3dInterface pos) {
+        this.position = pos;
+        this.vel = new RateOfChange(new Vector3D());
     }
 
     @Override
-    public void setRateOfChange(RateInterface newRate) {
-        this.rate = newRate;
+    public StateInterface<Vector3dInterface> addMul(double step, RateInterface<Vector3dInterface> rate) {
+        StateInterface<Vector3dInterface> s = new SystemState(this.position.addMul(step, rate.get()));
+        return s;
+    }
+
+
+    @Override
+    public Vector3dInterface get() {
+        return position;
     }
 
     @Override
-    public List<Vector3dInterface> getPositions() {
-        return this.positions;
+    public void set(Vector3dInterface v) {
+        this.position = v;
     }
 
     @Override
-    public void setPositions(List<Vector3dInterface> v) {
-        this.positions = v;
+    public RateInterface<Vector3dInterface> getRateOfChange() {
+        return vel;
     }
 }

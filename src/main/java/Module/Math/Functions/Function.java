@@ -1,4 +1,4 @@
-package Module.Math.Gravity;
+package Module.Math.Functions;
 
 /**
  * An interface for the function f that represents the

@@ -1,12 +1,13 @@
 package Module.Simulation;
 
 import Module.Math.Solvers.ODESolverInterface;
+import Module.Math.Vector3dInterface;
 
 import java.util.concurrent.ScheduledExecutorService;
 
 public interface RunnerInterface {
 
-    ODESolverInterface getSolver();
+    ODESolverInterface<Vector3dInterface> getSolver();
 
     ScheduledExecutorService getExecutor();
 
@@ -14,5 +15,5 @@ public interface RunnerInterface {
 
     void runSimulation();
 
-    void loop();
+    void openLoop();
 }

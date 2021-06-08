@@ -1,6 +1,6 @@
 package Module.Graphics;
 
-import Module.Math.Point3DConverter;
+import Module.Math.Vector3DConverter;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -8,15 +8,10 @@ import java.awt.geom.Line2D;
 public class ModuleScene extends Scene {
 
     /**
-     * The X axis.
+     * The X,Y,Z axis.
      */
-    Line2D.Double xAxis, /**
-     * The Y axis.
-     */
-    yAxis, /**
-     * The Z axis.
-     */
-    zAxis;
+    Line2D.Double xAxis, yAxis, zAxis;
+
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -26,9 +21,6 @@ public class ModuleScene extends Scene {
         g.setColor(new Color(255, 255, 255, 255));
         g.drawString("x Axis", 20, 20);
         g.draw(xAxis);
-        g.drawString("- Left click drag to rotate along the Y axis ", 1000, 20);
-        g.drawString("- Right click drag to rotate along the X axis ", 1000, 35);
-        g.drawString("- Pinch in-out or wheel scroll to zoom in-out ", 1000, 50);
         g.setColor(new Color(255, 42, 42, 255));
         g.drawString("y Axis", 20, 30);
         g.draw(yAxis);
@@ -39,17 +31,17 @@ public class ModuleScene extends Scene {
 
     @Override
     public void init() {
-        xAxis = new Line2D.Double(Point3DConverter.convertPoint(left), Point3DConverter.convertPoint(right));
-        yAxis = new Line2D.Double(Point3DConverter.convertPoint(top), Point3DConverter.convertPoint(bottom));
-        zAxis = new Line2D.Double(Point3DConverter.convertPoint(rear), Point3DConverter.convertPoint(front));
+        xAxis = new Line2D.Double(Vector3DConverter.convertVector(left), Vector3DConverter.convertVector(right));
+        yAxis = new Line2D.Double(Vector3DConverter.convertVector(top), Vector3DConverter.convertVector(bottom));
+        zAxis = new Line2D.Double(Vector3DConverter.convertVector(rear), Vector3DConverter.convertVector(front));
     }
 
     @Override
     public void update() {
         super.update();
-        xAxis.setLine(Point3DConverter.convertPoint(left), Point3DConverter.convertPoint(right));
-        yAxis.setLine(Point3DConverter.convertPoint(top), Point3DConverter.convertPoint(bottom));
-        zAxis.setLine(Point3DConverter.convertPoint(rear), Point3DConverter.convertPoint(front));
+        xAxis.setLine(Vector3DConverter.convertVector(left), Vector3DConverter.convertVector(right));
+        yAxis.setLine(Vector3DConverter.convertVector(top), Vector3DConverter.convertVector(bottom));
+        zAxis.setLine(Vector3DConverter.convertVector(rear), Vector3DConverter.convertVector(front));
         super.resetMouse();
     }
 

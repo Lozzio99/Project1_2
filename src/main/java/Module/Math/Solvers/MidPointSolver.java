@@ -1,6 +1,6 @@
 package Module.Math.Solvers;
 
-import Module.Math.Gravity.ODEFunctionInterface;
+import Module.Math.Functions.ODEFunctionInterface;
 import Module.System.State.RateInterface;
 import Module.System.State.StateInterface;
 

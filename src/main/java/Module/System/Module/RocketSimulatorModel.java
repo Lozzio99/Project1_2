@@ -1,4 +1,4 @@
-package Module.System.Rocket;
+package Module.System.Module;
 
 import Module.Math.NewtRaphFunction;
 import Module.Math.Solvers.NewtonRaphsonSolver;
@@ -20,14 +20,18 @@ public class RocketSimulatorModel {
      */
     public static Vector3dInterface targetPosition;
     /**
+     * The constant pF.
+     */
+
+    public static NewtRaphFunction pFDelay = vector -> {
+        Vector3D aprxPos = new Vector3D();//(Vector3D) RocketSimulatorModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime, NewtonRaphsonSolver.waitTime);
+        return targetPosition.sub(aprxPos);
+    };
+    /**
      * The Solver.
      */
 
-    static ODESolverInterface solver;
-    /**
-     * The Initial state.
-     */
-    static StateInterface initialState;
+    static ODESolverInterface<Vector3dInterface> solver;
 
     /**
      * The constant pF.
@@ -37,15 +41,10 @@ public class RocketSimulatorModel {
         Vector3D aprxPos = (Vector3D) RocketSimulatorModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
         return targetPosition.sub(aprxPos);
     };
-
     /**
-     * The constant pF.
+     * The Initial state.
      */
-
-    public static NewtRaphFunction pFDelay = vector -> {
-        Vector3D aprxPos = (Vector3D) RocketSimulatorModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime, NewtonRaphsonSolver.waitTime);
-        return targetPosition.sub(aprxPos);
-    };
+    static StateInterface<Vector3dInterface> initialState;
 
 
     /**
@@ -62,7 +61,6 @@ public class RocketSimulatorModel {
         return system[0];
     }
 
-
     /**
      * State fx vector 3 d interface.
      * Simulates position of the rocket with given parameters starting on 00:00:00 01/04/2020.
@@ -75,14 +73,14 @@ public class RocketSimulatorModel {
     public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal) {
         // init parameters
         SystemInterface system = createSystem(initPos, initVelocity);
-        initialState = system.getState().copy();
+        initialState = system.getState();
         solver = simulation.getRunner().getSolver();
 
         // solve trajectory
-        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
+        StateInterface<Vector3dInterface>[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
-        return solution[solution.length - 1].getPositions().get(11).clone();
+        return (Vector3dInterface) solution[solution.length - 1];
     }
 
     /**
@@ -95,10 +93,11 @@ public class RocketSimulatorModel {
      * @param waitTime     the delay time
      * @return the vector 3 d interface
      */
+    /*
     public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal, double waitTime) {
         // init parameters
         SystemInterface system = createSystem(initPos, new Vector3D(0, 0, 0));
-        initialState = system.getState().copy();
+        initialState = system.getState();
         solver = simulation.getRunner().getSolver();
 
         // solve trajectory
@@ -113,5 +112,7 @@ public class RocketSimulatorModel {
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
         return solution[solution.length - 1].getPositions().get(11).clone();
     }
+
+     */
 
 }

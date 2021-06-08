@@ -1,8 +1,9 @@
 package Module.Graphics;
 
 
-import Module.Math.Point3D;
-import Module.Math.Point3DConverter;
+import Module.Math.Vector3D;
+import Module.Math.Vector3DConverter;
+import Module.Math.Vector3dInterface;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -90,27 +91,27 @@ public abstract class Scene extends JPanel {
     /**
      * The Left.
      */
-    protected Point3D left = new Point3D(-UNIT_SIZE, 0, 0),
+    Vector3dInterface left = new Vector3D(-UNIT_SIZE, 0, 0),
     /**
      * The Right.
      */
-    right = new Point3D(UNIT_SIZE, 0, 0),
+    right = new Vector3D(UNIT_SIZE, 0, 0),
     /**
      * The Top.
      */
-    top = new Point3D(0, UNIT_SIZE, 0),
+    top = new Vector3D(0, UNIT_SIZE, 0),
     /**
      * The Bottom.
      */
-    bottom = new Point3D(0, -UNIT_SIZE, 0),
+    bottom = new Vector3D(0, -UNIT_SIZE, 0),
     /**
      * The Front.
      */
-    front = new Point3D(0, 0, UNIT_SIZE),
+    front = new Vector3D(0, 0, UNIT_SIZE),
     /**
      * The Rear.
      */
-    rear = new Point3D(0, 0, -UNIT_SIZE);
+    rear = new Vector3D(0, 0, -UNIT_SIZE);
     /**
      * The background image
      */
@@ -208,9 +209,9 @@ public abstract class Scene extends JPanel {
 
 
         if (mouse.isScrollingUp()) {
-            Point3DConverter.zoomIn();
+            Vector3DConverter.zoomIn();
         } else if (mouse.isScrollingDown()) {
-            Point3DConverter.zoomOut();
+            Vector3DConverter.zoomOut();
         }
 
         //call this from the subclass
@@ -245,12 +246,12 @@ public abstract class Scene extends JPanel {
      * @param y  the degree of rotation
      */
     public void rotateOnAxisY(boolean cw, double y) {
-        Point3DConverter.rotateAxisY(top, cw, y);
-        Point3DConverter.rotateAxisY(bottom, cw, y);
-        Point3DConverter.rotateAxisY(left, cw, y);
-        Point3DConverter.rotateAxisY(right, cw, y);
-        Point3DConverter.rotateAxisY(rear, cw, y);
-        Point3DConverter.rotateAxisY(front, cw, y);
+        Vector3DConverter.rotateAxisY(top, cw, y);
+        Vector3DConverter.rotateAxisY(bottom, cw, y);
+        Vector3DConverter.rotateAxisY(left, cw, y);
+        Vector3DConverter.rotateAxisY(right, cw, y);
+        Vector3DConverter.rotateAxisY(rear, cw, y);
+        Vector3DConverter.rotateAxisY(front, cw, y);
     }
 
     /**
@@ -260,12 +261,12 @@ public abstract class Scene extends JPanel {
      * @param x  the degree of rotation
      */
     void rotateOnAxisX(boolean cw, double x) {
-        Point3DConverter.rotateAxisX(top, cw, x);
-        Point3DConverter.rotateAxisX(bottom, cw, x);
-        Point3DConverter.rotateAxisX(left, cw, x);
-        Point3DConverter.rotateAxisX(right, cw, x);
-        Point3DConverter.rotateAxisX(rear, cw, x);
-        Point3DConverter.rotateAxisX(front, cw, x);
+        Vector3DConverter.rotateAxisX(top, cw, x);
+        Vector3DConverter.rotateAxisX(bottom, cw, x);
+        Vector3DConverter.rotateAxisX(left, cw, x);
+        Vector3DConverter.rotateAxisX(right, cw, x);
+        Vector3DConverter.rotateAxisX(rear, cw, x);
+        Vector3DConverter.rotateAxisX(front, cw, x);
     }
 
     /**
@@ -275,12 +276,12 @@ public abstract class Scene extends JPanel {
      * @param z  the degree of rotation
      */
     void rotateOnAxisZ(boolean cw, double z) {
-        Point3DConverter.rotateAxisZ(top, cw, z);
-        Point3DConverter.rotateAxisZ(bottom, cw, z);
-        Point3DConverter.rotateAxisZ(left, cw, z);
-        Point3DConverter.rotateAxisZ(right, cw, z);
-        Point3DConverter.rotateAxisZ(rear, cw, z);
-        Point3DConverter.rotateAxisZ(front, cw, z);
+        Vector3DConverter.rotateAxisZ(top, cw, z);
+        Vector3DConverter.rotateAxisZ(bottom, cw, z);
+        Vector3DConverter.rotateAxisZ(left, cw, z);
+        Vector3DConverter.rotateAxisZ(right, cw, z);
+        Vector3DConverter.rotateAxisZ(rear, cw, z);
+        Vector3DConverter.rotateAxisZ(front, cw, z);
     }
 
 
