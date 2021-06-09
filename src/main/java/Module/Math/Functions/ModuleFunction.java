@@ -45,7 +45,7 @@ public final class ModuleFunction {
         currentTime = ct;
     }
 
-    private static Vector3dInterface velocityFromGravityAcceleration(final StateInterface<Vector3dInterface> y, double h) {
+    private Vector3dInterface velocityFromGravityAcceleration(final StateInterface<Vector3dInterface> y, double h) {
         //LOGIC HERE for single body
         // Vector have 3 components [ xPos, yPos, angle ];
         // must implement function for (xVel, yVel, angleVel)
