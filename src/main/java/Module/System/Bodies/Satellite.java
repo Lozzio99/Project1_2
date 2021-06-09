@@ -2,8 +2,6 @@ package Module.System.Bodies;
 
 import Module.Math.Vector3D;
 
-import java.awt.*;
-
 /**
  * The type Satellite.
  */
@@ -28,15 +26,7 @@ public class Satellite extends CelestialBody {
 
     @Override
     public void initProperties() {
-        switch (name) {
-            case TITAN -> {
-                this.setMASS(1.34553e23);
-                this.setRADIUS(2575.5e3);
-                this.setColour(Color.gray);
-                this.setVectorLocation(new Vector3D(6.332873118527889e+11, -1.357175556995868e+12, -2.134637041453660e+09));
-                this.setVectorVelocity(new Vector3D(3056.87794615761, 6125.612917224867, -952.3587319894634));
-            }
-        }
+        this.setVectorLocation(new Vector3D(0, 0, 0));
     }
 
     /**

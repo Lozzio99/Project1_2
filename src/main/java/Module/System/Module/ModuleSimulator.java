@@ -138,8 +138,8 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
         this.setMASS(7.8e4);
         this.setRADIUS(1e2);
         this.setColour(Color.GREEN);
-        this.setVectorLocation(new Vector3D(-1.4717856245318698E11, -2.861154627637646E10, 8032437.618829092)); //earth
-        this.setVectorVelocity(new Vector3D(0, 0, 0));
+        this.setVectorLocation(new Vector3D(100, 100, 0)); //earth
+        this.setVectorVelocity(new Vector3D(0.0001, 0.0001, 90));
         this.localAcceleration = new Vector3D();
         this.fuelMass = this.startFuel;
         this.totalMass = this.startFuel + this.getMASS();
@@ -149,7 +149,7 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double[] ts) {
         assert (simulation.getSystem() != null);
-        StateInterface[] seq = simulation.getRunner().getSolver().solve(
+        StateInterface<Vector3dInterface>[] seq = simulation.getRunner().getSolver().solve(
                 simulation.getRunner().getSolver().getFunction(),
                 simulation.getSystem().getState(),
                 ts);
@@ -168,7 +168,7 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
         assert (simulation.getSystem() != null);
-        StateInterface[] seq = simulation.getRunner().getSolver().solve(
+        StateInterface<Vector3dInterface>[] seq = simulation.getRunner().getSolver().solve(
                 simulation.getRunner().getSolver().getFunction(),
                 simulation.getSystem().getState(),
                 tf, h);

@@ -15,5 +15,5 @@ public interface RunnerInterface {
 
     void runSimulation();
 
-    void openLoop();
+    void loop();
 }

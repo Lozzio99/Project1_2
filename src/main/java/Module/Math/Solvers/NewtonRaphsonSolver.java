@@ -1,6 +1,10 @@
 package Module.Math.Solvers;
 
-import Module.Math.*;
+import Module.Math.Functions.NewtRaphFunction;
+import Module.Math.Matrix;
+import Module.Math.PartialDerivative;
+import Module.Math.Vector3D;
+import Module.Math.Vector3dInterface;
 
 import static Module.System.Module.RocketSimulatorModel.*;
 

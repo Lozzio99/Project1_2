@@ -35,8 +35,8 @@ public class Simulation implements SimulationInterface {
 
     @Override
     public void init() {
-        this.graphics.init();
         this.system.init(); //init system and give the runner the initial state ready
+        this.graphics.init();
         this.runner.init();
     }
 

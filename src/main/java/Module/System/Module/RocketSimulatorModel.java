@@ -1,6 +1,6 @@
 package Module.System.Module;
 
-import Module.Math.NewtRaphFunction;
+import Module.Math.Functions.NewtRaphFunction;
 import Module.Math.Solvers.NewtonRaphsonSolver;
 import Module.Math.Solvers.ODESolverInterface;
 import Module.Math.Vector3D;

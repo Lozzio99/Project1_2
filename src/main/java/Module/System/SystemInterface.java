@@ -1,12 +1,13 @@
 package Module.System;
 
+import Module.Math.Vector3dInterface;
 import Module.System.Bodies.CelestialBody;
 import Module.System.State.StateInterface;
 
 import java.util.List;
 
 public interface SystemInterface extends Runnable {
-    StateInterface getState();
+    StateInterface<Vector3dInterface> getState();
 
     List<CelestialBody> getCelestialBodies();
 
@@ -14,5 +15,5 @@ public interface SystemInterface extends Runnable {
 
     void start();
 
-    void updateState(StateInterface step);
+    void updateState(StateInterface<Vector3dInterface> step);
 }

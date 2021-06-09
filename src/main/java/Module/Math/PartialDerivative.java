@@ -1,5 +1,7 @@
 package Module.Math;
 
+import Module.Math.Functions.NewtRaphFunction;
+
 /**
  * The type Partial derivative.
  */

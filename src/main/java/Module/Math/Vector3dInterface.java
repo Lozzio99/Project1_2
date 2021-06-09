@@ -176,4 +176,6 @@ public interface Vector3dInterface {
     double get(int i);
 
     Vector3dInterface sumOf(Vector3dInterface... k2);
+
+    void setVal(double[] val);
 }

@@ -1,8 +1,9 @@
 package Module.System;
 
 import Module.Math.Vector3D;
+import Module.Math.Vector3dInterface;
 import Module.System.Bodies.CelestialBody;
-import Module.System.Bodies.Satellite;
+import Module.System.Module.ModuleSimulator;
 import Module.System.State.StateInterface;
 import Module.System.State.SystemState;
 
@@ -12,11 +13,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class TitanSystem implements SystemInterface {
     private final AtomicReference<Thread> systemThread = new AtomicReference<>();
-    private StateInterface state;
+    private volatile StateInterface<Vector3dInterface> state;
     private List<CelestialBody> bodies;
 
     @Override
-    public StateInterface getState() {
+    public StateInterface<Vector3dInterface> getState() {
         return state;
     }
 
@@ -29,7 +30,9 @@ public class TitanSystem implements SystemInterface {
     public void init() {
         this.state = new SystemState(new Vector3D());
         this.bodies = new ArrayList<>();
-        this.bodies.add(new Satellite(Satellite.SatellitesEnum.TITAN));
+        this.bodies.add(new ModuleSimulator());
+        this.bodies.get(0).initProperties();
+        this.state = new SystemState(this.bodies.get(0).getVectorLocation(), this.bodies.get(0).getVectorVelocity());
     }
 
     @Override
@@ -39,8 +42,8 @@ public class TitanSystem implements SystemInterface {
     }
 
     @Override
-    public void updateState(StateInterface step) {
-        this.state = step;
+    public synchronized void updateState(StateInterface<Vector3dInterface> step) {
+        this.state.set(step.get().clone());
     }
 
     @Override

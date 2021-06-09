@@ -39,7 +39,9 @@ public final class ModuleFunction {
         // Vector have 3 components [ xPos, yPos, angle ];
         // must implement function for (xVel, yVel, angleVel)
         // in theory should affect the y component only , or partially the x component
-        return ((Vector3dInterface) y).clone();
+        Vector3dInterface v = y.getRateOfChange().get().mul(h);
+        v.setZ(y.getRateOfChange().get().getZ());  // don't affect the angle
+        return v;
     }
 
     /**

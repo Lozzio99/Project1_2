@@ -35,7 +35,7 @@ public interface ODESolverInterface<E> {
      * @param   ts      the times at which the states should be output, with ts[0] being the initial time
      * @return  an array of size ts.length with all intermediate states along the path
      */
-    default StateInterface<E>[] solve(ODEFunctionInterface f, StateInterface<E> y0, double[] ts) {
+    default StateInterface<E>[] solve(ODEFunctionInterface<E> f, StateInterface<E> y0, double[] ts) {
         StateInterface<E>[] states = new StateInterface[ts.length];
         double endTime = ts[ts.length - 1];
         double currTime = ts[0];
@@ -70,7 +70,7 @@ public interface ODESolverInterface<E> {
      * @param   h       the size of step to be taken
      * @return  an array of size round(tf/h)+1 including all intermediate states along the path
      */
-    default StateInterface<E>[] solve(ODEFunctionInterface f, StateInterface<E> y0, double tf, double h) {
+    default StateInterface<E>[] solve(ODEFunctionInterface<E> f, StateInterface<E> y0, double tf, double h) {
         StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 2];
         double currTime = 0;
         path[0] = y0;

@@ -1,5 +1,7 @@
 package Module.Graphics;
 
+import Module.Math.Vector3dInterface;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -8,7 +10,7 @@ public interface GraphicsInterface extends Runnable {
 
     void init();
 
-    void start();
+    void start(Vector3dInterface state);
 
     JFrame getFrame();
 
