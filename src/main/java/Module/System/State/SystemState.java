@@ -12,9 +12,14 @@ public class SystemState implements StateInterface<Vector3dInterface> {
         this.vel = new RateOfChange(new Vector3D());
     }
 
+    public SystemState(Vector3dInterface pos, Vector3dInterface vel) {
+        this.position = pos;
+        this.vel = new RateOfChange(vel);
+    }
+
     @Override
     public StateInterface<Vector3dInterface> addMul(double step, RateInterface<Vector3dInterface> rate) {
-        StateInterface<Vector3dInterface> s = new SystemState(this.position.addMul(step, rate.get()));
+        StateInterface<Vector3dInterface> s = new SystemState(this.position.addMul(step, rate.get()), rate.get());
         return s;
     }
 

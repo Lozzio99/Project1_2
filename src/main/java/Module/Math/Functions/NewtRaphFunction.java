@@ -1,4 +1,6 @@
-package Module.Math;
+package Module.Math.Functions;
+
+import Module.Math.Vector3dInterface;
 
 /**
  * The interface Newt raph function.

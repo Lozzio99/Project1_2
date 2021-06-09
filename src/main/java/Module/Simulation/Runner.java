@@ -11,6 +11,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static Module.Config.CURRENT_TIME;
+import static Module.Config.STEP_SIZE;
+
 
 public class Runner implements RunnerInterface {
     private final SimulationInterface simulation;
@@ -45,30 +48,36 @@ public class Runner implements RunnerInterface {
     @Override
     public void runSimulation() {
         if (simulation.isRunning()) {
-            service.scheduleWithFixedDelay(this::openLoop, 10, 16, TimeUnit.MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 10, 9, TimeUnit.MILLISECONDS);
         }
     }
 
     @Override
-    public synchronized void openLoop() {
-        simulation.getGraphics().start(); //draw the state
+    public synchronized void loop() {
+        simulation.getGraphics().start(simulation.getSystem().getState().get()); //draw the state
+        double prevTheta = simulation.getSystem().getState().get().getZ(); // avoid rocket super high spin
+        simulation.getSystem().updateState(solver.step(function, CURRENT_TIME, simulation.getSystem().getState(), STEP_SIZE));
+        simulation.getSystem().getState().get().setZ(prevTheta + 1);
+        CURRENT_TIME += STEP_SIZE;
+        simulation.getSystem().start();
         /*
+
         New state 1 = solver.step(state 0);
-        New state 2 = wind.modify(New State 1);
-        New state 3 = moduleControllerOpen.makeDecision(New State 2);
-        New state 3 = moduleControllerClosed.makeDecision(New State 2);
+        New state 2 = moduleControllerOpen.makeDecision(New State 2);
+
+        New state 3 = wind.modify(New State 1);
+        New state 3 = moduleControllerClosed.optimizeDecision(New State 2);
 
         this state = New State 3;
         */
 
 
         // evaluate next state ]
-        // perturbation        ] -> LOOP
-        // decision-thrusts    ]
+        // decision-thrusts    ] -> LOOP
+        // perturbation        ]
+        //     *fix decision   ]
         //
         // update state
     }
 
-    public void closedLoop() {
-    }
 }

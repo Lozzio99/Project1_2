@@ -1,6 +1,8 @@
 package Module.Graphics;
 
 
+import Module.Math.Vector3dInterface;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -38,6 +40,7 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
     private JFrame frame;
     private WindowEvent listen;
     private static double FPS;
+    private Vector3dInterface state;
 
 
     @Override
@@ -74,8 +77,10 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
     }
 
     @Override
-    public synchronized void start() {
+    public synchronized void start(final Vector3dInterface state) {
+        this.state = state.clone();
         this.mainGraphicsTh.set(new Thread(this, "Main Graphics"));
+        this.mainGraphicsTh.get().setDaemon(true);
         this.mainGraphicsTh.get().start();
     }
 
@@ -97,7 +102,9 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
     @Override
     public void changeScene(Scene.SceneType scene) {
         switch (scene) {
-            case MODULE_SCENE -> this.currentScene = new ModuleScene();
+            case MODULE_SCENE -> {
+                this.currentScene = new ModuleScene();
+            }
         }
         if (this.frame.getComponentCount() >= 1)
             this.frame.remove(this.currentScene);
@@ -113,8 +120,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
     }
 
     @Override
-    public void update() {
-        this.currentScene.update();
+    public synchronized void update() {
+        this.currentScene.update(this.state);
     }
 
     @Override

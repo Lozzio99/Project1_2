@@ -2,43 +2,44 @@ package Module.Math.Solvers;
 
 
 import Module.Math.Functions.ODEFunctionInterface;
+import Module.Math.Vector3dInterface;
 import Module.System.State.StateInterface;
 
 /**
  * The type Euler solver.
  * First Order Solver
  */
-public class EulerSolver implements ODESolverInterface {
+public class EulerSolver implements ODESolverInterface<Vector3dInterface> {
 
     /**
      * The Single core f.
      */
-    private final ODEFunctionInterface f;
+    private final ODEFunctionInterface<Vector3dInterface> f;
 
     /**
      * Instantiates a new Euler solver.
      *
      * @param f the f
      */
-    public EulerSolver(final ODEFunctionInterface f) {
+    public EulerSolver(final ODEFunctionInterface<Vector3dInterface> f) {
         this.f = f;
     }
 
     /**
-     *  Formula
-     *  y1 = y0 + h*f(t,y0);
+     * Formula
+     * y1 = y0 + h*f(t,y0);
      *
      * @param f the function representing Newton's Gravitational law
      * @param y the instance  of the Simulation
      * @return the next state of the simulation based on a Euler Step
      */
     @Override
-    public StateInterface step(ODEFunctionInterface f, double currentTime, StateInterface y, double stepSize) {
+    public StateInterface<Vector3dInterface> step(ODEFunctionInterface<Vector3dInterface> f, double currentTime, StateInterface<Vector3dInterface> y, double stepSize) {
         return y.addMul(stepSize, f.call(currentTime, y));
     }
 
     @Override
-    public ODEFunctionInterface getFunction() {
+    public ODEFunctionInterface<Vector3dInterface> getFunction() {
         return f;
     }
 

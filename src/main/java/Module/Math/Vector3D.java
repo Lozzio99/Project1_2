@@ -15,7 +15,6 @@ public class Vector3D implements Vector3dInterface {
     final double[] val;
     int dim = 0;
 
-
     /**
      * Instantiates a new Vector 3 d.
      */
@@ -90,6 +89,12 @@ public class Vector3D implements Vector3dInterface {
     @Override
     public Vector3dInterface sumOf(Vector3dInterface... k2) {
         return null;
+    }
+
+    @Override
+    public void setVal(double[] val) {
+        if (val.length != this.dim) throw new IllegalArgumentException("Dimensions not matching");
+        System.arraycopy(val, 0, this.val, 0, val.length);
     }
 
     /**
