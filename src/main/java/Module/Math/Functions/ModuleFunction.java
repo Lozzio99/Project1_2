@@ -1,8 +1,12 @@
 package Module.Math.Functions;
 
+import Module.Math.Vector3D;
 import Module.Math.Vector3dInterface;
 import Module.System.State.RateOfChange;
 import Module.System.State.StateInterface;
+
+import static java.lang.StrictMath.cos;
+import static java.lang.StrictMath.sin;
 
 /**
  * Module landing function, will
@@ -17,7 +21,13 @@ public final class ModuleFunction {
      * which then will be added (e.g. eulerStepNextY = currentState + ( f.call * h)
      */
 
-    private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> new RateOfChange(velocityFromGravityAcceleration(y, h));
+    private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> {
+        Vector3dInterface v = velocityFromGravityAcceleration(y, h);
+        double theta = y.getRateOfChange().get().getZ();
+        v = y.getRateOfChange().get().addMul(h, v);
+        v.setZ(v.getZ() - theta);
+        return new RateOfChange(v);
+    };
 
     /**
      * Instantiates a new Gravity function.
@@ -39,9 +49,11 @@ public final class ModuleFunction {
         // Vector have 3 components [ xPos, yPos, angle ];
         // must implement function for (xVel, yVel, angleVel)
         // in theory should affect the y component only , or partially the x component
-        Vector3dInterface v = y.getRateOfChange().get().mul(h);
-        v.setZ(y.getRateOfChange().get().getZ());  // don't affect the angle
-        return v;
+        final Vector3dInterface newRate = new Vector3D(0, 0, 0);
+        newRate.setX(sin(y.get().getZ()) * 0);  //must multiply by u and v then
+        newRate.setY((cos(y.get().getZ()) * 0) - G);
+        newRate.setZ(y.get().getZ());
+        return newRate;
     }
 
     /**

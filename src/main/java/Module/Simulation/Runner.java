@@ -55,9 +55,7 @@ public class Runner implements RunnerInterface {
     @Override
     public synchronized void loop() {
         simulation.getGraphics().start(simulation.getSystem().getState().get()); //draw the state
-        double prevTheta = simulation.getSystem().getState().get().getZ(); // avoid rocket super high spin
         simulation.getSystem().updateState(solver.step(function, CURRENT_TIME, simulation.getSystem().getState(), STEP_SIZE));
-        simulation.getSystem().getState().get().setZ(prevTheta + 1);
         CURRENT_TIME += STEP_SIZE;
         simulation.getSystem().start();
         /*
