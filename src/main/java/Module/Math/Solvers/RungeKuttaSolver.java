@@ -23,7 +23,7 @@ public class RungeKuttaSolver implements ODESolverInterface<Vector3dInterface> {
      *
      * @param f the function
      */
-    public RungeKuttaSolver(final ODEFunctionInterface f) {
+    public RungeKuttaSolver(final ODEFunctionInterface<Vector3dInterface> f) {
         this.f = f;
     }
 

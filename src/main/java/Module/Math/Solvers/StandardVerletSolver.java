@@ -9,11 +9,11 @@ import Module.System.State.StateInterface;
  * The type Standard verlet solver.
  * Second Order Solver
  */
-public class StandardVerletSolver implements ODESolverInterface {
+public class StandardVerletSolver implements ODESolverInterface<Vector3dInterface> {
 
     private boolean first;
-    private final ODEFunctionInterface f;
-    private StateInterface prevState;
+    private final ODEFunctionInterface<Vector3dInterface> f;
+    private StateInterface<Vector3dInterface> prevState;
 
 
     /**
@@ -21,7 +21,7 @@ public class StandardVerletSolver implements ODESolverInterface {
      *
      * @param f the f
      */
-    public StandardVerletSolver(final ODEFunctionInterface f) {
+    public StandardVerletSolver(final ODEFunctionInterface<Vector3dInterface> f) {
         first = true;
         this.f = f;
     }
@@ -39,7 +39,7 @@ public class StandardVerletSolver implements ODESolverInterface {
      * @return new state
      */
     @Override
-    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+    public StateInterface<Vector3dInterface> step(ODEFunctionInterface<Vector3dInterface> f, double t, StateInterface<Vector3dInterface> y, double h) {
         // next position
         StateInterface diff;
         if (first) {
@@ -58,7 +58,7 @@ public class StandardVerletSolver implements ODESolverInterface {
 
 
     @Override
-    public ODEFunctionInterface getFunction() {
+    public ODEFunctionInterface<Vector3dInterface> getFunction() {
         return this.f;
     }
 

@@ -38,7 +38,7 @@ public class RocketSimulatorModel {
      */
 
     public static NewtRaphFunction pF = vector -> {
-        Vector3D aprxPos = (Vector3D) RocketSimulatorModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
+        Vector3dInterface aprxPos = RocketSimulatorModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
         return targetPosition.sub(aprxPos);
     };
     /**
