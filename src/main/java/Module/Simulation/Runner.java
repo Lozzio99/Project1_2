@@ -2,17 +2,16 @@ package Module.Simulation;
 
 import Module.Math.Functions.ModuleFunction;
 import Module.Math.Functions.ODEFunctionInterface;
-import Module.Math.Solvers.EulerSolver;
-import Module.Math.Solvers.ODESolverInterface;
+import Module.Math.Solvers.*;
 import Module.Math.Vector3dInterface;
+import Module.System.Module.DecisionMaker;
 import org.jetbrains.annotations.Contract;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static Module.Config.CURRENT_TIME;
-import static Module.Config.STEP_SIZE;
+import static Module.Config.*;
 
 
 public class Runner implements RunnerInterface {
@@ -20,6 +19,7 @@ public class Runner implements RunnerInterface {
     private ODESolverInterface<Vector3dInterface> solver;
     private ODEFunctionInterface<Vector3dInterface> function;
     private ScheduledExecutorService service;
+    private DecisionMaker moduleController;
 
     @Contract(pure = true)
     public Runner(SimulationInterface simulation) {
@@ -38,10 +38,34 @@ public class Runner implements RunnerInterface {
 
     @Override
     public void init() {
-        this.solver = new EulerSolver(
-                this.function = new ModuleFunction()
-                        .evaluateCurrentAccelerationFunction());
-
+        switch (SOLVER) {
+            case EULER:{
+                this.solver = new EulerSolver(
+                        this.function = new ModuleFunction()
+                                .evaluateCurrentAccelerationFunction());
+            }
+            case RK4:{
+                this.solver = new RungeKuttaSolver(
+                        this.function = new ModuleFunction()
+                                .evaluateCurrentAccelerationFunction());
+            }
+            case VERLET_STD:{
+                this.solver = new StandardVerletSolver(
+                        this.function = new ModuleFunction()
+                                .evaluateCurrentAccelerationFunction());
+            }
+            case VERLET_VEL:{
+                this.solver = new VerletVelocitySolver(
+                        this.function = new ModuleFunction()
+                                .evaluateCurrentAccelerationFunction());
+            }
+            case MIDPOINT:{
+                this.solver = new MidPointSolver(
+                        this.function = new ModuleFunction()
+                                .evaluateCurrentAccelerationFunction());
+            }
+        }
+        this.moduleController = new DecisionMaker(CONTROLLER);
         this.service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
     }
 
@@ -54,10 +78,17 @@ public class Runner implements RunnerInterface {
 
     @Override
     public synchronized void loop() {
-        simulation.getGraphics().start(simulation.getSystem().getState().get()); //draw the state
+        // draw graphics
+        simulation.getGraphics().start(simulation.getSystem().getState().get());
+        // update module function
+        Vector3dInterface update = moduleController.makeDecision(simulation.getSystem().getState(), CURRENT_TIME);
+        ModuleFunction.setAccTorque(update);
         simulation.getSystem().updateState(solver.step(function, CURRENT_TIME, simulation.getSystem().getState(), STEP_SIZE));
         CURRENT_TIME += STEP_SIZE;
         simulation.getSystem().start();
+
+
+
         /*
 
         New state 1 = solver.step(state 0);
@@ -70,8 +101,8 @@ public class Runner implements RunnerInterface {
         */
 
 
-        // evaluate next state ]
         // decision-thrusts    ] -> LOOP
+        // evaluate next state ]
         // perturbation        ]
         //     *fix decision   ]
         //

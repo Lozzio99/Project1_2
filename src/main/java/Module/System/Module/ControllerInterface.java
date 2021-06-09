@@ -12,7 +12,6 @@ public interface ControllerInterface {
      * @param currentTime  in s
      * @return new vector state
      */
-    StateInterface<Vector3dInterface> controlFunction(StateInterface<Vector3dInterface> currentState, double currentTime);
+    Vector3dInterface controlFunction(StateInterface<Vector3dInterface> currentState, double currentTime);
 
-    enum Loop {OPEN, CLOSED}
 }
