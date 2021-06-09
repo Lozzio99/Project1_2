@@ -44,6 +44,7 @@ public class TitanSystem implements SystemInterface {
     @Override
     public synchronized void updateState(StateInterface<Vector3dInterface> step) {
         this.state.set(step.get().clone());
+        this.state.getRateOfChange().set(step.getRateOfChange().get().clone());
     }
 
     @Override
