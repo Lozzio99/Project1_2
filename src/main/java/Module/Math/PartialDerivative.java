@@ -59,27 +59,25 @@ public class PartialDerivative {
                 CompletableFuture.allOf(
                         CompletableFuture.supplyAsync(
                                 () -> getPartialDerivatives(fX, v, h, 0))   // the index of the array is the thing that changes
-                                .thenApply(vector3D -> {
-                                    System.arraycopy(vector3D.getVal(), 0, theResult[0], 0, theResult.length);
-                                    return vector3D;
+                                .thenAccept(vector3D -> {
+                                    m[0][0] = vector3D.getVal()[0];
+                                    m[1][0] = vector3D.getVal()[1];
+                                    m[2][0] = vector3D.getVal()[2];
                                 }),
                         CompletableFuture.supplyAsync(() -> getPartialDerivatives(fX, v, h, 1))
-                                .thenApply(vector3D -> {
-                                    System.arraycopy(vector3D.getVal(), 0, theResult[1], 0, theResult.length);
-                                    return vector3D;
+                                .thenAccept(vector3D -> {
+                                    m[0][1] = vector3D.getVal()[0];
+                                    m[1][1] = vector3D.getVal()[1];
+                                    m[2][1] = vector3D.getVal()[2];
                                 }),
                         CompletableFuture.supplyAsync(() -> getPartialDerivatives(fX, v, h, 2))
-                                .thenApply(vector3D -> {
-                                    System.arraycopy(vector3D.getVal(), 0, theResult[2], 0, theResult.length);
-                                    return vector3D;
-                                }));
-        allFutures.thenAccept(e -> {
-            for (int i = 0; i < 3; i++) {   //this is probably wrong but i got a bit confused
-                m[0][i] = theResult[i][0];
-                m[1][i] = theResult[i][1];
-                m[2][i] = theResult[i][2];
-            }
-        });
+                                .thenAccept(vector3D -> {
+                                    m[0][2] = vector3D.getVal()[0];
+                                    m[1][2] = vector3D.getVal()[1];
+                                    m[2][2] = vector3D.getVal()[2];
+                                })
+                );
+
         return m;
     }
 
