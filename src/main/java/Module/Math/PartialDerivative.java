@@ -2,6 +2,8 @@ package Module.Math;
 
 import Module.Math.Functions.NewtRaphFunction;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * The type Partial derivative.
  */
@@ -34,13 +36,53 @@ public class PartialDerivative {
      */
     public static double[][] getJacobianMatrix(NewtRaphFunction fX, Vector3D v, double h) {
         double[][] m = new double[3][3];
+        /*
         for (int i = 0; i < m.length; i++) {
+            int finalI = i;
+            final double [] theResult =new double[3];
+            CompletableFuture<Vector3dInterface> future =CompletableFuture.supplyAsync(() -> getPartialDerivatives(fX, v, h, finalI))
+                    .thenApply(vector3D -> {
+                        System.arraycopy(theResult ,0, vector3D.getVal(),0,theResult.length);
+                        return vector3D;
+                    });
+
             Vector3dInterface res = getPartialDerivatives(fX, v, h, i);
             m[0][i] = res.getX();
             m[1][i] = res.getY();
             m[2][i] = res.getZ();
         }
+         */
+
+
+        final double[][] theResult = new double[3][3];
+        CompletableFuture<Void> allFutures =
+                CompletableFuture.allOf(
+                        CompletableFuture.supplyAsync(
+                                () -> getPartialDerivatives(fX, v, h, 0))   // the index of the array is the thing that changes
+                                .thenApply(vector3D -> {
+                                    System.arraycopy(theResult[0], 0, vector3D.getVal(), 0, theResult.length);
+                                    return vector3D;
+                                }),
+                        CompletableFuture.supplyAsync(() -> getPartialDerivatives(fX, v, h, 1))
+                                .thenApply(vector3D -> {
+                                    System.arraycopy(theResult[1], 0, vector3D.getVal(), 0, theResult.length);
+                                    return vector3D;
+                                }),
+                        CompletableFuture.supplyAsync(() -> getPartialDerivatives(fX, v, h, 2))
+                                .thenApply(vector3D -> {
+                                    System.arraycopy(theResult[2], 0, vector3D.getVal(), 0, theResult.length);
+                                    return vector3D;
+                                }));
+        allFutures.thenAccept(e -> {
+            for (int i = 0; i < 3; i++) {   //this is probably wrong but i got a bit confused
+                m[0][i] = theResult[i][0];
+                m[1][i] = theResult[i][1];
+                m[2][i] = theResult[i][2];
+            }
+        });
         return m;
     }
+
+
 
 }
