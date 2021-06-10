@@ -21,12 +21,14 @@ public final class ModuleFunction {
      * which then will be added (e.g. eulerStepNextY = currentState + ( f.call * h)
      */
 
+
     private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> {
         Vector3dInterface v = velocityFromGravityAcceleration(y, h);
         Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);
         v2.setZ(v2.getZ() - (v.getZ() * h));
         return new RateOfChange<>(v2);
     };
+
 
     /**
      * Instantiates a new Gravity function.

@@ -39,6 +39,18 @@ public class StandardVerletSolver<E> implements ODESolverInterface<E> {
      * @param h step size
      * @return new state
      */
+    /**
+     * Step of a Standard Verlet Algorithm:
+     * x_n+1 = 2*(x_n) - (x_n-1) + f(x_n,t_n)*h^2
+     * x - position, h - step size
+     * Source: http://www.physics.udel.edu/~bnikolic/teaching/phys660/numerical_ode/node5.html
+     *
+     * @param f ordinary differential equations - function of acceleration
+     * @param t current time
+     * @param y current state; getPosition(0) - current position, getPosition(1) - prev position
+     * @param h step size
+     * @return new state
+     */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
         // next position
