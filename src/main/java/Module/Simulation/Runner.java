@@ -2,8 +2,8 @@ package Module.Simulation;
 
 import Module.Math.Functions.ModuleFunction;
 import Module.Math.Functions.ODEFunctionInterface;
+import Module.Math.Solvers.EulerSolver;
 import Module.Math.Solvers.ODESolverInterface;
-import Module.Math.Solvers.StandardVerletSolver;
 import Module.Math.Vector3dInterface;
 import org.jetbrains.annotations.Contract;
 
@@ -38,7 +38,7 @@ public class Runner implements RunnerInterface {
 
     @Override
     public void init() {
-        this.solver = new StandardVerletSolver<>(
+        this.solver = new EulerSolver<>(
                 this.function = new ModuleFunction()
                         .evaluateCurrentAccelerationFunction());
 
@@ -55,7 +55,6 @@ public class Runner implements RunnerInterface {
     @Override
     public synchronized void loop() {
         simulation.getGraphics().start(simulation.getSystem().getState().get()); //draw the state
-        System.out.println(simulation.getSystem().getState());
         simulation.getSystem().updateState(solver.step(function, CURRENT_TIME, simulation.getSystem().getState(), STEP_SIZE));
         CURRENT_TIME += STEP_SIZE;
         simulation.getSystem().start();
