@@ -3,6 +3,7 @@ package Module.Math;
 import Module.Math.Functions.NewtRaphFunction;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * The type Partial derivative.
@@ -54,7 +55,6 @@ public class PartialDerivative {
          */
 
 
-        final double[][] theResult = new double[3][3];
         CompletableFuture<Void> allFutures =
                 CompletableFuture.allOf(
                         CompletableFuture.supplyAsync(
@@ -77,7 +77,11 @@ public class PartialDerivative {
                                     m[2][2] = vector3D.getVal()[2];
                                 })
                 );
-
+        try {
+            allFutures.get(); //make sure the change is made before returning
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
         return m;
     }
 
