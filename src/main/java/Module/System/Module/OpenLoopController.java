@@ -1,6 +1,6 @@
 package Module.System.Module;
 
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3dInterface;
 import Module.System.State.StateInterface;
 
 public class OpenLoopController implements ControllerInterface{

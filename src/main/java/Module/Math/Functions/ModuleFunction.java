@@ -1,7 +1,7 @@
 package Module.Math.Functions;
 
-import Module.Math.Vector3D;
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 import Module.System.State.RateOfChange;
 import Module.System.State.StateInterface;
 

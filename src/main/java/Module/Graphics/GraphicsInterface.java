@@ -1,6 +1,6 @@
 package Module.Graphics;
 
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3dInterface;
 
 import javax.swing.*;
 import java.awt.*;

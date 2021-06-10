@@ -1,7 +1,7 @@
 package Module.System.State;
 
-import Module.Math.Vector3D;
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 
 public class SystemState<E> implements StateInterface<E> {
     E position;

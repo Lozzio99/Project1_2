@@ -1,6 +1,6 @@
 package Module.System.Module;
 
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3dInterface;
 
 public interface ModuleSimulatorInterface extends ProbeSimulatorInterface {
     double evaluateLoss(Vector3dInterface desiredVelocity, Vector3dInterface actualVelocity);

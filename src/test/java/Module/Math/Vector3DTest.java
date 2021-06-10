@@ -1,5 +1,7 @@
 package Module.Math;
 
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

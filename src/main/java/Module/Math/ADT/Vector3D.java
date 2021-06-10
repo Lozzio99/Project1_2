@@ -1,4 +1,4 @@
-package Module.Math;
+package Module.Math.ADT;
 
 import java.util.Arrays;
 

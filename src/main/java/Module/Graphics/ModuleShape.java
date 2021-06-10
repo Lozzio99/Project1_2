@@ -1,6 +1,6 @@
 package Module.Graphics;
 
-import Module.Math.Vector2DConverter;
+import Module.Math.ADT.Vector2DConverter;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

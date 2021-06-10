@@ -1,7 +1,7 @@
 package Module;
 
-import Module.Math.Vector3D;
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 
 public class Config {
     public static final boolean DEBUG = true;

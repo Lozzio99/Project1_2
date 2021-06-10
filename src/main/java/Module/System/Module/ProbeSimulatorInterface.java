@@ -7,7 +7,7 @@
 
 package Module.System.Module;
 
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3dInterface;
 
 /**
  * An interface for simulating a probe launched from Earth

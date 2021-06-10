@@ -1,8 +1,8 @@
 package Module.Math.Optimisation;
 
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Solvers.ODESolverInterface;
-import Module.Math.Vector3D;
-import Module.Math.Vector3dInterface;
 import Module.System.State.StateInterface;
 import Module.System.SystemInterface;
 

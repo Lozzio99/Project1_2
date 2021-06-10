@@ -1,8 +1,8 @@
 package Module.Graphics;
 
-import Module.Math.Vector2DConverter;
-import Module.Math.Vector3D;
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector2DConverter;
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
 import static Module.Main.simulation;
-import static Module.Math.Vector2DConverter.getScale;
+import static Module.Math.ADT.Vector2DConverter.getScale;
 
 public class ModuleScene extends Scene {
 

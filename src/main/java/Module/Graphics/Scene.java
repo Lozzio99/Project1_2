@@ -1,19 +1,17 @@
 package Module.Graphics;
 
 
-import Module.Math.Vector2DConverter;
-import Module.Math.Vector3D;
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector2DConverter;
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 
 import static Module.Main.simulation;
 

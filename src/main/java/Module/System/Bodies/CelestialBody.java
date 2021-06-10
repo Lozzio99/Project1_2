@@ -1,6 +1,6 @@
 package Module.System.Bodies;
 
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3dInterface;
 
 import java.awt.*;
 

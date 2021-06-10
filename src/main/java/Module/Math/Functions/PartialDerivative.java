@@ -1,5 +1,7 @@
-package Module.Math;
+package Module.Math.Functions;
 
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Optimisation.ObjectiveFunction;
 
 import java.util.concurrent.CompletableFuture;

@@ -1,8 +1,8 @@
 package Module.Math.Solvers;
 
 
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ODEFunctionInterface;
-import Module.Math.Vector3dInterface;
 import Module.System.State.RateInterface;
 import Module.System.State.RateOfChange;
 import Module.System.State.StateInterface;

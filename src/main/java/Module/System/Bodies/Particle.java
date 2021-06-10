@@ -1,6 +1,6 @@
 package Module.System.Bodies;
 
-import Module.Math.Vector3D;
+import Module.Math.ADT.Vector3D;
 
 import java.awt.*;
 import java.util.Random;

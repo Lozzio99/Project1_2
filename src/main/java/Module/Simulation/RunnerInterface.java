@@ -1,7 +1,7 @@
 package Module.Simulation;
 
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Solvers.ODESolverInterface;
-import Module.Math.Vector3dInterface;
 
 import java.util.concurrent.ScheduledExecutorService;
 

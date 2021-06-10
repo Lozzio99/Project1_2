@@ -1,6 +1,6 @@
 package Module.System;
 
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3dInterface;
 import Module.System.Bodies.CelestialBody;
 import Module.System.State.StateInterface;
 

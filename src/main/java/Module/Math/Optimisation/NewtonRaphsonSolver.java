@@ -1,9 +1,9 @@
 package Module.Math.Optimisation;
 
-import Module.Math.Matrix;
-import Module.Math.PartialDerivative;
-import Module.Math.Vector3D;
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Matrix;
+import Module.Math.ADT.Vector3D;
+import Module.Math.ADT.Vector3dInterface;
+import Module.Math.Functions.PartialDerivative;
 
 import static Module.Math.Optimisation.RocketSimulatorModel.*;
 

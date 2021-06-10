@@ -1,6 +1,6 @@
 package Module.Math.Optimisation;
 
-import Module.Math.Vector3dInterface;
+import Module.Math.ADT.Vector3dInterface;
 
 /**
  * The interface Newt raph function.

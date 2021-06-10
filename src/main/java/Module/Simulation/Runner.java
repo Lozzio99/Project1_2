@@ -1,9 +1,9 @@
 package Module.Simulation;
 
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ModuleFunction;
 import Module.Math.Functions.ODEFunctionInterface;
 import Module.Math.Solvers.*;
-import Module.Math.Vector3dInterface;
 import Module.System.Module.DecisionMaker;
 import org.jetbrains.annotations.Contract;
 
