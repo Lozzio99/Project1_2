@@ -65,7 +65,8 @@ public class RungeKuttaSolver<E> implements ODESolverInterface<E> {
                             ((Double) k4.get()));
             k5.set(k5.get() / 6);
             return y.addMul(h, (RateOfChange<E>) k5);
-        } else throw new UnsupportedOperationException();
+        } else
+            throw new UnsupportedOperationException();
     }
 
 

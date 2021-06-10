@@ -1,7 +1,6 @@
 package Module.Math.Solvers;
 
 import Module.Math.Functions.ODEFunctionInterface;
-import Module.System.State.RateInterface;
 import Module.System.State.StateInterface;
 
 /**
@@ -28,15 +27,15 @@ public class MidPointSolver<E> implements ODESolverInterface<E> {
      */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
-        RateInterface<E> k0 = f.call(t, y);
-        RateInterface<E> k1 = f.call(t + (h / 2), y.addMul(h, k0));
-        return y.addMul(h / 2, k1);
+        StateInterface<E> mid = y.addMul(h / 2, f.call(t, y));
+        StateInterface<E> next = y.addMul(h, f.call(t + (h / 2), mid));
+        next.getRateOfChange().set(mid.getRateOfChange().get());
+        return next;
     }
 
     @Override
     public ODEFunctionInterface<E> getFunction() {
         return this.f;
     }
-
 
 }

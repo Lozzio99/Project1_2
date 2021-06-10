@@ -21,10 +21,10 @@ public class PartialDerivative {
      * @param n  number of variable, regarding which partial derivatives are computed (e.g. df1/dx, dfn/dx)
      * @return vector of partial derivatives
      */
-    public static Vector3D getPartialDerivatives(NewtRaphFunction fX, Vector3D v, double h, int n) {
-        Vector3dInterface diff = fX.modelFx(new Vector3D(v.getX()+H[n][0]*h, v.getY()+H[n][1]*h, v.getZ()+H[n][2]*h))
-                .sub(fX.modelFx(new Vector3D(v.getX()-H[n][0]*h, v.getY()-H[n][1]*h, v.getZ()-H[n][2]*h)));
-        return (Vector3D) diff.div(2*h);
+    public static Vector3dInterface getPartialDerivatives(NewtRaphFunction fX, Vector3D v, double h, int n) {
+        Vector3dInterface diff = fX.modelFx(new Vector3D(v.getX() + H[n][0] * h, v.getY() + H[n][1] * h, v.getZ() + H[n][2] * h))
+                .sub(fX.modelFx(new Vector3D(v.getX() - H[n][0] * h, v.getY() - H[n][1] * h, v.getZ() - H[n][2] * h)));
+        return diff.div(2 * h);
     }
 
     /**
@@ -52,7 +52,7 @@ public class PartialDerivative {
             m[1][i] = res.getY();
             m[2][i] = res.getZ();
         }
-         */
+        */
 
 
         CompletableFuture<Void> allFutures =

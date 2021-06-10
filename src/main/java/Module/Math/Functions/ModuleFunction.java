@@ -44,7 +44,7 @@ public final class ModuleFunction {
         currentTime = ct;
     }
 
-    private static Vector3dInterface velocityFromGravityAcceleration(final StateInterface<Vector3dInterface> y, double h) {
+    public static Vector3dInterface velocityFromGravityAcceleration(final StateInterface<Vector3dInterface> y, double h) {
         //LOGIC HERE for single body
         // Vector have 3 components [ xPos, yPos, angle ];
         // must implement function for (xVel, yVel, angleVel)
@@ -52,7 +52,18 @@ public final class ModuleFunction {
         final Vector3dInterface newRate = new Vector3D(0, 0, 0);
         newRate.setX(sin(y.get().getZ()) * 0);  //must multiply by u and v then
         newRate.setY((cos(y.get().getZ()) * 0) - G);
-        newRate.setZ(y.get().getZ());
+        double theta = y.getRateOfChange().get().getZ();
+        newRate.setZ(y.get().getZ() - theta);
+        // for Dan Midpoint Part
+        //-----------
+        //
+        //
+        // ----------
+        /*
+            newRate.setX(sin(y.get().getZ()) * 0);  //must multiply by u and v then
+            newRate.setY((cos(y.get().getZ()) * 0) - G);
+            newRate.setZ(y.get().getZ() );
+        */
         return newRate;
     }
 

@@ -43,19 +43,32 @@ public class StandardVerletSolver<E> implements ODESolverInterface<E> {
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
         // next position
         if (y.get() instanceof Vector3dInterface) {
-            StateInterface<Vector3dInterface> diff;
+            StateInterface<E> next;
             if (first) {
                 ODESolverInterface<Vector3dInterface> solver = new RungeKuttaSolver<>(new ModuleFunction().evaluateCurrentAccelerationFunction());
-                diff = solver.step(solver.getFunction(), t, new SystemState<>((Vector3dInterface) y.get()), h);
+                next = (SystemState<E>) solver.step(solver.getFunction(), t, (SystemState<Vector3dInterface>) y, h);
                 first = false;
             } else {
-                StateInterface<Vector3dInterface> subPrev = new SystemState<>(((Vector3dInterface) prevState.get()).mul(-1));
-                StateInterface<Vector3dInterface> twiceY = new SystemState<>(((Vector3dInterface) y.get()).mul(2));
-                StateInterface<E> rateMulPart = y.addMul(h * h, f.call(1, y));
-                diff = new SystemState<>(subPrev.get().sumOf(twiceY.get(), (Vector3dInterface) rateMulPart.get()));
+                /*
+                Vector3dInterface pos = ((Vector3dInterface) y.get()).mul(2).sub(((Vector3dInterface) prevState.get()));
+                Vector3dInterface fp = ((Vector3dInterface) f.call(t, y).get());
+                pos = pos.addMul(h*h,fp);
+                // (x_n+1 - x_n)/h
+                Vector3dInterface veln1 = ((Vector3dInterface) y.getRateOfChange().get()).sub((Vector3dInterface) prevState.getRateOfChange().get());
+                veln1 = veln1.div(h);
+                //Vector3dInterface vel =  ((Vector3dInterface) y.get()).addMul(h,fp).sub(((Vector3dInterface) y.get()));
+                next = (SystemState<E>) new SystemState<>(pos,veln1);
+                 */
+                // 2*(x_n) - (x_n-1) + f(x_n,t_n)*h^2
+                StateInterface<E> nextF = y.addMul(h * h, f.call(t, y));
+                Vector3dInterface p = ((Vector3dInterface) nextF.get());
+                p = p.add((Vector3dInterface) y.get()).sub((Vector3dInterface) prevState.get());
+                Vector3dInterface v = ((Vector3dInterface) nextF.getRateOfChange().get());
+                v = v.add((Vector3dInterface) y.getRateOfChange().get()).sub((Vector3dInterface) prevState.getRateOfChange().get());
+                next = (SystemState<E>) new SystemState<>(p, v);
             }
-            prevState = new SystemState<>(y.get());
-            return ((SystemState<E>) diff);
+            prevState = new SystemState<>(y.get(), y.getRateOfChange().get());
+            return next;
         } else throw new UnsupportedOperationException();
 
     }
