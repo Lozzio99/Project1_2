@@ -1,21 +1,24 @@
 package Module.System.State;
 
-import Module.Math.Vector3dInterface;
+public class RateOfChange<E> implements RateInterface<E> {
+    E vel;
 
-public class RateOfChange implements RateInterface<Vector3dInterface> {
-    Vector3dInterface vel;
-
-    public RateOfChange(Vector3dInterface v) {
+    public RateOfChange(E v) {
         this.vel = v;
     }
 
     @Override
-    public Vector3dInterface get() {
+    public E get() {
         return this.vel;
     }
 
     @Override
-    public void set(Vector3dInterface v) {
+    public void set(E v) {
         this.vel = v;
+    }
+
+    @Override
+    public String toString() {
+        return vel.toString();
     }
 }

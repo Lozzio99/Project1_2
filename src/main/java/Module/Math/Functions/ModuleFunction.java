@@ -26,7 +26,7 @@ public final class ModuleFunction {
         double theta = y.getRateOfChange().get().getZ();
         v = y.getRateOfChange().get().addMul(h, v);
         v.setZ(v.getZ() - theta);
-        return new RateOfChange(v);
+        return new RateOfChange<>(v);
     };
 
     /**

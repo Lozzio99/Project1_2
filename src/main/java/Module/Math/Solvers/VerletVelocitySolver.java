@@ -12,16 +12,16 @@ import Module.System.State.SystemState;
  * Verlet Velocity Solver (both positions and velocity, less round-off errors)
  * Second order Solver
  */
-public class VerletVelocitySolver implements ODESolverInterface<Vector3dInterface> {
+public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
 
-    private final ODEFunctionInterface<Vector3dInterface> f;
+    private final ODEFunctionInterface<E> f;
 
     /**
      * Instantiates a new Verlet velocity solver.
      *
      * @param f the f
      */
-    public VerletVelocitySolver(final ODEFunctionInterface<Vector3dInterface> f) {
+    public VerletVelocitySolver(final ODEFunctionInterface<E> f) {
         this.f = f;
     }
 
@@ -41,26 +41,30 @@ public class VerletVelocitySolver implements ODESolverInterface<Vector3dInterfac
      * @return new state
      */
     @Override
-    public StateInterface<Vector3dInterface> step(ODEFunctionInterface<Vector3dInterface> f, double t, StateInterface<Vector3dInterface> y, double h) {
-        // next position
-        RateInterface<Vector3dInterface> velocity = y.getRateOfChange();
-        // next position
-        StateInterface<Vector3dInterface> part2 = (y.addMul(0.5 * h * h, f.call(1, y)));
-        part2.set(part2.get().add(y.get()));
-        StateInterface<Vector3dInterface> part3 = y.addMul(h, velocity);
-        StateInterface<Vector3dInterface> part4 = new SystemState(part2.get().add(part3.get()));
+    public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
+        if (y.get() instanceof Vector3dInterface) {
+            // next position
+            RateInterface<Vector3dInterface> velocity = (RateOfChange<Vector3dInterface>) y.getRateOfChange();
+            // next position
+            StateInterface<Vector3dInterface> part2 = (SystemState<Vector3dInterface>) y.addMul(0.5 * h * h, f.call(1, y));
+            part2.set(part2.get().add(((Vector3dInterface) y.get())));
+            SystemState<Vector3dInterface> part3 = (SystemState<Vector3dInterface>) y.addMul(h, (RateOfChange<E>) velocity);
+            StateInterface<Vector3dInterface> part4 = new SystemState<>(part2.get().add(part3.get()));
+            RateInterface<Vector3dInterface> part5 = (RateOfChange<Vector3dInterface>) f.call(1, (SystemState<E>) part4);
+            part5.set(part5.get().add((Vector3dInterface) f.call(1, y).get()));
+            RateOfChange<Vector3dInterface> part6 = new RateOfChange<>(part5.get().mul(0.5 * h));
+            RateOfChange<Vector3dInterface> part7 = new RateOfChange<>(velocity.get().add(part6.get()));
+            part4.getRateOfChange().set(part7.get());
+            return (SystemState<E>) part4;
+        } else {
+            throw new UnsupportedOperationException();
+        }
 
-        RateInterface<Vector3dInterface> part5 = f.call(1, part4);
-        part5.set(part5.get().add(f.call(1, y).get()));
-        RateInterface<Vector3dInterface> part6 = new RateOfChange(part5.get().mul(0.5 * h));
-        RateInterface<Vector3dInterface> part7 = new RateOfChange(velocity.get().add(part6.get()));
-        part4.getRateOfChange().set(part7.get());
-        return part4;
     }
 
 
     @Override
-    public ODEFunctionInterface<Vector3dInterface> getFunction() {
+    public ODEFunctionInterface<E> getFunction() {
         return f;
     }
 

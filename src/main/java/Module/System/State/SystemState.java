@@ -3,38 +3,58 @@ package Module.System.State;
 import Module.Math.Vector3D;
 import Module.Math.Vector3dInterface;
 
-public class SystemState implements StateInterface<Vector3dInterface> {
-    Vector3dInterface position;
-    RateInterface<Vector3dInterface> vel;
+public class SystemState<E> implements StateInterface<E> {
+    E position;
+    RateInterface<E> vel;
 
-    public SystemState(Vector3dInterface pos) {
+    @SuppressWarnings("{unchecked,unsafe}")
+    public SystemState(E pos) {
         this.position = pos;
-        this.vel = new RateOfChange(new Vector3D());
+        if (pos instanceof Vector3dInterface) {
+            RateInterface<Vector3dInterface> r = new RateOfChange<>(new Vector3D(0, 0, 0));
+            this.vel = (RateOfChange<E>) r;
+        } else if (pos instanceof Double) {
+            RateInterface<Double> r = new RateOfChange<>(0.);
+            this.vel = (RateOfChange<E>) r;
+        } else throw new UnsupportedOperationException();
     }
 
-    public SystemState(Vector3dInterface pos, Vector3dInterface vel) {
+    public SystemState(E pos, E vel) {
         this.position = pos;
-        this.vel = new RateOfChange(vel);
+        this.vel = new RateOfChange<>(vel);
     }
 
     @Override
-    public StateInterface<Vector3dInterface> addMul(double step, RateInterface<Vector3dInterface> rate) {
-        return new SystemState(this.position.addMul(step, rate.get()), rate.get());
+    @SuppressWarnings("{unchecked,unsafe}")
+    public StateInterface<E> addMul(double step, RateInterface<E> rate) {
+        if (this.position instanceof Vector3dInterface) {
+            StateInterface<Vector3dInterface> s = new SystemState<>(((Vector3dInterface) this.position).addMul(step, ((Vector3dInterface) rate.get())), ((Vector3dInterface) rate.get()));
+            return (SystemState<E>) s;
+        } else if (this.position instanceof Double) {
+            StateInterface<Double> s = new SystemState<>(((Double) this.position) + (step * ((Double) rate.get())), ((Double) rate.get()));
+            return (SystemState<E>) s;
+        } else
+            throw new UnsupportedOperationException();
     }
 
 
     @Override
-    public Vector3dInterface get() {
+    public E get() {
         return position;
     }
 
     @Override
-    public void set(Vector3dInterface v) {
+    public void set(E v) {
         this.position = v;
     }
 
     @Override
-    public RateInterface<Vector3dInterface> getRateOfChange() {
+    public RateInterface<E> getRateOfChange() {
         return vel;
+    }
+
+    @Override
+    public String toString() {
+        return "[ " + this.position.toString() + " ; " + this.getRateOfChange().toString() + " ]";
     }
 }

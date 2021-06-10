@@ -1,7 +1,6 @@
 package Module.Math.Solvers;
 
 import Module.Math.Functions.ODEFunctionInterface;
-import Module.Math.Vector3dInterface;
 import Module.System.State.RateInterface;
 import Module.System.State.StateInterface;
 
@@ -9,15 +8,15 @@ import Module.System.State.StateInterface;
  * The type Mid point solver.
  * Second order Solver
  */
-public class MidPointSolver implements ODESolverInterface<Vector3dInterface> {
-    private final ODEFunctionInterface<Vector3dInterface> f;
+public class MidPointSolver<E> implements ODESolverInterface<E> {
+    private final ODEFunctionInterface<E> f;
 
     /**
      * Instantiates a new Mid point solver.
      *
      * @param f the f
      */
-    public MidPointSolver(final ODEFunctionInterface<Vector3dInterface> f) {
+    public MidPointSolver(final ODEFunctionInterface<E> f) {
         this.f = f;
     }
 
@@ -28,15 +27,14 @@ public class MidPointSolver implements ODESolverInterface<Vector3dInterface> {
      * @return the next state of the simulation based on A Midpoint Step
      */
     @Override
-    public StateInterface<Vector3dInterface> step(ODEFunctionInterface<Vector3dInterface> f, double t, StateInterface<Vector3dInterface> y, double h) {
-
-        RateInterface h0 = f.call(t, y);
-        RateInterface h2 = f.call(t + (h / 2), y.addMul(h, h0));
-        return y.addMul(h / 2, h2);
+    public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
+        RateInterface<E> k0 = f.call(t, y);
+        RateInterface<E> k1 = f.call(t + (h / 2), y.addMul(h, k0));
+        return y.addMul(h / 2, k1);
     }
 
     @Override
-    public ODEFunctionInterface<Vector3dInterface> getFunction() {
+    public ODEFunctionInterface<E> getFunction() {
         return this.f;
     }
 

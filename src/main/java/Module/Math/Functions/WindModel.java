@@ -24,7 +24,7 @@ public class WindModel {
     //TODO: modify the current state by checking the height(y component) and affecting the horizontal velocity
     // (x component) of the <E> (vector) in the state
     public StateInterface<Vector3dInterface> perturb(StateInterface<Vector3dInterface> currentState) {
-        return new SystemState(new Vector3D());
+        return new SystemState<>(new Vector3D());
     }
 
 }

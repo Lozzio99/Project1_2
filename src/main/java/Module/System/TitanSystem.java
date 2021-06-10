@@ -28,11 +28,11 @@ public class TitanSystem implements SystemInterface {
 
     @Override
     public void init() {
-        this.state = new SystemState(new Vector3D());
+        this.state = new SystemState<>(new Vector3D());
         this.bodies = new ArrayList<>();
         this.bodies.add(new ModuleSimulator());
         this.bodies.get(0).initProperties();
-        this.state = new SystemState(this.bodies.get(0).getVectorLocation(), this.bodies.get(0).getVectorVelocity());
+        this.state = new SystemState<>(this.bodies.get(0).getVectorLocation(), this.bodies.get(0).getVectorVelocity());
     }
 
     @Override

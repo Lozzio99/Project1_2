@@ -12,8 +12,8 @@ public class Vector3D implements Vector3dInterface {
     /**
      * The X.
      */
-    final double[] val;
-    int dim = 0;
+    final private double[] val;
+    final private int dim;
 
     /**
      * Instantiates a new Vector 3 d.
@@ -49,6 +49,7 @@ public class Vector3D implements Vector3dInterface {
     public Vector3D(double... val) {
         if (val.length == 0) {
             this.val = new double[]{0, 0, 0};
+            this.dim = 3;
         } else {
             dim = val.length;
             this.val = val;
@@ -87,8 +88,14 @@ public class Vector3D implements Vector3dInterface {
     }
 
     @Override
-    public Vector3dInterface sumOf(Vector3dInterface... k2) {
-        return null;
+    public Vector3dInterface sumOf(Vector3dInterface... k) {
+        Vector3dInterface res = new Vector3D(Arrays.copyOf(this.getVal(), this.getVal().length));
+        for (int i = 0; i < k.length; i++) {
+            for (int j = 0; j < k[i].getVal().length; j++) {
+                res.getVal()[j] += k[i].getVal()[j];
+            }
+        }
+        return res;
     }
 
     @Override

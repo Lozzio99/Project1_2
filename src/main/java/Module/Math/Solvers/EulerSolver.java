@@ -2,26 +2,25 @@ package Module.Math.Solvers;
 
 
 import Module.Math.Functions.ODEFunctionInterface;
-import Module.Math.Vector3dInterface;
 import Module.System.State.StateInterface;
 
 /**
  * The type Euler solver.
  * First Order Solver
  */
-public class EulerSolver implements ODESolverInterface<Vector3dInterface> {
+public class EulerSolver<E> implements ODESolverInterface<E> {
 
     /**
      * The Single core f.
      */
-    private final ODEFunctionInterface<Vector3dInterface> f;
+    private final ODEFunctionInterface<E> f;
 
     /**
      * Instantiates a new Euler solver.
      *
      * @param f the f
      */
-    public EulerSolver(final ODEFunctionInterface<Vector3dInterface> f) {
+    public EulerSolver(final ODEFunctionInterface<E> f) {
         this.f = f;
     }
 
@@ -34,12 +33,12 @@ public class EulerSolver implements ODESolverInterface<Vector3dInterface> {
      * @return the next state of the simulation based on a Euler Step
      */
     @Override
-    public StateInterface<Vector3dInterface> step(ODEFunctionInterface<Vector3dInterface> f, double currentTime, StateInterface<Vector3dInterface> y, double stepSize) {
+    public StateInterface<E> step(ODEFunctionInterface<E> f, double currentTime, StateInterface<E> y, double stepSize) {
         return y.addMul(stepSize, f.call(currentTime, y));
     }
 
     @Override
-    public ODEFunctionInterface<Vector3dInterface> getFunction() {
+    public ODEFunctionInterface<E> getFunction() {
         return f;
     }
 
