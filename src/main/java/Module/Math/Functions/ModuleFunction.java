@@ -23,10 +23,9 @@ public final class ModuleFunction {
 
     private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> {
         Vector3dInterface v = velocityFromGravityAcceleration(y, h);
-        double theta = y.getRateOfChange().get().getZ();
-        v = y.getRateOfChange().get().addMul(h, v);
-        v.setZ(v.getZ() - theta);
-        return new RateOfChange<>(v);
+        Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);
+        v2.setZ(v2.getZ() - (v.getZ() * h));
+        return new RateOfChange<>(v2);
     };
 
     /**
@@ -52,8 +51,8 @@ public final class ModuleFunction {
         final Vector3dInterface newRate = new Vector3D(0, 0, 0);
         newRate.setX(sin(y.get().getZ()) * 0);  //must multiply by u and v then
         newRate.setY((cos(y.get().getZ()) * 0) - G);
-        double theta = y.getRateOfChange().get().getZ();
-        newRate.setZ(y.get().getZ() - theta);
+        newRate.setZ(y.get().getZ());
+
         // for Dan Midpoint Part
         //-----------
         //
