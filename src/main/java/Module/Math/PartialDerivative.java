@@ -1,6 +1,6 @@
 package Module.Math;
 
-import Module.Math.Functions.NewtRaphFunction;
+import Module.Math.Optimisation.ObjectiveFunction;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -21,10 +21,10 @@ public class PartialDerivative {
      * @param n  number of variable, regarding which partial derivatives are computed (e.g. df1/dx, dfn/dx)
      * @return vector of partial derivatives
      */
-    public static Vector3dInterface getPartialDerivatives(NewtRaphFunction fX, Vector3D v, double h, int n) {
-        Vector3dInterface diff = fX.modelFx(new Vector3D(v.getX() + H[n][0] * h, v.getY() + H[n][1] * h, v.getZ() + H[n][2] * h))
-                .sub(fX.modelFx(new Vector3D(v.getX() - H[n][0] * h, v.getY() - H[n][1] * h, v.getZ() - H[n][2] * h)));
-        return diff.div(2 * h);
+    public static Vector3D getPartialDerivatives(ObjectiveFunction fX, Vector3D v, double h, int n) {
+        Vector3dInterface diff = fX.modelFx(new Vector3D(v.getX()+H[n][0]*h, v.getY()+H[n][1]*h, v.getZ()+H[n][2]*h))
+                .sub(fX.modelFx(new Vector3D(v.getX()-H[n][0]*h, v.getY()-H[n][1]*h, v.getZ()-H[n][2]*h)));
+        return (Vector3D) diff.div(2*h);
     }
 
     /**
@@ -35,7 +35,7 @@ public class PartialDerivative {
      * @param h  the h
      * @return Jacobian matrix
      */
-    public static double[][] getJacobianMatrix(NewtRaphFunction fX, Vector3D v, double h) {
+    public static double[][] getJacobianMatrix(ObjectiveFunction fX, Vector3D v, double h) {
         double[][] m = new double[3][3];
         /*
         for (int i = 0; i < m.length; i++) {

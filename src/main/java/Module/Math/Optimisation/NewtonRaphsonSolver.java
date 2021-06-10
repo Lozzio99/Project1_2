@@ -1,12 +1,11 @@
-package Module.Math.Solvers;
+package Module.Math.Optimisation;
 
-import Module.Math.Functions.NewtRaphFunction;
 import Module.Math.Matrix;
 import Module.Math.PartialDerivative;
 import Module.Math.Vector3D;
 import Module.Math.Vector3dInterface;
 
-import static Module.System.Module.RocketSimulatorModel.*;
+import static Module.Math.Optimisation.RocketSimulatorModel.*;
 
 /**
  * The Newton raphson solver.
@@ -56,7 +55,7 @@ public class NewtonRaphsonSolver {
      */
     public final boolean LOG_ITERATION = true;
     private int i = 0;
-    private final NewtRaphFunction fX;
+    private final ObjectiveFunction fX;
     /**
      * The Init sol.
      */
@@ -71,7 +70,7 @@ public class NewtonRaphsonSolver {
      *
      * @param fX 3-d vector function
      */
-    public NewtonRaphsonSolver(NewtRaphFunction fX) {
+    public NewtonRaphsonSolver(ObjectiveFunction fX) {
         this.fX = fX;
     }
 

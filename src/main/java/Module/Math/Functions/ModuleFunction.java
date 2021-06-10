@@ -15,12 +15,12 @@ public final class ModuleFunction {
 
     private static final double G = 1.352;
     private static double currentTime;
+    private static Vector3dInterface AccTorque = new Vector3D(0,0,0);
     /**
      * Function that returns the rate of change of a state at a point in time
      * Given an initial state it can perform the f(t,y) on that and return a rate
      * which then will be added (e.g. eulerStepNextY = currentState + ( f.call * h)
      */
-
 
     private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> {
         Vector3dInterface v = velocityFromGravityAcceleration(y, h);
@@ -28,7 +28,6 @@ public final class ModuleFunction {
         v2.setZ(v2.getZ() - (v.getZ() * h));
         return new RateOfChange<>(v2);
     };
-
 
     /**
      * Instantiates a new Gravity function.
@@ -45,26 +44,15 @@ public final class ModuleFunction {
         currentTime = ct;
     }
 
-    public static Vector3dInterface velocityFromGravityAcceleration(final StateInterface<Vector3dInterface> y, double h) {
+    private Vector3dInterface velocityFromGravityAcceleration(final StateInterface<Vector3dInterface> y, double h) {
         //LOGIC HERE for single body
         // Vector have 3 components [ xPos, yPos, angle ];
         // must implement function for (xVel, yVel, angleVel)
         // in theory should affect the y component only , or partially the x component
         final Vector3dInterface newRate = new Vector3D(0, 0, 0);
-        newRate.setX(sin(y.get().getZ()) * 0);  //must multiply by u and v then
-        newRate.setY((cos(y.get().getZ()) * 0) - G);
-        newRate.setZ(y.get().getZ());
-
-        // for Dan Midpoint Part
-        //-----------
-        //
-        //
-        // ----------
-        /*
-            newRate.setX(sin(y.get().getZ()) * 0);  //must multiply by u and v then
-            newRate.setY((cos(y.get().getZ()) * 0) - G);
-            newRate.setZ(y.get().getZ() );
-        */
+        newRate.setX( sin(y.get().getZ()) * AccTorque.getX());  //must multiply by u and v then
+        newRate.setY((cos(y.get().getZ()) * AccTorque.getY()) - G);
+        newRate.setZ(AccTorque.getZ());
         return newRate;
     }
 
@@ -77,4 +65,7 @@ public final class ModuleFunction {
         return this.evalRateOfChange;
     }
 
+    public static void setAccTorque(Vector3dInterface accTorque) {
+        AccTorque = accTorque;
+    }
 }

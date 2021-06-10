@@ -1,7 +1,5 @@
-package Module.System.Module;
+package Module.Math.Optimisation;
 
-import Module.Math.Functions.NewtRaphFunction;
-import Module.Math.Solvers.NewtonRaphsonSolver;
 import Module.Math.Solvers.ODESolverInterface;
 import Module.Math.Vector3D;
 import Module.Math.Vector3dInterface;
@@ -23,7 +21,7 @@ public class RocketSimulatorModel {
      * The constant pF.
      */
 
-    public static NewtRaphFunction pFDelay = vector -> {
+    public static ObjectiveFunction pFDelay = vector -> {
         Vector3D aprxPos = new Vector3D();//(Vector3D) RocketSimulatorModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime, NewtonRaphsonSolver.waitTime);
         return targetPosition.sub(aprxPos);
     };
@@ -37,7 +35,7 @@ public class RocketSimulatorModel {
      * The constant pF.
      */
 
-    public static NewtRaphFunction pF = vector -> {
+    public static ObjectiveFunction pF = vector -> {
         Vector3dInterface aprxPos = RocketSimulatorModel.stateFx(NewtonRaphsonSolver.initPos, vector, NewtonRaphsonSolver.endTime);
         return targetPosition.sub(aprxPos);
     };

@@ -12,6 +12,7 @@ import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 
 import static Module.Main.simulation;
@@ -131,8 +132,9 @@ public abstract class Scene extends JPanel {
      */
     void create() {
         try {
-            File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("titan2.png")).getFile());
-            image = ImageIO.read(f);
+            //File f = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("titan2.png")).getFile());
+            URL resourse = new URL("https://cdn.mos.cms.futurecdn.net/k3FmsfkjnEQao2Ci2AtEUK-1200-80.jpg");
+            image = ImageIO.read(resourse);
         } catch (NullPointerException | IOException e) {
             IMAGE_FAILED = true;
             image = null;
