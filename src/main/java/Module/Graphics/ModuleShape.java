@@ -11,7 +11,6 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
@@ -28,10 +27,15 @@ public class ModuleShape {
 
     public static BufferedImage load() {
         try {
-            //File file = new File(Objects.requireNonNull(ModuleShape.class.getClassLoader().getResource("rocket.png")).getFile());
-            URL resource = new URL("https://thumbnail.imgbin.com/2/20/23/imgbin-apollo-11-apollo-lunar-module-apollo-16-apollo-program-moon-moon-landing-pgu5fLwTgH3eyKaS17WweFtet_t.jpg");
-            image = ImageIO.read(resource);
+            File file = new File(Objects.requireNonNull(ModuleShape.class.getClassLoader().getResource("rocket.png")).getFile());
+            image = ImageIO.read(file);
         } catch (IOException e) {
+            try {
+                URL resource = new URL("https://thumbnail.imgbin.com/2/20/23/imgbin-apollo-11-apollo-lunar-module-apollo-16-apollo-program-moon-moon-landing-pgu5fLwTgH3eyKaS17WweFtet_t.jpg");
+                image = ImageIO.read(resource);
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
             e.printStackTrace();
         }
         return image;
