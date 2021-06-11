@@ -1,8 +1,10 @@
 package Module.Math.Solvers;
 
 
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ODEFunctionInterface;
 import Module.System.State.StateInterface;
+import Module.System.State.SystemState;
 
 /**
  * The type Euler solver.
@@ -34,7 +36,20 @@ public class EulerSolver<E> implements ODESolverInterface<E> {
      */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double currentTime, StateInterface<E> y, double stepSize) {
+
+        Vector3dInterface position = (Vector3dInterface) y.get();
+
+
+        Vector3dInterface next_velocity = (Vector3dInterface) f.call(currentTime,y).get();
+        Vector3dInterface next_position = position.addMul(stepSize,next_velocity);
+
+        return new SystemState(next_position,next_velocity);
+
+
+        /*
         return y.addMul(stepSize, f.call(currentTime, y));
+
+         */
     }
 
     @Override

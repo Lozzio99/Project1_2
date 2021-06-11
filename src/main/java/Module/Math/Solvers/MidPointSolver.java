@@ -1,7 +1,9 @@
 package Module.Math.Solvers;
 
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ODEFunctionInterface;
 import Module.System.State.StateInterface;
+import Module.System.State.SystemState;
 
 /**
  * The type Mid point solver.
@@ -27,10 +29,29 @@ public class MidPointSolver<E> implements ODESolverInterface<E> {
      */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
+        Vector3dInterface position = (Vector3dInterface) y.get();
+
+        Vector3dInterface mid_velocity =(Vector3dInterface)  f.call( t+h*0.5, y).get();
+        Vector3dInterface mid_position = position.addMul(h*0.5,mid_velocity);
+
+
+
+        Vector3dInterface next_velocity =(Vector3dInterface)f.call(t+0.5*h,new SystemState(mid_position,mid_velocity)).get();
+        Vector3dInterface next_position = position.addMul(h,next_velocity);
+
+
+
+
+        return new SystemState(next_position,next_velocity);
+
+
+        /*
         StateInterface<E> mid = y.addMul(h / 2, f.call(t, y));
         StateInterface<E> next = y.addMul(h, f.call(t + (h / 2), mid));
         next.getRateOfChange().set(mid.getRateOfChange().get());
         return next;
+
+         */
     }
 
     @Override
