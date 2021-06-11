@@ -78,7 +78,7 @@ import static java.lang.Math.sin;
  @DisplayName("midPointSolve")
  void midPointSolve(){
 
- y =  solve(new MidPointSolver<>(dydx),0);
+ y =  solve(new MidPointSolver<>(dydx));
 
 
  printResults("MIDPOINT",exactFinalPos,exactFinalVel,y);
@@ -91,22 +91,42 @@ import static java.lang.Math.sin;
  @Test
  @DisplayName("rkSolve")
  void rkSolve(){
- solve(new RungeKuttaSolver<>(dydx),t);
+ solve(new RungeKuttaSolver<>(dydx));
 
  printResults("RK",exactFinalPos,exactFinalVel,y);
 
- //assertTrue(() -> Math.abs(exactFinalPos - y.get().get(0))<1e-2);
- //assertTrue(() -> Math.abs(exactFinalVel - y.getRateOfChange().get().get(0))<3e-2);
+ assertTrue(() -> Math.abs(exactFinalPos - y.get().get(0))<1e-2);
+ assertTrue(() -> Math.abs(exactFinalVel - y.getRateOfChange().get().get(0))<3e-2);
  }
  @Test
  @DisplayName("eulerSolve")
  void eulerSolve(){
- solve(new EulerSolver<>(dydx),stepSize);
+ solve(new EulerSolver<>(dydx));
 
  printResults("EULER",exactFinalPos,exactFinalVel,y);
 
  assertTrue(() -> Math.abs(exactFinalPos - y.get().get(0))<1e-2);
  assertTrue(() -> Math.abs(exactFinalVel - y.getRateOfChange().get().get(0))<1e-2);
+ }
+ @Test
+ @DisplayName("StandardVerletSolve")
+ void verletStdSolve(){
+  solve(new StandardVerletSolver<>(dydx));
+
+  printResults("StandartVerlet",exactFinalPos,exactFinalVel,y);
+
+  assertTrue(() -> Math.abs(exactFinalPos - y.get().get(0))<1e-2);
+  assertTrue(() -> Math.abs(exactFinalVel - y.getRateOfChange().get().get(0))<1e-2);
+ }
+ @Test
+ @DisplayName("VerletVelocitySolve")
+ void verletVelSolve(){
+  solve(new VerletVelocitySolver<>(dydx));
+
+  printResults("VerletVelocity",exactFinalPos,exactFinalVel,y);
+
+ // assertTrue(() -> Math.abs(exactFinalPos - y.get().get(0))<1e-2);
+ // assertTrue(() -> Math.abs(exactFinalVel - y.getRateOfChange().get().get(0))<3e-2);
  }
 
  @Test
@@ -131,8 +151,8 @@ import static java.lang.Math.sin;
 
  printResults("RK",exact1stepPos,exact1stepVel,nextY);
 
- //assertTrue(() -> Math.abs(exact1stepPos - nextY.get().get(0))<1e-2);
- //assertTrue(() -> Math.abs(exact1stepVel - nextY.getRateOfChange().get().get(0))<1e-2);
+ assertTrue(() -> Math.abs(exact1stepPos - nextY.get().get(0))<1e-2);
+ assertTrue(() -> Math.abs(exact1stepVel - nextY.getRateOfChange().get().get(0))<1e-2);
  }
  @Test
  @DisplayName("eulerStep")
@@ -147,16 +167,30 @@ import static java.lang.Math.sin;
  assertTrue(() -> Math.abs(exact1stepPos - nextY.get().get(0))<1e-2);
  assertTrue(() -> Math.abs(exact1stepVel - nextY.getRateOfChange().get().get(0))<1e-2);
  }
+ @Test
+ @DisplayName("StandardVerletStep")
+ void verletStdStep(){
+  solver = new StandardVerletSolver<>(dydx);
+  StateInterface<Vector3dInterface> nextY;
+
+  nextY = solver.step(dydx, stepSize, y, stepSize);
+
+  printResults("StandardVerlet",exact1stepPos,exact1stepVel,nextY);
+
+  assertTrue(() -> Math.abs(exact1stepPos - nextY.get().get(0))<1e-2);
+  assertTrue(() -> Math.abs(exact1stepVel - nextY.getRateOfChange().get().get(0))<1e-2);
+ }
+
 
  private void printResults(String solver, double exactSolutionPos,double exactSolutionVel, StateInterface<Vector3dInterface> y){
  System.out.println(solver+ " : " + y.get());
  System.out.println(solver+ " EXACT POS: "+ (exactSolutionPos - y.get().get(0)));
  System.out.println(solver+ " EXACT VEL: "+ (exactSolutionVel - y.getRateOfChange().get().get(0)));
  }
- private StateInterface<Vector3dInterface> solve(ODESolverInterface<Vector3dInterface> solver,double time){
+ private StateInterface<Vector3dInterface> solve(ODESolverInterface<Vector3dInterface> solver){
  StateInterface<Vector3dInterface> nextY;
         while(t<=tf+stepSize){
-     nextY = solver.step(dydx, time, y, stepSize);
+     nextY = solver.step(dydx, t, y, stepSize);
      y = nextY.copy();
      t+=stepSize;
      }
