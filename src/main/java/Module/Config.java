@@ -13,7 +13,7 @@ public class Config {
     public static final int VERLET_STD = 2;
     public static final int VERLET_VEL = 3;
     public static final int MIDPOINT = 4;
-    public static int SOLVER = RK4;
+    public static int SOLVER = EULER;
 
     public static final int OPEN = 0;
     public static final int CLOSED = 1;

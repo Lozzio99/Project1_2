@@ -22,5 +22,5 @@ public interface StateInterface<E> {
 
     RateInterface<E> getRateOfChange();
 
-
+    StateInterface<E> copy();
 }

@@ -57,6 +57,13 @@ public class SystemState<E> implements StateInterface<E> {
 
 
     @Override
+    public StateInterface<E> copy() {
+        StateInterface<E> state = new SystemState(position);
+        state.getRateOfChange().set(vel.get());
+        return state;
+    }
+
+    @Override
     public String toString() {
         return "[ " + this.position.toString() + " ; " + this.getRateOfChange().toString() + " ]";
     }
