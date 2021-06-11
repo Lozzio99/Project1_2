@@ -110,8 +110,8 @@ public class ModuleTest {
         System.out.println("POSITION DIFF: " +Math.abs(exactYPosition - y.get().get(1)));
         System.out.println("VELOCITY DIFF: " +Math.abs(exactYVelocity - y.getRateOfChange().get().get(1)));
 
-       // assertTrue(() -> Math.abs(exactYPosition - y.get().get(1))<1);
-      //  assertTrue(() -> Math.abs(exactYVelocity - y.getRateOfChange().get().get(1))<1e-1);
+        assertTrue(() -> Math.abs(exactYPosition - y.get().get(1))<1);
+        assertTrue(() -> Math.abs(exactYVelocity - y.getRateOfChange().get().get(1))<1e-1);
     }
 
     @Test

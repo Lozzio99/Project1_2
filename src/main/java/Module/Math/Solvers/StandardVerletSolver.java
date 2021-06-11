@@ -3,6 +3,7 @@ package Module.Math.Solvers;
 import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ModuleFunction;
 import Module.Math.Functions.ODEFunctionInterface;
+import Module.System.State.RateInterface;
 import Module.System.State.StateInterface;
 import Module.System.State.SystemState;
 
@@ -55,6 +56,7 @@ public class StandardVerletSolver<E> implements ODESolverInterface<E> {
     @SuppressWarnings("{unchecked,unsafe}")
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
         // next position
+
         if (y.get() instanceof Vector3dInterface) {
             StateInterface<E> next;
             if (first) {
@@ -73,12 +75,18 @@ public class StandardVerletSolver<E> implements ODESolverInterface<E> {
                 next = (SystemState<E>) new SystemState<>(pos,veln1);
                  */
                 // 2*(x_n) - (x_n-1) + f(x_n,t_n)*h^2
-                StateInterface<E> nextF = y.addMul(h * h, f.call(t, y));
-                Vector3dInterface p = ((Vector3dInterface) nextF.get());
-                p = p.add((Vector3dInterface) y.get()).sub((Vector3dInterface) prevState.get());
-                Vector3dInterface v = ((Vector3dInterface) nextF.getRateOfChange().get());
-                v = v.add((Vector3dInterface) y.getRateOfChange().get()).sub((Vector3dInterface) prevState.getRateOfChange().get());
-                next = (SystemState<E>) new SystemState<>(p, v);
+
+
+                Vector3dInterface velocity = (Vector3dInterface) y.getRateOfChange().get();
+                Vector3dInterface position = (Vector3dInterface) y.get();
+
+                Vector3dInterface acceleration =(Vector3dInterface) f.call(t,y).get();
+
+                Vector3dInterface next_velocity = velocity.addMul(h,acceleration);
+                Vector3dInterface next_position = position.mul(2).sub((Vector3dInterface) prevState.get()).addMul(h*h,acceleration);
+
+                next = new SystemState(next_position,next_velocity);
+
             }
             prevState = new SystemState<>(y.get(), y.getRateOfChange().get());
             return next;
