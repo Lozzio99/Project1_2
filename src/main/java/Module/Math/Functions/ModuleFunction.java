@@ -24,9 +24,10 @@ public final class ModuleFunction {
 
     private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> {
         Vector3dInterface v = velocityFromGravityAcceleration(y, h);
-        Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);
-        v2.setZ(v2.getZ() - (v.getZ() * h));
-        return new RateOfChange<>(v2);
+        //Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);
+        //v2.setZ(v2.getZ() - (v.getZ() * h));
+
+        return new RateOfChange<>(v);
     };
 
     /**
@@ -53,6 +54,7 @@ public final class ModuleFunction {
         newRate.setX( sin(y.get().getZ()) * AccTorque.getX());  //must multiply by u and v then
         newRate.setY((cos(y.get().getZ()) * AccTorque.getY()) - G);
         newRate.setZ(AccTorque.getZ());
+
         return newRate;
     }
 

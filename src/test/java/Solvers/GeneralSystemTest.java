@@ -1,8 +1,4 @@
-
-
 package Solvers;
-
-
 
 import Module.Math.ADT.Vector3D;
 import Module.Math.ADT.Vector3dInterface;
