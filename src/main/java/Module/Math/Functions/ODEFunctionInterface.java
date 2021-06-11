@@ -41,5 +41,4 @@ public interface ODEFunctionInterface<E> {
      */
     RateInterface<E> call(double t, StateInterface<E> y);
 
-
 }

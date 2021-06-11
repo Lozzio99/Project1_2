@@ -25,13 +25,15 @@ public class SystemState<E> implements StateInterface<E> {
     }
 
     @Override
-    @SuppressWarnings("{unchecked,unsafe}")
+    //@SuppressWarnings("{unchecked,unsafe}")
     public StateInterface<E> addMul(double step, RateInterface<E> rate) {
         if (this.position instanceof Vector3dInterface) {
-            StateInterface<Vector3dInterface> s = new SystemState<>(((Vector3dInterface) this.position).addMul(step, ((Vector3dInterface) rate.get())), ((Vector3dInterface) rate.get()));
+            Vector3dInterface vel = ((Vector3dInterface) this.vel.get()).addMul(step, ((Vector3dInterface) rate.get()));
+            StateInterface<Vector3dInterface> s = new SystemState<>(((Vector3dInterface) this.position).addMul(step, vel), vel);
             return (SystemState<E>) s;
         } else if (this.position instanceof Double) {
-            StateInterface<Double> s = new SystemState<>(((Double) this.position) + (step * ((Double) rate.get())), ((Double) rate.get()));
+            double v = ((Double) this.vel.get()) + (((Double) rate.get()) * step);
+            StateInterface<Double> s = new SystemState<>(((Double) this.position) + (step * v), v);
             return (SystemState<E>) s;
         } else
             throw new UnsupportedOperationException();
@@ -51,6 +53,14 @@ public class SystemState<E> implements StateInterface<E> {
     @Override
     public RateInterface<E> getRateOfChange() {
         return vel;
+    }
+
+
+    @Override
+    public StateInterface<E> copy() {
+        StateInterface<E> state = new SystemState(position);
+        state.getRateOfChange().set(vel.get());
+        return state;
     }
 
     @Override

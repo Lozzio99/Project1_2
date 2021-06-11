@@ -1,8 +1,5 @@
 package Module.System.Module;
 
-import Module.Math.ADT.Vector3dInterface;
-import Module.System.State.StateInterface;
-
 import static Module.Config.CLOSED;
 import static Module.Config.OPEN;
 
@@ -21,10 +18,7 @@ public class DecisionMaker {
         }
     }
 
-    public Vector3dInterface makeDecision(StateInterface<Vector3dInterface> currentState, double currentTime) {
-        Vector3dInterface state;
-        state = controller.controlFunction(currentState, currentTime);
-        return state;
+    public ControllerInterface getController() {
+        return controller;
     }
-
 }

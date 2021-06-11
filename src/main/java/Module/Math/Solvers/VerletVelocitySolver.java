@@ -1,10 +1,9 @@
 package Module.Math.Solvers;
 
 
+import Module.Math.ADT.Vector3D;
 import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ODEFunctionInterface;
-import Module.System.State.RateInterface;
-import Module.System.State.RateOfChange;
 import Module.System.State.StateInterface;
 import Module.System.State.SystemState;
 
@@ -15,6 +14,8 @@ import Module.System.State.SystemState;
 public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
 
     private final ODEFunctionInterface<E> f;
+    private Vector3dInterface acceleration;
+    private final boolean first = true;
 
     /**
      * Instantiates a new Verlet velocity solver.
@@ -42,6 +43,46 @@ public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
      */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
+        StateInterface<E> next;
+        Vector3dInterface position;
+        if ((y.get()) instanceof Vector3dInterface) {
+            position = (Vector3dInterface) y.get();
+            Vector3dInterface velocity = (Vector3dInterface) y.getRateOfChange().get();
+            /*
+            if (first) {
+
+                RungeKuttaSolver<Vector3dInterface> solver = new RungeKuttaSolver<>(new ModuleFunction().evaluateCurrentAccelerationFunction());
+                next = (StateInterface<E>) solver.step(solver.getFunction(), t, (SystemState<Vector3dInterface>) y, h);
+                acceleration = solver.getAcceleration();
+               acceleration = (Vector3dInterface) f.call(t,y).get(); // acceleration at time t (current time i.e. a_n)
+              //  next_acceleration = (Vector3dInterface) f.call(t+h,y).get(); // acceleration a_n+1
+
+                first = false;
+
+            }
+
+             */
+            if(first) {
+                //x_n+1 = x_n + (v_n)*h+1/2*(a_n)*(h^2)
+                //v_n+1 = v_n + 1/2*((a_n+1)+(a_n))*(h)
+                Vector3dInterface acceleration =(Vector3dInterface) f.call(t,y).get();
+                Vector3dInterface next_position = position.add(velocity.mul(h).addMul(h*h*0.5,acceleration));
+
+                Vector3dInterface next_acceleration = (Vector3dInterface) f.call(t, (SystemState<E>) new SystemState<>(next_position, new Vector3D())).get();
+                Vector3dInterface next_velocity = velocity.addMul(h * 0.5, next_acceleration.add(acceleration));
+                next = (SystemState<E>) new SystemState<>(next_position, next_velocity);
+
+                return next;
+            }
+        } else {
+            throw new UnsupportedOperationException();
+        }
+
+        return null;
+    }
+/*
+    @Override
+    public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
         if (y.get() instanceof Vector3dInterface) {
             // next position
             RateInterface<Vector3dInterface> velocity = (RateOfChange<Vector3dInterface>) y.getRateOfChange();
@@ -62,10 +103,15 @@ public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
 
     }
 
+ */
 
     @Override
     public ODEFunctionInterface<E> getFunction() {
         return f;
     }
 
+    @Override
+    public String toString() {
+        return "VerletVelocitySolver";
+    }
 }

@@ -34,7 +34,7 @@ public class EulerSolver<E> implements ODESolverInterface<E> {
      */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double currentTime, StateInterface<E> y, double stepSize) {
-        return y.addMul(stepSize, f.call(currentTime, y));
+       return y.addMul(stepSize, f.call(currentTime, y));
     }
 
     @Override
@@ -45,9 +45,7 @@ public class EulerSolver<E> implements ODESolverInterface<E> {
 
     @Override
     public String toString() {
-        return "EulerSolver{" +
-                "function used =" + f +
-                '}';
+        return "EulerSolver";
     }
 
 

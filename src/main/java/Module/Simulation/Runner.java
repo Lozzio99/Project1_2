@@ -4,7 +4,9 @@ import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ModuleFunction;
 import Module.Math.Functions.ODEFunctionInterface;
 import Module.Math.Solvers.*;
+import Module.System.Bodies.WindInterface;
 import Module.System.Module.DecisionMaker;
+import Module.System.State.StateInterface;
 import org.jetbrains.annotations.Contract;
 
 import java.util.concurrent.Executors;
@@ -17,9 +19,10 @@ import static Module.Config.*;
 public class Runner implements RunnerInterface {
     private final SimulationInterface simulation;
     private ODESolverInterface<Vector3dInterface> solver;
-    private ODEFunctionInterface<Vector3dInterface> function;
+    private ODEFunctionInterface<Vector3dInterface> gravityFunction;
     private ScheduledExecutorService service;
     private DecisionMaker moduleController;
+    private WindInterface wind;
 
     @Contract(pure = true)
     public Runner(SimulationInterface simulation) {
@@ -39,31 +42,25 @@ public class Runner implements RunnerInterface {
     @Override
     public void init() {
         switch (SOLVER) {
-            case EULER:{
-                this.solver = new EulerSolver(
-                        this.function = new ModuleFunction()
-                                .evaluateCurrentAccelerationFunction());
-            }
-            case RK4:{
-                this.solver = new RungeKuttaSolver(
-                        this.function = new ModuleFunction()
-                                .evaluateCurrentAccelerationFunction());
-            }
-            case VERLET_STD:{
-                this.solver = new StandardVerletSolver(
-                        this.function = new ModuleFunction()
-                                .evaluateCurrentAccelerationFunction());
-            }
-            case VERLET_VEL:{
-                this.solver = new VerletVelocitySolver(
-                        this.function = new ModuleFunction()
-                                .evaluateCurrentAccelerationFunction());
-            }
-            case MIDPOINT:{
-                this.solver = new MidPointSolver(
-                        this.function = new ModuleFunction()
-                                .evaluateCurrentAccelerationFunction());
-            }
+            case EULER -> this.solver = new EulerSolver<>(
+                    this.gravityFunction = new ModuleFunction()
+                            .evaluateCurrentAccelerationFunction());
+
+            case RK4 -> this.solver = new RungeKuttaSolver<>(
+                    this.gravityFunction = new ModuleFunction()
+                            .evaluateCurrentAccelerationFunction());
+
+            case VERLET_STD -> this.solver = new StandardVerletSolver<>(
+                    this.gravityFunction = new ModuleFunction()
+                            .evaluateCurrentAccelerationFunction());
+
+            case VERLET_VEL -> this.solver = new VerletVelocitySolver<>(
+                    this.gravityFunction = new ModuleFunction()
+                            .evaluateCurrentAccelerationFunction());
+
+            case MIDPOINT -> this.solver = new MidPointSolver<>(
+                    this.gravityFunction = new ModuleFunction()
+                            .evaluateCurrentAccelerationFunction());
         }
         this.moduleController = new DecisionMaker(CONTROLLER);
         this.service = Executors.newSingleThreadScheduledExecutor(Executors.privilegedThreadFactory());
@@ -78,14 +75,14 @@ public class Runner implements RunnerInterface {
 
     @Override
     public synchronized void loop() {
-        simulation.getGraphics().start(simulation.getSystem().getState().get()); //draw the state
-        System.out.println(simulation.getSystem().getState());
         // draw graphics
         simulation.getGraphics().start(simulation.getSystem().getState().get());
-        // update module function
-        Vector3dInterface update = moduleController.makeDecision(simulation.getSystem().getState(), CURRENT_TIME);
-        ModuleFunction.setAccTorque(update);
-        simulation.getSystem().updateState(solver.step(function, CURRENT_TIME, simulation.getSystem().getState(), STEP_SIZE));
+        // update module gravityFunction
+        StateInterface<Vector3dInterface> afterModuleDecision = solver.step(moduleController.getController().controlFunction(), CURRENT_TIME, simulation.getSystem().getState(), STEP_SIZE);
+        StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, afterModuleDecision, STEP_SIZE);
+        StateInterface<Vector3dInterface> afterWind = solver.step(wind.getWindFunction(), CURRENT_TIME, afterModuleDecision, STEP_SIZE);
+
+        simulation.getSystem().updateState(afterWind);
         CURRENT_TIME += STEP_SIZE;
         simulation.getSystem().start();
 

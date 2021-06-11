@@ -1,7 +1,5 @@
-package Module.Math;
+package Module.Math.ADT;
 
-import Module.Math.ADT.Vector3D;
-import Module.Math.ADT.Vector3dInterface;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -10,9 +8,7 @@ import static java.lang.Math.PI;
 import static java.lang.StrictMath.abs;
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class Vector3DTest {
-
 
     @Test
     @DisplayName("TestConstructors")
