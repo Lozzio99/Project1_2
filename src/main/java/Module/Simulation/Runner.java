@@ -39,28 +39,28 @@ public class Runner implements RunnerInterface {
     @Override
     public void init() {
         switch (SOLVER) {
-            case EULER:{
-                this.solver = new EulerSolver(
+            case EULER->{
+                this.solver = new EulerSolver<>(
                         this.function = new ModuleFunction()
                                 .evaluateCurrentAccelerationFunction());
             }
-            case RK4:{
-                this.solver = new RungeKuttaSolver(
+            case RK4->{
+                this.solver = new RungeKuttaSolver<>(
                         this.function = new ModuleFunction()
                                 .evaluateCurrentAccelerationFunction());
             }
-            case VERLET_STD:{
-                this.solver = new StandardVerletSolver(
+            case VERLET_STD->{
+                this.solver = new StandardVerletSolver<>(
                         this.function = new ModuleFunction()
                                 .evaluateCurrentAccelerationFunction());
             }
-            case VERLET_VEL:{
-                this.solver = new VerletVelocitySolver(
+            case VERLET_VEL->{
+                this.solver = new VerletVelocitySolver<>(
                         this.function = new ModuleFunction()
                                 .evaluateCurrentAccelerationFunction());
             }
-            case MIDPOINT:{
-                this.solver = new MidPointSolver(
+            case MIDPOINT->{
+                this.solver = new MidPointSolver<>(
                         this.function = new ModuleFunction()
                                 .evaluateCurrentAccelerationFunction());
             }

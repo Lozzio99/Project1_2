@@ -37,19 +37,32 @@ public class EulerSolver<E> implements ODESolverInterface<E> {
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double currentTime, StateInterface<E> y, double stepSize) {
 
+
+        /*
         Vector3dInterface position = (Vector3dInterface) y.get();
-
-
         Vector3dInterface next_velocity = (Vector3dInterface) f.call(currentTime,y).get();
         Vector3dInterface next_position = position.addMul(stepSize,next_velocity);
 
         return new SystemState(next_position,next_velocity);
 
-
-        /*
-        return y.addMul(stepSize, f.call(currentTime, y));
-
          */
+
+
+        Vector3dInterface acceleration =(Vector3dInterface)  f.call(currentTime, y).get();
+        Vector3dInterface velocity = (Vector3dInterface) y.getRateOfChange().get();
+        Vector3dInterface position = (Vector3dInterface) y.get();
+
+        Vector3dInterface nextVelocity = velocity.addMul(stepSize,acceleration);
+        Vector3dInterface nextPosition = position.addMul(stepSize,nextVelocity);
+
+        return new SystemState(nextPosition,nextVelocity);
+
+
+
+
+     //  return y.addMul(stepSize, f.call(currentTime, y));
+
+
     }
 
     @Override

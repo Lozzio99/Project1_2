@@ -6,6 +6,7 @@ import Module.Math.Functions.ODEFunctionInterface;
 import Module.System.State.RateInterface;
 import Module.System.State.RateOfChange;
 import Module.System.State.StateInterface;
+import Module.System.State.SystemState;
 
 /**
  * The type Runge kutta 4 th solver.
@@ -44,6 +45,7 @@ public class RungeKuttaSolver<E> implements ODESolverInterface<E> {
      * @return the next state of the simulation based on Runge-Kutta 4 Step
      */
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, final StateInterface<E> y, double h) {
+        /*
         RateInterface<E> k1, k2, k3, k4;
         k1 = f.call(t, y);
         k2 = f.call(t + (h / 2), y.addMul(0.5 * h, k1));
@@ -67,6 +69,40 @@ public class RungeKuttaSolver<E> implements ODESolverInterface<E> {
             return y.addMul(h, (RateOfChange<E>) k5);
         } else
             throw new UnsupportedOperationException();
+         */
+
+
+        Vector3dInterface position = (Vector3dInterface) y.get();
+        Vector3dInterface velocity = (Vector3dInterface) y.getRateOfChange().get();
+
+
+        Vector3dInterface k11,k12,k13,k14;  // position delta
+        Vector3dInterface k21,k22,k23,k24;  // velocity delta
+
+
+
+        k11 =  velocity.mul(h);
+        k21 =((Vector3dInterface) f.call(t,y).get()).mul(h);
+
+
+        k12 = velocity.add(k21.mul(0.5)).mul(h);
+        k22 = ((Vector3dInterface) f.call(t+h*0.5,
+                new SystemState(position.add(k11.mul(0.5)),velocity.add(k21.mul(0.5)))).get()).mul(h);
+
+
+        k13 =velocity.add(k22.mul(0.5)).mul(h);
+        k23 =((Vector3dInterface) f.call(t+h*0.5,new SystemState(position.add(k12.mul(0.5)),velocity.add(k22.mul(0.5)))).get()).mul(h);
+
+
+        k14 = velocity.add(k23).mul(h);
+        k24 =((Vector3dInterface) f.call(t+h,new SystemState(position.add(k13),velocity.add(k23))).get()).mul(h);
+
+
+         Vector3dInterface next_position =position.add(k11.sumOf(k12.mul(2),k13.mul(2),k14).div(6));
+         Vector3dInterface next_velocity =velocity.add(k21.sumOf(k22.mul(2),k23.mul(2),k24).div(6));
+
+
+        return new SystemState(next_position,next_velocity);
     }
 
 
