@@ -24,8 +24,7 @@ public final class ModuleFunction {
 
     private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> {
         Vector3dInterface v = velocityFromGravityAcceleration(y, h);
-        Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);
-        v2.setZ(v2.getZ() - (v.getZ() * h));
+        Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);  //x  + { x' + ( x'' *dt) }*dt
         return new RateOfChange<>(v2);
     };
 
@@ -50,8 +49,8 @@ public final class ModuleFunction {
         // must implement function for (xVel, yVel, angleVel)
         // in theory should affect the y component only , or partially the x component
         final Vector3dInterface newRate = new Vector3D(0, 0, 0);
-        newRate.setX( sin(y.get().getZ()) * AccTorque.getX());  //must multiply by u and v then
-        newRate.setY((cos(y.get().getZ()) * AccTorque.getY()) - G);
+        newRate.setX(sin(y.get().getZ()) * (AccTorque.getX()));  //must multiply by u and v then
+        newRate.setY((cos(y.get().getZ()) * (AccTorque.getY())) - G);
         newRate.setZ(AccTorque.getZ());
         return newRate;
     }

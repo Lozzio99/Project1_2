@@ -27,10 +27,7 @@ public class MidPointSolver<E> implements ODESolverInterface<E> {
      */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
-        StateInterface<E> mid = y.addMul(h / 2, f.call(t, y));
-        StateInterface<E> next = y.addMul(h, f.call(t + (h / 2), mid));
-        next.getRateOfChange().set(mid.getRateOfChange().get());
-        return next;
+        return y.addMul(h, f.call(t + (h / 2), y.addMul(h / 2, f.call(t, y))));
     }
 
     @Override
@@ -38,4 +35,8 @@ public class MidPointSolver<E> implements ODESolverInterface<E> {
         return this.f;
     }
 
+    @Override
+    public String toString() {
+        return "MidPointSolver";
+    }
 }

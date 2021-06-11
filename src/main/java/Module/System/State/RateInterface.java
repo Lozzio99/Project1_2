@@ -7,4 +7,5 @@ public interface RateInterface<E> {
     E get();
 
     void set(E v);
+
 }

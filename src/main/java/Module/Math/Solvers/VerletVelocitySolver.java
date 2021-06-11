@@ -68,4 +68,8 @@ public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
         return f;
     }
 
+    @Override
+    public String toString() {
+        return "VerletVelocitySolver";
+    }
 }

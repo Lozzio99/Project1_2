@@ -45,9 +45,7 @@ public class EulerSolver<E> implements ODESolverInterface<E> {
 
     @Override
     public String toString() {
-        return "EulerSolver{" +
-                "function used =" + f +
-                '}';
+        return "EulerSolver";
     }
 
 

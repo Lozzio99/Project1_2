@@ -52,6 +52,7 @@ public class StandardVerletSolver<E> implements ODESolverInterface<E> {
      * @return new state
      */
     @Override
+    @SuppressWarnings("{unchecked,unsafe}")
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
         // next position
         if (y.get() instanceof Vector3dInterface) {
@@ -97,5 +98,10 @@ public class StandardVerletSolver<E> implements ODESolverInterface<E> {
      */
     public void setFirst() {
         this.first = true;
+    }
+
+    @Override
+    public String toString() {
+        return "StandardVerletSolver";
     }
 }

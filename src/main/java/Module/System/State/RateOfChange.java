@@ -21,4 +21,5 @@ public class RateOfChange<E> implements RateInterface<E> {
     public String toString() {
         return vel.toString();
     }
+
 }
