@@ -3,10 +3,7 @@ package Module.Math.Solvers;
 
 import Module.Math.ADT.Vector3D;
 import Module.Math.ADT.Vector3dInterface;
-import Module.Math.Functions.ModuleFunction;
 import Module.Math.Functions.ODEFunctionInterface;
-import Module.System.State.RateInterface;
-import Module.System.State.RateOfChange;
 import Module.System.State.StateInterface;
 import Module.System.State.SystemState;
 
@@ -18,7 +15,7 @@ public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
 
     private final ODEFunctionInterface<E> f;
     private Vector3dInterface acceleration;
-    private  boolean first = true;
+    private final boolean first = true;
 
     /**
      * Instantiates a new Verlet velocity solver.
@@ -47,7 +44,9 @@ public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
         StateInterface<E> next;
-        if (y.get() instanceof Vector3dInterface position) {
+        Vector3dInterface position;
+        if ((y.get()) instanceof Vector3dInterface) {
+            position = (Vector3dInterface) y.get();
             Vector3dInterface velocity = (Vector3dInterface) y.getRateOfChange().get();
             /*
             if (first) {
@@ -69,9 +68,9 @@ public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
                 Vector3dInterface acceleration =(Vector3dInterface) f.call(t,y).get();
                 Vector3dInterface next_position = position.add(velocity.mul(h).addMul(h*h*0.5,acceleration));
 
-                Vector3dInterface next_acceleration = (Vector3dInterface) f.call(t,new SystemState(next_position,new Vector3D())).get();
-                Vector3dInterface next_velocity = velocity.addMul(h*0.5,next_acceleration.add(acceleration));
-                next = new SystemState(next_position,next_velocity);
+                Vector3dInterface next_acceleration = (Vector3dInterface) f.call(t, (SystemState<E>) new SystemState<>(next_position, new Vector3D())).get();
+                Vector3dInterface next_velocity = velocity.addMul(h * 0.5, next_acceleration.add(acceleration));
+                next = (SystemState<E>) new SystemState<>(next_position, next_velocity);
 
                 return next;
             }

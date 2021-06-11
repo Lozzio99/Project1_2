@@ -1,10 +1,11 @@
 package Module.Math.Solvers;
 
 
+import Module.Math.ADT.Vector3dInterface;
 import Module.Math.Functions.ODEFunctionInterface;
 import Module.System.State.RateInterface;
 import Module.System.State.StateInterface;
-import Module.Math.ADT.Vector3dInterface;
+
 /**
  * The type Runge kutta 4 th solver.
  * Fourth order solver for First Order ODE
@@ -44,6 +45,7 @@ public class RungeKuttaSolver<E> implements ODESolverInterface<E> {
      */
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, final StateInterface<E> y, double h) {
 
+        /*
         Vector3dInterface position = (Vector3dInterface) y.get();
         Vector3dInterface velocity = (Vector3dInterface) y.getRateOfChange().get();
 
@@ -74,7 +76,11 @@ public class RungeKuttaSolver<E> implements ODESolverInterface<E> {
          Vector3dInterface next_velocity =velocity.add(k21.sumOf(k22.mul(2),k23.mul(2),k24).div(6));
 
 
-        new SystemState(next_position,next_velocity);
+        new SystemState<>(next_position,next_velocity);
+
+
+         */
+
         StateInterface<E> state;
         RateInterface<E> k1, k2, k3;
         state = y.addMul(h / 6, k1 = f.call(t, y));
