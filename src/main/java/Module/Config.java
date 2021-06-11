@@ -5,7 +5,7 @@ import Module.Math.ADT.Vector3dInterface;
 
 public class Config {
     public static final boolean DEBUG = true;
-    public static final double STEP_SIZE = 0.001;
+    public static final double STEP_SIZE = 0.01;
     public static double CURRENT_TIME = 0;
 
     public static final int EULER = 0;
