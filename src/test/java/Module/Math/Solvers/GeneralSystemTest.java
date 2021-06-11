@@ -134,7 +134,7 @@ class GeneralSystemTest {
     @Test
     @DisplayName("eulerStep")
     void eulerStep() {
-        solver = new EulerSolver(dydx);
+        solver = new EulerSolver<>(dydx);
         StateInterface<Vector3dInterface> nextY;
 
         nextY = solver.step(dydx, stepSize, y, stepSize);
