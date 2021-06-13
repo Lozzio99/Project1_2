@@ -1,6 +1,6 @@
 package phase3.Math.Noise;
 
-import java.util.Random;
+import static java.lang.StrictMath.*;
 
 public abstract class Noise {
 
@@ -125,6 +125,15 @@ public abstract class Noise {
         }
     }
 
+    public static double[] latLonToXYZ(double latitude, double longitude) {
+        double r = cos(toRadians(latitude));
+        double x = r * cos(toRadians(longitude));
+        double y = sin(toRadians(latitude));
+        double z = r * sin(toRadians(longitude));
+        return new double[]{x, y, z};
+    }
+
+
     /**
      * Performs linear interpolation between two values
      *
@@ -154,9 +163,6 @@ public abstract class Noise {
         }
     }
 
-    public static void randomize() {
-        for (int i = 0; i < RANDOM_VECTORS2D.length; i++) RANDOM_VECTORS2D[i] = new Random().nextDouble();
-    }
 
     public abstract double getValue(double x, double y, double z);
 

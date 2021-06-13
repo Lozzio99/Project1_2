@@ -14,6 +14,7 @@ import static phase3.Config.NOISE_DIMENSIONS;
 public class WindModel implements WindInterface {
 
     private Noise noise;
+    private static double mid;
 
     public WindModel() {
 
@@ -28,7 +29,14 @@ public class WindModel implements WindInterface {
                 Noise.SCALING_BIAS = 1.4f;
                 Noise2D.randomizedAlgorithm();
             }
-            case TRI_DIMENSIONAL -> this.noise = new Noise3D();
+            case TRI_DIMENSIONAL -> {
+                this.noise = new Noise3D();
+                ((Noise3D) this.noise).setPerlinFreq(0.7);
+                ((Noise3D) this.noise).setLacunarity(.812);
+                ((Noise3D) this.noise).setPersistence(0.03);
+                ((Noise3D) this.noise).setOctaveCount(30);
+                mid = ((Noise3D) this.noise).getMaxValue() / 2.;
+            }
         }
 
     }
@@ -39,16 +47,14 @@ public class WindModel implements WindInterface {
             Vector3dInterface v = y.get();
             double acc;
             if (NOISE_DIMENSIONS == Noise.NoiseDim.BI_DIMENSIONAL) {
-                double vx, vy;
-                vx = v.getX() % 1e4;
-                vy = v.getY() % 1e4;
-                acc = this.noise.getValue(vx * 1e6, vy * 1e6, t);
+                acc = this.noise.getValue(v.getX(), v.getY(), t);
             } else {
                 acc = this.noise.getValue(v.getX(), v.getY(), t);
             }
-            double dir = abs(acc - 0.5);
-            acc = dir * (acc > 0.5 ? 1 : -1);
-            return new RateOfChange<>(new Vector3D(acc, 0, 0));
+            double dir = abs(acc - mid);
+            acc = dir * (acc > mid ? 1 : -1);
+            System.out.println(acc * 10);
+            return new RateOfChange<>(new Vector3D(acc * 10, 0, 0));
         };
     }
 

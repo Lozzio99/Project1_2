@@ -1,9 +1,15 @@
 package phase3.Math.Noise;
 
+import java.util.Random;
+
 public class Noise2D extends Noise {
     static {
         randomize();
         randomizedAlgorithm();
+    }
+
+    public static void randomize() {
+        for (int i = 0; i < RANDOM_VECTORS2D.length; i++) RANDOM_VECTORS2D[i] = new Random().nextDouble();
     }
 
     public static double perlinNoise2D(int x, int y) {

@@ -1,8 +1,7 @@
 package phase3.Math.Noise;
 
 
-import static java.lang.StrictMath.min;
-import static java.lang.StrictMath.sqrt;
+import static java.lang.StrictMath.*;
 
 /**
  * Implementation Source :
@@ -19,11 +18,12 @@ public class Noise3D extends Noise {
     private static final int SEED_NOISE_GEN = 1013;
     private static final int SHIFT_NOISE_GEN = 8;
 
-    private double frequency = 0.003,
-            lacunarity = 8.0,
-            persistence = 0.2;
-    private int seed = 13171923, OCTAVE_COUNT = 20;
-    private double sphereFreq = 3;
+    private double perlinFreq = 0.006,
+            lacunarity = 0.254,
+            persistence = 0.35;
+
+    private int seed = 0, OCTAVE_COUNT = 3;
+    private double sphereFreq = 0.002;
 
 
     /**
@@ -65,7 +65,7 @@ public class Noise3D extends Noise {
 
         // Now calculate the noise values at each vertex of the cube.  To generate
         // the coherent-noise value at the input point, interpolate these eight
-        // noise values using the S-curve value as the interpolant (trilinear
+        // noise values using the S-curve value as the interpolant (tri-linear
         // interpolation.)
 
         double iy0 = generateVector(x, y, z, seed, x0, x1, y0, y1, z0, xs, ys);
@@ -148,20 +148,25 @@ public class Noise3D extends Noise {
         return ((xvGradient * xvPoint) + (yvGradient * yvPoint) + (zvGradient * zvPoint)) + 0.5;
     }
 
-    public double getFrequency() {
-        return frequency;
+    public static double intValueNoise3D(int x, int y, int z, int seed) {
+        // All constants are primes and must remain prime in order for this noise
+        // function to work correctly.
+        int n = (X_NOISE_GEN * x + Y_NOISE_GEN * y + Z_NOISE_GEN * z + SEED_NOISE_GEN * seed) & 0x7fffffff;
+        n = (n >> 13) ^ n;
+        int m = (n * (n * n * 60493 + 19990303) + 1376312589) & 0x7fffffff;
+        return m / 2147483647.0;
     }
 
-    public void setFrequency(double frequency) {
-        this.frequency = frequency;
+    public double getPerlinFreq() {
+        return perlinFreq;
     }
 
     public double getOctaveCount() {
         return this.OCTAVE_COUNT;
     }
 
-    public void setOctaveCount(int octaveCount) {
-        this.OCTAVE_COUNT = octaveCount;
+    public void setPerlinFreq(double perlinFreq) {
+        this.perlinFreq = perlinFreq;
     }
 
     public double getLacunarity() {
@@ -196,6 +201,10 @@ public class Noise3D extends Noise {
         this.sphereFreq = sphereFreq;
     }
 
+    public void setOctaveCount(int octaveCount) {
+        this.OCTAVE_COUNT = max(min(octaveCount, 30), 1);
+    }
+
     public double perlinNoise3DValue(double x, double y, double z) {
         double x1 = x;
         double y1 = y;
@@ -206,9 +215,9 @@ public class Noise3D extends Noise {
         double nx, ny, nz;
         int seed;
 
-        x1 *= frequency;
-        y1 *= frequency;
-        z1 *= frequency;
+        x1 *= perlinFreq;
+        y1 *= perlinFreq;
+        z1 *= perlinFreq;
 
         for (int curOctave = 0; curOctave < OCTAVE_COUNT; curOctave++) {
 
@@ -246,13 +255,13 @@ public class Noise3D extends Noise {
         double ds1 = c - (c < floor ? floor - 1 : floor);
         double ds2 = 1.0 - ds1;
         double nearestDist = min(ds1, ds2);
-        return 1.0 - (nearestDist * 2.0); // Puts it in the 0 to 1 range.
+        return 1.0 - (nearestDist * 2.0);
     }
 
     /**
      * Returns the maximum value the perlin module can output in its current configuration
      *
-     * @return The maximum possible value for {@link this.perlinNoise3DValue(double, double, double)} to return
+     * @return The maximum possible value for perlinNoise3DValue(double, double, double) to return
      */
     public double getMaxValue() {
         /*
@@ -260,12 +269,15 @@ public class Noise3D extends Noise {
          * So (p = persistence, o = octave): Max(perlin) = p + p*p + p*p*p + ... + p^(o-1).
          * Using geometric series formula we can narrow it down to this:
          */
-        return (Math.pow(getPersistence(), getOctaveCount()) - 1) / (getPersistence() - 1);
+        return (pow(getPersistence(), getOctaveCount()) - 1) / (getPersistence() - 1);
     }
 
     @Override
     public double getValue(double x, double y, double z) {
-
-        return perlinNoise3DValue(x, y, z);
+        double v = perlinNoise3DValue(x, y, z);
+        double u = sphereNoiseValue(x, y, z);
+        double w = intValueNoise3D((int) x, (int) y, (int) z, seed);
+        // return linearInterp(v, u, 0.3);
+        return v;
     }
 }

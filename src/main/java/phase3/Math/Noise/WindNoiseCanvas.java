@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.util.Locale;
-import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -24,6 +23,8 @@ public class WindNoiseCanvas extends Canvas {
 
     private static final double endTime = 1000;
     private static final Noise2D noise2D = new Noise2D();
+    private static final Dimension _3D = new Dimension(768, 512);
+    private static final Dimension _2D = new Dimension(1024, 768);
     private static JFrame frame2D, frame3D;
     private static int GIF_INDEX = 0;
     private static boolean MAKE_GIF = false;
@@ -32,6 +33,14 @@ public class WindNoiseCanvas extends Canvas {
 
 
     public static void main(String[] args) {
+
+        //configure();
+        service = new ScheduledThreadPoolExecutor(10);
+        setup3D(frame3D = new JFrame(), new WindNoiseCanvas());
+        //setup2D(frame2D = new JFrame(), new WindNoiseCanvas());
+    }
+
+    public static void configure() {
         System.err.println("Save gif Wind 3D images?");
         System.out.println("{Y,N}");
         Scanner sc = new Scanner(System.in);
@@ -45,14 +54,11 @@ public class WindNoiseCanvas extends Canvas {
         System.out.println("Press key {SPACE} to generate new RANDOM_VECTORS");
         System.out.println("Press key {UP,DOWN} to increase/decrease SCALING");
         System.out.println("Press key {+,-} to increase/decrease OCTAVE_COUNT");
-
-        service = new ScheduledThreadPoolExecutor(10);
-        setup3D(frame3D = new JFrame(), new WindNoiseCanvas());
-        setup2D(frame2D = new JFrame(), new WindNoiseCanvas());
     }
 
     public static void setup2D(JFrame frame, Canvas canvas) {
-        frame.setSize(new Dimension(1024, 768));
+        frame.setSize(_2D);
+        frame.setResizable(false);
         frame.getContentPane().add(canvas);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +72,6 @@ public class WindNoiseCanvas extends Canvas {
             noise2DIteration(canvas);
         }, 30, 16, TimeUnit.MILLISECONDS);
     }
-
     private static void setMouse(Canvas canvas) {
         canvas.addKeyListener(new KeyAdapter() {
             @Override
@@ -107,12 +112,10 @@ public class WindNoiseCanvas extends Canvas {
         });
 
     }
-
-
     public static void setup3D(JFrame frame, Canvas canvas) {
         noise3D = new Noise3D();
-
-        frame.setSize(new Dimension(500, 400));
+        frame.setSize(_3D);
+        frame.setResizable(false);
         frame.getContentPane().add(canvas);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -137,45 +140,36 @@ public class WindNoiseCanvas extends Canvas {
         service.scheduleWithFixedDelay(stop, 30, 16, TimeUnit.MILLISECONDS);
 
     }
-
-
     public static void noise2DIteration(Canvas canvas) {
         BufferStrategy bs = canvas.getBufferStrategy();
         Graphics2D drawGraphics = (Graphics2D) bs.getDrawGraphics();
-        for (int i = 0; i < 1024; i += 2) {
-            for (int k = 0; k < 768; k += 2) {
+        for (int i = 0; i < _2D.width; i += 2) {
+            for (int k = 0; k < _2D.height; k += 2) {
                 int x = (int) (perlinNoise2D(i, k) * 255);
                 paintTile(i, k, 2, new Color(x, x, x), drawGraphics);
             }
         }
         bs.show();
     }
-
     public static synchronized void noise3DIteration(Canvas canvas, double time) {
         frame3D.setTitle("iteration " + time);
         BufferStrategy bs = canvas.getBufferStrategy();
         Graphics2D drawGraphics = (Graphics2D) bs.getDrawGraphics();
 
-        BufferedImage save = new BufferedImage(500, 400, BufferedImage.TYPE_INT_RGB);
+        BufferedImage save = new BufferedImage(_3D.width, _3D.height, BufferedImage.TYPE_INT_RGB);
         WritableRaster raster = save.getRaster();
 
-        for (int i = 0; i < 500; i++) {
-            for (int k = 0; k < 400; k++) {
-                double v = noise3D.perlinNoise3DValue(i, k, time);
-                double u = noise3D.sphereNoiseValue(i, k, time);
-                int noise = getNoise(linearInterp(u, v, 0.5));
-                double r = 0.5 + new Random().nextDouble();
-                double g = 0.5 + new Random().nextDouble();
-                double b = 0.5 + new Random().nextDouble();
+        for (int i = 0; i < _3D.width; i++) {
+            for (int k = 0; k < _3D.height; k++) {
+                int noise = getNoise(noise3D.getValue(i, k, time));
                 paintTile(i, k, 1, new Color(noise, noise, noise), drawGraphics);
-                raster.setPixel(i, k, new double[]{50 + (noise * 0.1), 30 + (noise / 4.), noise / 3.});
+                raster.setPixel(i, k, new int[]{noise, noise, noise});
             }
         }
         bs.show();
 
         if (MAKE_GIF) saveImage(save);
     }
-
     private static void saveImage(BufferedImage image) {
         if (GIF_INDEX >= endTime) return;
         try {
@@ -187,18 +181,14 @@ public class WindNoiseCanvas extends Canvas {
             e.printStackTrace();
         }
     }
-
     private static int getNoise(double v) {
         int noise = (int) (255 * (v / 2));
         noise = Math.min(noise, 255);
         noise = Math.max(noise, 0);
         return noise;
     }
-
-
     private static void paintTile(int x, int y, int tileSize, Color c, Graphics2D g) {
         g.setColor(c);
         g.fill(new Rectangle(x, y, tileSize, tileSize));
     }
-
 }
