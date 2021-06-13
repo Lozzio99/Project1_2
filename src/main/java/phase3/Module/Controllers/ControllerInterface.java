@@ -1,0 +1,15 @@
+package phase3.Module.Controllers;
+
+import phase3.Math.ADT.Vector3dInterface;
+import phase3.Math.Functions.ODEFunctionInterface;
+
+public interface ControllerInterface {
+
+    /**
+     * Main controller function; adjusts acceleration and torque
+     *
+     * @return new vector state
+     */
+    ODEFunctionInterface<Vector3dInterface> controlFunction();
+
+}
