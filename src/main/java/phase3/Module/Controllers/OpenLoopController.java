@@ -10,7 +10,8 @@ public class OpenLoopController implements ControllerInterface {
     public ODEFunctionInterface<Vector3dInterface> controlFunction() {
         // return (t, y) -> y.getRateOfChange();
         return (t, y) -> {
-            return new RateOfChange<>(new Vector3D(0, 0, 0));
+            // double yAcceleration =
+            return new RateOfChange<>(new Vector3D(0, 0, 10));
 
         };
     }
