@@ -18,7 +18,7 @@ public class Config {
 
     public static final int OPEN = 0;
     public static final int CLOSED = 1;
-    public static int CONTROLLER = 1;
+    public static int CONTROLLER = 0;
 
     public static Noise.NoiseDim NOISE_DIMENSIONS = Noise.NoiseDim.TRI_DIMENSIONAL;
 
