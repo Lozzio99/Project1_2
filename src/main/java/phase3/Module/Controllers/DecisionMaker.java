@@ -1,5 +1,8 @@
 package phase3.Module.Controllers;
 
+import phase3.Math.ADT.Vector3dInterface;
+import phase3.System.State.StateInterface;
+
 import static phase3.Config.CLOSED;
 import static phase3.Config.OPEN;
 
@@ -18,7 +21,7 @@ public class DecisionMaker {
         }
     }
 
-    public ControllerInterface getController() {
-        return controller;
+    public double[] getControls(double t, StateInterface<Vector3dInterface> y) {
+        return controller.controlFunction(t, y);
     }
 }

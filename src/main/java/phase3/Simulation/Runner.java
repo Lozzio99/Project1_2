@@ -1,6 +1,7 @@
 package phase3.Simulation;
 
 import org.jetbrains.annotations.Contract;
+import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Forces.ModuleFunction;
 import phase3.Math.Forces.WindInterface;
@@ -20,7 +21,8 @@ import static phase3.Config.*;
 public class Runner implements RunnerInterface {
     private final SimulationInterface simulation;
     private ODESolverInterface<Vector3dInterface> solver;
-    private ODEFunctionInterface<Vector3dInterface> gravityFunction, windFunction, moduleFunction;
+    private ODEFunctionInterface<Vector3dInterface> gravityFunction;
+    private ODEFunctionInterface<Vector3dInterface> windFunction;
     private ScheduledExecutorService service;
     private DecisionMaker moduleController;
     private WindInterface wind;
@@ -47,7 +49,6 @@ public class Runner implements RunnerInterface {
         this.windFunction = this.wind.getWindFunction();
 
         this.moduleController = new DecisionMaker(CONTROLLER);
-        this.moduleFunction = moduleController.getController().controlFunction();
 
         this.gravityFunction = new ModuleFunction().evaluateCurrentAccelerationFunction();
 
@@ -75,10 +76,16 @@ public class Runner implements RunnerInterface {
         // update module gravityFunction
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
         simulation.getGraphics().start(currentState.get());
-        StateInterface<Vector3dInterface> afterModuleDecision = solver.step(moduleFunction, CURRENT_TIME, currentState, STEP_SIZE);
-        StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, afterModuleDecision, STEP_SIZE);
-        StateInterface<Vector3dInterface> afterWind = solver.step(windFunction, CURRENT_TIME, afterGravity, STEP_SIZE);
-        simulation.getSystem().updateState(afterWind);
+        ModuleFunction.setControls(moduleController.getControls(CURRENT_TIME, currentState));
+        StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, currentState, STEP_SIZE);
+        if (WIND) {
+            StateInterface<Vector3dInterface> afterWind = solver.step(windFunction, CURRENT_TIME, afterGravity, STEP_SIZE);
+            simulation.getSystem().updateState(afterWind);
+        }
+        else {
+            simulation.getSystem().updateState(afterGravity);
+        }
+
         CURRENT_TIME += STEP_SIZE;
 
 
