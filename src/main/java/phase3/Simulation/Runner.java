@@ -88,6 +88,7 @@ public class Runner implements RunnerInterface {
 
         CURRENT_TIME += STEP_SIZE;
 
+        System.out.println(currentState.get());
 
         /*
 
