@@ -11,7 +11,8 @@ public class OpenLoopController implements ControllerInterface {
         // return (t, y) -> y.getRateOfChange();
         return (t, y) -> {
             // double yAcceleration =
-            return new RateOfChange<>(new Vector3D(0, 0, 10));
+
+            return new RateOfChange<>(new Vector3D(0, 0, 0));
 
         };
     }
