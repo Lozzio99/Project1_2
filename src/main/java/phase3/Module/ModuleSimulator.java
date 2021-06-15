@@ -7,6 +7,7 @@ import phase3.System.State.StateInterface;
 
 import java.awt.*;
 
+import static java.lang.Math.PI;
 import static phase3.Config.STEP_SIZE;
 import static phase3.Main.simulation;
 
@@ -138,8 +139,8 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
         this.setMASS(7.8e4);
         this.setRADIUS(1e2);
         this.setColour(Color.GREEN);
-        this.setVectorLocation(new Vector3D(-500, 1000, 45));
-        this.setVectorVelocity(new Vector3D(20, 0.0, 0));
+        this.setVectorLocation(new Vector3D(-500, 1000, 0));
+        this.setVectorVelocity(new Vector3D(30, 0.0, 0));
         this.localAcceleration = new Vector3D();
         this.fuelMass = this.startFuel;
         this.totalMass = this.startFuel + this.getMASS();

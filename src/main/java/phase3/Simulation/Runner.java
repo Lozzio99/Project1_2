@@ -22,6 +22,7 @@ public class Runner implements RunnerInterface {
     private final SimulationInterface simulation;
     private ODESolverInterface<Vector3dInterface> solver;
     private ODEFunctionInterface<Vector3dInterface> gravityFunction;
+    private ModuleFunction moduleFunction;
     private ODEFunctionInterface<Vector3dInterface> windFunction;
     private ScheduledExecutorService service;
     private DecisionMaker moduleController;
@@ -50,7 +51,8 @@ public class Runner implements RunnerInterface {
 
         this.moduleController = new DecisionMaker(CONTROLLER);
 
-        this.gravityFunction = new ModuleFunction().evaluateCurrentAccelerationFunction();
+        moduleFunction = new ModuleFunction();
+        this.gravityFunction = moduleFunction.evaluateCurrentAccelerationFunction();
 
         switch (SOLVER) {
             case EULER -> this.solver = new EulerSolver<>(this.gravityFunction);
@@ -76,8 +78,11 @@ public class Runner implements RunnerInterface {
         // update module gravityFunction
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
         simulation.getGraphics().start(currentState.get());
-        ModuleFunction.setControls(moduleController.getControls(CURRENT_TIME, currentState));
+        moduleFunction.setControls(moduleController.getControls(CURRENT_TIME, currentState));
         StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, currentState, STEP_SIZE);
+        System.out.println("\nTime: "+ CURRENT_TIME);
+        System.out.println("Position: "+ afterGravity.get());
+        System.out.println("Velocity: "+ currentState.getRateOfChange().get());
         if (WIND) {
             StateInterface<Vector3dInterface> afterWind = solver.step(windFunction, CURRENT_TIME, afterGravity, STEP_SIZE);
             simulation.getSystem().updateState(afterWind);
@@ -86,9 +91,11 @@ public class Runner implements RunnerInterface {
             simulation.getSystem().updateState(afterGravity);
         }
 
-        CURRENT_TIME += STEP_SIZE;
+        if (afterGravity.get().getY() < 0.0) {
+            afterGravity.get().setY(1000);
+        }
 
-        System.out.println(currentState.get());
+        CURRENT_TIME += STEP_SIZE;
 
         /*
 

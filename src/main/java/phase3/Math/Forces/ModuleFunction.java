@@ -16,7 +16,7 @@ public final class ModuleFunction {
 
     public static final double G = 1.352;
     private static double currentTime;
-    private static final double[] CONTROLS = new double[]{0.0,0.0};
+    private final double[] CONTROLS = new double[]{0.0,0.0};
     public static final double U_MAX = 0.0;
     public static final double V_MAX = 0.5;
     /**
@@ -70,8 +70,8 @@ public final class ModuleFunction {
         return this.evalRateOfChange;
     }
 
-    public static void setControls(double[] CONTROLS) {
-        ModuleFunction.CONTROLS[0] = CONTROLS[0];
-        ModuleFunction.CONTROLS[1] = CONTROLS[1];
+    public void setControls(double[] CONTROLS) {
+        this.CONTROLS[0] = CONTROLS[0];
+        this.CONTROLS[1] = CONTROLS[1];
     }
 }
