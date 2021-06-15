@@ -104,7 +104,7 @@ public class OpenLoopController implements ControllerInterface {
         double y_1 = update.get().getY();
         double y_1_dot = update.getRateOfChange().get().getY();
         tF4 = abs((2*y_1)/y_1_dot)+t;
-        temp_u =abs(abs(pow(y_0_dot,2)/(2*y_0))+G);
+        temp_u =abs(abs(pow(y_1_dot,2)/(2*y_1))+G);
     }
 
     private void R2Phase1() {
