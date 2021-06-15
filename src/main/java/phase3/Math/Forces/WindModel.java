@@ -44,7 +44,7 @@ public class WindModel implements WindInterface {
     @Override
     public ODEFunctionInterface<Vector3dInterface> getWindFunction() {
         return (t, y) -> {
-            Vector3dInterface v = y.get();
+            Vector3dInterface v = y.get()[0];
             double acc;
             if (NOISE_DIMENSIONS == Noise.NoiseDim.BI_DIMENSIONAL) {
                 acc = this.noise.getValue(v.getX(), v.getY(), t);
@@ -53,7 +53,7 @@ public class WindModel implements WindInterface {
             }
             double dir = abs(acc - mid);
             acc = dir * (acc > mid ? 1 : -1);
-            System.out.println(acc * 10);
+            //System.out.println(acc * 10);
             return new RateOfChange<>(new Vector3D(acc * 10, 0, 0));
         };
     }

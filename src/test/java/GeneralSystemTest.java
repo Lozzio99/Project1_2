@@ -35,14 +35,14 @@ class GeneralSystemTest {
 
     static double t, tf, stepSize;
     static ODEFunctionInterface<Vector3dInterface> dydx = (t, y) -> {
-        Vector3dInterface position = y.get();
-        Vector3dInterface rateOfChange = y.getRateOfChange().get();
-        double acceleration = -rateOfChange.get(0) - sin(position.get(0));
+        Vector3dInterface position = y.get()[0];
+        Vector3dInterface rateOfChange = y.get()[1];
+        double acceleration = -rateOfChange.getX() - sin(position.getX());
         return new RateOfChange<>(new Vector3D(acceleration, 0, 0));
     };
     static ODEFunctionInterface<Double> dy = (t, y) -> {
-        double x = y.get();
-        double dx = y.getRateOfChange().get();
+        double x = y.get()[0];
+        double dx = y.get()[1];
         return new RateOfChange<>(-1 * dx - sin(x));
     };
     double exact1stepPos, exact1stepVel, exactFinalPos, exactFinalVel;
@@ -62,7 +62,7 @@ class GeneralSystemTest {
         double x2 = 1;
         vectorState = new SystemState<>(new Vector3D(x1, 0, 0));
         RateInterface<Vector3dInterface> rate = new RateOfChange<>(new Vector3D(x2, 0, 0));
-        vectorState.getRateOfChange().set(rate.get());
+        vectorState.get()[1] = (rate.get()[0]);
         doubleState = new SystemState<>(x1, x2);
     }
 
@@ -101,8 +101,8 @@ class GeneralSystemTest {
         StateInterface<Vector3dInterface> nextY;
         nextY = solver.step(dydx, 0, vectorState, stepSize);
         printVecResults("MIDPOINT", exact1stepPos, exact1stepVel, nextY);
-        assertTrue(() -> Math.abs(exact1stepPos - nextY.get().get(0)) < 1e-4);
-        assertTrue(() -> Math.abs(exact1stepVel - nextY.getRateOfChange().get().get(0)) < 1e-2);
+        assertTrue(() -> Math.abs(exact1stepPos - nextY.get()[0].getX()) < 1e-4);
+        assertTrue(() -> Math.abs(exact1stepVel - nextY.get()[1].getX()) < 1e-2);
     }
 
     @Test
@@ -113,8 +113,8 @@ class GeneralSystemTest {
         nextY = solver.step(dydx, t, vectorState, stepSize);
         printVecResults("RK", exact1stepPos, exact1stepVel, nextY);
 
-        assertTrue(() -> Math.abs(exact1stepPos - nextY.get().get(0)) < 1e-2);
-        assertTrue(() -> Math.abs(exact1stepVel - nextY.getRateOfChange().get().get(0)) < 1e-2);
+        assertTrue(() -> Math.abs(exact1stepPos - nextY.get()[0].getX()) < 1e-2);
+        assertTrue(() -> Math.abs(exact1stepVel - nextY.get()[1].getX()) < 1e-2);
     }
 
     @Test
@@ -127,24 +127,24 @@ class GeneralSystemTest {
 
         printVecResults("EULER", exact1stepPos, exact1stepVel, nextY);
 
-        assertTrue(() -> Math.abs(exact1stepPos - nextY.get().get(0)) < 1e-2);
-        assertTrue(() -> Math.abs(exact1stepVel - nextY.getRateOfChange().get().get(0)) < 1e-2);
+        assertTrue(() -> Math.abs(exact1stepPos - nextY.get()[0].getX()) < 1e-2);
+        assertTrue(() -> Math.abs(exact1stepVel - nextY.get()[1].getX()) < 1e-2);
     }
 
     private void printVecResults(String solver, double exactSolutionPos, double exactSolutionVel, StateInterface<Vector3dInterface> y) {
         System.out.println(solver + " : " + y.get());
-        System.out.println(solver + " EXACT POS: " + (exactSolutionPos - y.get().get(0)));
-        System.out.println(solver + " EXACT VEL: " + (exactSolutionVel - y.getRateOfChange().get().get(0)));
-        assertTrue(() -> Math.abs(exactSolutionPos - y.get().get(0)) < 1e-2);
-        assertTrue(() -> Math.abs(exactSolutionVel - y.getRateOfChange().get().get(0)) < 1e-2);
+        System.out.println(solver + " EXACT POS: " + (exactSolutionPos - y.get()[0].getX()));
+        System.out.println(solver + " EXACT VEL: " + (exactSolutionVel - y.get()[1].getX()));
+        assertTrue(() -> Math.abs(exactSolutionPos - y.get()[0].getX()) < 1e-2);
+        assertTrue(() -> Math.abs(exactSolutionVel - y.get()[1].getX()) < 1e-2);
     }
 
     private void printDoubleResults(String solver, double exactSolutionPos, double exactSolutionVel, StateInterface<Double> y) {
         System.out.println(solver + " : " + y.get());
-        System.out.println(solver + " EXACT POS: " + (exactSolutionPos - y.get()));
-        System.out.println(solver + " EXACT VEL: " + (exactSolutionVel - y.getRateOfChange().get()));
-        assertTrue(() -> Math.abs(exactSolutionPos - y.get()) < 1e-2);
-        assertTrue(() -> Math.abs(exactSolutionVel - y.getRateOfChange().get()) < 1e-2);
+        System.out.println(solver + " EXACT POS: " + (exactSolutionPos - y.get()[0]));
+        System.out.println(solver + " EXACT VEL: " + (exactSolutionVel - y.get()[1]));
+        assertTrue(() -> Math.abs(exactSolutionPos - y.get()[0]) < 1e-2);
+        assertTrue(() -> Math.abs(exactSolutionVel - y.get()[1]) < 1e-2);
     }
 
     private StateInterface<Vector3dInterface> solveVector(ODESolverInterface<Vector3dInterface> solver, double time) {

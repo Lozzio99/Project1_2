@@ -22,7 +22,7 @@ public class ClosedLoopController implements ControllerInterface {
             if (getUpdateCondition()) {
                 //TODO: optimize V regarding the currentState
                 //return the acceleration
-                return new RateOfChange<>(V.add(y.getRateOfChange().get()));
+                return new RateOfChange<>(V.add(y.get()[1]));
             } else {
                 return new RateOfChange<>(new Vector3D(0, 0, 0));
             }

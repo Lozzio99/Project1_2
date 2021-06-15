@@ -52,10 +52,9 @@ public final class ModuleFunction {
         // must implement function for (xVel, yVel, angleVel)
         // in theory should affect the y component only , or partially the x component
         final Vector3dInterface newRate = new Vector3D(0, 0, 0);
-        newRate.setX(sin(y.get().getZ()) * (AccTorque.getX()));  //must multiply by u and v then
-        newRate.setY((cos(y.get().getZ()) * (AccTorque.getY())) - G);
+        newRate.setX(sin(y.get()[0].getZ()) * (AccTorque.getX()));  //must multiply by u and v then
+        newRate.setY((cos(y.get()[0].getZ()) * (AccTorque.getY())) - G);
         newRate.setZ(AccTorque.getZ());
-
         return newRate;
     }
 

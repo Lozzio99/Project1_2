@@ -3,67 +3,56 @@ package phase3.System.State;
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 
+import java.util.Arrays;
+
 public class SystemState<E> implements StateInterface<E> {
-    E position;
-    RateInterface<E> vel;
+    final E[] y;
 
-    public SystemState(E pos) {
-        this.position = pos;
-        if (pos instanceof Vector3dInterface) {
-            RateInterface<Vector3dInterface> r = new RateOfChange<>(new Vector3D(0, 0, 0));
-            this.vel = (RateOfChange<E>) r;
-        } else if (pos instanceof Double) {
-            RateInterface<Double> r = new RateOfChange<>(0.);
-            this.vel = (RateOfChange<E>) r;
-        } else throw new UnsupportedOperationException();
+    @SafeVarargs
+    public SystemState(E... y) {
+        this.y = y;
     }
 
-    public SystemState(E pos, E vel) {
-        this.position = pos;
-        this.vel = new RateOfChange<>(vel);
-    }
-
+    /**
+     * Note : we are not doing any safety check here, but it is assumed that the state object and the rate object
+     * have the same dimensions.
+     * Example,
+     * State and rate for 2nd order differentiation
+     * State = [ y   ,  dy/dx   ]
+     * Rate = [dy/dx , d2y/dx2 ]
+     * <p>
+     * So that the involved operation will be to return a new state which is the result of
+     * this.y + (rate.y * step) applied accordingly to the integration order
+     */
     @Override
-    //@SuppressWarnings("{unchecked,unsafe}")
     public StateInterface<E> addMul(double step, RateInterface<E> rate) {
-        if (this.position instanceof Vector3dInterface) {
-            Vector3dInterface vel = ((Vector3dInterface) this.vel.get()).addMul(step, ((Vector3dInterface) rate.get()));
-            StateInterface<Vector3dInterface> s = new SystemState<>(((Vector3dInterface) this.position).addMul(step, vel), vel);
-            return (SystemState<E>) s;
-        } else if (this.position instanceof Double) {
-            double v = ((Double) this.vel.get()) + (((Double) rate.get()) * step);
-            StateInterface<Double> s = new SystemState<>(((Double) this.position) + (step * v), v);
-            return (SystemState<E>) s;
-        } else
-            throw new UnsupportedOperationException();
-    }
-
-
-    @Override
-    public E get() {
-        return position;
+        StateInterface<E> y1;
+        if (y instanceof Vector3dInterface[]) {
+            StateInterface<Vector3dInterface> n = new SystemState<>(new Vector3D[y.length]);
+            for (int i = 0; i < y.length; i++)
+                n.get()[i] = ((Vector3dInterface) this.get()[i]).addMul(step, ((Vector3dInterface) rate.get()[i]));
+            y1 = (SystemState<E>) n;
+        } else if (y instanceof Double[]) {
+            StateInterface<Double> n = new SystemState<>(new Double[y.length]);
+            for (int i = 0; i < y.length; i++)
+                n.get()[i] = ((Double) this.get()[i]) + (step * ((Double) rate.get()[i]));
+            y1 = (SystemState<E>) n;
+        } else throw new UnsupportedOperationException();
+        return y1;
     }
 
     @Override
-    public void set(E v) {
-        this.position = v;
+    public E[] get() {
+        return y;
     }
-
-    @Override
-    public RateInterface<E> getRateOfChange() {
-        return vel;
-    }
-
 
     @Override
     public StateInterface<E> copy() {
-        StateInterface<E> state = new SystemState(position);
-        state.getRateOfChange().set(vel.get());
-        return state;
+        return new SystemState<>(y[0], y[1]);
     }
 
     @Override
     public String toString() {
-        return "[ " + this.position.toString() + " ; " + this.getRateOfChange().toString() + " ]";
+        return "[ " + Arrays.toString(this.y) + " ]";
     }
 }

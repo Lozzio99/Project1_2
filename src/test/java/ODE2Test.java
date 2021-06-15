@@ -1,69 +1,115 @@
 import phase3.Math.Functions.Function;
 import phase3.Math.Functions.ODEFunctionInterface;
-import phase3.Math.Solvers.EulerSolver;
-import phase3.Math.Solvers.MidPointSolver;
-import phase3.Math.Solvers.ODESolverInterface;
-import phase3.Math.Solvers.RungeKuttaSolver;
+import phase3.Math.Solvers.*;
 import phase3.System.State.RateOfChange;
 import phase3.System.State.StateInterface;
 import phase3.System.State.SystemState;
 
 import static java.lang.StrictMath.abs;
+import static java.lang.StrictMath.pow;
 
 public class ODE2Test {
-    static ODESolverInterface<Double> solver;
-
     static StateInterface<Double> y;
-    static double t, tf, stepSize;
-
 
     static Function<Double> position = t -> {
-        return (t * t * t) - (4 * t) + 3;   // vectorState (t)
+        return (t * t * t) - (4 * t) + 3;   // y (t)
     };
     static Function<Double> velocity = t -> {
         return 3 * t * t - 4;   // dy/dt
     };
     static ODEFunctionInterface<Double> acceleration = (t, y) -> {
-        return new RateOfChange<>(6. * t);  // d2y / dt2
+        // y =   [  y , dy ]
+        return new RateOfChange<>(y.get()[1], 6 * t);
+        //return [  dy, d2y ]
     };
 
     public static void main(String[] args) {
-        test(new EulerSolver<>(acceleration));
-        test(new MidPointSolver<>(acceleration));
-        test(new RungeKuttaSolver<>(acceleration));
-        //test(new StandardVerletSolver<>(acceleration));
-        //test(new VerletVelocitySolver<>(acceleration));
+        for (int i = 2; i <= 10; i += 2) {
+            double t = 0, tf = 2, stepSize = 0.1;
+            halfStepSize(new EulerSolver<>(acceleration), t, tf, stepSize, i);
+            halfStepSize(new MidPointSolver<>(acceleration), t, tf, stepSize, i);
+            halfStepSize(new RungeKuttaSolver<>(acceleration), t, tf, stepSize, i);
+            halfStepSize(new StandardVerletSolver<>(acceleration), t, tf, stepSize, i);
+            halfStepSize(new VerletVelocitySolver<>(acceleration), t, tf, stepSize, i);
+        }
 
     }
 
-    public static void test(ODESolverInterface<Double> solver) {
+    public static StateInterface<Double> y0(double t) {
+        return new SystemState<>(position.apply(t), velocity.apply(t));
+    }
+
+    public static void halfStepSize(ODESolverInterface<Double> solver, double t0, double tf, double stepSize, double scaling) {
         System.out.println(solver);
-        t = 0;
-        tf = 2;
-        y = new SystemState<>(position.apply(t), velocity.apply(t));
-        stepSize = 0.00001;
-        while (t < tf) {
+        double t = t0;
+        double[] errorH, error_half_H;
+        y = y0(t);
+        while (t <= tf) {
             y = solver.step(acceleration, t, y, stepSize);
             t += stepSize;
         }
-        test(y, tf);
+        print(stepSize, errorH = error(y, t));
+
+        stepSize = stepSize / scaling;
+
+        t = t0;
+        y = y0(t);
+        while (t <= tf) {
+            y = solver.step(acceleration, t, y, stepSize);
+            t += stepSize;
+        }
+        print(stepSize, error_half_H = error(y, t));
+
+        testScalingError(errorH, error_half_H, solver.toString(), scaling);
         System.out.println("-------------------------------");
     }
 
-    public static void test(StateInterface<Double> y, double time) {
-        System.out.println("ABSOLUTE\npos : " + absolute(y.get(), position.apply(time)));
-        System.out.println("vel : " + absolute(y.getRateOfChange().get(), velocity.apply(time)));
+    private static void testScalingError(double[] errorH, double[] error_half_h, String solver, double scaling) {
+        int order = switch (solver) {
+            case "EulerSolver" -> 1;
+            case "StandardVerletSolver", "MidPointSolver", "VerletVelocitySolver" -> 2;
+            case "RungeKutta4thSolver" -> 4;
+            default -> 0;
+        };
+
+        //System.out.println(Arrays.toString(errorH));
+        //System.out.println(Arrays.toString(error_half_h));
+
+        for (int i = 0; i < errorH.length; i++) {
+            // expect halfH error to be 1/(2^order) of H error
+            //because step size has been divided by 2
+            double expectedError = errorH[i] / (pow(scaling, order));
+            double actualError = error_half_h[i];
+            if (!(abs(expectedError - actualError) < 1 / pow(10, scaling)) && !(actualError < expectedError)) {
+                System.err.println(solver + " ~ expected : " + expectedError + " ,actual : " + actualError + " ,scaling : " + scaling);
+            }
+        }
+    }
+
+    public static double[] error(StateInterface<Double> y, double time) {
+        double absP, relP, absV, relV;
+        absP = absolute(y.get()[0], position.apply(time));
+        absV = absolute(y.get()[1], velocity.apply(time));
+        relP = relative(y.get()[0], position.apply(time));
+        relV = relative(y.get()[1], velocity.apply(time));
+        return new double[]{absP, absV, relP, relV};
+    }
+
+    public static void print(double stepSize, double[] err) {
+        System.out.println("StepSize : " + stepSize);
+        System.out.println("ABSOLUTE\npos : " + err[0]);
+        System.out.println("vel : " + err[1]);
+        System.out.println("RELATIVE\npos : " + err[2]);
+        System.out.println("vel : " + err[3]);
         System.out.println();
-        System.out.println("RELATIVE\npos : " + relative(y.get(), position.apply(time)));
-        System.out.println("vel : " + relative(y.getRateOfChange().get(), velocity.apply(time)));
     }
 
-    public static double absolute(double actual, double expected) {
-        return abs(actual - expected);
+    public static double absolute(double actual, double real) {
+        return abs(actual - real);
     }
 
-    public static double relative(double actual, double expected) {
-        return (absolute(actual, expected)) / expected;
+    public static double relative(double actual, double real) {
+        return (absolute(actual, real)) / real;
     }
 
 }

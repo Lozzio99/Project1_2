@@ -33,8 +33,8 @@ public class EulerSolver<E> implements ODESolverInterface<E> {
      * @return the next state of the simulation based on a Euler Step
      */
     @Override
-    public StateInterface<E> step(ODEFunctionInterface<E> f, double currentTime, StateInterface<E> y, double stepSize) {
-       return y.addMul(stepSize, f.call(currentTime, y));
+    public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
+        return y.addMul(h, f.call(t, y));
     }
 
     @Override

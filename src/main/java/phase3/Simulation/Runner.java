@@ -74,7 +74,7 @@ public class Runner implements RunnerInterface {
         // draw graphics
         // update module gravityFunction
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
-        simulation.getGraphics().start(currentState.get());
+        simulation.getGraphics().start(currentState.get()[0]);
         StateInterface<Vector3dInterface> afterModuleDecision = solver.step(moduleFunction, CURRENT_TIME, currentState, STEP_SIZE);
         StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, afterModuleDecision, STEP_SIZE);
         StateInterface<Vector3dInterface> afterWind = solver.step(windFunction, CURRENT_TIME, afterGravity, STEP_SIZE);

@@ -13,14 +13,9 @@ public interface StateInterface<E> {
      * @return The new state after the update. Required to have the same class as 'this'.
      */
     StateInterface<E> addMul(double step, RateInterface<E> rate);
-
     String toString();
 
-    E get();
-
-    void set(E v);
-
-    RateInterface<E> getRateOfChange();
+    E[] get();
 
     StateInterface<E> copy();
 }

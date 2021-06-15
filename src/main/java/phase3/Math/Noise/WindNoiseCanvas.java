@@ -161,7 +161,7 @@ public class WindNoiseCanvas extends Canvas {
 
         for (int i = 0; i < _3D.width; i++) {
             for (int k = 0; k < _3D.height; k++) {
-                int noise = getNoise(noise3D.getValue(i, k, time));
+                int noise = getNoise(noise3D.getValue(i * 3, k * 10, time));
                 paintTile(i, k, 1, new Color(noise, noise, noise), drawGraphics);
                 raster.setPixel(i, k, new int[]{noise, noise, noise});
             }
