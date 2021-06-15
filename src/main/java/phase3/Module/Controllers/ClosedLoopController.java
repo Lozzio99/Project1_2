@@ -50,9 +50,15 @@ public class ClosedLoopController implements ControllerInterface {
             Vector3D rotVector = new Vector3D(0, 0, rotAcc);
 
             // Calculate thrust
-            double burnAmount = (y.getRateOfChange().get().getY() * 1) * 1;
+
+            double velFactor = 0.2;
+            double locationFactor = 80;
+
+            double burnAmount = (y.getRateOfChange().get().getY() * -1) * velFactor + (1 / y.get().getY() * locationFactor);
             Vector3D thrustVector = burn(burnAmount, y);
-            System.out.println("ThrustVector");
+            System.out.println("BurnAmount: " + burnAmount);
+            System.out.println("ThrustVector: " + thrustVector);
+            System.out.println("---");
 
             // Apply changes
             return new RateOfChange<>(thrustVector.add(rotVector));
@@ -72,7 +78,7 @@ public class ClosedLoopController implements ControllerInterface {
      */
     private Vector3D burn (double amount, StateInterface<Vector3dInterface> state) {
         return  new Vector3D(amount * Math.sin(state.get().getZ() * Math.PI / 180),
-                             -amount * Math.cos(state.get().getZ() * Math.PI / 180),
+                             amount * Math.cos(state.get().getZ() * Math.PI / 180),
                              0);
     }
 
