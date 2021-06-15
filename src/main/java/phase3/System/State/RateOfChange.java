@@ -1,25 +1,22 @@
 package phase3.System.State;
 
+import java.util.Arrays;
+
 public class RateOfChange<E> implements RateInterface<E> {
-    E vel;
+    final E[] dy;
 
-    public RateOfChange(E v) {
-        this.vel = v;
+    @SafeVarargs
+    public RateOfChange(E... y) {
+        this.dy = y;
     }
 
     @Override
-    public E get() {
-        return this.vel;
-    }
-
-    @Override
-    public void set(E v) {
-        this.vel = v;
+    public E[] get() {
+        return this.dy;
     }
 
     @Override
     public String toString() {
-        return vel.toString();
+        return Arrays.toString(dy);
     }
-
 }

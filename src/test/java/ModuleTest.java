@@ -42,74 +42,74 @@ public class ModuleTest {
         this.solver = new EulerSolver<>(this.function);
 
         StateInterface<Vector3dInterface> nextY;
-        while(t<=tf+stepSize){
+        while (t <= tf + stepSize) {
             nextY = solver.step(solver.getFunction(), t, y, stepSize);
             y = nextY.copy();
-            t+=stepSize;
+            t += stepSize;
         }
         System.out.println("EULER");
-        System.out.println("POSITION DIFF: " +Math.abs(exactYPosition - y.get().get(1)));
-        System.out.println("VELOCITY DIFF: " +Math.abs(exactYVelocity - y.getRateOfChange().get().get(1)));
+        System.out.println("POSITION DIFF: " + Math.abs(exactYPosition - y.get()[0].getY()));
+        System.out.println("VELOCITY DIFF: " + Math.abs(exactYVelocity - y.get()[1].getY()));
 
-        assertTrue(() -> Math.abs(exactYPosition - y.get().get(1))<1);
-        assertTrue(() -> Math.abs(exactYVelocity - y.getRateOfChange().get().get(1))<1e-1);
+        assertTrue(() -> Math.abs(exactYPosition - y.get()[0].getY()) < 1);
+        assertTrue(() -> Math.abs(exactYVelocity - y.get()[1].getY()) < 1e-1);
     }
 
     @Test
     @DisplayName("MidPointSolve")
-    void midPointSolve(){
+    void midPointSolve() {
         this.solver = new MidPointSolver<>(this.function);
 
         StateInterface<Vector3dInterface> nextY;
-        while(t<=tf+stepSize){
+        while (t <= tf + stepSize) {
             nextY = solver.step(solver.getFunction(), t, y, stepSize);
             y = nextY.copy();
-            t+=stepSize;
+            t += stepSize;
         }
         System.out.println("MIDPOINT");
-        System.out.println("POSITION DIFF: " +Math.abs(exactYPosition - y.get().get(1)));
-        System.out.println("VELOCITY DIFF: " +Math.abs(exactYVelocity - y.getRateOfChange().get().get(1)));
+        System.out.println("POSITION DIFF: " + Math.abs(exactYPosition - y.get()[0].getY()));
+        System.out.println("VELOCITY DIFF: " + Math.abs(exactYVelocity - y.get()[1].getY()));
 
-        assertTrue(() -> Math.abs(exactYPosition - y.get().get(1))<1);
-        assertTrue(() -> Math.abs(exactYVelocity - y.getRateOfChange().get().get(1))<1e-1);
+        assertTrue(() -> Math.abs(exactYPosition - y.get()[0].getY()) < 1);
+        assertTrue(() -> Math.abs(exactYVelocity - y.get()[1].getY()) < 1e-1);
     }
 
     @Test
     @DisplayName("RK4Solve")
-    void rk4Solve(){
+    void rk4Solve() {
         this.solver = new RungeKuttaSolver<>(this.function);
 
         StateInterface<Vector3dInterface> nextY;
-        while(t<=tf+stepSize){
+        while (t <= tf + stepSize) {
             nextY = solver.step(solver.getFunction(), t, y, stepSize);
             y = nextY.copy();
-            t+=stepSize;
+            t += stepSize;
         }
         System.out.println("RK4");
-        System.out.println("POSITION DIFF: " +Math.abs(exactYPosition - y.get().get(1)));
-        System.out.println("VELOCITY DIFF: " +Math.abs(exactYVelocity - y.getRateOfChange().get().get(1)));
+        System.out.println("POSITION DIFF: " + Math.abs(exactYPosition - y.get()[0].getY()));
+        System.out.println("VELOCITY DIFF: " + Math.abs(exactYVelocity - y.get()[1].getY()));
 
-        assertTrue(() -> Math.abs(exactYPosition - y.get().get(1))<1);
-        assertTrue(() -> Math.abs(exactYVelocity - y.getRateOfChange().get().get(1))<1e-1);
+        assertTrue(() -> Math.abs(exactYPosition - y.get()[0].getY()) < 1);
+        assertTrue(() -> Math.abs(exactYVelocity - y.get()[1].getY()) < 1e-1);
     }
 
     @Test
     @DisplayName("VerletSTDSolve")
-    void verletSTDSolve(){
+    void verletSTDSolve() {
         this.solver = new StandardVerletSolver<>(this.function);
 
         StateInterface<Vector3dInterface> nextY;
-        while(t<=tf+stepSize){
+        while (t <= tf + stepSize) {
             nextY = solver.step(solver.getFunction(), t, y, stepSize);
             y = nextY.copy();
-            t+=stepSize;
+            t += stepSize;
         }
         System.out.println("VERLET STD");
-        System.out.println("POSITION DIFF: " +Math.abs(exactYPosition - y.get().get(1)));
-        System.out.println("VELOCITY DIFF: " +Math.abs(exactYVelocity - y.getRateOfChange().get().get(1)));
+        System.out.println("POSITION DIFF: " + Math.abs(exactYPosition - y.get()[0].getY()));
+        System.out.println("VELOCITY DIFF: " + Math.abs(exactYVelocity - y.get()[1].getY()));
 
-        assertTrue(() -> Math.abs(exactYPosition - y.get().get(1))<1);
-        assertTrue(() -> Math.abs(exactYVelocity - y.getRateOfChange().get().get(1))<1e-1);
+        assertTrue(() -> Math.abs(exactYPosition - y.get()[0].getY()) < 1);
+        assertTrue(() -> Math.abs(exactYVelocity - y.get()[1].getY()) < 1e-1);
     }
 
     @Test
@@ -123,8 +123,8 @@ public class ModuleTest {
             y = nextY.copy();
             t += stepSize;
         }
-        System.out.println("POSITION DIFF: " + Math.abs(exactYPosition - y.get().get(1)));
-        System.out.println("VELOCITY DIFF: " + Math.abs(exactYVelocity - y.getRateOfChange().get().get(1)));
+        System.out.println("POSITION DIFF: " + Math.abs(exactYPosition - y.get()[0].getY()));
+        System.out.println("VELOCITY DIFF: " + Math.abs(exactYVelocity - y.get()[1].getY()));
 
         // assertTrue(() -> Math.abs(exactYPosition - vectorState.get().get(1))<1);
         // assertTrue(() -> Math.abs(exactYVelocity - vectorState.getRateOfChange().get().get(1))<1e-1);

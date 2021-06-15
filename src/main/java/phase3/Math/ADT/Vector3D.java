@@ -1,6 +1,7 @@
 package phase3.Math.ADT;
 
 import java.util.Arrays;
+import java.util.stream.IntStream;
 
 import static java.lang.StrictMath.*;
 
@@ -10,25 +11,22 @@ import static java.lang.StrictMath.*;
  */
 public class Vector3D implements Vector3dInterface {
     /**
-     * The X.
+     * having this final will make collector garbage references faster
      */
     final private double[] val;
-    final private int dim;
 
-    /**
-     * Instantiates a new Vector 3 d.
-     */
-    public Vector3D(int dim) {
-        this.val = new double[this.dim = dim];
-        this.val[0] = this.val[1] = this.val[2] = 0;
+    public Vector3D() {
+        this.val = new double[3];
+        this.val[0] = 0;
+        this.val[1] = 0;
+        this.val[2] = 0; //the angle directly initialised
     }
 
-
     public Vector3D(double x, double y) {
-        this.val = new double[this.dim = 3];
+        this.val = new double[3];
         this.val[0] = x;
         this.val[1] = y;
-        this.val[2] = atan2(x, y); //the angle directly initialised
+        this.val[2] = 0; //the angle directly initialised
     }
 
     /**
@@ -39,21 +37,10 @@ public class Vector3D implements Vector3dInterface {
      * @param z the z
      */
     public Vector3D(double x, double y, double z) {
-        this.val = new double[dim = 3];
+        this.val = new double[3];
         this.val[0] = x;
         this.val[1] = y;
         this.val[2] = z;
-    }
-
-
-    public Vector3D(double... val) {
-        if (val.length == 0) {
-            this.val = new double[]{0, 0, 0};
-            this.dim = 3;
-        } else {
-            dim = val.length;
-            this.val = val;
-        }
     }
 
     /**
@@ -63,7 +50,7 @@ public class Vector3D implements Vector3dInterface {
      * @return vector 3 d interface
      */
     public static Vector3dInterface normalize(Vector3dInterface v) {
-        Vector3dInterface v2 = new Vector3D(v.getDim());
+        Vector3dInterface v2 = new Vector3D(0, 0, 0);
         double magnitude = sqrt(v.getX() * v.getX() + v.getY() * v.getY() + v.getZ() * v.getZ());
         v2.setX(v.getX() / magnitude);
         v2.setY(v.getY() / magnitude);
@@ -72,36 +59,19 @@ public class Vector3D implements Vector3dInterface {
     }
 
     @Override
-    public int getDim() {
-        return dim;
-    }
-
-    @Override
-    public double[] getVal() {
-        return val;
-    }
-
-    @Override
-    public double get(int i) {
-        if (i > this.val.length - 1) throw new IllegalArgumentException("Out of bounds");
-        return this.val[i];
-    }
-
-    @Override
     public Vector3dInterface sumOf(Vector3dInterface... k) {
-        Vector3dInterface res = new Vector3D(Arrays.copyOf(this.getVal(), this.getVal().length));
-        for (int i = 0; i < k.length; i++) {
-            for (int j = 0; j < k[i].getVal().length; j++) {
-                res.getVal()[j] += k[i].getVal()[j];
-            }
+        Vector3dInterface res = new Vector3D(getX(), getY(), getZ());
+        for (Vector3dInterface vector3dInterface : k) {
+            res = res.add(vector3dInterface);
         }
         return res;
     }
 
     @Override
-    public void setVal(double[] val) {
-        if (val.length != this.dim) throw new IllegalArgumentException("Dimensions not matching");
-        System.arraycopy(val, 0, this.val, 0, val.length);
+    public void set(Vector3dInterface v) {
+        setX(v.getX());
+        setY(v.getY());
+        setZ(v.getZ());
     }
 
     /**
@@ -157,11 +127,6 @@ public class Vector3D implements Vector3dInterface {
                 v1.getX() * v2.getY() - v1.getY() * v2.getX());
     }
 
-    @Override
-    public void set(double x, int i) {
-        if (i > this.val.length - 1) throw new IllegalArgumentException("Out of bounds");
-        this.val[i] = x;
-    }
 
     /**
      * Adds another vector onto this vector.
@@ -170,11 +135,10 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public Vector3dInterface add(Vector3dInterface other) {
-        Vector3dInterface sum = new Vector3D(new double[other.getDim()]);
-        for (int i = 0; i < other.getVal().length; i++) {
-            sum.getVal()[i] = this.getVal()[i] + other.getVal()[i];
-        }
-        return sum;
+        return new Vector3D(
+                getX() + other.getX(),
+                getY() + other.getY(),
+                getZ() + other.getZ());
     }
 
     /**
@@ -184,22 +148,20 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public Vector3dInterface sub(Vector3dInterface other) {
-        Vector3dInterface v = new Vector3D(new double[other.getDim()]);
-        for (int i = 0; i < other.getVal().length; i++) {
-            v.getVal()[i] = this.getVal()[i] - other.getVal()[i];
-        }
-        return v;
+        return new Vector3D(
+                getX() - other.getX(),
+                getY() - other.getY(),
+                getZ() - other.getZ());
     }
 
     /**
      * @return the result of |this-other|
      */
     public Vector3dInterface absSub(Vector3dInterface other) {
-        Vector3dInterface v = new Vector3D(new double[other.getDim()]);
-        for (int i = 0; i < other.getVal().length; i++) {
-            v.getVal()[i] = abs(this.getVal()[i] - other.getVal()[i]);
-        }
-        return v;
+        return new Vector3D(
+                abs(getX() - other.getX()),
+                abs(getY() - other.getY()),
+                abs(getZ() - other.getZ()));
     }
 
     /**
@@ -209,29 +171,26 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public Vector3dInterface mul(double scalar) {
-        Vector3dInterface v = new Vector3D(new double[this.getDim()]);
-        for (int i = 0; i < this.getVal().length; i++) {
-            v.getVal()[i] = this.getVal()[i] * scalar;
-        }
-        return v;
+        return new Vector3D(
+                getX() * scalar,
+                getY() * scalar,
+                getZ() * scalar);
     }
 
     @Override
     public Vector3dInterface div(Vector3dInterface other) {
-        Vector3dInterface v = new Vector3D(new double[other.getDim()]);
-        for (int i = 0; i < other.getVal().length; i++) {
-            v.getVal()[i] = this.getVal()[i] / other.getVal()[i];
-        }
-        return v;
+        return new Vector3D(
+                getX() / other.getX(),
+                getY() / other.getY(),
+                getZ() / other.getZ());
     }
 
     @Override
     public Vector3dInterface multiply(Vector3dInterface other) {
-        Vector3dInterface v = new Vector3D(new double[other.getDim()]);
-        for (int i = 0; i < other.getVal().length; i++) {
-            v.getVal()[i] = this.getVal()[i] * other.getVal()[i];
-        }
-        return v;
+        return new Vector3D(
+                getX() * other.getX(),
+                getY() * other.getY(),
+                getZ() * other.getZ());
     }
 
     /**
@@ -241,11 +200,10 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public Vector3dInterface div(double scalar) {
-        Vector3dInterface v = new Vector3D(new double[getDim()]);
-        for (int i = 0; i < getVal().length; i++) {
-            v.getVal()[i] = this.getVal()[i] / scalar;
-        }
-        return v;
+        return new Vector3D(
+                getX() / scalar,
+                getY() / scalar,
+                getZ() / scalar);
     }
 
     /**
@@ -264,11 +222,13 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public double norm() {
-        double sum = 0;
-        for (double x : this.val) {
-            sum += pow(x, 2);
-        }
+        double sum = Arrays.stream(this.val).map(x -> pow(x, 2)).sum();
         return sqrt(sum);
+    }
+
+    @Override
+    public double[] getVal() {
+        return this.val;
     }
 
     /**
@@ -276,10 +236,7 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public double dist(Vector3dInterface other) {
-        double sum = 0;
-        for (int i = 0; i < val.length; i++) {
-            sum += pow(other.getVal()[i] - val[i], 2);
-        }
+        double sum = IntStream.range(0, val.length).mapToDouble(i -> pow(other.getVal()[i] - val[i], 2)).sum();
         return sqrt(sum);
     }
 
@@ -304,7 +261,7 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public Vector3dInterface clone() {
-        return new Vector3D(Arrays.copyOf(val, val.length));
+        return new Vector3D(getX(), getY(), getZ());
     }
 
 
@@ -367,9 +324,9 @@ public class Vector3D implements Vector3dInterface {
     @Override
     public int hashCode() {
         int hash = 11;
-        hash = 31 * hash + Double.hashCode(this.val[0]);
-        hash = 31 * hash + Double.hashCode(this.val[1]);
-        hash = 31 * hash + Double.hashCode(this.val[2]);
+        for (int i = 0; i < 3; i++) {
+            hash = 31 * hash + Double.hashCode(this.val[i]);
+        }
         return hash;
     }
 
