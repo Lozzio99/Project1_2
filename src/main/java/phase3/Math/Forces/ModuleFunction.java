@@ -28,7 +28,7 @@ public final class ModuleFunction {
         //Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);
         //v2.setZ(v2.getZ() - (v.getZ() * h));
 
-        return new RateOfChange<>(v);
+        return new RateOfChange<>(y.get()[1], v);
     };
 
     /**

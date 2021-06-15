@@ -71,10 +71,8 @@ public class ODE2Test {
             case "RungeKutta4thSolver" -> 4;
             default -> 0;
         };
-
         //System.out.println(Arrays.toString(errorH));
         //System.out.println(Arrays.toString(error_half_h));
-
         for (int i = 0; i < errorH.length; i++) {
             // expect halfH error to be 1/(2^order) of H error
             //because step size has been divided by 2

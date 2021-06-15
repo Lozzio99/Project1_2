@@ -54,7 +54,7 @@ public class WindModel implements WindInterface {
             double dir = abs(acc - mid);
             acc = dir * (acc > mid ? 1 : -1);
             //System.out.println(acc * 10);
-            return new RateOfChange<>(new Vector3D(acc * 10, 0, 0));
+            return new RateOfChange<>(y.get()[1], new Vector3D(acc * 10, 0, 0));
         };
     }
 

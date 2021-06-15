@@ -34,9 +34,9 @@ public class ClosedLoopController implements ControllerInterface {
             this.currentState = y;
             double turnSensitivity = 10;
             double turnDampening = 0.5;
-            double angle0 = Math.atan2(y.getRateOfChange().get().getY(), y.getRateOfChange().get().getX()) * 180 / Math.PI; // module velocity
-            double angle1 = -90 - y.get().getZ() ; // module orientation
-            double angleVel = -y.getRateOfChange().get().getZ();
+            double angle0 = Math.atan2(y.get()[1].getY(), y.get()[1].getX()) * 180 / Math.PI; // module velocity
+            double angle1 = -90 - y.get()[0].getZ(); // module orientation
+            double angleVel = -y.get()[1].getZ();
             // System.out.println("Velocity: X = " + y.getRateOfChange().get().getX() + " ,Y = " + y.getRateOfChange().get().getY());
             // System.out.println("Angle0: " + angle0);
             // System.out.println("Angle1: " + angle1);
@@ -54,19 +54,14 @@ public class ClosedLoopController implements ControllerInterface {
             double velFactor = 0.2;
             double locationFactor = 80;
 
-            double burnAmount = (y.getRateOfChange().get().getY() * -1) * velFactor + (1 / y.get().getY() * locationFactor);
+            double burnAmount = (y.get()[1].getY() * -1) * velFactor + (1 / y.get()[0].getY() * locationFactor);
             Vector3D thrustVector = burn(burnAmount, y);
             System.out.println("BurnAmount: " + burnAmount);
             System.out.println("ThrustVector: " + thrustVector);
             System.out.println("---");
 
             // Apply changes
-            return new RateOfChange<>(thrustVector.add(rotVector));
-
-            // t : 0      1       2       3      4     5
-            // p : 0      10      18     24
-            // v : 10     8       6
-            // a : 5      4       3      (?)
+            return new RateOfChange<>(y.get()[1], thrustVector.add(rotVector));
         };
     }
 
@@ -77,9 +72,9 @@ public class ClosedLoopController implements ControllerInterface {
      * @return
      */
     private Vector3D burn (double amount, StateInterface<Vector3dInterface> state) {
-        return  new Vector3D(amount * Math.sin(state.get().getZ() * Math.PI / 180),
-                             amount * Math.cos(state.get().getZ() * Math.PI / 180),
-                             0);
+        return new Vector3D(amount * Math.sin(state.get()[0].getZ() * Math.PI / 180),
+                amount * Math.cos(state.get()[0].getZ() * Math.PI / 180),
+                0);
     }
 
     private boolean getUpdateCondition() {
