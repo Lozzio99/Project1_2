@@ -6,7 +6,7 @@ import phase3.Math.Noise.Noise;
 
 public class Config {
     public static final boolean DEBUG = false;
-    public static final double STEP_SIZE = 0.05;
+    public static final double STEP_SIZE = 0.001;
     public static double CURRENT_TIME = 0;
 
     public static final int EULER = 0;
