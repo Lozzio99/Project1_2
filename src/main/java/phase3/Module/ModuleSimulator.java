@@ -138,7 +138,7 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
         this.setMASS(7.8e4);
         this.setRADIUS(1e2);
         this.setColour(Color.GREEN);
-        this.setVectorLocation(new Vector3D(500, 500, 0));
+        this.setVectorLocation(new Vector3D(700, 700, 0));
         this.setVectorVelocity(new Vector3D(-10, 0, 0));
         this.localAcceleration = new Vector3D();
         this.fuelMass = this.startFuel;

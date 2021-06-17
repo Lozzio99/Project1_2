@@ -32,8 +32,8 @@ public class ClosedLoopController implements ControllerInterface {
 
             // Turn the module to point retrograde to the current trajectory
             this.currentState = y;
-            double turnSensitivity = 10;
-            double turnDampening = 0.5;
+            double turnSensitivity = 30;
+            double turnDampening = 100;
             double angle0 = Math.atan2(y.getRateOfChange().get().getY(), y.getRateOfChange().get().getX()) * 180 / Math.PI; // module velocity
             double angle1 = -90 - y.get().getZ() ; // module orientation
             double angleVel = -y.getRateOfChange().get().getZ();
@@ -47,6 +47,15 @@ public class ClosedLoopController implements ControllerInterface {
 
             // Calculate the rotational acceleration
             double rotAcc = (diff + (angleVel * turnDampening)) * turnSensitivity;
+
+            double rotThrustLimit = 0.58;
+            if (rotAcc > rotThrustLimit) {
+                rotAcc = rotThrustLimit;
+            }
+
+            if (rotAcc < -rotThrustLimit) {
+                rotAcc = -rotThrustLimit;
+            }
             Vector3D rotVector = new Vector3D(0, 0, rotAcc);
 
             // Calculate thrust
