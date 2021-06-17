@@ -1,7 +1,9 @@
 package phase3.Module.Controllers;
 
-import static phase3.Config.CLOSED;
-import static phase3.Config.OPEN;
+import phase3.Math.ADT.Vector3dInterface;
+import phase3.System.State.StateInterface;
+
+import static phase3.Config.*;
 
 public class DecisionMaker {
 
@@ -10,7 +12,10 @@ public class DecisionMaker {
     public DecisionMaker(int loopType) {
         switch (loopType) {
             case OPEN -> {
-                controller = new OpenLoopController();
+                controller = new OpenLoopManualNewController();
+            }
+            case OPEN_OLD -> {
+                controller = new OpenLoopManualOldController();
             }
             case CLOSED -> {
                 controller = new ClosedLoopController();
@@ -18,7 +23,7 @@ public class DecisionMaker {
         }
     }
 
-    public ControllerInterface getController() {
-        return controller;
+    public double[] getControls(double t, StateInterface<Vector3dInterface> y) {
+        return controller.controlFunction(t, y);
     }
 }

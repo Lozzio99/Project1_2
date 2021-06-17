@@ -2,8 +2,6 @@ package phase3.Module.Controllers;
 
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
-import phase3.Math.Functions.ODEFunctionInterface;
-import phase3.System.State.RateOfChange;
 import phase3.System.State.StateInterface;
 
 public class ClosedLoopController implements ControllerInterface {
@@ -16,70 +14,8 @@ public class ClosedLoopController implements ControllerInterface {
     }
 
     @Override
-    public ODEFunctionInterface<Vector3dInterface> controlFunction() {
-        return (t, y) -> {
-            /*
-            this.currentState = y;
-            if (getUpdateCondition()) {
-                //TODO: optimize V regarding the currentState
-                //return the acceleration
-                return new RateOfChange<>(V.add(y.get()[1]));
-            } else {
-                return new RateOfChange<>(new Vector3D(0, 0, 0));
-            }
-
-             */
-
-            // Turn the module to point retrograde to the current trajectory
-            this.currentState = y;
-            double turnSensitivity = 10;
-            double turnDampening = 0.5;
-            double angle0 = Math.atan2(y.get()[1].getY(), y.get()[1].getX()) * 180 / Math.PI; // module velocity
-            double angle1 = -90 - y.get()[0].getZ(); // module orientation
-            double angleVel = -y.get()[1].getZ();
-            // System.out.println("Velocity: X = " + y.getRateOfChange().get().getX() + " ,Y = " + y.getRateOfChange().get().getY());
-            // System.out.println("Angle0: " + angle0);
-            // System.out.println("Angle1: " + angle1);
-            // System.out.println("AngelVel: " + angleVel);
-            // System.out.println("---");
-            double diff = angle1 - angle0;
-            System.out.println("*** diff: " + diff);
-
-            // Calculate the rotational acceleration
-            double rotAcc = (diff + (angleVel * turnDampening)) * turnSensitivity;
-            Vector3D rotVector = new Vector3D(0, 0, rotAcc);
-
-            // Calculate thrust
-
-            double velFactor = 0.2;
-            double locationFactor = 80;
-
-            double burnAmount = (y.get()[1].getY() * -1) * velFactor + (1 / y.get()[0].getY() * locationFactor);
-            Vector3D thrustVector = burn(burnAmount, y);
-            System.out.println("BurnAmount: " + burnAmount);
-            System.out.println("ThrustVector: " + thrustVector);
-            System.out.println("---");
-
-            // Apply changes
-            return new RateOfChange<>(y.get()[1], thrustVector.add(rotVector));
-        };
-    }
-
-    /**
-     * Ensures that a rocket is only able to burn in the direction that the thruster is pointing at.
-     * @param amount
-     * @param state
-     * @return
-     */
-    private Vector3D burn (double amount, StateInterface<Vector3dInterface> state) {
-        return new Vector3D(amount * Math.sin(state.get()[0].getZ() * Math.PI / 180),
-                amount * Math.cos(state.get()[0].getZ() * Math.PI / 180),
-                0);
-    }
-
-    private boolean getUpdateCondition() {
-        //TODO: implement update condition
-        return false;
+    public double[] controlFunction(double t, StateInterface<Vector3dInterface> y) {
+        return new double[]{0.0, 0.0};
     }
 
 }

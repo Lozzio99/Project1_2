@@ -14,9 +14,11 @@ import static java.lang.StrictMath.sin;
  */
 public final class ModuleFunction {
 
-    private static final double G = 1.352;
+    public static final double G = 1.352;
     private static double currentTime;
-    private static Vector3dInterface AccTorque = new Vector3D(0,0,0);
+    public static final double U_MAX = 7.5;
+    public static final double V_MAX = 0.58;
+    private final double[] CONTROLS = new double[]{0.0, 0.0};
     /**
      * Function that returns the rate of change of a state at a point in time
      * Given an initial state it can perform the f(t,y) on that and return a rate
@@ -52,9 +54,10 @@ public final class ModuleFunction {
         // must implement function for (xVel, yVel, angleVel)
         // in theory should affect the y component only , or partially the x component
         final Vector3dInterface newRate = new Vector3D(0, 0, 0);
-        newRate.setX(sin(y.get()[0].getZ()) * (AccTorque.getX()));  //must multiply by u and v then
-        newRate.setY((cos(y.get()[0].getZ()) * (AccTorque.getY())) - G);
-        newRate.setZ(AccTorque.getZ());
+        newRate.setX(sin(y.get()[0].getZ()) * CONTROLS[0]);  //must multiply by u and v then
+        newRate.setY((cos(y.get()[0].getZ()) * CONTROLS[0]) - G);
+        newRate.setZ(CONTROLS[1]);
+
         return newRate;
     }
 
@@ -67,7 +70,8 @@ public final class ModuleFunction {
         return this.evalRateOfChange;
     }
 
-    public static void setAccTorque(Vector3dInterface accTorque) {
-        AccTorque = accTorque;
+    public void setControls(double[] CONTROLS) {
+        this.CONTROLS[0] = CONTROLS[0];
+        this.CONTROLS[1] = CONTROLS[1];
     }
 }

@@ -20,7 +20,9 @@ import static phase3.Config.*;
 public class Runner implements RunnerInterface {
     private final SimulationInterface simulation;
     private ODESolverInterface<Vector3dInterface> solver;
-    private ODEFunctionInterface<Vector3dInterface> gravityFunction, windFunction, moduleFunction;
+    private ODEFunctionInterface<Vector3dInterface> gravityFunction;
+    private ModuleFunction moduleFunction;
+    private ODEFunctionInterface<Vector3dInterface> windFunction;
     private ScheduledExecutorService service;
     private DecisionMaker moduleController;
     private WindInterface wind;
@@ -47,9 +49,9 @@ public class Runner implements RunnerInterface {
         this.windFunction = this.wind.getWindFunction();
 
         this.moduleController = new DecisionMaker(CONTROLLER);
-        this.moduleFunction = moduleController.getController().controlFunction();
 
-        this.gravityFunction = new ModuleFunction().evaluateCurrentAccelerationFunction();
+        moduleFunction = new ModuleFunction();
+        this.gravityFunction = moduleFunction.evaluateCurrentAccelerationFunction();
 
         switch (SOLVER) {
             case EULER -> this.solver = new EulerSolver<>(this.gravityFunction);
@@ -74,13 +76,30 @@ public class Runner implements RunnerInterface {
         // draw graphics
         // update module gravityFunction
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
-        simulation.getGraphics().start(currentState.get()[0]);
-        StateInterface<Vector3dInterface> afterModuleDecision = solver.step(moduleFunction, CURRENT_TIME, currentState, STEP_SIZE);
-        StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, afterModuleDecision, STEP_SIZE);
-        StateInterface<Vector3dInterface> afterWind = solver.step(windFunction, CURRENT_TIME, afterGravity, STEP_SIZE);
-        simulation.getSystem().updateState(afterWind);
-        CURRENT_TIME += STEP_SIZE;
 
+        if (currentState.get()[0].getY() < 0.1) {
+
+            System.exit(0);
+        }
+
+        System.out.println("\nTime: " + CURRENT_TIME);
+        System.out.println("Position: " + currentState.get()[0]);
+        System.out.println("Velocity: " + currentState.get()[1]);
+
+        simulation.getGraphics().start(currentState.get()[0]);
+
+        moduleFunction.setControls(moduleController.getControls(CURRENT_TIME, currentState));
+
+        StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, currentState, STEP_SIZE);
+
+        if (WIND) {
+            StateInterface<Vector3dInterface> afterWind = solver.step(windFunction, CURRENT_TIME, afterGravity, STEP_SIZE);
+            simulation.getSystem().updateState(afterWind);
+        } else {
+            simulation.getSystem().updateState(afterGravity);
+        }
+
+        CURRENT_TIME += STEP_SIZE;
 
         /*
 
