@@ -28,7 +28,7 @@ public class ModuleScene extends Scene {
         Point2D.Double p = Vector2DConverter.convertVector(state);
 
         try {
-            image = ModuleShape.createImage(state.get(2)); //should rotate the image
+            image = ModuleShape.createImage(state.getZ()); //should rotate the image
             int x = (int) p.x, y = (int) p.y;
             g.drawImage(image, x, y, (int) (x + (50 * getScale())),
                     //here can do some logic, to enlarge the scaling
