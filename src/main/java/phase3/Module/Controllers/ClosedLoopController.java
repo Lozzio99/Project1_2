@@ -32,45 +32,43 @@ public class ClosedLoopController implements ControllerInterface {
 
             // Turn the module to point retrograde to the current trajectory
             this.currentState = y;
-            double turnSensitivity = 30;
-            double turnDampening = 100;
-            double angle0 = Math.atan2(y.getRateOfChange().get().getY(), y.getRateOfChange().get().getX()) * 180 / Math.PI; // module velocity
-            double angle1 = -90 - y.get().getZ() ; // module orientation
-            double angleVel = -y.getRateOfChange().get().getZ();
-            // System.out.println("Velocity: X = " + y.getRateOfChange().get().getX() + " ,Y = " + y.getRateOfChange().get().getY());
-            // System.out.println("Angle0: " + angle0);
-            // System.out.println("Angle1: " + angle1);
-            // System.out.println("AngelVel: " + angleVel);
-            // System.out.println("---");
-            double diff = angle1 - angle0;
-            System.out.println("*** diff: " + diff);
+            double turnSensitivity = 10;
+            double turnDampening = 90;
+            double targetAngle = Math.atan2(y.getRateOfChange().get().getY(), y.getRateOfChange().get().getX()) * 180 / Math.PI; // module velocity
+            double currentAngle = -90 - y.get().getZ() ; // module orientation
+            double rotationalVelocity = -y.getRateOfChange().get().getZ();
+
+            double angleDifferendce = currentAngle - targetAngle;
+            System.out.println("--- Y: " + y.get().getY());
 
             // Calculate the rotational acceleration
-            double rotAcc = (diff + (angleVel * turnDampening)) * turnSensitivity;
+            double rotationalAcceleration = (angleDifferendce * turnSensitivity) + (rotationalVelocity * turnDampening);
 
-            double rotThrustLimit = 0.58;
-            if (rotAcc > rotThrustLimit) {
-                rotAcc = rotThrustLimit;
+            double rotThrustLimit = 1.16;
+            if (rotationalAcceleration > rotThrustLimit) {
+                rotationalAcceleration = rotThrustLimit;
             }
 
-            if (rotAcc < -rotThrustLimit) {
-                rotAcc = -rotThrustLimit;
+            if (rotationalAcceleration < -rotThrustLimit) {
+                rotationalAcceleration = -rotThrustLimit;
             }
-            Vector3D rotVector = new Vector3D(0, 0, rotAcc);
+            Vector3D rotVector = new Vector3D(0, 0, rotationalAcceleration);
 
             // Calculate thrust
 
-            double velFactor = 0.2;
-            double locationFactor = 80;
+            double velocityFactor = 0.2;
+            double locationFactor = 10;
+            //double hoverThrust = 3486479.0461024586 / 7.8e6; // F = G * m / r = 6.67408e-11 * 1.345e23 / 2574700
+            double hoverThrust = 1.351;
 
-            double burnAmount = (y.getRateOfChange().get().getY() * -1) * velFactor + (1 / y.get().getY() * locationFactor);
+            // double burnAmount = (y.getRateOfChange().get().getY() * -1) * velFactor + (1 / y.get().getY() * locationFactor);
+            double burnAmount = - (hoverThrust / (1 - y.get().getY())) - (y.getRateOfChange().get().getY() * velocityFactor) + (locationFactor / y.get().getY());
+
             Vector3D thrustVector = burn(burnAmount, y);
-            System.out.println("BurnAmount: " + burnAmount);
-            System.out.println("ThrustVector: " + thrustVector);
-            System.out.println("---");
 
             // Apply changes
             return new RateOfChange<>(thrustVector.add(rotVector));
+            //return new RateOfChange<>(new Vector3D(0, hoverThrust, 0));
 
             // t : 0      1       2       3      4     5
             // p : 0      10      18     24
