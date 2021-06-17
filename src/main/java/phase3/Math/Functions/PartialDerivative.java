@@ -62,21 +62,21 @@ public class PartialDerivative {
                         CompletableFuture.supplyAsync(
                                 () -> getPartialDerivatives(fX, v, h, 0))   // the index of the array is the thing that changes
                                 .thenAccept(vector3D -> {
-                                    m[0][0] = vector3D.getVal()[0];
-                                    m[1][0] = vector3D.getVal()[1];
-                                    m[2][0] = vector3D.getVal()[2];
+                                    m[0][0] = vector3D.getX();
+                                    m[1][0] = vector3D.getY();
+                                    m[2][0] = vector3D.getZ();
                                 }),
                         CompletableFuture.supplyAsync(() -> getPartialDerivatives(fX, v, h, 1))
                                 .thenAccept(vector3D -> {
-                                    m[0][1] = vector3D.getVal()[0];
-                                    m[1][1] = vector3D.getVal()[1];
-                                    m[2][1] = vector3D.getVal()[2];
+                                    m[0][1] = vector3D.getX();
+                                    m[1][1] = vector3D.getY();
+                                    m[2][1] = vector3D.getZ();
                                 }),
                         CompletableFuture.supplyAsync(() -> getPartialDerivatives(fX, v, h, 2))
                                 .thenAccept(vector3D -> {
-                                    m[0][2] = vector3D.getVal()[0];
-                                    m[1][2] = vector3D.getVal()[1];
-                                    m[2][2] = vector3D.getVal()[2];
+                                    m[0][2] = vector3D.getX();
+                                    m[1][2] = vector3D.getY();
+                                    m[2][2] = vector3D.getZ();
                                 })
                 );
         try {

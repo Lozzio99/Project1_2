@@ -152,7 +152,7 @@ public abstract class Scene extends JPanel {
      * any mouse event was generated
      */
     public synchronized void update(final Vector3dInterface v) {
-        this.state.setVal(v.getVal());
+        this.state.set(v);
 
         x = mouse.getX();
         y = mouse.getY();

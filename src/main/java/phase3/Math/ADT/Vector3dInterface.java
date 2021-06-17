@@ -56,10 +56,6 @@ public interface Vector3dInterface {
      */
     void setZ(double z);
 
-    int getDim();
-
-    void set(double x, int i);
-
     /**
      * Sum the other vector and the current one
      *
@@ -117,7 +113,7 @@ public interface Vector3dInterface {
      *   ahb = a.addMul(h, b);
      *   * ahb should now contain the result of this mathematical operation:
      *   a+h*b
-    */
+     */
     Vector3dInterface addMul(double scalar, Vector3dInterface other);
 
     /**
@@ -126,6 +122,8 @@ public interface Vector3dInterface {
      * @return the Euclidean norm of a vector
      */
     double norm();
+
+    double[] getVal();
 
     /**
      * Dist double.
@@ -176,11 +174,7 @@ public interface Vector3dInterface {
 
     Vector3dInterface multiply(Vector3dInterface other);
 
-    double[] getVal();
-
-    double get(int i);
-
     Vector3dInterface sumOf(Vector3dInterface... k2);
 
-    void setVal(double[] val);
+    void set(Vector3dInterface v);
 }
