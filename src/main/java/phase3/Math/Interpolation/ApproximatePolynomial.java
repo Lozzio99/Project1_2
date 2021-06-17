@@ -6,7 +6,6 @@ import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Functions.Derivative;
 import phase3.Math.Functions.Function;
 
-import static java.lang.StrictMath.cos;
 import static java.lang.StrictMath.sin;
 import static phase3.Math.Functions.SecondDerivative.h;
 
@@ -38,10 +37,8 @@ public class ApproximatePolynomial {
 
     private static Vector3dInterface[] findDerivatives(Function<Vector3dInterface, Double> fx, Derivative<Vector3dInterface, Double> derivative) {
         Vector3dInterface[] velocities = new Vector3dInterface[length];
-        double x = 0;
         for (int i = 0; i < velocities.length; i++) {
-            velocities[i] = derivative.derivative(x, fx);
-            x += step;
+            velocities[i] = derivative.derivative(time[i], fx);
         }
         return velocities;
     }
@@ -68,24 +65,12 @@ public class ApproximatePolynomial {
         double[] vx = new double[length],
                 vy = new double[length],
                 vz = new double[length];
-        Function<Double, Double> Fx = x -> {
-            double y = 1;
-            for (int i = 0; i < 6; i++) {
-                y *= sin(i * x) * x;
-            }
-            return y;
-        };
-        Function<Double, Double> Fy = x -> {
-            double y = 1;
-            for (int i = 0; i < 6; i++) {
-                y *= cos(i * x) * x;
-            }
-            return y;
-        };
-        Function<Double, Double> FTheta = x -> (10 * x * x - 30 * x);
+        Function<Double, Double> Fx = x -> x * x * x * x;
+        Function<Double, Double> Fy = x -> sin(x * x) + x * x * x;
+        Function<Double, Double> FTheta = x -> (10 * x * x * x - 30 * x);
 
         for (int i = 0; i < length; i++) {
-            Double x = (double) i;
+            Double x = time[i];
             vx[i] = Fx.apply(x);
             vy[i] = Fy.apply(x);
             vz[i] = FTheta.apply(x);
