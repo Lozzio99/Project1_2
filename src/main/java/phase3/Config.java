@@ -6,7 +6,7 @@ import phase3.Math.Noise.Noise;
 
 public class Config {
     public static final boolean DEBUG = false;
-    public static final double STEP_SIZE = 0.01;
+    public static final double STEP_SIZE = 0.001;
     public static double CURRENT_TIME = 0;
 
     public static final int EULER = 0;
@@ -17,7 +17,8 @@ public class Config {
     public static int SOLVER = VERLET_VEL;
 
     public static final int OPEN = 0;
-    public static final int CLOSED = 1;
+    public static final int OPEN_OLD = 1;
+    public static final int CLOSED = 2;
     public static int CONTROLLER = 0;
 
     public static boolean WIND = false;

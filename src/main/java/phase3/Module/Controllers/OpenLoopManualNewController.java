@@ -28,6 +28,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
     private double rotation = 1.0;
     private double hMvTime;
     private double rtTime;
+    private double tempT;
 
     public OpenLoopManualNewController() {
 
@@ -64,6 +65,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
         if (abs(x_0) > 0.1) if (startHorizontalMove(t)) initHorizontalMoveFlag = true;
         // adjust vertical position/velocity
         else if (abs(y_0) < 0.1 || startVerticalMove()) DefaultPhase();
+        System.out.println(u + " ### " + v);
     }
 
     private boolean startHorizontalMove(double t) {
@@ -71,6 +73,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
         else {
             if (initHorizontalMoveFlag) initHorizontalMove(t);
             else if (t > hMvTime) {
+                System.out.println("Horizontal move phase");
                 return startRotation(PI/4.0, t);
             }
         }
@@ -83,11 +86,12 @@ public class OpenLoopManualNewController implements ControllerInterface {
     }
 
     private boolean startRotation(double degrees, double t) {
-        if (initRotationFlag) initRotation(degrees);
-        if (t < t + rtTime/2) {
+        System.out.println("Rotation phase");
+        if (initRotationFlag) initRotation(degrees, t);
+        if (t < tempT + rtTime) {
             setControls(abs(G/cos(theta_0)), V_MAX*rotation);
         }
-        else if (t > t + rtTime/2 && t < t + rtTime) {
+        else if (t > tempT + rtTime && t < tempT + rtTime*2.0) {
             setControls(abs(G/cos(theta_0)), -V_MAX*rotation);
         }
         else {
@@ -100,8 +104,9 @@ public class OpenLoopManualNewController implements ControllerInterface {
         return false;
     }
 
-    private void initRotation(double degrees) {
+    private void initRotation(double degrees, double t) {
         rtTime = sqrt((abs(degrees%(2*PI)))/V_MAX);
+        tempT = t;
         initRotationFlag = false;
     }
 

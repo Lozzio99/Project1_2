@@ -3,8 +3,7 @@ package phase3.Module.Controllers;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.System.State.StateInterface;
 
-import static phase3.Config.CLOSED;
-import static phase3.Config.OPEN;
+import static phase3.Config.*;
 
 public class DecisionMaker {
 
@@ -14,6 +13,9 @@ public class DecisionMaker {
         switch (loopType) {
             case OPEN -> {
                 controller = new OpenLoopManualNewController();
+            }
+            case OPEN_OLD -> {
+                controller = new OpenLoopManualOldController();
             }
             case CLOSED -> {
                 controller = new ClosedLoopController();
