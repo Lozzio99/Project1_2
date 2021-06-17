@@ -1,10 +1,12 @@
 package phase3.Module.Controllers;
 
+import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Forces.ModuleFunction;
 import phase3.Math.Solvers.ODESolverInterface;
 import phase3.Math.Solvers.VerletVelocitySolver;
 import phase3.System.State.StateInterface;
+import phase3.System.State.SystemState;
 
 import static java.lang.Math.*;
 import static phase3.Config.STEP_SIZE;
@@ -59,7 +61,7 @@ public class OpenLoopController implements ControllerInterface {
 
         init = false;
 
-        tR1 = sqrt((PI/4.0)/V_MAX)*2-STEP_SIZE;
+        tR1 = sqrt((PI/4.0)/V_MAX)*2;
         tF1 = Double.MAX_VALUE;
 
         tF2 = Double.MAX_VALUE;
@@ -71,14 +73,16 @@ public class OpenLoopController implements ControllerInterface {
 
     private void updateControls(double t) {
 
-        x_0 = x_0 + x_0_dot*STEP_SIZE + 0.5*u*sin(theta_0)*STEP_SIZE*STEP_SIZE;
-        x_0_dot = x_0_dot + u*sin(theta_0)*STEP_SIZE;
+        //x_0 = x_0 + x_0_dot*STEP_SIZE + 0.5*u*sin(theta_0)*STEP_SIZE*STEP_SIZE;
+        //x_0_dot = x_0_dot + u*sin(theta_0)*STEP_SIZE;
 
-        y_0 = y_0 + y_0_dot*STEP_SIZE + 0.5*(u*cos(theta_0)-G)*STEP_SIZE*STEP_SIZE;
-        y_0_dot = y_0_dot + (u*cos(theta_0)-G)*STEP_SIZE;
+        //y_0 = y_0 + y_0_dot*STEP_SIZE + 0.5*(u*cos(theta_0)-G)*STEP_SIZE*STEP_SIZE;
+        //y_0_dot = y_0_dot + (u*cos(theta_0)-G)*STEP_SIZE;
 
-        theta_0 = theta_0 + theta_0_dot*STEP_SIZE + 0.5*v*STEP_SIZE*STEP_SIZE;
-        theta_0_dot = theta_0_dot + v*STEP_SIZE;
+        //theta_0 = theta_0 + theta_0_dot*STEP_SIZE + 0.5*v*STEP_SIZE*STEP_SIZE;
+        //theta_0_dot = theta_0_dot + v*STEP_SIZE;
+
+        updateState(t);
 
         if (t < tR1) {
             if (t < tR1/2) R1Phase1();
@@ -89,7 +93,7 @@ public class OpenLoopController implements ControllerInterface {
             if (t < tF3-tR2/2) R2Phase1();
             else if (t > tF3-tR2/2) R2Phase2();
         }
-        else if (t > tF3 && t < tF4-STEP_SIZE) {
+        else if (t > tF3 && t < tF4) {
             F4Phase(t);
         }
         else DefaultPhase();
@@ -121,7 +125,7 @@ public class OpenLoopController implements ControllerInterface {
     }
 
     private void DefaultPhase() {
-        u = 0.0;
+        u = abs(G/cos(theta_0));
         v = 0.0;
     }
 
@@ -129,7 +133,7 @@ public class OpenLoopController implements ControllerInterface {
         u = temp_u;
         v = 0;
         if (initP1) initPhase1(t);
-        tR2 = sqrt((PI/4.0)/V_MAX)*2;
+        tR2 = sqrt((PI/4.0)/V_MAX)*2+STEP_SIZE;
         tF3 = t + tR2;
     }
 
@@ -155,5 +159,18 @@ public class OpenLoopController implements ControllerInterface {
 
     private double getV() {
         return v;
+    }
+
+    private void updateState(double t) {
+        ODESolverInterface solver = new VerletVelocitySolver(new ModuleFunction().evaluateCurrentAccelerationFunction());
+        StateInterface<Vector3dInterface> state = new SystemState<>(new Vector3D(x_0,y_0,theta_0),new Vector3D(x_0_dot,y_0_dot,theta_0_dot));
+        state = solver.step(new ModuleFunction().evaluateCurrentAccelerationFunction(), t, state, STEP_SIZE);
+        x_0 = state.get().getX();
+        y_0 = state.get().getY();
+        theta_0 = state.get().getZ();
+
+        x_0_dot = state.getRateOfChange().get().getX();
+        y_0_dot = state.getRateOfChange().get().getY();
+        theta_0_dot = state.getRateOfChange().get().getZ();
     }
 }

@@ -77,13 +77,15 @@ public class Runner implements RunnerInterface {
         // draw graphics
         // update module gravityFunction
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
+
         if (currentState.get().getY() < 0.1) {
             System.out.println("\nTime: "+ CURRENT_TIME);
             System.out.println("Position: "+ currentState.get());
             System.out.println("Velocity: "+ currentState.getRateOfChange().get());
+            System.exit(0);
         }
 
-        //simulation.getGraphics().start(currentState.get());
+        simulation.getGraphics().start(currentState.get());
 
         moduleFunction.setControls(moduleController.getControls(CURRENT_TIME, currentState));
 
