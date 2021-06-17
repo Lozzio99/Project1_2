@@ -11,11 +11,11 @@ import static java.lang.StrictMath.pow;
 public class ODE2Test {
     static StateInterface<Double> y;
 
-    static Function<Double> position = t -> {
+    static Function<Double, Double> position = t -> {
         return (t * t * t) - (4 * t) + 3;   // y (t)
     };
-    static Function<Double> velocity = t -> {
-        return 3 * t * t - 4;   // dy/dt
+    static Function<Double, Double> velocity = t -> {
+        return 3 * t * t - 4;   // dy/h
     };
     static ODEFunctionInterface<Double> acceleration = (t, y) -> {
         // y =   [  y , dy ]
@@ -24,13 +24,13 @@ public class ODE2Test {
     };
 
     public static void main(String[] args) {
-        for (int i = 2; i <= 10; i += 2) {
-            double t = 0, tf = 2, stepSize = 0.1;
-            halfStepSize(new EulerSolver<>(acceleration), t, tf, stepSize, i);
-            halfStepSize(new MidPointSolver<>(acceleration), t, tf, stepSize, i);
-            halfStepSize(new RungeKuttaSolver<>(acceleration), t, tf, stepSize, i);
-            halfStepSize(new StandardVerletSolver<>(acceleration), t, tf, stepSize, i);
-            halfStepSize(new VerletVelocitySolver<>(acceleration), t, tf, stepSize, i);
+        double t = 0, tf = 2, stepSize = 0.1;
+        for (int scale = 2; scale <= 10; scale += 2) {
+            halfStepSize(new EulerSolver<>(acceleration), t, tf, stepSize, scale);
+            halfStepSize(new MidPointSolver<>(acceleration), t, tf, stepSize, scale);
+            halfStepSize(new RungeKuttaSolver<>(acceleration), t, tf, stepSize, scale);
+            halfStepSize(new StandardVerletSolver<>(acceleration), t, tf, stepSize, scale);
+            halfStepSize(new VerletVelocitySolver<>(acceleration), t, tf, stepSize, scale);
         }
 
     }

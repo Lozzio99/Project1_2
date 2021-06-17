@@ -76,6 +76,10 @@ public interface Vector3dInterface {
      */
     Vector3dInterface sub(Vector3dInterface other);
 
+    Vector3dInterface add(double other);
+
+    Vector3dInterface sub(double other);
+
     /**
      * Abs sub vector 3 d interface.
      *
@@ -83,6 +87,7 @@ public interface Vector3dInterface {
      * @return the vector 3 d interface
      */
     Vector3dInterface absSub(Vector3dInterface other);
+
 
     /**
      * Multiply the current vector by a scalar

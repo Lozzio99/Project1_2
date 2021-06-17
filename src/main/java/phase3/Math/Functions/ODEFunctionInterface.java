@@ -12,18 +12,18 @@ import phase3.System.State.StateInterface;
 
 /**
  * An interface for the function f that represents the
- * differential equation dy/dt = f(t,y)
+ * differential equation dy/h = f(t,y)
  */
 @FunctionalInterface
 public interface ODEFunctionInterface<E> {
 
     /*
      * This is an interface for the function f that represents the
-     * differential equation dy/dt = f(t,y).
+     * differential equation dy/h = f(t,y).
      * You need to implement this function to represent to the laws of physics.
      *
      * For example, consider the differential equation
-     *   dy[0]/dt = y[1];  dy[1]/dt=cos(t)-sin(y[0])
+     *   dy[0]/h = y[1];  dy[1]/h=cos(t)-sin(y[0])
      * Then this function would be
      *   f(t,y) = (y[1],cos(t)-sin(y[0])).
      *

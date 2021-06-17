@@ -67,15 +67,16 @@ public class ModuleSimulator extends CelestialBody implements ModuleSimulatorInt
 
     /**
      * Evaluate loss double.
-     *
+     * <p>
      * source : https://www.narom.no/undervisningsressurser/sarepta/rocket-theory/rocket-engines/the-rocket-equation/
+     * <p>
+     * M(t)=M_(start )−m ̇  ;m ̇=  Δm/Δt
+     * M(t)∗a(t)= m ̇∗V_e=F_max;
+     * a(t)=  F_max/(Mstart−m ̇∗t);
+     * ∫a(t)h=v(t); V_e∗ln(Mstart/M(t) ;
+     * Δm=M_start∗(1 − e^(−Δv/V_e ));
+     * Δm - Propellant Consumed for One Step
      *
-     *M(t)=M_(start )−m ̇  ;m ̇=  Δm/Δt
-     *M(t)∗a(t)= m ̇∗V_e=F_max;
-     *a(t)=  F_max/(Mstart−m ̇∗t);
-     *∫a(t)dt=v(t); V_e∗ln(Mstart/M(t) ;
-     *Δm=M_start∗(1 − e^(−Δv/V_e ));
-     *Δm - Propellant Consumed for One Step
      * @param desiredVelocity the desired velocity
      * @param actualVelocity  the actual velocity
      * @return Δm, propellant consumed

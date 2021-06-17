@@ -1,35 +1,19 @@
 package phase3.Math.Functions;
 
 /**
- * An interface for the function f that represents the
- * differential equation dy/dt = f(t,y).
- * @param <E> the type parameter
+ * An interface for the function f that represents the equation y = f(x).
+ *
+ * @param <E> the type parameter returned.
+ * @param <T> the type parameter evaluated.
  */
 @FunctionalInterface
-public interface Function<E> {
+public interface Function<E, T> {
     /**
-     * Apply e.
+     * Apply f on T value.
      *
-     * @param value the value
-     * @return the e
+     * @param value the value of the T type
+     * @return the E type value of the function
      */
-    E apply(E value);
-
-    /**
-     * The interface Fx.
-     *
-     * @param <E> the type parameter
-     * @param <T> the type parameter
-     */
-    @FunctionalInterface
-    interface FX<E, T> {
-        /**
-         * Apply t.
-         *
-         * @param value the value
-         * @return the t
-         */
-        T apply(E value);
-    }
+    E apply(T value);
 }
 

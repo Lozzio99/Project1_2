@@ -154,6 +154,22 @@ public class Vector3D implements Vector3dInterface {
                 getZ() - other.getZ());
     }
 
+    @Override
+    public Vector3dInterface add(double other) {
+        return new Vector3D(
+                getX() + other,
+                getY() + other,
+                getZ() + other);
+    }
+
+    @Override
+    public Vector3dInterface sub(double other) {
+        return new Vector3D(
+                getX() - other,
+                getY() - other,
+                getZ() - other);
+    }
+
     /**
      * @return the result of |this-other|
      */

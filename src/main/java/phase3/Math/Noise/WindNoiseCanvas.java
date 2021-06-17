@@ -125,7 +125,7 @@ public class WindNoiseCanvas extends Canvas {
         Runnable iteration = () -> {
             while (time[0] <= endTime) {
                 noise3DIteration(canvas, time[0]);
-                time[0] += 10;
+                time[0] += 0.1;
             }
         };
         f = service.scheduleWithFixedDelay(iteration, 30, 16, TimeUnit.MILLISECONDS);

@@ -7,6 +7,7 @@ import phase3.Math.Noise.Noise;
 public class Config {
     public static final boolean DEBUG = false;
     public static final double STEP_SIZE = 0.01;
+    public static final String MODEL_PATH = Config.class.getClassLoader().getResource("").getFile();
     public static double CURRENT_TIME = 0;
 
     public static final int EULER = 0;

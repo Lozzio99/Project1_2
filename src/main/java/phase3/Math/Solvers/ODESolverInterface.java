@@ -13,7 +13,7 @@ import phase3.Math.Functions.ODEFunctionInterface;
 import phase3.System.State.StateInterface;
 
 /**
- * A class for solving a general differential equation dy/dt = f(t,y)
+ * A class for solving a general differential equation dy/h = f(t,y)
  * y(t) describes the state of the system at time t
  * f(t,y(t)) defines the derivative of y(t) with respect to time t
  */
@@ -30,7 +30,7 @@ public interface ODESolverInterface<E> {
     /*
      * Solve the differential equation by taking multiple steps.
      *
-     * @param   f       the function defining the differential equation dy/dt=f(t,y)
+     * @param   f       the function defining the differential equation dy/h=f(t,y)
      * @param   y0      the starting state
      * @param   ts      the times at which the states should be output, with ts[0] being the initial time
      * @return  an array of size ts.length with all intermediate states along the path
@@ -64,7 +64,7 @@ public interface ODESolverInterface<E> {
      * Solve the differential equation by taking multiple steps of equal size, starting at time 0.
      * The final step may have a smaller size, if the step-size does not exactly divide the solution time range
      *
-     * @param   f       the function defining the differential equation dy/dt=f(t,y)
+     * @param   f       the function defining the differential equation dy/h=f(t,y)
      * @param   y0      the starting state
      * @param   tf      the final time
      * @param   h       the size of step to be taken
@@ -95,7 +95,7 @@ public interface ODESolverInterface<E> {
     /*
      * Update rule for one step.
      *
-     * @param   f   the function defining the differential equation dy/dt=f(t,y)
+     * @param   f   the function defining the differential equation dy/h=f(t,y)
      * @param   t   the time
      * @param   y   the state
      * @param   h   the step size
