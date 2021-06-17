@@ -17,8 +17,8 @@ public final class ModuleFunction {
     public static final double G = 1.352;
     private static double currentTime;
     private final double[] CONTROLS = new double[]{0.0,0.0};
-    public static final double U_MAX = 0.0;
-    public static final double V_MAX = 0.293333;
+    public static final double U_MAX = 7.5;
+    public static final double V_MAX = 0.58;
     /**
      * Function that returns the rate of change of a state at a point in time
      * Given an initial state it can perform the f(t,y) on that and return a rate

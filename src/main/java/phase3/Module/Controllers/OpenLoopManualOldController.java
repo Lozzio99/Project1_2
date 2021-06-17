@@ -1,20 +1,16 @@
 package phase3.Module.Controllers;
 
-import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
-import phase3.Math.Forces.ModuleFunction;
-import phase3.Math.Solvers.ODESolverInterface;
-import phase3.Math.Solvers.VerletVelocitySolver;
 import phase3.System.State.StateInterface;
-import phase3.System.State.SystemState;
 
 import static java.lang.Math.*;
 import static phase3.Config.STEP_SIZE;
 import static phase3.Math.Forces.ModuleFunction.G;
 import static phase3.Math.Forces.ModuleFunction.V_MAX;
 
-public class OpenLoopController implements ControllerInterface {
+public class OpenLoopManualOldController implements ControllerInterface {
 
+    private boolean ROTATION = true;
     private boolean init = true;
     private static boolean initP1 = true;
     private static boolean initP4 = true;
@@ -39,7 +35,9 @@ public class OpenLoopController implements ControllerInterface {
     private double u = 0;
     private double v = 0;
 
-    public OpenLoopController() {
+    private double rotation = 1.0;
+
+    public OpenLoopManualOldController() {
 
     }
 
@@ -51,13 +49,7 @@ public class OpenLoopController implements ControllerInterface {
     }
 
     private void initBounds(StateInterface<Vector3dInterface> y) {
-        x_0 = y.get().getX();
-        y_0 = y.get().getY();
-        theta_0 = y.get().getZ();
-
-        x_0_dot = y.getRateOfChange().get().getX();
-        y_0_dot = y.getRateOfChange().get().getY();
-        theta_0_dot = y.getRateOfChange().get().getZ();
+        setStateValues(y);
 
         init = false;
 
@@ -73,16 +65,14 @@ public class OpenLoopController implements ControllerInterface {
 
     private void updateControls(double t) {
 
-        //x_0 = x_0 + x_0_dot*STEP_SIZE + 0.5*u*sin(theta_0)*STEP_SIZE*STEP_SIZE;
-        //x_0_dot = x_0_dot + u*sin(theta_0)*STEP_SIZE;
+        x_0 = x_0 + x_0_dot*STEP_SIZE + 0.5*u*sin(theta_0)*STEP_SIZE*STEP_SIZE;
+        x_0_dot = x_0_dot + u*sin(theta_0)*STEP_SIZE;
 
-        //y_0 = y_0 + y_0_dot*STEP_SIZE + 0.5*(u*cos(theta_0)-G)*STEP_SIZE*STEP_SIZE;
-        //y_0_dot = y_0_dot + (u*cos(theta_0)-G)*STEP_SIZE;
+        y_0 = y_0 + y_0_dot*STEP_SIZE + 0.5*(u*cos(theta_0)-G)*STEP_SIZE*STEP_SIZE;
+        y_0_dot = y_0_dot + (u*cos(theta_0)-G)*STEP_SIZE;
 
-        //theta_0 = theta_0 + theta_0_dot*STEP_SIZE + 0.5*v*STEP_SIZE*STEP_SIZE;
-        //theta_0_dot = theta_0_dot + v*STEP_SIZE;
-
-        updateState(t);
+        theta_0 = theta_0 + theta_0_dot*STEP_SIZE + 0.5*v*STEP_SIZE*STEP_SIZE;
+        theta_0_dot = theta_0_dot + v*STEP_SIZE;
 
         if (t < tR1) {
             if (t < tR1/2) R1Phase1();
@@ -114,14 +104,14 @@ public class OpenLoopController implements ControllerInterface {
 
     private void R2Phase1() {
         u = 0;
-        v = V_MAX;
+        v = V_MAX*rotation;
         temp_u = 0;
         initP1 = true;
     }
 
     private void R2Phase2() {
         u = 0;
-        v = -V_MAX;
+        v = -V_MAX*rotation;
     }
 
     private void DefaultPhase() {
@@ -144,13 +134,15 @@ public class OpenLoopController implements ControllerInterface {
     }
 
     private void R1Phase1() {
+        if (x_0 < 0) rotation = 1.0;
+        else rotation = -1.0;
         u = abs(G/cos(theta_0));
-        v = -V_MAX;
+        v = -V_MAX*rotation;
     }
 
     private void R1Phase2(double t) {
         u = abs(G/cos(theta_0));
-        v = V_MAX;
+        v = V_MAX*rotation;
     }
 
     private double getU() {
@@ -161,10 +153,7 @@ public class OpenLoopController implements ControllerInterface {
         return v;
     }
 
-    private void updateState(double t) {
-        ODESolverInterface solver = new VerletVelocitySolver(new ModuleFunction().evaluateCurrentAccelerationFunction());
-        StateInterface<Vector3dInterface> state = new SystemState<>(new Vector3D(x_0,y_0,theta_0),new Vector3D(x_0_dot,y_0_dot,theta_0_dot));
-        state = solver.step(new ModuleFunction().evaluateCurrentAccelerationFunction(), t, state, STEP_SIZE);
+    private void setStateValues(StateInterface<Vector3dInterface> state) {
         x_0 = state.get().getX();
         y_0 = state.get().getY();
         theta_0 = state.get().getZ();

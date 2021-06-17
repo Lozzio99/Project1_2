@@ -13,7 +13,7 @@ public class DecisionMaker {
     public DecisionMaker(int loopType) {
         switch (loopType) {
             case OPEN -> {
-                controller = new OpenLoopController();
+                controller = new OpenLoopManualNewController();
             }
             case CLOSED -> {
                 controller = new ClosedLoopController();

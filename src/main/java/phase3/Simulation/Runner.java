@@ -79,11 +79,13 @@ public class Runner implements RunnerInterface {
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
 
         if (currentState.get().getY() < 0.1) {
-            System.out.println("\nTime: "+ CURRENT_TIME);
-            System.out.println("Position: "+ currentState.get());
-            System.out.println("Velocity: "+ currentState.getRateOfChange().get());
+
             System.exit(0);
         }
+
+        System.out.println("\nTime: "+ CURRENT_TIME);
+        System.out.println("Position: "+ currentState.get());
+        System.out.println("Velocity: "+ currentState.getRateOfChange().get());
 
         simulation.getGraphics().start(currentState.get());
 
