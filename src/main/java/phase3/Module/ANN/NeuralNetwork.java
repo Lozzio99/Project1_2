@@ -1,4 +1,4 @@
-package phase3.Math.ANN;
+package phase3.Module.ANN;
 
 import phase3.Config;
 import phase3.Math.ADT.Matrix;

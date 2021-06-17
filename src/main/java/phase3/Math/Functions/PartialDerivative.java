@@ -2,7 +2,7 @@ package phase3.Math.Functions;
 
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
-import phase3.Math.Optimisation.ObjectiveFunction;
+import phase3.Module.Optimisation.ObjectiveFunction;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;

@@ -1,11 +1,11 @@
-package phase3.Math.Optimisation;
+package phase3.Module.Optimisation;
 
 import phase3.Math.ADT.Matrix;
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Functions.PartialDerivative;
 
-import static phase3.Math.Optimisation.RocketSimulatorModel.*;
+import static phase3.Module.Optimisation.RocketSimulatorModel.*;
 
 /**
  * The Newton raphson solver.
