@@ -16,20 +16,19 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeoutException;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static phase3.Config.*;
 import static phase3.Main.simulation;
 
 
 public class TrainingArea {
 
-    private static final long TIMEOUT_MINUTES = 5;
+    private static final long TIMEOUT_MINUTES_SIMULATION = 5;
     private static final int POPULATION_SIZE = 100;
     private static final ModuleANN[] population = new ModuleANN[POPULATION_SIZE];
-    private static final double END_TIME = 5000;
-    private static double time;
+    private static final double END_TIME_SINGLE_ITERATION = 5000;
     private static Matrix[] genePrevGeneration;
-    private static ModuleFunction moduleFunction;
+    private static ModuleFunction moduleControllers;
     private static double BEST_FITNESS = 0;
 
 
@@ -39,7 +38,7 @@ public class TrainingArea {
             @Override
             public void init() {
                 this.getRunner().init();
-                moduleFunction = this.getRunner().getControls();
+                moduleControllers = this.getRunner().getControls();
             }
         };
         simulation.init();
@@ -60,7 +59,7 @@ public class TrainingArea {
                     System.out.println("Generation " + (i[0]++));
                 }, 15, 15, MILLISECONDS);
         try {
-            f.get(TIMEOUT_MINUTES, SECONDS);
+            f.get(TIMEOUT_MINUTES_SIMULATION, MINUTES);
         } catch (ExecutionException | TimeoutException e) {
             e.printStackTrace();
             System.exit(0);
@@ -102,16 +101,16 @@ public class TrainingArea {
         }
     }
 
-    private static void simulationLoop() {
+    private static synchronized void simulationLoop() {
         ODESolverInterface<Vector3dInterface> solver = simulation.getRunner().getSolver();
-        time = 0;
+        double time = 0;
         Matrix[] smartBrainGen = null;
-        while ((time + STEP_SIZE) <= END_TIME) {
+        while ((time + STEP_SIZE) <= END_TIME_SINGLE_ITERATION) {
             for (ModuleANN rocket : population) {
                 final Matrix output = rocket.guess(inputFromState(rocket.getState()));
-                moduleFunction.setControls(output.matrix[0][0], output.matrix[1][0]);
+                moduleControllers.setControls(output.matrix[0][0], output.matrix[1][0]);
                 rocket.setState(solver.step(
-                        solver.getFunction(),
+                        moduleControllers.evaluateCurrentAccelerationFunction(),
                         time,
                         rocket.getState(),
                         STEP_SIZE));
