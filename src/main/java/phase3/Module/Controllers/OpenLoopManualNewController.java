@@ -1,6 +1,9 @@
 package phase3.Module.Controllers;
 
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.Math.Forces.ModuleFunction;
+import phase3.Math.Solvers.ODESolverInterface;
+import phase3.Math.Solvers.VerletVelocitySolver;
 import phase3.System.State.StateInterface;
 
 import static java.lang.Math.*;
@@ -11,6 +14,7 @@ import static phase3.Math.Forces.ModuleFunction.V_MAX;
 public class OpenLoopManualNewController implements ControllerInterface {
 
     private boolean ROTATION;
+    private boolean HORIZONTAL;
     private boolean initRotationFlag;
     private boolean initHorizontalMoveFlag;
     private boolean init = true;
@@ -46,6 +50,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
         setStateValues(y);
         init = false;
         ROTATION = true;
+        HORIZONTAL = true;
         initRotationFlag = true;
         initHorizontalMoveFlag = true;
 
@@ -61,16 +66,25 @@ public class OpenLoopManualNewController implements ControllerInterface {
      * @param t current time
      */
     private void updateControls(double t) {
+
         // update local module simulation
         updateState();
         // adjust horizontal position/velocity
-        if (abs(x_0) > 0.1) if (startHorizontalMove(t)) initHorizontalMoveFlag = true;
-            // adjust vertical position/velocity
+        if (abs(x_0) > 0.1 || HORIZONTAL) {
+            if (startHorizontalMove(t)) {
+                HORIZONTAL = false;
+                initHorizontalMoveFlag = true;
+            }
+        }
+        // adjust vertical position/velocity
         else if (abs(y_0) < 0.1 || startVerticalMove()) DefaultPhase();
         System.out.println(u + " ### " + v);
+
     }
 
     private boolean startHorizontalMove(double t) {
+        HORIZONTAL = true;
+        if (abs(x_0) < 0.1) System.out.println("###!!!### " + x_0);
         if (ROTATION) startRotation(PI / 4.0, t);
         else {
             if (initHorizontalMoveFlag) initHorizontalMove(t);
@@ -84,7 +98,9 @@ public class OpenLoopManualNewController implements ControllerInterface {
 
     private void initHorizontalMove(double t) {
         setControls(pow(x_0_dot, 2) / (2 * x_0 * sin(theta_0)), 0.0);
-        hMvTime = t + abs((2 * x_0) / x_0_dot);
+        hMvTime = t + abs((2 * x_0) / x_0_dot) + STEP_SIZE;
+        System.out.println("###1 "+hMvTime);
+        initHorizontalMoveFlag = false;
     }
 
     private boolean startRotation(double degrees, double t) {
@@ -92,7 +108,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
         if (initRotationFlag) initRotation(degrees, t);
         if (t < tempT + rtTime) {
             setControls(abs(G / cos(theta_0)), V_MAX * rotation);
-        } else if (t > tempT + rtTime && t < tempT + rtTime * 2.0) {
+        } else if (t > tempT + rtTime && t < tempT + rtTime * 2.0 + STEP_SIZE) {
             setControls(abs(G / cos(theta_0)), -V_MAX * rotation);
         } else {
             ROTATION = false;
@@ -106,12 +122,15 @@ public class OpenLoopManualNewController implements ControllerInterface {
 
     private void initRotation(double degrees, double t) {
         rtTime = sqrt((abs(degrees % (2 * PI))) / V_MAX);
+        rotation = -1.0*(abs(x_0_dot)/x_0_dot);
         tempT = t;
         initRotationFlag = false;
     }
 
     private boolean startVerticalMove() {
-        u = abs(abs(pow(y_0_dot, 2) / (2 * y_0)) + G);
+        System.out.println("#!# "+u);
+        u = abs(pow(y_0_dot, 2) / (2 * y_0)) + G;
+        System.out.println("#!# "+u);
         return false;
     }
 
