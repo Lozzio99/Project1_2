@@ -18,19 +18,7 @@ public class ClosedLoopController implements ControllerInterface {
     @Override
     public ODEFunctionInterface<Vector3dInterface> controlFunction() {
         return (t, y) -> {
-            /*
-            this.currentState = y;
-            if (getUpdateCondition()) {
-                //TODO: optimize V regarding the currentState
-                //return the acceleration
-                return new RateOfChange<>(V.add(y.getRateOfChange().get()));
-            } else {
-                return new RateOfChange<>(new Vector3D(0, 0, 0));
-            }
 
-             */
-
-            // Turn the module to point retrograde to the current trajectory
             this.currentState = y;
             double turnSensitivity = 10;
             double turnDampening = 90;
@@ -39,7 +27,6 @@ public class ClosedLoopController implements ControllerInterface {
             double rotationalVelocity = -y.getRateOfChange().get().getZ();
 
             double angleDifferendce = currentAngle - targetAngle;
-            System.out.println("--- Y: " + y.get().getY());
 
             // Calculate the rotational acceleration
             double rotationalAcceleration = (angleDifferendce * turnSensitivity) + (rotationalVelocity * turnDampening);
@@ -62,18 +49,21 @@ public class ClosedLoopController implements ControllerInterface {
             double hoverThrust = 1.351;
 
             // double burnAmount = (y.getRateOfChange().get().getY() * -1) * velFactor + (1 / y.get().getY() * locationFactor);
-            double burnAmount = - (hoverThrust / (1 - y.get().getY())) - (y.getRateOfChange().get().getY() * velocityFactor) + (locationFactor / y.get().getY());
+             double burnAmount = - (hoverThrust / (1 - y.get().getY())) - (y.getRateOfChange().get().getY() * velocityFactor) + (locationFactor / y.get().getY());
+
+            if (burnAmount > 7.5) {
+                burnAmount = 15;
+            }
 
             Vector3D thrustVector = burn(burnAmount, y);
+
+            System.out.println("--- Y: " + y.get().getY());
+            System.out.println("--- BurnAmount: " + burnAmount);
 
             // Apply changes
             return new RateOfChange<>(thrustVector.add(rotVector));
             //return new RateOfChange<>(new Vector3D(0, hoverThrust, 0));
 
-            // t : 0      1       2       3      4     5
-            // p : 0      10      18     24
-            // v : 10     8       6
-            // a : 5      4       3      (?)
         };
     }
 
