@@ -19,6 +19,10 @@ public class ClosedLoopController implements ControllerInterface {
     public ODEFunctionInterface<Vector3dInterface> controlFunction() {
         return (t, y) -> {
 
+            // Variables
+            double yPos = y.get().getY();
+            double yVel = y.getRateOfChange().get().getY();
+
             this.currentState = y;
             double turnSensitivity = 10;
             double turnDampening = 90;
@@ -28,7 +32,7 @@ public class ClosedLoopController implements ControllerInterface {
 
             double angleDifferendce = currentAngle - targetAngle;
 
-            // Calculate the rotational acceleration
+            // --- Calculate rotational acceleration ---
             double rotationalAcceleration = (angleDifferendce * turnSensitivity) + (rotationalVelocity * turnDampening);
 
             double rotThrustLimit = 1.16;
@@ -41,22 +45,35 @@ public class ClosedLoopController implements ControllerInterface {
             }
             Vector3D rotVector = new Vector3D(0, 0, rotationalAcceleration);
 
-            // Calculate thrust
+            // --- Calculate thrust ---
 
             double velocityFactor = 0.2;
             double locationFactor = 10;
-            //double hoverThrust = 3486479.0461024586 / 7.8e6; // F = G * m / r = 6.67408e-11 * 1.345e23 / 2574700
+            double thrustFactor = 10;
             double hoverThrust = 1.351;
+            double descentFactor = 10; // Higher value means faster descent
+            double posVelRatioFactor = 0.1;
 
-            // double burnAmount = (y.getRateOfChange().get().getY() * -1) * velFactor + (1 / y.get().getY() * locationFactor);
-             double burnAmount = - (hoverThrust / (1 - y.get().getY())) - (y.getRateOfChange().get().getY() * velocityFactor) + (locationFactor / y.get().getY());
+            double targetDecentRate = Math.sqrt(descentFactor * yPos) * posVelRatioFactor ;
+            double burnAmount = ((-yVel - targetDecentRate) * thrustFactor) + (hoverThrust / (yPos + 1));
 
-            if (burnAmount > 7.5) {
-                burnAmount = 15;
+            // Main thruster restriction
+            double thrusterThreshold = 7.5;
+
+            // Makes sure, it cannot burn with more than the maximum thrust
+            if (burnAmount > thrusterThreshold) {
+                burnAmount = thrusterThreshold;
+            }
+
+            // Makes sure the thrust is not negative
+            if (burnAmount < 0) {
+                burnAmount = 0;
             }
 
             Vector3D thrustVector = burn(burnAmount, y);
 
+            System.out.println("--- TargetDescentRate: " + targetDecentRate);
+            System.out.println("--- yVel: " + yVel);
             System.out.println("--- Y: " + y.get().getY());
             System.out.println("--- BurnAmount: " + burnAmount);
 
