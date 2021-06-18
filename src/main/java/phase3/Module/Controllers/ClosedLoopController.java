@@ -20,66 +20,37 @@ public class ClosedLoopController implements ControllerInterface {
         return (t, y) -> {
 
             // Variables
+            this.currentState = y;
+
+            double xVel = y.getRateOfChange().get().getX();
             double yPos = y.get().getY();
             double yVel = y.getRateOfChange().get().getY();
-
-            this.currentState = y;
+            double zPos = y.get().getZ();
+            double zVel = y.getRateOfChange().get().getZ();
             double turnSensitivity = 10;
             double turnDampening = 90;
-            double targetAngle = Math.atan2(y.getRateOfChange().get().getY(), y.getRateOfChange().get().getX()) * 180 / Math.PI; // module velocity
-            double currentAngle = -90 - y.get().getZ() ; // module orientation
-            double rotationalVelocity = -y.getRateOfChange().get().getZ();
-
-            double angleDifferendce = currentAngle - targetAngle;
 
             // --- Calculate rotational acceleration ---
-            double rotationalAcceleration = (angleDifferendce * turnSensitivity) + (rotationalVelocity * turnDampening);
 
-            double rotThrustLimit = 1.16;
-            if (rotationalAcceleration > rotThrustLimit) {
-                rotationalAcceleration = rotThrustLimit;
-            }
+            double rotationalAcceleration = getRotationalAcceleration(xVel, yVel, zPos, zVel, turnSensitivity, turnDampening);
 
-            if (rotationalAcceleration < -rotThrustLimit) {
-                rotationalAcceleration = -rotThrustLimit;
-            }
+
             Vector3D rotVector = new Vector3D(0, 0, rotationalAcceleration);
 
             // --- Calculate thrust ---
 
-            double velocityFactor = 0.2;
-            double locationFactor = 10;
             double thrustFactor = 10;
             double hoverThrust = 1.351;
             double descentFactor = 10; // Higher value means faster descent
             double posVelRatioFactor = 0.1;
 
-            double targetDecentRate = Math.sqrt(descentFactor * yPos) * posVelRatioFactor ;
-            double burnAmount = ((-yVel - targetDecentRate) * thrustFactor) + (hoverThrust / (yPos + 1));
+            double burnAmount = getBurnAmount(yPos, yVel, thrustFactor, hoverThrust, descentFactor, posVelRatioFactor);
 
-            // Main thruster restriction
-            double thrusterThreshold = 7.5;
-
-            // Makes sure, it cannot burn with more than the maximum thrust
-            if (burnAmount > thrusterThreshold) {
-                burnAmount = thrusterThreshold;
-            }
-
-            // Makes sure the thrust is not negative
-            if (burnAmount < 0) {
-                burnAmount = 0;
-            }
 
             Vector3D thrustVector = burn(burnAmount, y);
 
-            System.out.println("--- TargetDescentRate: " + targetDecentRate);
-            System.out.println("--- yVel: " + yVel);
-            System.out.println("--- Y: " + y.get().getY());
-            System.out.println("--- BurnAmount: " + burnAmount);
-
-            // Apply changes
+            // Apply changes to new control-vector
             return new RateOfChange<>(thrustVector.add(rotVector));
-            //return new RateOfChange<>(new Vector3D(0, hoverThrust, 0));
 
         };
     }
@@ -94,6 +65,56 @@ public class ClosedLoopController implements ControllerInterface {
         return  new Vector3D(amount * Math.sin(state.get().getZ() * Math.PI / 180),
                              amount * Math.cos(state.get().getZ() * Math.PI / 180),
                              0);
+    }
+
+    private double getRotationalAcceleration(double xVel, double yVel, double zPos, double zVel, double turnSensitivity, double turnDampening) {
+
+        double targetAngle = Math.atan2(yVel, xVel) * 180 / Math.PI; // module velocity
+        double currentAngle = -90 - zPos ; // module orientation
+        double rotationalVelocity = -zVel;
+
+        double angleDifference = currentAngle - targetAngle;
+
+        double rotationalAcceleration = (angleDifference * turnSensitivity) + (rotationalVelocity * turnDampening);
+
+        double rotThrustLimit = 1.16;
+        if (rotationalAcceleration > rotThrustLimit) {
+            rotationalAcceleration = rotThrustLimit;
+        }
+
+        if (rotationalAcceleration < -rotThrustLimit) {
+            rotationalAcceleration = -rotThrustLimit;
+        }
+
+        return rotationalAcceleration;
+    }
+
+    /**
+     * Function to calculate the amount of thrust that is being applied.
+     * @param yPos                  current y-position
+     * @param yVel                  current y-velocity
+     * @param thrustFactor
+     * @param hoverThrust
+     * @return
+     */
+    private double getBurnAmount(double yPos, double yVel, double thrustFactor, double hoverThrust, double descentFactor, double posVelRatioFactor) {
+
+        double targetDecentRate = Math.sqrt(descentFactor * yPos) * posVelRatioFactor;
+        double burnAmount = ((-yVel - targetDecentRate) * thrustFactor) + (hoverThrust / (yPos + 1));
+
+        // Main thruster restriction
+        double thrusterThreshold = 7.5;
+
+        // Makes sure, it cannot burn with more than the maximum thrust
+        if (burnAmount > thrusterThreshold) {
+            burnAmount = thrusterThreshold;
+        }
+
+        // Makes sure the thrust is not negative
+        if (burnAmount < 0) {
+            burnAmount = 0;
+        }
+        return burnAmount;
     }
 
     private boolean getUpdateCondition() {
