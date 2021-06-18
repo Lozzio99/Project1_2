@@ -33,6 +33,11 @@ public class Runner implements RunnerInterface {
     }
 
     @Override
+    public ModuleFunction getControls() {
+        return this.moduleFunction;
+    }
+
+    @Override
     public ODESolverInterface<Vector3dInterface> getSolver() {
         return this.solver;
     }
@@ -78,7 +83,7 @@ public class Runner implements RunnerInterface {
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
 
         if (currentState.get()[0].getY() < 0.1) {
-
+            System.out.println("GROUND CONTACT");
             System.exit(0);
         }
 

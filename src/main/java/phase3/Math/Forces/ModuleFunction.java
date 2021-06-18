@@ -70,8 +70,14 @@ public final class ModuleFunction {
         return this.evalRateOfChange;
     }
 
+
     public void setControls(double[] CONTROLS) {
         this.CONTROLS[0] = CONTROLS[0];
         this.CONTROLS[1] = CONTROLS[1];
+    }
+
+    public void setControls(double u, double v) {
+        this.CONTROLS[0] = u;
+        this.CONTROLS[1] = v;
     }
 }

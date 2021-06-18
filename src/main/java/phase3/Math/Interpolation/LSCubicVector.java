@@ -133,7 +133,7 @@ public class LSCubicVector extends LSCubic {
                 });
 
 
-        this.a = Matrix.multiply(new Matrix(Matrix.invert(x.getMatrix())), b);
+        this.a = Matrix.multiply(new Matrix(Matrix.inverse(x.getMatrix())), b);
         // A * x = b;
         // A = x^-1 * b
 

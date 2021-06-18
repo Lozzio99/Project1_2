@@ -155,11 +155,13 @@ public interface Vector3dInterface {
     double heading();
 
     /**
-     * Is zero boolean.
+     * Is zero boolean
      *
      * @return the boolean
      */
     boolean isZero();
+
+    boolean isLessThan(double delta);
 
     @Override
     int hashCode();

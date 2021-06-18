@@ -55,7 +55,7 @@ public class LSQuadratic extends LSLinear {
             matrix.printMatrix();
             r.printMatrix();
         }
-        this.a = Matrix.multiply(new Matrix(Matrix.invert(matrix.getMatrix())), r);
+        this.a = Matrix.multiply(new Matrix(Matrix.inverse(matrix.getMatrix())), r);
     }
 
     @Override
