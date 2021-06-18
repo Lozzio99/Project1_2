@@ -165,7 +165,6 @@ class GeneralSystemTest {
         assertTrue(() -> Math.abs(exactSolutionPos - y.get()[0].getX()) < 1e-2);
         assertTrue(() -> Math.abs(exactSolutionVel - y.get()[1].getX()) < 1e-2);
     }
-
     private void printDoubleResults(String solver, double exactSolutionPos, double exactSolutionVel, StateInterface<Double> y) {
         System.out.println(solver + " : " + y.get());
         System.out.println(solver + " EXACT POS: " + (exactSolutionPos - y.get()[0]));

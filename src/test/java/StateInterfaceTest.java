@@ -14,6 +14,7 @@ class StateInterfaceTest {
    private RateInterface<Double> rate;
    private double scalar;
 
+
     @BeforeEach
     void setup(){
          y = new SystemState<>(5.0,2.0);

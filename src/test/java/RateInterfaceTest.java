@@ -12,6 +12,5 @@ class RateInterfaceTest {
         RateInterface<Double> rate = new RateOfChange<Double>(2.0,3.0);
         assertEquals(rate.get()[0],2.0);
         assertEquals(rate.get()[1],3.0);
-
     }
 }

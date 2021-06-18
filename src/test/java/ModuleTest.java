@@ -97,7 +97,6 @@ public class ModuleTest {
     @DisplayName("VerletSTDSolve")
     void verletSTDSolve() {
         this.solver = new StandardVerletSolver<>(this.function);
-
         StateInterface<Vector3dInterface> nextY;
         while (t <= tf + stepSize) {
             nextY = solver.step(solver.getFunction(), t, y, stepSize);
