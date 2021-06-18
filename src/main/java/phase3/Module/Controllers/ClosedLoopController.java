@@ -21,32 +21,28 @@ public class ClosedLoopController implements ControllerInterface {
 
             // Variables
             this.currentState = y;
-
             double xVel = y.getRateOfChange().get().getX();
             double yPos = y.get().getY();
             double yVel = y.getRateOfChange().get().getY();
             double zPos = y.get().getZ();
             double zVel = y.getRateOfChange().get().getZ();
-            double turnSensitivity = 10;
-            double turnDampening = 90;
+
+            // Modify for different behaviour:
+            double turnSensitivity = 10;    // Higher value means faster turning
+            double turnDampening = 90;      // Dampens the rotational acceleration to not overshoot the target angle
+            double thrustFactor = 10;       // Factor for the amount of thrust applied
+            double hoverThrust = 1.351;     // Required thrust to let the module hover
+            double descentFactor = 10;      // Higher value means faster descent
+            double posVelRatioFactor = 0.1; // Relation between vertical position and vertical velocity
 
             // --- Calculate rotational acceleration ---
 
-            double rotationalAcceleration = getRotationalAcceleration(xVel, yVel, zPos, zVel, turnSensitivity, turnDampening);
-
-
+            double rotationalAcceleration = getRotationalAcceleration(xVel, yPos, yVel, zPos, zVel, turnSensitivity, turnDampening);
             Vector3D rotVector = new Vector3D(0, 0, rotationalAcceleration);
 
             // --- Calculate thrust ---
 
-            double thrustFactor = 10;
-            double hoverThrust = 1.351;
-            double descentFactor = 10; // Higher value means faster descent
-            double posVelRatioFactor = 0.1;
-
             double burnAmount = getBurnAmount(yPos, yVel, thrustFactor, hoverThrust, descentFactor, posVelRatioFactor);
-
-
             Vector3D thrustVector = burn(burnAmount, y);
 
             // Apply changes to new control-vector
@@ -67,9 +63,24 @@ public class ClosedLoopController implements ControllerInterface {
                              0);
     }
 
-    private double getRotationalAcceleration(double xVel, double yVel, double zPos, double zVel, double turnSensitivity, double turnDampening) {
+    /**
+     * This function computes the rotational acceleration of the module
+     * @param xVel              current x-velocity
+     * @param yVel              current y-velocity
+     * @param zPos              current z-position
+     * @param zVel              current z-velocity
+     * @param turnSensitivity   higher value means faster turning
+     * @param turnDampening     dampens the rotational acceleration to not overshoot the target angle
+     * @return
+     */
+    private double getRotationalAcceleration(double xVel, double yPos, double yVel, double zPos, double zVel, double turnSensitivity, double turnDampening) {
 
-        double targetAngle = Math.atan2(yVel, xVel) * 180 / Math.PI; // module velocity
+        double targetAngle;
+        if (yPos < 10)
+            targetAngle = 90;
+        else
+            targetAngle = Math.atan2(yVel, xVel) * 180 / Math.PI; // module velocity
+
         double currentAngle = -90 - zPos ; // module orientation
         double rotationalVelocity = -zVel;
 
@@ -93,8 +104,8 @@ public class ClosedLoopController implements ControllerInterface {
      * Function to calculate the amount of thrust that is being applied.
      * @param yPos                  current y-position
      * @param yVel                  current y-velocity
-     * @param thrustFactor
-     * @param hoverThrust
+     * @param thrustFactor          factor for the amount of thrust applied
+     * @param hoverThrust           required thrust to let the module hover
      * @return
      */
     private double getBurnAmount(double yPos, double yVel, double thrustFactor, double hoverThrust, double descentFactor, double posVelRatioFactor) {
