@@ -20,7 +20,7 @@ public class ModuleTest {
 
     private ODESolverInterface<Vector3dInterface> solver;
     private ODEFunctionInterface<Vector3dInterface> function;
-    private StateInterface<Vector3dInterface> y;
+    static StateInterface<Vector3dInterface> y;
 
 
     @BeforeEach
@@ -28,8 +28,8 @@ public class ModuleTest {
         this.function = new ModuleFunction()
                 .evaluateCurrentAccelerationFunction();
         stepSize = 0.01;
-       y = new SystemState<>(new Vector3D(0.0,1e3,0.0),new Vector3D(0.0,0.0,0.0));
-
+       y = new SystemState(new Vector3D(0.0,1e3,0.0),new Vector3D(0.0,0.0,0.0));
+       // System.out.println(y.get()[1]);
        t = 0;
        tf=30;
     }
@@ -43,8 +43,8 @@ public class ModuleTest {
 
         StateInterface<Vector3dInterface> nextY;
         while (t <= tf + stepSize) {
-            nextY = solver.step(solver.getFunction(), t, y, stepSize);
-            y = nextY.copy();
+            y = solver.step(solver.getFunction(), t, y, stepSize);
+     //       y = nextY.copy();
             t += stepSize;
         }
         System.out.println("EULER");
@@ -119,8 +119,8 @@ public class ModuleTest {
 
         StateInterface<Vector3dInterface> nextY;
         while (t <= tf + stepSize) {
-            nextY = solver.step(solver.getFunction(), t, y, stepSize);
-            y = nextY.copy();
+            y = solver.step(solver.getFunction(), t, y, stepSize);
+         //   y = nextY.copy();
             t += stepSize;
         }
         System.out.println("POSITION DIFF: " + Math.abs(exactYPosition - y.get()[0].getY()));
