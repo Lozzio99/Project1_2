@@ -15,7 +15,6 @@ public class Config {
     public static final int VERLET_STD = 2;
     public static final int VERLET_VEL = 3;
     public static final int MIDPOINT = 4;
-    public static final int OPEN_OLD = 1;
 
     public static final int OPEN = 0;
     public static final int CLOSED = 2;
