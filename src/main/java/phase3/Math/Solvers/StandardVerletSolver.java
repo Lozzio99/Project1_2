@@ -46,10 +46,8 @@ public class StandardVerletSolver<E> implements ODESolverInterface<E> {
             return new RungeKuttaSolver<>(f).step(f, t, y, h);
         } else {
             StateInterface<E> sub = y_1.addMul(h * h, f.call(t, y));
-            sub = y.addMul(1,
-                    new RateOfChange<>(y.get().clone()))  // y  + y ...
-                    .addMul(-1,                              // ... + (-1 x sub)
-                            new RateOfChange<>(sub.get().clone()));
+            sub = y.addMul(1, new RateOfChange<>(y.get()))  // y  + y ...  // ... + (-1 x sub)
+                    .addMul(-1, new RateOfChange<>(sub.get()));
             y_1 = y;
             return sub;
         }

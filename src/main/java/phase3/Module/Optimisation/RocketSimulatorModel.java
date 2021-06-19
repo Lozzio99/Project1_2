@@ -6,7 +6,7 @@ import phase3.Math.Solvers.ODESolverInterface;
 import phase3.System.State.StateInterface;
 import phase3.System.SystemInterface;
 
-import static phase3.Config.STEP_SIZE;
+import static phase3.Config.MODULE_STEP_SIZE;
 import static phase3.Main.simulation;
 
 /**
@@ -75,7 +75,7 @@ public class RocketSimulatorModel {
         solver = simulation.getRunner().getSolver();
 
         // solve trajectory
-        StateInterface<Vector3dInterface>[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
+        StateInterface<Vector3dInterface>[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, MODULE_STEP_SIZE);
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
         return (Vector3dInterface) solution[solution.length - 1];
@@ -99,12 +99,12 @@ public class RocketSimulatorModel {
         solver = simulation.getRunner().getSolver();
 
         // solve trajectory
-        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, waitTime, STEP_SIZE);
+        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, waitTime, MODULE_STEP_SIZE);
         StateInterface init2State = solution[solution.length - 1].copy();
 
         init2State.getPositions().set(11, initPos);
         init2State.getRateOfChange().getPositions().set(11, initVelocity);
-        solution = solver.solve(solver.getFunction(), init2State, timeFinal - waitTime, STEP_SIZE);
+        solution = solver.solve(solver.getFunction(), init2State, timeFinal - waitTime, MODULE_STEP_SIZE);
 
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());

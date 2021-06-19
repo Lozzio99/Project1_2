@@ -1,6 +1,8 @@
 package phase3.Graphics;
 
+import phase3.Graphics.Scenes.Scene;
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.System.State.StateInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +12,9 @@ public interface GraphicsInterface extends Runnable {
 
     void init();
 
-    void start(Vector3dInterface state);
+    void start(StateInterface<Vector3dInterface> state);
 
     JFrame getFrame();
-
-    MouseInput getMouse();
-
     Scene getScene();
 
     void changeScene(Scene.SceneType type);

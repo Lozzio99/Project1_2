@@ -4,7 +4,8 @@ import phase3.Math.ADT.Vector3dInterface;
 import phase3.System.State.StateInterface;
 
 import static java.lang.Math.*;
-import static phase3.Config.STEP_SIZE;
+import static phase3.Config.DEBUG;
+import static phase3.Config.MODULE_STEP_SIZE;
 import static phase3.Math.Forces.ModuleFunction.G;
 import static phase3.Math.Forces.ModuleFunction.V_MAX;
 
@@ -67,7 +68,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
         if (abs(x_0) > 0.1) if (startHorizontalMove(t)) initHorizontalMoveFlag = true;
             // adjust vertical position/velocity
         else if (abs(y_0) < 0.1 || startVerticalMove()) DefaultPhase();
-        System.out.println(u + " ### " + v);
+        if (DEBUG) System.out.println(u + " ### " + v);
     }
 
     private boolean startHorizontalMove(double t) {
@@ -75,7 +76,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
         else {
             if (initHorizontalMoveFlag) initHorizontalMove(t);
             else if (t > hMvTime) {
-                System.out.println("Horizontal move phase");
+                if (DEBUG) System.out.println("Horizontal move phase");
                 return startRotation(PI / 4.0, t);
             }
         }
@@ -88,7 +89,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
     }
 
     private boolean startRotation(double degrees, double t) {
-        System.out.println("Rotation phase");
+        if (DEBUG) System.out.println("Rotation phase");
         if (initRotationFlag) initRotation(degrees, t);
         if (t < tempT + rtTime) {
             setControls(abs(G / cos(theta_0)), V_MAX * rotation);
@@ -143,13 +144,13 @@ public class OpenLoopManualNewController implements ControllerInterface {
     }
 
     private void updateState() {
-        x_0 += +x_0_dot * STEP_SIZE + 0.5 * u * sin(theta_0) * STEP_SIZE * STEP_SIZE;
-        x_0_dot += u * sin(theta_0) * STEP_SIZE;
+        x_0 += +x_0_dot * MODULE_STEP_SIZE + 0.5 * u * sin(theta_0) * MODULE_STEP_SIZE * MODULE_STEP_SIZE;
+        x_0_dot += u * sin(theta_0) * MODULE_STEP_SIZE;
 
-        y_0 += y_0_dot * STEP_SIZE + 0.5 * (u * cos(theta_0) - G) * STEP_SIZE * STEP_SIZE;
-        y_0_dot += (u * cos(theta_0) - G) * STEP_SIZE;
+        y_0 += y_0_dot * MODULE_STEP_SIZE + 0.5 * (u * cos(theta_0) - G) * MODULE_STEP_SIZE * MODULE_STEP_SIZE;
+        y_0_dot += (u * cos(theta_0) - G) * MODULE_STEP_SIZE;
 
-        theta_0 += theta_0_dot * STEP_SIZE + 0.5 * v * STEP_SIZE * STEP_SIZE;
-        theta_0_dot += v * STEP_SIZE;
+        theta_0 += theta_0_dot * MODULE_STEP_SIZE + 0.5 * v * MODULE_STEP_SIZE * MODULE_STEP_SIZE;
+        theta_0_dot += v * MODULE_STEP_SIZE;
     }
 }

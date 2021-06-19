@@ -1,7 +1,13 @@
 package phase3.Graphics;
 
 
+import phase3.Graphics.Scenes.ModuleScene;
+import phase3.Graphics.Scenes.Scene;
+import phase3.Graphics.Scenes.SimulationScene;
+import phase3.Graphics.Scenes.StartingScene;
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.System.State.StateInterface;
+import phase3.System.State.SystemState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +15,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static phase3.Config.DEBUG;
+import static phase3.Config.*;
 
 
 /**
@@ -21,10 +27,6 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
      * The Main graphics thread.
      */
     protected final AtomicReference<Thread> mainGraphicsTh = new AtomicReference<>();
-    /**
-     * The Mouse.
-     */
-    protected MouseInput mouse;
     /**
      * The Current scene.
      */
@@ -40,7 +42,8 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
     private JFrame frame;
     private WindowEvent listen;
     private static double FPS;
-    private Vector3dInterface state;
+    public int simulation;
+    private StateInterface<Vector3dInterface> state;
 
 
     @Override
@@ -72,13 +75,13 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
         this.frame.addWindowListener(closed);
         this.frame.setResizable(true);
         this.frame.setLocationRelativeTo(null);// Center window
-        this.mouse = new MouseInput();
-        this.changeScene(Scene.SceneType.MODULE_SCENE);
+        Scene.SceneType x = SIMULATION == LANDING_ON_TITAN ? Scene.SceneType.MODULE_SCENE : Scene.SceneType.FLIGHT_SCENE;
+        this.changeScene(x);
     }
 
     @Override
-    public synchronized void start(final Vector3dInterface state) {
-        this.state = state.clone();
+    public synchronized void start(final StateInterface<Vector3dInterface> state) {
+        this.state = new SystemState<>(state.get());
         this.mainGraphicsTh.set(new Thread(this, "Main Graphics"));
         this.mainGraphicsTh.get().setDaemon(true);
         this.mainGraphicsTh.get().start();
@@ -90,29 +93,37 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
     }
 
     @Override
-    public MouseInput getMouse() {
-        return this.mouse;
-    }
-
-    @Override
     public Scene getScene() {
         return this.currentScene;
     }
 
     @Override
     public void changeScene(Scene.SceneType scene) {
+        MouseInput mouse;
         switch (scene) {
             case MODULE_SCENE -> {
                 this.currentScene = new ModuleScene();
+                mouse = new MouseInput(1);
+            }
+            case STARTING_SCENE -> {
+                this.currentScene = new StartingScene();
+                mouse = new MouseInput(2);
+            }
+            case FLIGHT_SCENE -> {
+                this.currentScene = new SimulationScene();
+                mouse = new MouseInput(2);
+            }
+            default -> {
+                return;
             }
         }
         if (this.frame.getComponentCount() >= 1)
             this.frame.remove(this.currentScene);
         this.currentScene.init();
-        this.currentScene.addMouseControl(this.mouse);
-        this.currentScene.addMouseListener(this.mouse);
-        this.currentScene.addMouseWheelListener(this.mouse);
-        this.currentScene.addMouseMotionListener(this.mouse);
+        this.currentScene.addMouseControl(mouse);
+        this.currentScene.addMouseListener(mouse);
+        this.currentScene.addMouseWheelListener(mouse);
+        this.currentScene.addMouseMotionListener(mouse);
         this.frame.add(this.currentScene);
         this.frame.setVisible(true);
         this.frame.repaint();  //call fast the ui

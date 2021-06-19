@@ -63,7 +63,7 @@ public final class ModuleFunction {
      *
      * @return the evaluate rate of change lambda function
      */
-    public ODEFunctionInterface<Vector3dInterface> evaluateCurrentAccelerationFunction() {
+    public ODEFunctionInterface<Vector3dInterface> evaluateAcceleration() {
         return this.evalRateOfChange;
     }
 

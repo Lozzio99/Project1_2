@@ -1,7 +1,6 @@
 package phase3.Math.ADT;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
 
 import static java.lang.StrictMath.*;
 
@@ -252,7 +251,12 @@ public class Vector3D implements Vector3dInterface {
      */
     @Override
     public double dist(Vector3dInterface other) {
-        double sum = IntStream.range(0, val.length).mapToDouble(i -> pow(other.getVal()[i] - val[i], 2)).sum();
+        double sum = 0.0;
+        int bound = val.length;
+        for (int i = 0; i < bound; i++) {
+            double pow = pow(other.getVal()[i] - val[i], 2);
+            sum += pow;
+        }
         return sqrt(sum);
     }
 

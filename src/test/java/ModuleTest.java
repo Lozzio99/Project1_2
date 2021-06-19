@@ -26,7 +26,7 @@ public class ModuleTest {
     @BeforeEach
     void setup(){
         this.function = new ModuleFunction()
-                .evaluateCurrentAccelerationFunction();
+                .evaluateAcceleration();
         stepSize = 0.01;
        y = new SystemState<>(new Vector3D(0.0,1e3,0.0),new Vector3D(0.0,0.0,0.0));
 

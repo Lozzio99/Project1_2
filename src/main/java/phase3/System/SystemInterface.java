@@ -6,6 +6,8 @@ import phase3.System.State.StateInterface;
 
 import java.util.List;
 
+import static phase3.Config.SIMULATION_CLOCK;
+
 public interface SystemInterface {
     StateInterface<Vector3dInterface> getState();
 
@@ -14,4 +16,8 @@ public interface SystemInterface {
     void init();
 
     void updateState(StateInterface<Vector3dInterface> step);
+
+    default Clock getClock() {
+        return SIMULATION_CLOCK;
+    }
 }

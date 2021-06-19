@@ -17,6 +17,12 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
     private int mouseY = -1;
     private int mouseB = -1;
     private int scroll = 0;
+    private final int scene;
+
+    public MouseInput(int scene) {
+        this.scene = scene;
+    }
+
 
     /**
      * Returns the X position of the mouse.
@@ -52,6 +58,10 @@ public class MouseInput extends MouseMotionAdapter implements MouseListener, Mou
      */
     public boolean isScrollingDown() {
         return this.scroll == 1;
+    }
+
+    public int getScene() {
+        return scene;
     }
 
     /**

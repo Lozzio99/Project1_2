@@ -2,8 +2,11 @@ package phase3.Simulation;
 
 import phase3.Graphics.GraphicsInterface;
 import phase3.Graphics.GraphicsManager;
+import phase3.System.SolarSystem;
 import phase3.System.SystemInterface;
 import phase3.System.TitanSystem;
+
+import static phase3.Config.*;
 
 public class Simulation implements SimulationInterface {
 
@@ -14,8 +17,18 @@ public class Simulation implements SimulationInterface {
 
     public Simulation() {
         this.graphics = new GraphicsManager();
-        this.system = new TitanSystem();
-        this.runner = new Runner(this);
+        switch (SIMULATION) {
+            case FLIGHT_TO_TITAN -> {
+                this.system = new SolarSystem();
+                this.runner = new SolarSystemRunner(this);
+            }
+            case LANDING_ON_TITAN -> {
+                this.system = new TitanSystem();
+                this.runner = new TitanSimRunner(this);
+            }
+            default -> throw new IllegalStateException();
+        }
+
     }
 
     @Override

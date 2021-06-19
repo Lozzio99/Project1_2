@@ -48,7 +48,7 @@ public class SystemState<E> implements StateInterface<E> {
 
     @Override
     public StateInterface<E> copy() {
-        return new SystemState<>(y[0], y[1]);
+        return new SystemState<>(get().clone());
     }
 
     @Override

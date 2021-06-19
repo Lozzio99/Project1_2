@@ -1,10 +1,10 @@
 package phase3.Math.Interpolation;
 
-import phase3.Graphics.Plot;
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Functions.Derivative;
 import phase3.Math.Functions.Function;
+import phase3.Math.Plot;
 
 import static java.lang.StrictMath.sin;
 import static phase3.Math.Functions.SecondDerivative.h;

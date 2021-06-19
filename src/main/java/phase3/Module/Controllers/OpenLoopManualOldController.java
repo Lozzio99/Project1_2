@@ -4,7 +4,7 @@ import phase3.Math.ADT.Vector3dInterface;
 import phase3.System.State.StateInterface;
 
 import static java.lang.Math.*;
-import static phase3.Config.STEP_SIZE;
+import static phase3.Config.MODULE_STEP_SIZE;
 import static phase3.Math.Forces.ModuleFunction.G;
 import static phase3.Math.Forces.ModuleFunction.V_MAX;
 
@@ -64,20 +64,20 @@ public class OpenLoopManualOldController implements ControllerInterface {
 
     private void updateControls(double t) {
 
-        x_0 = x_0 + x_0_dot * STEP_SIZE + 0.5 * u * sin(theta_0) * STEP_SIZE * STEP_SIZE;
-        x_0_dot = x_0_dot + u * sin(theta_0) * STEP_SIZE;
+        x_0 = x_0 + x_0_dot * MODULE_STEP_SIZE + 0.5 * u * sin(theta_0) * MODULE_STEP_SIZE * MODULE_STEP_SIZE;
+        x_0_dot = x_0_dot + u * sin(theta_0) * MODULE_STEP_SIZE;
 
-        y_0 = y_0 + y_0_dot * STEP_SIZE + 0.5 * (u * cos(theta_0) - G) * STEP_SIZE * STEP_SIZE;
-        y_0_dot = y_0_dot + (u * cos(theta_0) - G) * STEP_SIZE;
+        y_0 = y_0 + y_0_dot * MODULE_STEP_SIZE + 0.5 * (u * cos(theta_0) - G) * MODULE_STEP_SIZE * MODULE_STEP_SIZE;
+        y_0_dot = y_0_dot + (u * cos(theta_0) - G) * MODULE_STEP_SIZE;
 
-        theta_0 = theta_0 + theta_0_dot * STEP_SIZE + 0.5 * v * STEP_SIZE * STEP_SIZE;
-        theta_0_dot = theta_0_dot + v * STEP_SIZE;
+        theta_0 = theta_0 + theta_0_dot * MODULE_STEP_SIZE + 0.5 * v * MODULE_STEP_SIZE * MODULE_STEP_SIZE;
+        theta_0_dot = theta_0_dot + v * MODULE_STEP_SIZE;
 
         if (t < tR1) {
             if (t < tR1 / 2) R1Phase1();
             else if (t > tR1 / 2) R1Phase2(t);
-        } else if (t > tR1 && t < tF1 - STEP_SIZE) F1Phase(t);
-        else if (t > tF1 - STEP_SIZE && t < tF3) {
+        } else if (t > tR1 && t < tF1 - MODULE_STEP_SIZE) F1Phase(t);
+        else if (t > tF1 - MODULE_STEP_SIZE && t < tF3) {
             if (t < tF3 - tR2 / 2) R2Phase1();
             else if (t > tF3 - tR2 / 2) R2Phase2();
         } else if (t > tF3 && t < tF4) {
@@ -119,7 +119,7 @@ public class OpenLoopManualOldController implements ControllerInterface {
         u = temp_u;
         v = 0;
         if (initP1) initPhase1(t);
-        tR2 = sqrt((PI / 4.0) / V_MAX) * 2 + STEP_SIZE;
+        tR2 = sqrt((PI / 4.0) / V_MAX) * 2 + MODULE_STEP_SIZE;
         tF3 = t + tR2;
     }
 

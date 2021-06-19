@@ -3,7 +3,6 @@ package phase3.Math.Solvers;
 
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Functions.ODEFunctionInterface;
-import phase3.System.State.RateInterface;
 import phase3.System.State.RateOfChange;
 import phase3.System.State.StateInterface;
 import phase3.System.State.SystemState;
@@ -47,31 +46,27 @@ public class VerletVelocitySolver<E> implements ODESolverInterface<E> {
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {
         StateInterface<E> next = new RungeKuttaSolver<>(f).step(f, t, y, h);
-        E a = f.call(t, y).get()[1];
-        E a1 = f.call(t + h, next).get()[1];
-        RateInterface<E> nextDy;
-        if (y.get() instanceof Vector3dInterface[]) {
-            Vector3dInterface y0, dy1;
-            StateInterface<Vector3dInterface> step;
-            RateInterface<Vector3dInterface> stepDy;
-            y0 = ((Vector3dInterface) y.get()[0]).addMul(h, ((Vector3dInterface) y.get()[1]));
-            dy1 = ((Vector3dInterface) a1).add(((Vector3dInterface) a)).div(h);
-            step = new SystemState<>(y0, ((Vector3dInterface) y.get()[1]));
-            next = (SystemState<E>) step;
-            stepDy = new RateOfChange<>(((Vector3dInterface) a), (dy1));
-            nextDy = (RateOfChange<E>) stepDy;
-        } else if (y.get() instanceof Double[]) {
-            Double y0, dy1;
-            StateInterface<Double> step;
-            RateInterface<Double> stepDy;
-            y0 = (((Double) y.get()[0] + (h * (Double) y.get()[1])));
-            dy1 = ((Double) a1 + (Double) a) / h;
-            step = new SystemState<>(y0, ((Double) y.get()[1]));
-            next = (SystemState<E>) step;
-            stepDy = new RateOfChange<>(((Double) a), dy1);
-            nextDy = (RateOfChange<E>) stepDy;
-        } else throw new UnsupportedOperationException();
-        return next.addMul((h * h) / 2, nextDy);
+        int s = y.get().length / 2; //take state symmetry
+        E[] state = (E[]) (new Object[y.get().length]);
+        E[] rate = (E[]) (new Object[y.get().length]);
+        for (int i = 0; i < s; i++) {
+            E current_acc = f.call(t, y).get()[i + s];
+            E acc_next = f.call(t + h, next).get()[i + s];
+            E step_pos, step_acc;
+            if (y.get() instanceof Vector3dInterface[]) {
+                step_pos = (E) ((Vector3dInterface) y.get()[i]).addMul(h, ((Vector3dInterface) y.get()[i + s]));
+                step_acc = (E) ((Vector3dInterface) acc_next).add(((Vector3dInterface) current_acc)).div(h);
+            } else if (y.get() instanceof Double[]) {
+                step_pos = (E) ((Double) ((Double) y.get()[0] + (h * (Double) y.get()[1])));
+                step_acc = (E) ((Double) (((Double) acc_next + (Double) current_acc) / h));
+            } else throw new UnsupportedOperationException();
+            state[i] = step_pos;
+            state[i + s] = y.get()[i + s]; //velocity is given in y
+            rate[i] = current_acc;  // because then we addMul it
+            rate[i + s] = step_acc;   // same but this has been added to the next one
+        }
+        next = new SystemState<>(state);
+        return next.addMul((h * h) / 2, new RateOfChange<>(rate));
     }
 
     @Override
