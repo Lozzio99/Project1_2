@@ -1,5 +1,7 @@
 package phase3.Math.ADT;
 
+import java.awt.geom.Point2D;
+
 import static phase3.Graphics.GraphicsInterface.screen;
 
 /**
@@ -14,14 +16,14 @@ public class Vector3DConverter extends Vector2DConverter {
      * @param point3D the point 3 d
      * @return java . awt . point
      */
-    public static java.awt.Point convertPoint(Vector3dInterface point3D) {
+    public static Point2D.Double convertPoint(Vector3dInterface point3D) {
         double x3d = point3D.getX() * scale;
         double y3d = point3D.getY() * scale;
         double depth = point3D.getZ() * scale;
         double[] newVal = scale(x3d, y3d, depth);
-        int x2d = (int) (SCREEN_WIDTH / 2 + newVal[0]);
-        int y2d = (int) (SCREEN_HEIGHT / 2 - newVal[1]);
-        return new java.awt.Point(x2d, y2d);
+        double x2d = (SCREEN_WIDTH / 2. + newVal[0]);
+        double y2d = (SCREEN_HEIGHT / 2. - newVal[1]);
+        return new Point2D.Double(x2d, y2d);
     }
 
     /**

@@ -288,7 +288,7 @@ public class Clock {
      */
     public String monthString(int month) {
         if (month < 0 || month >= monthStrings.length) throw new IllegalArgumentException();
-        return monthStrings[month - 1];
+        return monthStrings[month];
     }
 
     /**

@@ -35,13 +35,13 @@ public class Config {
     public static final int OPEN = 0;
     public static final int CLOSED = 2;
     public static int CONTROLLER = 0;
-    public static final ErrorData[] ORIGINAL_DATA = new ErrorData[14];
+    public static final ErrorData[] ORIGINAL_DATA = new ErrorData[13];
     /**
      * GRAPHICS SETTINGS
      */
     public static final boolean NAMES = true;
     public static final boolean DRAW_TRAJECTORIES = true;
-    public static final int TRAJECTORY_LENGTH = 1000;
+    public static final int TRAJECTORY_LENGTH = 100;
     public static Noise.NoiseDim NOISE_DIMENSIONS = Noise.NoiseDim.TRI_DIMENSIONAL;
     public static int SIMULATION = FLIGHT_TO_TITAN;
     public static int SOLVER = RK4;

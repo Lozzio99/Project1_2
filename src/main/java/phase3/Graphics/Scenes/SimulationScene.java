@@ -7,8 +7,9 @@ import phase3.System.State.StateInterface;
 import phase3.System.State.SystemState;
 
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 import static phase3.Config.*;
@@ -19,6 +20,9 @@ import static phase3.Math.ADT.Vector3DConverter.*;
  * The type Simulation scene.
  */
 public class SimulationScene extends Scene {
+
+
+    private static final BufferedImage[] planets = new BufferedImage[11];
     /**
      * The Planets positions.
      */
@@ -40,14 +44,13 @@ public class SimulationScene extends Scene {
         super.paintImage(g, flightImage);
         try {
             for (int i = 0; i < this.planetsPositions.length; i++) {
-                final Point p = convertPoint(this.planetsPositions[i]);
+                final Point2D.Double p = convertPoint(this.planetsPositions[i]);
                 if (NAMES) {
                     g.setColor(Color.WHITE);
                     g.setFont(new Font("Monospaced", Font.PLAIN, 10));
-                    g.drawString(simulation.getSystem().getCelestialBodies().get(i).toString(), p.x, p.y);
+                    g.drawString(simulation.getSystem().getCelestialBodies().get(i).toString(), (int) p.getX(), (int) p.getY());
                 }
                 g.setColor(simulation.getSystem().getCelestialBodies().get(i).getColour());
-                g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
                 if (DRAW_TRAJECTORIES) {
                     for (int k = this.trajectories[i].insert; k < this.trajectories[i].getTrajectories().length - 1; k++) {
                         if (this.trajectories[i].getTrajectories()[k + 1] == null)
@@ -64,6 +67,7 @@ public class SimulationScene extends Scene {
                                 convertPoint(this.trajectories[i].getTrajectories()[k + 1])));
                     }
                 }
+                g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
 
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
@@ -83,6 +87,7 @@ public class SimulationScene extends Scene {
             radius[i] = (simulation.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * getScale() * radiusMag;
         }
     }
+
 
     @Override
     public void addMouseControl(MouseInput mouse) {
@@ -130,18 +135,6 @@ public class SimulationScene extends Scene {
 
     }
 
-
-    /**
-     * Planet shape ellipse 2 d . double.
-     *
-     * @param position the position
-     * @param radius   the radius
-     * @return the ellipse 2 d . double
-     */
-    Ellipse2D.Double planetShape(Vector3dInterface position, double radius) {
-        Point p = convertPoint(position);
-        return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
-    }
 
     @Override
     public String toString() {

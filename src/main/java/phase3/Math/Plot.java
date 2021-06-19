@@ -44,7 +44,7 @@ public class Plot extends Canvas {
         });
         ImageIcon img = new ImageIcon(
                 Objects.requireNonNull(this.getClass().getClassLoader()
-                        .getResource("death.png")).getFile());
+                        .getResource("Icons/death.png")).getFile());
         this.frame.setIconImage(img.getImage());
         this.frame.setLocationRelativeTo(null);
         this.frame.setResizable(false);

@@ -12,7 +12,9 @@ import phase3.System.State.SystemState;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -93,6 +95,17 @@ public abstract class Scene extends JPanel {
         }
     }
 
+    /**
+     * Planet shape ellipse 2 d . double.
+     *
+     * @param position the position
+     * @param radius   the radius
+     * @return the ellipse 2 d . double
+     */
+    protected Ellipse2D.Double planetShape(Vector3dInterface position, double radius) {
+        Point2D.Double p = convertPoint(position);
+        return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
+    }
 
     /**
      * Improves the rendering performance as well as the scaling and coloring
@@ -117,9 +130,9 @@ public abstract class Scene extends JPanel {
      */
     void create() {
         try {
-            File titan = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("titan2.png")).getFile());
+            File titan = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("Icons/titan2.png")).getFile());
             //URL resourse = new URL("https://cdn.mos.cms.futurecdn.net/k3FmsfkjnEQao2Ci2AtEUK-1200-80.jpg");
-            File flight = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("milky-way4k.jpg")).getFile());
+            File flight = new File(Objects.requireNonNull(Scene.class.getClassLoader().getResource("Icons/milky-way4k.jpg")).getFile());
             flightImage = ImageIO.read(flight);
             landingImage = ImageIO.read(titan);
         } catch (NullPointerException | IOException e) {

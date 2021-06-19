@@ -74,13 +74,11 @@ public class ErrorReport implements Runnable {
             scan.nextLine();
             while (scan.hasNextLine()) {
                 List<Vector3dInterface> pos = new ArrayList<>(11), vel = new ArrayList<>(11);
-
                 for (int i = 0; i < 11; i++) {
                     String[] line = scan.nextLine().split(",");
                     pos.add(parseVector(line, true));
                     vel.add(parseVector(line, false));
                 }
-
                 ORIGINAL_DATA[monthIndex] = new ErrorData().setData(pos, vel);
                 monthIndex++;
             }
@@ -207,10 +205,16 @@ public class ErrorReport implements Runnable {
         return t;
     }
 
+    public static void main(String[] args) {
+        for (int i = 0; i < 14; i++) {
+            System.out.println((i + 3) % 12);
+        }
+    }
+
     private void init() throws IOException {
         this.fileWriter = OUT_ERROR.equals(TXT) ?
-                new FileWriter(Objects.requireNonNull(extractDir(SIMULATION_CLOCK.monthString(MONTH_INDEX % 12 + 3) + ".txt"))) :
-                new ErrorCSVWriter(extractDir(SIMULATION_CLOCK.monthString(MONTH_INDEX % 12 + 3) + ".csv"));
+                new FileWriter(Objects.requireNonNull(extractDir(SIMULATION_CLOCK.monthString((MONTH_INDEX + 3) % 12) + ".txt"))) :
+                new ErrorCSVWriter(extractDir(SIMULATION_CLOCK.monthString((MONTH_INDEX + 3) % 12) + ".csv"));
 
     }
 }

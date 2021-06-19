@@ -27,7 +27,7 @@ public class ModuleShape {
 
     public static BufferedImage load() {
         try {
-            File file = new File(Objects.requireNonNull(ModuleShape.class.getClassLoader().getResource("rocket.png")).getFile());
+            File file = new File(Objects.requireNonNull(ModuleShape.class.getClassLoader().getResource("Icons/rocket.png")).getFile());
             image = ImageIO.read(file);
         } catch (IOException e) {
             try {

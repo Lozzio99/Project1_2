@@ -51,12 +51,12 @@ public class SolarSystemRunner implements RunnerInterface {
     @Override
     public void runSimulation() {
         if (simulation.isRunning()) {
-            service.scheduleWithFixedDelay(this::loop, 10, 8, TimeUnit.MILLISECONDS);
+            service.scheduleWithFixedDelay(this::loop, 1200, 2, TimeUnit.MILLISECONDS);
         }
     }
 
     @Override
-    public void loop() {
+    public synchronized void loop() {
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
         simulation.getGraphics().start(currentState);
 
