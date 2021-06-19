@@ -25,7 +25,6 @@ public class Config {
     /**
      * MODULE CONTROLLERS CONFIGURATIONS
      */
-    public static final int OPEN_OLD = 1;
     public static final int RK4 = 1;
     public static final int VERLET_STD = 2;
     public static final int VERLET_VEL = 3;
@@ -44,7 +43,7 @@ public class Config {
     public static final boolean DRAW_TRAJECTORIES = true;
     public static final int TRAJECTORY_LENGTH = 100;
     public static Noise.NoiseDim NOISE_DIMENSIONS = Noise.NoiseDim.TRI_DIMENSIONAL;
-    public static int SIMULATION = FLIGHT_TO_TITAN;
+    public static int SIMULATION = LANDING_ON_TITAN;
     public static int SOLVER = RK4;
     /**
      * SIMULATION SETTINGS
