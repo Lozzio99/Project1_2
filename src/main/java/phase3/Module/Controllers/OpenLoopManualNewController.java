@@ -1,9 +1,6 @@
 package phase3.Module.Controllers;
 
 import phase3.Math.ADT.Vector3dInterface;
-import phase3.Math.Forces.ModuleFunction;
-import phase3.Math.Solvers.ODESolverInterface;
-import phase3.Math.Solvers.VerletVelocitySolver;
 import phase3.System.State.StateInterface;
 
 import static java.lang.Math.*;
@@ -73,8 +70,6 @@ public class OpenLoopManualNewController implements ControllerInterface {
      * @param t current time
      */
     private void updateControls(double t) {
-        System.out.println(x_0 + " " + y_0 + " " + theta_0);
-        System.out.println(x_0_dot + " " + y_0_dot + " " + theta_0_dot);
         // adjust horizontal position/velocity
         if (HORIZONTAL) {
             if (startHorizontalMove(t)) {
