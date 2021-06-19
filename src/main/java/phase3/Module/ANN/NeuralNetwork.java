@@ -7,12 +7,12 @@ import java.awt.event.KeyAdapter;
 import java.io.File;
 
 public class NeuralNetwork extends KeyAdapter {
-    private Matrix weights_ih;
-    private Matrix weights_ho;
-    private Matrix weights_hh;
-    private Matrix bias_hh;
-    private Matrix bias_ih;
-    private Matrix bias_ho;
+    protected Matrix weights_ih;
+    protected Matrix weights_ho;
+    protected Matrix weights_hh;
+    protected Matrix bias_hh;
+    protected Matrix bias_ih;
+    protected Matrix bias_ho;
 
     private double lk = 0.1;
 
@@ -39,7 +39,7 @@ public class NeuralNetwork extends KeyAdapter {
     }
 
 
-    public void exportModel() {
+    protected void exportModel() {
         Matrix[] modelMatrixObject = new Matrix[6];
         modelMatrixObject[0] = weights_ih;
         modelMatrixObject[1] = weights_ho;
@@ -142,5 +142,16 @@ public class NeuralNetwork extends KeyAdapter {
                 ", bias_ho=" + bias_ho +
                 ", lk=" + lk +
                 '}';
+    }
+
+    public Matrix[] getWeights() {
+        return new Matrix[]{
+                this.weights_ih,
+                this.bias_ih,
+                this.weights_hh,
+                this.bias_hh,
+                this.weights_ho,
+                this.bias_ho
+        };
     }
 }

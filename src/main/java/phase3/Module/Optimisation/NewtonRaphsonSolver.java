@@ -186,7 +186,7 @@ public class NewtonRaphsonSolver {
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector, double h) {
         double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), h); // Compute matrix of partial derivatives D
-        Matrix DI = new Matrix(Matrix.invert(D)); // Compute DI inverse of D
+        Matrix DI = new Matrix(Matrix.inverse(D)); // Compute DI inverse of D
         Vector3dInterface modelVector = fX.modelFx(vector);
         if (LOG_ITERATION) {
             System.out.println("Error - Iteration #" + i + ": " + modelVector);

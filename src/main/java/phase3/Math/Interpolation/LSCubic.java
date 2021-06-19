@@ -70,7 +70,7 @@ public class LSCubic extends LSQuadratic {
 
         r.printMatrix();
         System.out.println("--------------------");
-        this.a = Matrix.multiply(new Matrix(Matrix.invert(matrix.getMatrix())), r);
+        this.a = Matrix.multiply(new Matrix(Matrix.inverse(matrix.getMatrix())), r);
         this.a.printMatrix();
     }
 }

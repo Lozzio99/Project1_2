@@ -4,6 +4,7 @@ package phase3.Math.ADT;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import static java.lang.System.arraycopy;
 
@@ -22,7 +23,7 @@ public class Matrix implements Serializable {
     /**
      * The Matrix.
      */
-    public double[][] matrix;
+    public final double[][] matrix;
 
     /**
      * Constructor from array
@@ -237,22 +238,17 @@ public class Matrix implements Serializable {
         return new Matrix(res);
     }
 
-    public void setMatrix(double[][] matrix) {
-        this.matrix = matrix;
-        this.n_cols = matrix.length;
-        this.n_rows = matrix[0].length;
-    }
-
-
     /**
      * Invert double [ ] [ ].
      *
      * @param in the in
      * @return the double [ ] [ ]
      */
-    public static double[][] invert(double[][] in) {
-        if (in.length != in[0].length) throw new IllegalArgumentException("Can't invert non square matrices");
+    public static double[][] inverse(double[][] in) {
+        if (in.length != in[0].length)
+            throw new IllegalArgumentException("Can't invert non square matrices");
         double[][] a = new double[in.length][in[0].length];
+
         for (int i = 0; i < in.length; i++) {
             arraycopy(in[i],
                     0,
@@ -285,6 +281,12 @@ public class Matrix implements Serializable {
             }
         }
         return inverse;
+    }
+
+    public void setMatrix(double[][] matrix) {
+        IntStream.range(0, matrix.length).forEachOrdered(i -> this.matrix[i] = matrix[i]);
+        this.n_cols = matrix.length;
+        this.n_rows = matrix[0].length;
     }
 
     /**

@@ -33,6 +33,11 @@ public class Runner implements RunnerInterface {
     }
 
     @Override
+    public ModuleFunction getControls() {
+        return this.moduleFunction;
+    }
+
+    @Override
     public ODESolverInterface<Vector3dInterface> getSolver() {
         return this.solver;
     }

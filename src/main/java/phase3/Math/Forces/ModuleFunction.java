@@ -27,9 +27,6 @@ public final class ModuleFunction {
 
     private final ODEFunctionInterface<Vector3dInterface> evalRateOfChange = (h, y) -> {
         Vector3dInterface v = velocityFromGravityAcceleration(y, h);
-        //Vector3dInterface v2 = y.getRateOfChange().get().addMul(h, v);
-        //v2.setZ(v2.getZ() - (v.getZ() * h));
-
         return new RateOfChange<>(y.get()[1], v);
     };
 
@@ -70,8 +67,14 @@ public final class ModuleFunction {
         return this.evalRateOfChange;
     }
 
+
     public void setControls(double[] CONTROLS) {
         this.CONTROLS[0] = CONTROLS[0];
         this.CONTROLS[1] = CONTROLS[1];
+    }
+
+    public void setControls(double u, double v) {
+        this.CONTROLS[0] = u;
+        this.CONTROLS[1] = v;
     }
 }

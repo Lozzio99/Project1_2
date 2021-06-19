@@ -1,6 +1,5 @@
 package phase3.System;
 
-import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Module.ModuleSimulator;
 import phase3.System.Bodies.CelestialBody;
@@ -26,7 +25,6 @@ public class TitanSystem implements SystemInterface {
 
     @Override
     public void init() {
-        this.state = new SystemState<>(new Vector3D());
         this.bodies = new ArrayList<>();
         this.bodies.add(new ModuleSimulator());
         this.bodies.get(0).initProperties();

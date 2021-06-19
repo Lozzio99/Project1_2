@@ -329,6 +329,14 @@ public class Vector3D implements Vector3dInterface {
         return true;
     }
 
+    @Override
+    public boolean isLessThan(double delta) {
+        for (double x : this.val)
+            if (x > delta)
+                return false;
+        return true;
+    }
+
 
     /**
      * Implementation of the equals and HashCode methods for the scheduling purpose.
