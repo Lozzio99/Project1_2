@@ -1,7 +1,7 @@
 package phase3.System;
 
 import phase3.Math.ADT.Vector3dInterface;
-import phase3.Module.ModuleSimulator;
+import phase3.Rocket.ModuleSimulator;
 import phase3.System.Bodies.CelestialBody;
 import phase3.System.State.StateInterface;
 import phase3.System.State.SystemState;

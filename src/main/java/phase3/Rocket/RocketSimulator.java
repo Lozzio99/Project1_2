@@ -1,9 +1,11 @@
-package phase3.Module;
+package phase3.Rocket;
 
+import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.System.Bodies.CelestialBody;
 import phase3.System.State.StateInterface;
 
+import static java.awt.Color.GREEN;
 import static phase3.Config.MODULE_STEP_SIZE;
 import static phase3.Main.simulation;
 
@@ -78,7 +80,14 @@ public class RocketSimulator extends CelestialBody implements RocketSimulatorInt
 
     @Override
     public void initProperties() {
-
+        this.setMASS(7.8e4);
+        this.setRADIUS(1e2);
+        this.setColour(GREEN);
+        this.setVectorLocation(new Vector3D(-1.4717856245318698E11, -2.861154627637646E10, 8032437.618829092)); //earth
+        this.setVectorVelocity(new Vector3D(0, 0, 0));
+        this.fuelMass = this.startFuel;
+        this.totalMass = this.startFuel + this.getMASS();
+        this.setMASS(this.totalMass);
     }
 
     /**

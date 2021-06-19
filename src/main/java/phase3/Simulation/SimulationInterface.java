@@ -1,6 +1,7 @@
 package phase3.Simulation;
 
 import phase3.Graphics.GraphicsInterface;
+import phase3.Simulation.Runner.RunnerInterface;
 import phase3.System.SystemInterface;
 
 public interface SimulationInterface {

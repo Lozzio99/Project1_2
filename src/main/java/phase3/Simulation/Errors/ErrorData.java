@@ -5,6 +5,9 @@ import phase3.System.State.StateInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import static phase3.Main.simulation;
 
 /**
  * Represents Data used in calculating errors of simulation
@@ -29,6 +32,8 @@ public class ErrorData {
         this.velocities = new ArrayList<>();
         int s = state.get().length / 2;
         for (int i = 0; i < s; i++) {
+            if (simulation.getSystem().getCelestialBodies().get(i).toString().toLowerCase(Locale.ROOT).equals("rocket"))
+                continue;
             this.positions.add(state.get()[i]);
             this.velocities.add(state.get()[i + s]);
         }

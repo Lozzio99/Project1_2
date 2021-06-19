@@ -1,4 +1,4 @@
-package phase3.Module.Controllers;
+package phase3.Rocket.Controllers;
 
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
@@ -25,6 +25,7 @@ public class RocketSchedule {
      */
     public void init() {
         this.shiftAtTime = new ConcurrentHashMap<>();
+        this.preparePlan();
     }
 
     /**
@@ -37,7 +38,7 @@ public class RocketSchedule {
      * clock instance in the system will return true from the implemented
      * equals(Object o) method.
      */
-    public void prepare() {
+    public void preparePlan() {
         this.addToPlan(new Clock().setInitialDay(1, 4, 2020).setInitialTime(0, 0, 0), new Vector3D(5053.8397726433905, -42680.243107188355, -2383.2465825823965));
         this.addToPlan(new Clock().setInitialDayAndTime(0, 0, 6, 16, 11, 2023), new Vector3D(-8466.431731294904, 3689.7962745433374, 363.6276188737569));
     }

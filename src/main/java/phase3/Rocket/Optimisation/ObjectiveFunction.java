@@ -1,4 +1,4 @@
-package phase3.Module.Optimisation;
+package phase3.Rocket.Optimisation;
 
 import phase3.Math.ADT.Vector3dInterface;
 

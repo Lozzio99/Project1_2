@@ -1,4 +1,4 @@
-package phase3.Module.Controllers;
+package phase3.Rocket.Controllers;
 
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.System.State.StateInterface;

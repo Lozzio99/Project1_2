@@ -1,4 +1,4 @@
-package phase3.Simulation;
+package phase3.Simulation.Runner;
 
 import org.jetbrains.annotations.Contract;
 import phase3.Math.ADT.Vector3dInterface;
@@ -7,7 +7,8 @@ import phase3.Math.Forces.WindInterface;
 import phase3.Math.Forces.WindModel;
 import phase3.Math.Functions.ODEFunctionInterface;
 import phase3.Math.Solvers.*;
-import phase3.Module.Controllers.DecisionMaker;
+import phase3.Rocket.Controllers.DecisionMaker;
+import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
 
 import java.util.concurrent.TimeUnit;

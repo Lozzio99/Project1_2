@@ -1,4 +1,4 @@
-package phase3.Module;
+package phase3.Rocket;
 
 import phase3.Math.ADT.Vector3dInterface;
 

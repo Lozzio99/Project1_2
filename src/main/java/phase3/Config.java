@@ -31,7 +31,7 @@ public class Config {
     public static final int VERLET_VEL = 3;
     public static final int MIDPOINT = 4;
     public static final boolean DEBUG = false;
-    public static final ErrorData.ErrorPrint OUT_ERROR = ErrorData.ErrorPrint.TXT;
+    public static final ErrorData.ErrorPrint OUT_ERROR = ErrorData.ErrorPrint.CONSOLE;
     public static final int OPEN = 0;
     public static final int CLOSED = 2;
     public static int CONTROLLER = 0;
@@ -49,7 +49,7 @@ public class Config {
      * SIMULATION SETTINGS
      */
     public static boolean WIND = false;
-    public static boolean ERROR_EVALUATION = true;
+    public static boolean ERROR_EVALUATION = false;
     public static int ERROR_MONTH_INDEX = -1; // clock will check first and increment it to 0 -> first month evaluation
 
 

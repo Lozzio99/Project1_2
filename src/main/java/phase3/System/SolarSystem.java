@@ -1,6 +1,7 @@
 package phase3.System;
 
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.Rocket.RocketSimulator;
 import phase3.Simulation.Errors.ErrorData;
 import phase3.Simulation.Errors.ErrorReport;
 import phase3.System.Bodies.CelestialBody;
@@ -48,6 +49,7 @@ public class SolarSystem implements SystemInterface {
         this.bodies.add(new Satellite(TITAN));
         this.bodies.add(new Planet(URANUS));
         this.bodies.add(new Planet(NEPTUNE));
+        this.bodies.add(new RocketSimulator());
 
         this.getClock().setLaunchDay();
         Vector3dInterface[] state = new Vector3dInterface[this.bodies.size() * 2];

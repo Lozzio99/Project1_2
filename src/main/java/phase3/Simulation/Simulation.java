@@ -2,6 +2,9 @@ package phase3.Simulation;
 
 import phase3.Graphics.GraphicsInterface;
 import phase3.Graphics.GraphicsManager;
+import phase3.Simulation.Runner.RunnerInterface;
+import phase3.Simulation.Runner.SolarSystemRunner;
+import phase3.Simulation.Runner.TitanSimRunner;
 import phase3.System.SolarSystem;
 import phase3.System.SystemInterface;
 import phase3.System.TitanSystem;
