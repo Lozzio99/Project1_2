@@ -14,9 +14,6 @@ public class DecisionMaker {
             case OPEN -> {
                 controller = new OpenLoopManualNewController();
             }
-            case OPEN_OLD -> {
-                controller = new OpenLoopManualOldController();
-            }
             case CLOSED -> {
                 controller = new ClosedLoopController();
             }

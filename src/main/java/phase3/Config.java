@@ -30,6 +30,7 @@ public class Config {
     public static final int VERLET_STD = 2;
     public static final int VERLET_VEL = 3;
     public static final int MIDPOINT = 4;
+
     public static final boolean DEBUG = false;
     public static final ErrorData.ErrorPrint OUT_ERROR = ErrorData.ErrorPrint.CONSOLE;
     public static final int OPEN = 0;

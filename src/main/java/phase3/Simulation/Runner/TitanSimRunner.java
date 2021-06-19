@@ -71,17 +71,12 @@ public class TitanSimRunner implements RunnerInterface {
         // update module gravityFunction
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
 
-        if (currentState.get()[0].getY() < 0.1) {
-            System.out.println("GROUND CONTACT");
-            System.exit(0);
-        }
-
-        if (DEBUG) {
+        if (currentState.get()[0].getY() < 0.0001) {
             System.out.println("\nTime: " + CURRENT_TIME);
             System.out.println("Position: " + currentState.get()[0]);
             System.out.println("Velocity: " + currentState.get()[1]);
+            System.exit(0);
         }
-
 
         simulation.getGraphics().start(currentState);
         moduleFunction.setControls(moduleController.getControls(CURRENT_TIME, currentState));
