@@ -37,7 +37,8 @@ public class SystemState<E> implements StateInterface<E> {
             for (int i = 0; i < y.length; i++)
                 n.get()[i] = ((Double) this.get()[i]) + (step * ((Double) rate.get()[i]));
             y1 = (SystemState<E>) n;
-        } else throw new UnsupportedOperationException();
+        } else
+            throw new UnsupportedOperationException();
         return y1;
     }
 

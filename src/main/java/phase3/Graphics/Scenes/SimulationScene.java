@@ -2,18 +2,17 @@ package phase3.Graphics.Scenes;
 
 import phase3.Graphics.MouseInput;
 import phase3.Math.ADT.Vector3D;
+import phase3.Math.ADT.Vector3DConverter;
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
 import phase3.System.State.SystemState;
 
 import java.awt.*;
-import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
 import static phase3.Config.*;
-import static phase3.Main.simulation;
 import static phase3.Math.ADT.Vector3DConverter.*;
 
 /**
@@ -21,8 +20,6 @@ import static phase3.Math.ADT.Vector3DConverter.*;
  */
 public class SimulationScene extends Scene {
 
-
-    private static final BufferedImage[] planets = new BufferedImage[11];
     /**
      * The Planets positions.
      */
@@ -36,6 +33,10 @@ public class SimulationScene extends Scene {
      */
     Bag[] trajectories;
 
+    public SimulationScene(SimulationInterface s) {
+        super(s);
+    }
+
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -44,29 +45,14 @@ public class SimulationScene extends Scene {
         super.paintImage(g, flightImage);
         try {
             for (int i = 0; i < this.planetsPositions.length; i++) {
-                final Point2D.Double p = convertPoint(this.planetsPositions[i]);
+                final Point2D.Double p = Vector3DConverter.convertVector(this.planetsPositions[i]);
                 if (NAMES) {
                     g.setColor(Color.WHITE);
                     g.setFont(new Font("Monospaced", Font.PLAIN, 10));
                     g.drawString(simulation.getSystem().getCelestialBodies().get(i).toString(), (int) p.getX(), (int) p.getY());
                 }
                 g.setColor(simulation.getSystem().getCelestialBodies().get(i).getColour());
-                if (DRAW_TRAJECTORIES) {
-                    for (int k = this.trajectories[i].insert; k < this.trajectories[i].getTrajectories().length - 1; k++) {
-                        if (this.trajectories[i].getTrajectories()[k + 1] == null)
-                            break;
-                        g.draw(new Line2D.Double(
-                                convertPoint(this.trajectories[i].getTrajectories()[k]),
-                                convertPoint(this.trajectories[i].getTrajectories()[k + 1])));
-                    }
-                    for (int k = 0; k < this.trajectories[i].insert - 1; k++) {
-                        if (this.trajectories[i].getTrajectories()[k + 1] == null)
-                            break;
-                        g.draw(new Line2D.Double(
-                                convertPoint(this.trajectories[i].getTrajectories()[k]),
-                                convertPoint(this.trajectories[i].getTrajectories()[k + 1])));
-                    }
-                }
+                LorenzScene.drawTrajectories(g, i, this.trajectories);
                 g.fill(planetShape(this.planetsPositions[i], this.radius[i]));
 
             }
@@ -113,23 +99,14 @@ public class SimulationScene extends Scene {
      * Update bodies.
      */
     public void updateBodies() {
-
         double x = totalXDif2 / mouseSensitivity, y = totalYDif2 / mouseSensitivity, dx = deltaX2 / mouseSensitivity, dy = deltaY2 / mouseSensitivity;
         for (int i = 0; i < this.planetsPositions.length; i++) {
             this.planetsPositions[i] = state.get()[i].div(scale);
             radius[i] = (simulation.getSystem().getCelestialBodies().get(i).getRADIUS() / scale) * getScale() * radiusMag;
             rotateAxisY(this.planetsPositions[i], false, x);
             rotateAxisX(this.planetsPositions[i], false, y);
-
             if (DRAW_TRAJECTORIES) {
-                if (simulation.isRunning())
-                    this.trajectories[i].add(this.planetsPositions[i]);
-                for (int k = 0; k < this.trajectories[i].getTrajectories().length; k++) {
-                    if (this.trajectories[i].getTrajectories()[k] == null) break;
-                    //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
-                    rotateAxisY(this.trajectories[i].getTrajectories()[k], false, dx);
-                    rotateAxisX(this.trajectories[i].getTrajectories()[k], false, dy);
-                }
+                LorenzScene.updateTrajectories(i, dx, dy, simulation.isRunning(), this.trajectories, this.planetsPositions);
             }
         }
 

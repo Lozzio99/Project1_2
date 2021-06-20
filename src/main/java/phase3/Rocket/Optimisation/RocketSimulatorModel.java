@@ -4,7 +4,7 @@ import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Solvers.ODESolverInterface;
 import phase3.System.State.StateInterface;
-import phase3.System.SystemInterface;
+import phase3.System.Systems.SystemInterface;
 
 import static phase3.Config.MODULE_STEP_SIZE;
 import static phase3.Main.simulation;
@@ -96,7 +96,7 @@ public class RocketSimulatorModel {
         // init parameters
         SystemInterface system = createSystem(initPos, new Vector3D(0, 0, 0));
         initialState = system.getState();
-        solver = simulation.getRunner().getSolver();
+        solver = simulationType.getRunner().getSolver();
 
         // solve trajectory
         StateInterface[] solution = solver.solve(solver.getFunction(), initialState, waitTime, MODULE_STEP_SIZE);
@@ -106,8 +106,8 @@ public class RocketSimulatorModel {
         init2State.getRateOfChange().getPositions().set(11, initVelocity);
         solution = solver.solve(solver.getFunction(), init2State, timeFinal - waitTime, MODULE_STEP_SIZE);
 
-        assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
-                !simulation.getSystem().getCelestialBodies().get(11).isCollided());
+        assert (simulationType.getSystem().getCelestialBodies().size() > 10 &&
+                !simulationType.getSystem().getCelestialBodies().get(11).isCollided());
         return solution[solution.length - 1].getPositions().get(11).clone();
     }
 

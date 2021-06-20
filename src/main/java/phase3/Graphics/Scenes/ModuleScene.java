@@ -4,6 +4,7 @@ import phase3.Graphics.MouseInput;
 import phase3.Math.ADT.Vector2DConverter;
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
 
 import java.awt.*;
@@ -11,7 +12,6 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-import static phase3.Main.simulation;
 import static phase3.Math.ADT.Vector2DConverter.getScale;
 
 public class ModuleScene extends Scene {
@@ -19,6 +19,10 @@ public class ModuleScene extends Scene {
 
     volatile static BufferedImage image;
     volatile Shape shape;
+
+    public ModuleScene(SimulationInterface s) {
+        super(s);
+    }
 
     @Override
     public synchronized void paintComponent(final Graphics graphics) {
@@ -55,10 +59,8 @@ public class ModuleScene extends Scene {
     @Override
     public synchronized void update(final StateInterface<Vector3dInterface> v) {
         super.update(v);
-        if (x != initialX || y != initialY) {
-            X.setLine(Vector2DConverter.convertVector(new Vector3D(1000, 0, 0)), Vector2DConverter.convertVector(new Vector3D(-1000, 0, 0)));
-            Y.setLine(Vector2DConverter.convertVector(new Vector3D(0, 1000, 0)), Vector2DConverter.convertVector(new Vector3D(0, -1000, 0)));
-        }
+        X.setLine(Vector2DConverter.convertVector(new Vector3D(1000, 0, 0)), Vector2DConverter.convertVector(new Vector3D(-1000, 0, 0)));
+        Y.setLine(Vector2DConverter.convertVector(new Vector3D(0, 1000, 0)), Vector2DConverter.convertVector(new Vector3D(0, -1000, 0)));
         super.resetMouse();
     }
 

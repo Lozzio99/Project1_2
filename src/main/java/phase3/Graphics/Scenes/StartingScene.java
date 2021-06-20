@@ -2,12 +2,13 @@ package phase3.Graphics.Scenes;
 
 import phase3.Graphics.MouseInput;
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
 
-import static phase3.Math.ADT.Vector3DConverter.convertPoint;
+import static phase3.Math.ADT.Vector3DConverter.convertVector;
 
 /**
  * The type Starting scene.
@@ -24,6 +25,10 @@ public class StartingScene extends Scene {
      * The Z axis.
      */
     zAxis;
+
+    public StartingScene(SimulationInterface s) {
+        super(s);
+    }
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -47,17 +52,17 @@ public class StartingScene extends Scene {
 
     @Override
     public void init() {
-        xAxis = new Line2D.Double(convertPoint(left), convertPoint(right));
-        yAxis = new Line2D.Double(convertPoint(top), convertPoint(bottom));
-        zAxis = new Line2D.Double(convertPoint(rear), convertPoint(front));
+        xAxis = new Line2D.Double(convertVector(left), convertVector(right));
+        yAxis = new Line2D.Double(convertVector(top), convertVector(bottom));
+        zAxis = new Line2D.Double(convertVector(rear), convertVector(front));
     }
 
     @Override
     public synchronized void update(final StateInterface<Vector3dInterface> v) {
         super.update(v);
-        xAxis.setLine(convertPoint(left), convertPoint(right));
-        yAxis.setLine(convertPoint(top), convertPoint(bottom));
-        zAxis.setLine(convertPoint(rear), convertPoint(front));
+        xAxis.setLine(convertVector(left), convertVector(right));
+        yAxis.setLine(convertVector(top), convertVector(bottom));
+        zAxis.setLine(convertVector(rear), convertVector(front));
         super.resetMouse();
     }
 

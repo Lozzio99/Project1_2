@@ -1,11 +1,9 @@
 package phase3.Graphics;
 
 
-import phase3.Graphics.Scenes.ModuleScene;
-import phase3.Graphics.Scenes.Scene;
-import phase3.Graphics.Scenes.SimulationScene;
-import phase3.Graphics.Scenes.StartingScene;
+import phase3.Graphics.Scenes.*;
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
 import phase3.System.State.SystemState;
 
@@ -23,6 +21,7 @@ import static phase3.Config.*;
  */
 public class GraphicsManager extends Canvas implements GraphicsInterface {
 
+    private final static String SS = "Flight to Titan", ML = "Landing on Titan", LA = "Lorenz Attractor", DP = "Double Pendulum";
     /**
      * The Main graphics thread.
      */
@@ -42,13 +41,27 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
     private JFrame frame;
     private WindowEvent listen;
     private static double FPS;
-    public int simulation;
+    public static int _2D = 1, _3D = 2;
     private StateInterface<Vector3dInterface> state;
+    private final SimulationInterface simulation;
+    public int simulationType;
+
+    public GraphicsManager(SimulationInterface simulation) {
+        this.simulation = simulation;
+    }
 
 
     @Override
     public void init() {
-        this.frame = new JFrame("Solar System ");
+        this.frame = new JFrame(
+                switch (SIMULATION) {
+                    case FLIGHT_TO_TITAN -> SS;
+                    case LANDING_ON_TITAN -> ML;
+                    case LORENTZ_ATTRACTOR -> LA;
+                    case DOUBLE_PENDULUM -> DP;
+                    default -> "";
+                }
+        );
         this.frame.setSize(screen);
         this.frame.add(this);
         this.setWindowProperties();
@@ -75,7 +88,13 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
         this.frame.addWindowListener(closed);
         this.frame.setResizable(true);
         this.frame.setLocationRelativeTo(null);// Center window
-        Scene.SceneType x = SIMULATION == LANDING_ON_TITAN ? Scene.SceneType.MODULE_SCENE : Scene.SceneType.FLIGHT_SCENE;
+        Scene.SceneType x = switch (SIMULATION) {
+            case FLIGHT_TO_TITAN -> Scene.SceneType.FLIGHT_SCENE;
+            case LANDING_ON_TITAN -> Scene.SceneType.MODULE_SCENE;
+            case LORENTZ_ATTRACTOR -> Scene.SceneType.LORENZ_SCENE;
+            case DOUBLE_PENDULUM -> Scene.SceneType.PENDULUM_SCENE;
+            default -> throw new IllegalStateException();
+        };
         this.changeScene(x);
     }
 
@@ -102,20 +121,26 @@ public class GraphicsManager extends Canvas implements GraphicsInterface {
         MouseInput mouse;
         switch (scene) {
             case MODULE_SCENE -> {
-                this.currentScene = new ModuleScene();
-                mouse = new MouseInput(1);
+                this.currentScene = new ModuleScene(simulation);
+                mouse = new MouseInput(_2D);
             }
             case STARTING_SCENE -> {
-                this.currentScene = new StartingScene();
-                mouse = new MouseInput(2);
+                this.currentScene = new StartingScene(simulation);
+                mouse = new MouseInput(_3D);
             }
             case FLIGHT_SCENE -> {
-                this.currentScene = new SimulationScene();
-                mouse = new MouseInput(2);
+                this.currentScene = new SimulationScene(simulation);
+                mouse = new MouseInput(_3D);
             }
-            default -> {
-                return;
+            case LORENZ_SCENE -> {
+                this.currentScene = new LorenzScene(simulation);
+                mouse = new MouseInput(_3D);
             }
+            case PENDULUM_SCENE -> {
+                this.currentScene = new PendulumScene(simulation);
+                mouse = new MouseInput(_2D);
+            }
+            default -> throw new IllegalStateException();
         }
         if (this.frame.getComponentCount() >= 1)
             this.frame.remove(this.currentScene);

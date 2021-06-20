@@ -83,7 +83,7 @@ public class OpenLoopManualNewController implements ControllerInterface {
 
         if (y_0 < 1e-5) DefaultPhase();
 
-        // update local module simulation
+        // update local module simulationType
         updateState();
     }
 

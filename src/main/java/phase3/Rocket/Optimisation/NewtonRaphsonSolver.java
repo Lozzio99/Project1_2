@@ -75,7 +75,7 @@ public class NewtonRaphsonSolver {
     }
 
     /**
-     * Constructor of Newton-Raphson solver for the rocket-simulation problem
+     * Constructor of Newton-Raphson solver for the rocket-simulationType problem
      *
      * @param initPos   initial position of a rocket
      * @param targetPos target position of a rocket
@@ -89,13 +89,13 @@ public class NewtonRaphsonSolver {
     }
 
     /**
-     * Constructor of Newton-Raphson solver for the rocket-simulation problem with the delay
+     * Constructor of Newton-Raphson solver for the rocket-simulationType problem with the delay
      * Rocket is simulated after the wait time
      *
      * @param initPos   initial position of a rocket
      * @param targetPos target position of a rocket
      * @param endTime   fixed time at which rocket must reach its target
-     * @param waitTime  delay for rocket simulation
+     * @param waitTime  delay for rocket simulationType
      */
     public NewtonRaphsonSolver(Vector3dInterface initPos, Vector3dInterface targetPos, double endTime, double waitTime) {
         this.fX = pFDelay;

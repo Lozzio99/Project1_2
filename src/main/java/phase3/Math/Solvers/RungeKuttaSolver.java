@@ -39,7 +39,7 @@ public class RungeKuttaSolver<E> implements ODESolverInterface<E> {
      * @param f the function representing Newton's Gravitational law
      * @param y the instance of the Simulation
      * @param h stepSize
-     * @return the next state of the simulation based on Runge-Kutta 4 Step
+     * @return the next state of the simulationType based on Runge-Kutta 4 Step
      */
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, final StateInterface<E> y, double h) {
         RateInterface<E> k1, k2, k3, k4;

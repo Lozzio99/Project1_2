@@ -23,7 +23,7 @@ public class MidPointSolver<E> implements ODESolverInterface<E> {
      * @param f the function representing Newton's Gravitational law
      * @param y the instance  of the Simulation
      * @param h stepSize
-     * @return the next state of the simulation based on A Midpoint Step
+     * @return the next state of the simulationType based on A Midpoint Step
      */
     @Override
     public StateInterface<E> step(ODEFunctionInterface<E> f, double t, StateInterface<E> y, double h) {

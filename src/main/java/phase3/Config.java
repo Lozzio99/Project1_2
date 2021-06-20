@@ -10,14 +10,20 @@ public class Config {
      */
     public static final int FLIGHT_TO_TITAN = 0;
     public static final int LANDING_ON_TITAN = 1;
-    public static final int FULL_SIMULATION = 2;
+    public static final int LORENTZ_ATTRACTOR = 2;
+    public static final int DOUBLE_PENDULUM = 3;
+    public static final double LORENZ_STEP_SIZE = 1e-2;
+
     /**
      * TIME SETTINGS
      */
     public static final double MODULE_STEP_SIZE = 0.01;
     public static final double SS_STEP_SIZE = Clock.HOUR;
+    public static final double PENDULUM_STEP_SIZE = 4e-3;
+    public static int SIMULATION = FLIGHT_TO_TITAN;
     public static final Clock SIMULATION_CLOCK = new Clock();
     public static double CURRENT_TIME = 0;
+    public static int EXECUTION_SPEED_MS = 3;
     /**
      * SOLVERS CONFIGURATIONS
      */
@@ -41,10 +47,9 @@ public class Config {
      */
     public static final boolean NAMES = true;
     public static final boolean DRAW_TRAJECTORIES = true;
-    public static final int TRAJECTORY_LENGTH = 100;
+    public static int TRAJECTORY_LENGTH = EXECUTION_SPEED_MS * 100;
     public static Noise.NoiseDim NOISE_DIMENSIONS = Noise.NoiseDim.TRI_DIMENSIONAL;
-    public static int SIMULATION = LANDING_ON_TITAN;
-    public static int SOLVER = RK4;
+    public static int SOLVER = VERLET_VEL;
     /**
      * SIMULATION SETTINGS
      */

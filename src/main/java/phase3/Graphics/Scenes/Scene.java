@@ -6,6 +6,7 @@ import phase3.Math.ADT.Vector2DConverter;
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3DConverter;
 import phase3.Math.ADT.Vector3dInterface;
+import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
 import phase3.System.State.SystemState;
 
@@ -20,8 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import static phase3.Config.DRAW_TRAJECTORIES;
 import static phase3.Graphics.GraphicsInterface.screen;
-import static phase3.Main.simulation;
+import static phase3.Graphics.GraphicsManager._2D;
+import static phase3.Graphics.GraphicsManager._3D;
 import static phase3.Math.ADT.Vector3DConverter.*;
 
 /**
@@ -40,7 +43,7 @@ public abstract class Scene extends JPanel {
     /**
      * The constant mouseSensitivity.
      */
-    protected final static double mouseSensitivity = 8;
+    protected static double mouseSensitivity = 8;
     private final static int UNIT_SIZE = 1410;//*(int) scale;
     public static Line2D.Double X, Y;
     /**
@@ -62,6 +65,8 @@ public abstract class Scene extends JPanel {
             bottom = new Vector3D(0, -UNIT_SIZE, 0),
             front = new Vector3D(0, 0, UNIT_SIZE),
             rear = new Vector3D(0, 0, -UNIT_SIZE);
+
+
     protected StateInterface<Vector3dInterface> state = new SystemState<>(new Vector3D(0, 0, 0));
     /**
      * The Graphics object
@@ -73,6 +78,11 @@ public abstract class Scene extends JPanel {
     protected BufferedImage flightImage;
     protected BufferedImage landingImage;
     protected boolean IMAGE_FAILED = false;
+    protected final SimulationInterface simulation;
+
+    protected Scene(SimulationInterface s) {
+        simulation = s;
+    }
 
     @Override
     public void paintComponent(Graphics graphics) {
@@ -95,16 +105,36 @@ public abstract class Scene extends JPanel {
         }
     }
 
-    /**
-     * Planet shape ellipse 2 d . double.
-     *
-     * @param position the position
-     * @param radius   the radius
-     * @return the ellipse 2 d . double
-     */
-    protected Ellipse2D.Double planetShape(Vector3dInterface position, double radius) {
-        Point2D.Double p = convertPoint(position);
-        return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
+    protected static void updateTrajectories(int i, double dx, double dy, boolean running, SimulationScene.Bag[] trajectories, Vector3dInterface[] planetsPositions) {
+        if (running) trajectories[i].add(planetsPositions[i]);
+        if (dx == 0 && dy == 0) return;
+        for (int k = 0; k < trajectories[i].getTrajectories().length; k++) {
+            if (trajectories[i].getTrajectories()[k] == null) {
+                break;
+            }
+            //most pleasant "bug" of my life - change delta x and y to be xdiff and ydiff - rotate the scene
+            rotateAxisY(trajectories[i].getTrajectories()[k], false, dx);
+            rotateAxisX(trajectories[i].getTrajectories()[k], false, dy);
+        }
+    }
+
+    protected static void drawTrajectories(Graphics2D g, int i, SimulationScene.Bag[] trajectories) {
+        if (DRAW_TRAJECTORIES) {
+            for (int k = trajectories[i].insert; k < trajectories[i].getTrajectories().length - 1; k++) {
+                if (trajectories[i].getTrajectories()[k + 1] == null)
+                    break;
+                g.draw(new Line2D.Double(
+                        Vector3DConverter.convertVector(trajectories[i].getTrajectories()[k]),
+                        Vector3DConverter.convertVector(trajectories[i].getTrajectories()[k + 1])));
+            }
+            for (int k = 0; k < trajectories[i].insert - 1; k++) {
+                if (trajectories[i].getTrajectories()[k + 1] == null)
+                    break;
+                g.draw(new Line2D.Double(
+                        Vector3DConverter.convertVector(trajectories[i].getTrajectories()[k]),
+                        Vector3DConverter.convertVector(trajectories[i].getTrajectories()[k + 1])));
+            }
+        }
     }
 
     /**
@@ -142,12 +172,26 @@ public abstract class Scene extends JPanel {
         }
     }
 
+    /**
+     * Planet shape ellipse 2 d . double.
+     *
+     * @param position the position
+     * @param radius   the radius
+     * @return the ellipse 2 d . double
+     */
+    protected Ellipse2D.Double planetShape(Vector3dInterface position, double radius) {
+        Point2D.Double p = Vector3DConverter.convertVector(position);
+        return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
+    }
+
+    protected Ellipse2D.Double planetShape(Point2D.Double p, double radius) {
+        return new Ellipse2D.Double(p.getX() - radius, p.getY() - radius, radius * 2, radius * 2);
+    }
 
     /**
      * Init.
      */
     public abstract void init();
-
 
     /**
      * updates the mouse tracking variables to update the bodies if
@@ -155,16 +199,14 @@ public abstract class Scene extends JPanel {
      */
     public synchronized void update(final StateInterface<Vector3dInterface> v) {
         this.state = v;
-        if (mouse.getScene() == 0) return;
         //xDif = xDif2 = yDif = yDif2 = 0;
 
-        if (mouse.getScene() == 1) {
+        if (mouse.getScene() == _2D) {
             x = mouse.getX();
             y = mouse.getY();
             if (mouse.getButton() == MouseInput.ClickType.LeftClick) {
                 xDif = x - initialX;
                 Vector2DConverter.translate(xDif / mouseSensitivity, 0);
-            } else if (mouse.getButton() == MouseInput.ClickType.RightClick) {
                 yDif = y - initialY;
                 Vector2DConverter.translate(0, yDif / mouseSensitivity);
             } else if (mouse.isScrollingUp()) {
@@ -174,26 +216,23 @@ public abstract class Scene extends JPanel {
             }
             totalXDif += xDif;
             totalYDif += yDif;
-        } else if (mouse.getScene() == 2) {
+        } else if (mouse.getScene() == _3D) {
             x2 = mouse.getX();
             y2 = mouse.getY();
             if (mouse.getButton() == MouseInput.ClickType.LeftClick) {
                 deltaX2 = xDif2 = x2 - initialX2;
                 totalXDif2 += xDif2;
-                this.rotateOnAxisY(false, xDif2 / mouseSensitivity);
+                this.rotateOnAxisX(false, xDif2 / mouseSensitivity);
             } else if (mouse.getButton() == MouseInput.ClickType.RightClick) {
                 deltaY2 = yDif2 = y2 - initialY2;
                 totalYDif2 += yDif2;
-                this.rotateOnAxisX(false, yDif2 / mouseSensitivity);
+                this.rotateOnAxisY(false, yDif2 / mouseSensitivity);
             } else if (mouse.isScrollingUp()) {
                 Vector3DConverter.zoomIn();
             } else if (mouse.isScrollingDown()) {
                 Vector3DConverter.zoomOut();
             }
-
-
         }
-
         //call this from the subclass
         //this.resetMouse();
     }
@@ -228,7 +267,7 @@ public abstract class Scene extends JPanel {
      * @param cw true if clockwise , false otherwise
      * @param y  the degree of rotation
      */
-    public void rotateOnAxisY(boolean cw, double y) {
+    public void rotateOnAxisX(boolean cw, double y) {
         rotateAxisY(top, cw, y);
         rotateAxisY(bottom, cw, y);
         rotateAxisY(left, cw, y);
@@ -243,7 +282,7 @@ public abstract class Scene extends JPanel {
      * @param cw true if clockwise , false otherwise
      * @param x  the degree of rotation
      */
-    void rotateOnAxisX(boolean cw, double x) {
+    void rotateOnAxisY(boolean cw, double x) {
         rotateAxisX(top, cw, x);
         rotateAxisX(bottom, cw, x);
         rotateAxisX(left, cw, x);
@@ -276,7 +315,9 @@ public abstract class Scene extends JPanel {
          */
         MODULE_SCENE,
         STARTING_SCENE,
-        FLIGHT_SCENE
+        FLIGHT_SCENE,
+        LORENZ_SCENE,
+        PENDULUM_SCENE
     }
 
 }

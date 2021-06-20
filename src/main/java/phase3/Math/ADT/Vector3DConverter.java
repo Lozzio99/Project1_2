@@ -16,7 +16,7 @@ public class Vector3DConverter extends Vector2DConverter {
      * @param point3D the point 3 d
      * @return java . awt . point
      */
-    public static Point2D.Double convertPoint(Vector3dInterface point3D) {
+    public static Point2D.Double convertVector(Vector3dInterface point3D) {
         double x3d = point3D.getX() * scale;
         double y3d = point3D.getY() * scale;
         double depth = point3D.getZ() * scale;

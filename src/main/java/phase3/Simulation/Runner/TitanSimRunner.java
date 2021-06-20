@@ -6,12 +6,10 @@ import phase3.Math.Forces.ModuleFunction;
 import phase3.Math.Forces.WindInterface;
 import phase3.Math.Forces.WindModel;
 import phase3.Math.Functions.ODEFunctionInterface;
-import phase3.Math.Solvers.*;
+import phase3.Math.Solvers.ODESolverInterface;
 import phase3.Rocket.Controllers.DecisionMaker;
 import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
-
-import java.util.concurrent.TimeUnit;
 
 import static phase3.Config.*;
 
@@ -49,20 +47,12 @@ public class TitanSimRunner implements RunnerInterface {
         this.moduleController = new DecisionMaker(CONTROLLER);
         this.moduleFunction = new ModuleFunction();
         this.gravityFunction = this.moduleFunction.evaluateAcceleration();
-        switch (SOLVER) {
-            case EULER -> this.solver = new EulerSolver<>(this.gravityFunction);
-            case RK4 -> this.solver = new RungeKuttaSolver<>(this.gravityFunction);
-            case VERLET_STD -> this.solver = new StandardVerletSolver<>(this.gravityFunction);
-            case VERLET_VEL -> this.solver = new VerletVelocitySolver<>(this.gravityFunction);
-            case MIDPOINT -> this.solver = new MidPointSolver<>(this.gravityFunction);
-        }
+        this.solver = initSolver(this.gravityFunction);
     }
 
     @Override
-    public void runSimulation() {
-        if (simulation.isRunning()) {
-            service.scheduleWithFixedDelay(this::loop, 10, 8, TimeUnit.MILLISECONDS);
-        }
+    public SimulationInterface simInstance() {
+        return simulation;
     }
 
     @Override

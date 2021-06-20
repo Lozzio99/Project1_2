@@ -155,7 +155,6 @@ public class WindNoiseCanvas extends Canvas {
         frame3D.setTitle("iteration " + time);
         BufferStrategy bs = canvas.getBufferStrategy();
         Graphics2D drawGraphics = (Graphics2D) bs.getDrawGraphics();
-
         BufferedImage save = new BufferedImage(_3D.width, _3D.height, BufferedImage.TYPE_INT_RGB);
         WritableRaster raster = save.getRaster();
 
@@ -168,12 +167,13 @@ public class WindNoiseCanvas extends Canvas {
         }
         bs.show();
 
-        if (MAKE_GIF) saveImage(save);
+        if (MAKE_GIF) saveImage("src/main/resources/windGIF/Wind" + GIF_INDEX + ".png", save);
     }
-    private static void saveImage(BufferedImage image) {
+
+    public static void saveImage(String file, BufferedImage image) {
         if (GIF_INDEX >= endTime) return;
         try {
-            File f = new File("src/main/resources/windGIF/Wind" + GIF_INDEX + ".png");
+            File f = new File(file);
             if (!f.mkdirs()) throw new IllegalStateException("failed to create " + f.getPath());
             GIF_INDEX++;
             ImageIO.write(image, "gif", f);

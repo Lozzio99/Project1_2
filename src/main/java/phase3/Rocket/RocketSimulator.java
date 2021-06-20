@@ -6,7 +6,7 @@ import phase3.System.Bodies.CelestialBody;
 import phase3.System.State.StateInterface;
 
 import static java.awt.Color.GREEN;
-import static phase3.Config.MODULE_STEP_SIZE;
+import static phase3.Config.SS_STEP_SIZE;
 import static phase3.Main.simulation;
 
 public class RocketSimulator extends CelestialBody implements RocketSimulatorInterface {
@@ -43,11 +43,9 @@ public class RocketSimulator extends CelestialBody implements RocketSimulatorInt
 
         double propellantConsumed = (fuelMass * deltaV) / (this.exhaustVelocity + deltaV);
 
-        if (exhaustVelocity * (propellantConsumed / MODULE_STEP_SIZE) > maxThrust) {
+        if (exhaustVelocity * (propellantConsumed / SS_STEP_SIZE) > maxThrust) {
             System.out.println("Max Thrust exceeded!!!");
         }
-
-
         updateMass(propellantConsumed);
         return propellantConsumed;
     }

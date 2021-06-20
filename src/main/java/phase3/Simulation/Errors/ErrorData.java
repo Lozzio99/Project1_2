@@ -10,7 +10,7 @@ import java.util.Locale;
 import static phase3.Main.simulation;
 
 /**
- * Represents Data used in calculating errors of simulation
+ * Represents Data used in calculating errors of simulationType
  */
 public class ErrorData {
     private List<Vector3dInterface> positions, velocities;

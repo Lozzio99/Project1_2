@@ -7,7 +7,6 @@ import static phase3.Config.ERROR_MONTH_INDEX;
  * Clock class used for testing and organising data
  */
 public class Clock {
-    public static final double[] currentTime = new double[]{0};
     public static final double DAY = 86400.0;
     public static final double HOUR = 3600;
     private static final String[] monthStrings =
@@ -29,11 +28,6 @@ public class Clock {
         years = 0;
     }
 
-
-    public synchronized void reset() {
-        currentTime[0] = 0;
-        this.setInitialDayAndTime(0, 0, 0, 0, 0, 0);
-    }
 
     /**
      * Sets launch day.
@@ -106,7 +100,6 @@ public class Clock {
      * @return the boolean
      */
     public synchronized boolean step(double secStep) {
-        currentTime[0] += secStep;
         int step = (int) secStep;
         if (step != 0)
             secStep(step);

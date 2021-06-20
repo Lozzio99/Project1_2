@@ -3,26 +3,30 @@ package phase3.Simulation.Runner;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Forces.GravityFunction;
 import phase3.Math.Forces.ModuleFunction;
-import phase3.Math.Functions.ODEFunctionInterface;
-import phase3.Math.Solvers.*;
+import phase3.Math.Solvers.ODESolverInterface;
 import phase3.Rocket.Controllers.RocketSchedule;
+import phase3.Rocket.RocketSimulatorInterface;
 import phase3.Simulation.Errors.ErrorData;
 import phase3.Simulation.Errors.ErrorReport;
 import phase3.Simulation.SimulationInterface;
 import phase3.System.State.StateInterface;
 
-import java.util.concurrent.TimeUnit;
-
 import static phase3.Config.*;
-import static phase3.System.Clock.currentTime;
 
 public class SolarSystemRunner implements RunnerInterface {
     private final SimulationInterface simulation;
     private ODESolverInterface<Vector3dInterface> solver;
     private final RocketSchedule schedule;
+    private GravityFunction gravityFunction;
+
     public SolarSystemRunner(SimulationInterface simulation) {
         this.simulation = simulation;
         this.schedule = new RocketSchedule();
+    }
+
+    @Override
+    public SimulationInterface simInstance() {
+        return simulation;
     }
 
     @Override
@@ -41,22 +45,9 @@ public class SolarSystemRunner implements RunnerInterface {
         for (int i = 0; i < masses.length; i++) {
             masses[i] = simulation.getSystem().getCelestialBodies().get(i).getMASS();
         }
+        this.gravityFunction = new GravityFunction(masses);
         this.schedule.init();
-        ODEFunctionInterface<Vector3dInterface> gravityFunction = new GravityFunction(masses).evaluateAcceleration();
-        switch (SOLVER) {
-            case EULER -> this.solver = new EulerSolver<>(gravityFunction);
-            case RK4 -> this.solver = new RungeKuttaSolver<>(gravityFunction);
-            case VERLET_STD -> this.solver = new StandardVerletSolver<>(gravityFunction);
-            case VERLET_VEL -> this.solver = new VerletVelocitySolver<>(gravityFunction);
-            case MIDPOINT -> this.solver = new MidPointSolver<>(gravityFunction);
-        }
-    }
-
-    @Override
-    public void runSimulation() {
-        if (simulation.isRunning()) {
-            service.scheduleWithFixedDelay(this::loop, 1200, 2, TimeUnit.MILLISECONDS);
-        }
+        this.solver = initSolver(this.gravityFunction.evaluateAcceleration());
     }
 
     @Override
@@ -68,7 +59,10 @@ public class SolarSystemRunner implements RunnerInterface {
         if (!rocketDecision.isZero()) {
             System.out.println("Rocket decision :");
             System.out.println(SIMULATION_CLOCK + " -> " + rocketDecision);
+            ((RocketSimulatorInterface) simulation.getSystem().getCelestialBodies().get(11))
+                    .evaluateLoss(rocketDecision, simulation.getSystem().getState().get()[23]);
             simulation.getSystem().getState().get()[23] = rocketDecision;
+            this.gravityFunction.getMASSES()[11] = simulation.getSystem().getCelestialBodies().get(11).getMASS();
         }
         simulation.getSystem().updateState(
                 solver.step(solver.getFunction(), currentTime[0], currentState, SS_STEP_SIZE));

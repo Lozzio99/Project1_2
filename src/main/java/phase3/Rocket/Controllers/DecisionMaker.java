@@ -3,7 +3,8 @@ package phase3.Rocket.Controllers;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.System.State.StateInterface;
 
-import static phase3.Config.*;
+import static phase3.Config.CLOSED;
+import static phase3.Config.OPEN;
 
 public class DecisionMaker {
 
