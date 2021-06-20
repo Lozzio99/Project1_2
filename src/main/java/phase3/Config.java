@@ -16,6 +16,7 @@ public class Config {
      */
     public static final double MODULE_STEP_SIZE = 0.01;
     public static final double SS_STEP_SIZE = Clock.HOUR;
+    public static double NEWTON_STEP_SIZE = 360.0;
     public static final Clock SIMULATION_CLOCK = new Clock();
     public static double CURRENT_TIME = 0;
     /**
@@ -44,7 +45,7 @@ public class Config {
     public static final int TRAJECTORY_LENGTH = 100;
     public static Noise.NoiseDim NOISE_DIMENSIONS = Noise.NoiseDim.TRI_DIMENSIONAL;
     public static int SIMULATION = LANDING_ON_TITAN;
-    public static int SOLVER = RK4;
+    public static int SOLVER = VERLET_VEL;
     /**
      * SIMULATION SETTINGS
      */

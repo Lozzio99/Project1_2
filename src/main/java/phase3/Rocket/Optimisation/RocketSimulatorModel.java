@@ -3,10 +3,13 @@ package phase3.Rocket.Optimisation;
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Solvers.ODESolverInterface;
+import phase3.Simulation.Simulation;
+import phase3.Simulation.SimulationInterface;
+import phase3.System.SolarSystem;
 import phase3.System.State.StateInterface;
 import phase3.System.SystemInterface;
 
-import static phase3.Config.MODULE_STEP_SIZE;
+import static phase3.Config.*;
 import static phase3.Main.simulation;
 
 /**
@@ -53,10 +56,12 @@ public class RocketSimulatorModel {
      * @return the system interface
      */
     public static SystemInterface createSystem(Vector3dInterface initLocation, Vector3dInterface initVelocity) {
-        final SystemInterface[] system = new SystemInterface[1];
-
-
-        return system[0];
+        final SystemInterface system = new SolarSystem();
+        system.init();
+        int length = system.getState().get().length;
+        system.getState().get()[11].set(initLocation);
+        system.getState().get()[11+length/2].set(initVelocity);
+        return system;
     }
 
     /**
@@ -70,12 +75,17 @@ public class RocketSimulatorModel {
      */
     public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal) {
         // init parameters
+        SIMULATION = FLIGHT_TO_TITAN;
         SystemInterface system = createSystem(initPos, initVelocity);
         initialState = system.getState();
+        //SimulationInterface simulationN = new Simulation();
+        simulation = new Simulation();
+        simulation.init();
         solver = simulation.getRunner().getSolver();
 
+        solver.step(solver.getFunction(), 0.0, initialState, NEWTON_STEP_SIZE);
         // solve trajectory
-        StateInterface<Vector3dInterface>[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, MODULE_STEP_SIZE);
+        StateInterface<Vector3dInterface>[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, NEWTON_STEP_SIZE);
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
         return (Vector3dInterface) solution[solution.length - 1];

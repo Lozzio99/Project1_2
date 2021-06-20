@@ -6,6 +6,7 @@ import phase3.Math.ADT.Vector3dInterface;
 import phase3.Math.Functions.PartialDerivative;
 
 import static phase3.Rocket.Optimisation.RocketSimulatorModel.*;
+import static phase3.Config.NEWTON_STEP_SIZE;
 
 /**
  * The Newton raphson solver.
@@ -162,6 +163,7 @@ public class NewtonRaphsonSolver {
      * @return approximated solution i.e. fX(aprxSol) ~ targetSol
      */
     public Vector3dInterface NewtRhapSolution(Vector3dInterface initSol, Vector3dInterface targetSol, double h) {
+        NEWTON_STEP_SIZE = h;
         this.initSol = initSol.clone();
         this.targetSol = targetSol.clone();
         Vector3dInterface aprxSol = initSol.clone();
@@ -185,7 +187,9 @@ public class NewtonRaphsonSolver {
      * @return approximated velocity
      */
     public Vector3dInterface NewtRhapStep(Vector3dInterface vector, double h) {
+        System.out.println("###1");
         double[][] D = PartialDerivative.getJacobianMatrix(fX, (Vector3D) vector.clone(), h); // Compute matrix of partial derivatives D
+        System.out.println("###2");
         Matrix DI = new Matrix(Matrix.inverse(D)); // Compute DI inverse of D
         Vector3dInterface modelVector = fX.modelFx(vector);
         if (LOG_ITERATION) {

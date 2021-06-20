@@ -71,7 +71,7 @@ public interface ODESolverInterface<E> {
      * @return  an array of size round(tf/h)+1 including all intermediate states along the path
      */
     default StateInterface<E>[] solve(ODEFunctionInterface<E> f, StateInterface<E> y0, double tf, double h) {
-        StateInterface[] path = new StateInterface[(int) (Math.round(tf / h)) + 2];
+        StateInterface<E>[] path = new StateInterface[(int) (Math.round(tf / h)) + 2];
         double currTime = 0;
         path[0] = y0;
         for (int i = 1; i < path.length - 1; i++) {
