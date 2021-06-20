@@ -76,19 +76,17 @@ public class RocketSimulatorModel {
     public static Vector3dInterface stateFx(Vector3dInterface initPos, Vector3dInterface initVelocity, double timeFinal) {
         // init parameters
         SIMULATION = FLIGHT_TO_TITAN;
+        SOLVER = RK4;
         SystemInterface system = createSystem(initPos, initVelocity);
         initialState = system.getState();
-        //SimulationInterface simulationN = new Simulation();
         simulation = new Simulation();
         simulation.init();
         solver = simulation.getRunner().getSolver();
-
-        solver.step(solver.getFunction(), 0.0, initialState, NEWTON_STEP_SIZE);
         // solve trajectory
         StateInterface<Vector3dInterface>[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, NEWTON_STEP_SIZE);
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
-        return (Vector3dInterface) solution[solution.length - 1];
+        return solution[solution.length-1].get()[11];
     }
 
     /**

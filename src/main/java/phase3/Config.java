@@ -40,6 +40,7 @@ public class Config {
     /**
      * GRAPHICS SETTINGS
      */
+    public static final boolean GRAPHICS = false;
     public static final boolean NAMES = true;
     public static final boolean DRAW_TRAJECTORIES = true;
     public static final int TRAJECTORY_LENGTH = 100;

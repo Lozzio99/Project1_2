@@ -56,7 +56,6 @@ public class PartialDerivative {
         }
         */
 
-
         CompletableFuture<Void> allFutures =
                 CompletableFuture.allOf(
                         CompletableFuture.supplyAsync(

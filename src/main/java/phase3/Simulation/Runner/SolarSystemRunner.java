@@ -62,7 +62,7 @@ public class SolarSystemRunner implements RunnerInterface {
     @Override
     public synchronized void loop() {
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
-        simulation.getGraphics().start(currentState);
+        if (GRAPHICS) simulation.getGraphics().start(currentState);
 
         Vector3dInterface rocketDecision = this.schedule.shift();
         if (!rocketDecision.isZero()) {

@@ -19,7 +19,9 @@ public class Simulation implements SimulationInterface {
     private boolean running = false;
 
     public Simulation() {
-        this.graphics = new GraphicsManager();
+        if (GRAPHICS) this.graphics = new GraphicsManager();
+        else this.graphics = null;
+
         switch (SIMULATION) {
             case FLIGHT_TO_TITAN -> {
                 this.system = new SolarSystem();
@@ -52,7 +54,7 @@ public class Simulation implements SimulationInterface {
     @Override
     public void init() {
         this.system.init(); //init system and give the runner the initial state ready
-        this.graphics.init();
+        if (GRAPHICS) this.graphics.init();
         this.runner.init();
     }
 
