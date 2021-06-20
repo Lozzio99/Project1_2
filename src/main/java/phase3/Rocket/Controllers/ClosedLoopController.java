@@ -21,46 +21,28 @@ public class ClosedLoopController implements ControllerInterface {
     private final static double descentFactor = 10;      // Higher value means faster descent
     private final static double posVelRatioFactor = 0.1; // Relation between vertical position and vertical velocity
 
+    private double u = 0.0;
+    private double v = 0.0;
+
 
     public ClosedLoopController() {
         V = new Vector3D(0, 0, 0);
     }
 
-    public ODEFunctionInterface<Vector3dInterface> controlFunction() {
-        return (t, y) -> {
+    public void updateFunction(StateInterface<Vector3dInterface> y) {
+        // Variables
+        this.currentState = y;
+        double xVel = y.get()[1].getX();
+        double yPos = y.get()[0].getY();
+        double yVel = y.get()[1].getY();
+        double zPos = y.get()[0].getZ();
+        double zVel = y.get()[1].getZ();
 
-            // Variables
-            this.currentState = y;
-            double xVel = y.get()[1].getX();
-            double yPos = y.get()[0].getY();
-            double yVel = y.get()[1].getY();
-            double zPos = y.get()[0].getZ();
-            double zVel = y.get()[1].getZ();
+        // --- Calculate rotational acceleration ---
+        v = getRotationalAcceleration(xVel, yPos, yVel, zPos, zVel, turnSensitivity, turnDampening);
 
-            // --- Calculate rotational acceleration ---
-            double rotationalAcceleration = getRotationalAcceleration(xVel, yPos, yVel, zPos, zVel, turnSensitivity, turnDampening);
-            Vector3dInterface rotVector = new Vector3D(0, 0, rotationalAcceleration);
-
-            // --- Calculate thrust ---
-            double burnAmount = getBurnAmount(yPos, yVel, thrustFactor, hoverThrust, descentFactor, posVelRatioFactor);
-            Vector3dInterface thrustVector = burn(burnAmount, y);
-
-            // --- Apply changes to new control-vector ---
-            return new RateOfChange<>(thrustVector.add(rotVector));
-        };
-    }
-
-    /**
-     * Ensures that a rocket is only able to burn in the direction that the thruster is pointing at.
-     *
-     * @param amount
-     * @param state
-     * @return
-     */
-    private Vector3dInterface burn(double amount, StateInterface<Vector3dInterface> state) {
-        return new Vector3D(amount * Math.sin(state.get()[0].getZ() * Math.PI / 180),
-                amount * Math.cos(state.get()[0].getZ() * Math.PI / 180),
-                0);
+        // --- Calculate thrust ---
+        u = getBurnAmount(yPos, yVel, thrustFactor, hoverThrust, descentFactor, posVelRatioFactor);
     }
 
     /**
@@ -124,6 +106,15 @@ public class ClosedLoopController implements ControllerInterface {
 
     @Override
     public double[] controlFunction(double t, StateInterface<Vector3dInterface> y) {
-        return new double[0];
+        updateFunction(y);
+        return new double[]{getU(), getV()};
+    }
+
+    private double getU() {
+        return u;
+    }
+
+    private double getV() {
+        return v;
     }
 }
