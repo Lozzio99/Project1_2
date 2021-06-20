@@ -20,7 +20,7 @@ public class Config {
     public static final double MODULE_STEP_SIZE = 0.01;
     public static final double SS_STEP_SIZE = Clock.HOUR;
     public static final double PENDULUM_STEP_SIZE = 4e-3;
-    public static int SIMULATION = FLIGHT_TO_TITAN;
+    public static int SIMULATION = LANDING_ON_TITAN;
     public static final Clock SIMULATION_CLOCK = new Clock();
     public static double CURRENT_TIME = 0;
     public static int EXECUTION_SPEED_MS = 3;
@@ -49,7 +49,7 @@ public class Config {
     public static final boolean DRAW_TRAJECTORIES = true;
     public static int TRAJECTORY_LENGTH = EXECUTION_SPEED_MS * 100;
     public static Noise.NoiseDim NOISE_DIMENSIONS = Noise.NoiseDim.TRI_DIMENSIONAL;
-    public static int SOLVER = VERLET_VEL;
+    public static int SOLVER = RK4;
     /**
      * SIMULATION SETTINGS
      */
