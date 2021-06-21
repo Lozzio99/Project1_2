@@ -6,6 +6,7 @@ import group17.Simulation.Simulation;
 import group17.System.SolarSystem;
 
 import static group17.Main.simulation;
+import static group17.Math.Solvers.NewtonRaphsonSolver.ROCKET_STARTING_POS;
 import static group17.Utils.Config.*;
 
 /**
@@ -46,7 +47,7 @@ public class RocketSimModel {
 
     static {
         DEFAULT_SOLVER = VERLET_VEL_SOLVER; // put here the best solver
-        STEP_SIZE = 360;
+        STEP_SIZE = 1440;
         REPORT = false;
         INSERT_ROCKET = true;
         CHECK_COLLISIONS = false;
@@ -134,6 +135,29 @@ public class RocketSimModel {
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
         return solution[solution.length - 1].getPositions().get(11).clone();
+    }
+
+    public static Vector3dInterface stateFxCelestialBodies(double timeFinal) {
+        // init parameters
+        SystemInterface system = createSystem(new Vector3D(0,0,0), new Vector3D(0,0,0));
+        initialState = system.systemState().copy();
+        solver = simulation.getUpdater().getSolver();
+
+        // solve trajectory
+        StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
+
+        assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
+                !simulation.getSystem().getCelestialBodies().get(11).isCollided());
+        return solution[solution.length - 1].getPositions().get(8).clone();
+    }
+
+    public static void main(String[] args) {
+        Vector3dInterface res1 = stateFx(ROCKET_STARTING_POS, new Vector3D(5103.625210047158,-42679.20907496454,-2386.727992257258), 111153600);
+        Vector3dInterface res2 = stateFxCelestialBodies(111153600);
+        double distance = res2.dist(res1);
+        System.out.println(res1);
+        System.out.println(res2);
+        System.out.println(distance);
     }
 
 }

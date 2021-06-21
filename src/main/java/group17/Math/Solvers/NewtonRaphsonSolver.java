@@ -40,7 +40,7 @@ public class NewtonRaphsonSolver {
     /**
      * Target point near Titan (12:00:00 09/10/2023)
      */
-    public static Vector3D TITAN_TARGET = new Vector3D(1.3210553440774814E12,-6.208533970972291E11,-4.14051317342377E10);
+    public static Vector3D TITAN_TARGET = new Vector3D(1.3210462842514722E12,-6.208565760567329E11,-4.1402261326868645E10);
 
     /**
      * The constant initPos.
@@ -120,6 +120,9 @@ public class NewtonRaphsonSolver {
      */
     public static void main(String[] args) {
 
+        //Vector3dInterface TitanOrbitTarget = findPointOnTitan(ROCKET_STARTING_POS);
+        //System.out.println(TitanOrbitTarget);
+
         //### Approximation of rocket mission
 
         double FixedTime1 = 111153600;
@@ -129,11 +132,11 @@ public class NewtonRaphsonSolver {
 
         //### Path from Earth to Titan
         NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(ROCKET_STARTING_POS, TITAN_TARGET, FixedTime1);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5053.8397726433905,-42680.243107188355,-2383.2465825823965), new Vector3D(0.0, 0.0, 0.0), 360);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5103.625210047158,-42679.20907496454,-2386.727992257258), new Vector3D(0.0, 0.0, 0.0), 1440);
 
         //### Path from Titan to Earth
-        NewtonRaphsonSolver nrSolver2 = new NewtonRaphsonSolver(INTERMEDIATE_START, EARTH_TARGET, FixedTime4,FixedTime1+FixedTime2);
-        Vector3dInterface aprxVel2 = nrSolver2.NewtRhapSolution(new Vector3D(-8413.49799899527,3774.5102109077566,347.1890518838117), new Vector3D(0.0, 0.0, 0.0), 360.0);
+        //NewtonRaphsonSolver nrSolver2 = new NewtonRaphsonSolver(INTERMEDIATE_START, EARTH_TARGET, FixedTime4,FixedTime1+FixedTime2);
+        //Vector3dInterface aprxVel2 = nrSolver2.NewtRhapSolution(new Vector3D(-8413.49799899527,3774.5102109077566,347.1890518838117), new Vector3D(0.0, 0.0, 0.0), 360.0);
 
     }
 
@@ -160,6 +163,24 @@ public class NewtonRaphsonSolver {
         return startV1;
     }
 
+    public static Vector3dInterface findPointOnTitan(Vector3dInterface vector3dInterface) {
+        //https://math.stackexchange.com/questions/1784106/how-do-i-compute-the-closest-points-on-a-sphere-given-a-point-outside-the-sphere
+        Vector3D v1 = new Vector3D(1.321048673790974E12,-6.208575399369564E11,-4.140232872222226E10);
+        Vector3D v2 = (Vector3D) vector3dInterface.clone();
+        double disV1V2 = v1.dist(v2);
+        Vector3D unitV = new Vector3D(
+                (v2.getX()-v1.getX())/disV1V2,
+                (v2.getY()-v1.getY())/disV1V2,
+                (v2.getZ()-v1.getZ())/disV1V2
+        );
+        Vector3D startV1 = new Vector3D(
+                v1.getX() + (2575.5e3 + 2e3)*unitV.getX(),
+                v1.getY() + (2575.5e3 + 2e3)*unitV.getY(),
+                v1.getZ() + (2575.5e3 + 2e3)*unitV.getZ()
+        );
+        return startV1;
+    }
+
     /**
      * Approximation of a solution to a function using Newton-Rhapson method
      *
@@ -177,6 +198,7 @@ public class NewtonRaphsonSolver {
             aprxSol = NewtRhapStep(aprxSol, h);
             if (LOG_ITERATION) {
                 System.out.println("Result - Iteration #" + (i) + ": " + aprxSol.toString());
+                System.out.println("Result - Iteration #" + (i) + ": " + ERROR);
             }
             i++;
         }
