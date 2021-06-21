@@ -11,6 +11,7 @@ import static java.lang.StrictMath.pow;
 public class ODE2Test {
     static StateInterface<Double> y;
 
+
     static Function<Double, Double> position = t -> {
         return (t * t * t) - (4 * t) + 3;   // y (t)
     };
@@ -19,9 +20,10 @@ public class ODE2Test {
     };
     static ODEFunctionInterface<Double> acceleration = (t, y) -> {
         // y =   [  y , dy ]
-        return new RateOfChange<>(y.get()[1], 6 * t);
+        return new RateOfChange<>(y.get()[1], (6 * t));
         //return [  dy, d2y ]
     };
+
 
     public static void main(String[] args) {
         double t = 0, tf = 2, stepSize = 0.1;
@@ -30,7 +32,7 @@ public class ODE2Test {
             halfStepSize(new MidPointSolver<>(acceleration), t, tf, stepSize, scale);
             halfStepSize(new RungeKuttaSolver<>(acceleration), t, tf, stepSize, scale);
             halfStepSize(new StandardVerletSolver<>(acceleration), t, tf, stepSize, scale);
-            halfStepSize(new VerletVelocitySolver<>(acceleration), t, tf, stepSize, scale);
+            // halfStepSize(new VerletVelocitySolver<>(acceleration), t, tf, stepSize, scale,true);
         }
 
     }
@@ -109,5 +111,4 @@ public class ODE2Test {
     public static double relative(double actual, double real) {
         return (absolute(actual, real)) / real;
     }
-
 }

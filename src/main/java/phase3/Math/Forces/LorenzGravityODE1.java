@@ -6,8 +6,8 @@ import phase3.Math.Functions.ODEFunctionInterface;
 import phase3.System.State.RateOfChange;
 
 public class LorenzGravityODE1 {
-    //private static final double sigma = 10, rho = 28, beta = 8/3.;
-    private static final double sigma = 10, rho = 14, beta = 8 / 3.;
+    private static final double sigma = 10, rho = 28, beta = 8 / 3.;
+    //private static final double sigma = 10, rho = 14, beta = 8 / 3.;
     //private static final double sigma = 10, rho = 13, beta = 8/3.;
     //private static final double sigma = 10, rho = 15, beta = 8/3.;
 

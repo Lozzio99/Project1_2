@@ -1,6 +1,5 @@
 package phase3.Math.Noise;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -8,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
-import java.io.File;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,8 +14,9 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import static phase3.Config.*;
+import static phase3.Graphics.Scenes.Scene.saveImage;
 import static phase3.Math.Noise.Noise2D.*;
-
 
 public class WindNoiseCanvas extends Canvas {
 
@@ -26,8 +25,6 @@ public class WindNoiseCanvas extends Canvas {
     private static final Dimension _3D = new Dimension(768, 512);
     private static final Dimension _2D = new Dimension(1024, 768);
     private static JFrame frame2D, frame3D;
-    private static int GIF_INDEX = 0;
-    private static boolean MAKE_GIF = false;
     private static Noise3D noise3D;
     private static ScheduledExecutorService service;
 
@@ -125,7 +122,7 @@ public class WindNoiseCanvas extends Canvas {
         Runnable iteration = () -> {
             while (time[0] <= endTime) {
                 noise3DIteration(canvas, time[0]);
-                time[0] += 0.1;
+                time[0] += 10;
             }
         };
         f = service.scheduleWithFixedDelay(iteration, 30, 16, TimeUnit.MILLISECONDS);
@@ -153,34 +150,39 @@ public class WindNoiseCanvas extends Canvas {
     }
     public static synchronized void noise3DIteration(Canvas canvas, double time) {
         frame3D.setTitle("iteration " + time);
-        BufferStrategy bs = canvas.getBufferStrategy();
-        Graphics2D drawGraphics = (Graphics2D) bs.getDrawGraphics();
-        BufferedImage save = new BufferedImage(_3D.width, _3D.height, BufferedImage.TYPE_INT_RGB);
-        WritableRaster raster = save.getRaster();
+        if (MAKE_GIF) {
+            BufferedImage save = new BufferedImage(_3D.width, _3D.height, BufferedImage.TYPE_INT_RGB);
+            WritableRaster raster = save.getRaster();
+            writeRaster(raster, time);
+            if (GIF_INDEX <= END_GIF) saveImage("src/main/resources/Gifs/Wind" + GIF_INDEX + ".png", save);
+            else System.exit(0);
+        } else {
+            BufferStrategy bs = canvas.getBufferStrategy();
+            Graphics2D drawGraphics = (Graphics2D) bs.getDrawGraphics();
+            createImage(drawGraphics, time);
+            bs.show();
+        }
+    }
 
+    private static void createImage(Graphics2D g, double time) {
+        for (int i = 0; i < _3D.width; i++) {
+            for (int k = 0; k < _3D.height; k++) {
+                int noise = getNoise(noise3D.getValue(i, k, time));
+                paintTile(i, k, 1, new Color(noise, noise, noise), g);
+            }
+        }
+    }
+
+    private static void writeRaster(WritableRaster raster, double time) {
         for (int i = 0; i < _3D.width; i++) {
             for (int k = 0; k < _3D.height; k++) {
                 int noise = getNoise(noise3D.getValue(i * 3, k * 10, time));
-                paintTile(i, k, 1, new Color(noise, noise, noise), drawGraphics);
                 raster.setPixel(i, k, new int[]{noise, noise, noise});
             }
         }
-        bs.show();
-
-        if (MAKE_GIF) saveImage("src/main/resources/windGIF/Wind" + GIF_INDEX + ".png", save);
     }
 
-    public static void saveImage(String file, BufferedImage image) {
-        if (GIF_INDEX >= endTime) return;
-        try {
-            File f = new File(file);
-            if (!f.mkdirs()) throw new IllegalStateException("failed to create " + f.getPath());
-            GIF_INDEX++;
-            ImageIO.write(image, "gif", f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
     private static int getNoise(double v) {
         int noise = (int) (255 * (v / 2));
         noise = Math.min(noise, 255);

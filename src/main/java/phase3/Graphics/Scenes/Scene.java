@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 import static phase3.Config.DRAW_TRAJECTORIES;
+import static phase3.Config.GIF_INDEX;
 import static phase3.Graphics.GraphicsInterface.screen;
 import static phase3.Graphics.GraphicsManager._2D;
 import static phase3.Graphics.GraphicsManager._3D;
@@ -102,6 +103,17 @@ public abstract class Scene extends JPanel {
             g.setColor(Color.BLACK);
             g.fillRect(0, 0, simulation.getGraphics().getFrame().getWidth(),
                     simulation.getGraphics().getFrame().getHeight());
+        }
+    }
+
+    public static void saveImage(String file, BufferedImage image) {
+        try {
+            File f = new File(file);
+            if (!f.mkdirs()) throw new IllegalStateException("failed to create " + f.getPath());
+            GIF_INDEX++;
+            ImageIO.write(image, "gif", f);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

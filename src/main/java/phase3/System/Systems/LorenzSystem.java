@@ -27,7 +27,7 @@ public class LorenzSystem implements SystemInterface {
     @Override
     public void init() {
         this.bodies.clear();
-        Vector3dInterface[] pos = new Vector3dInterface[200];
+        Vector3dInterface[] pos = new Vector3dInterface[300];
         for (int i = 0; i < pos.length; i++) {
             this.bodies.add(new Particle(i + 1));
             this.bodies.get(i).initProperties();

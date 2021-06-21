@@ -14,21 +14,22 @@ import java.awt.image.BufferedImage;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
-import static phase3.Config.TRAJECTORY_LENGTH;
+import static phase3.Config.*;
 import static phase3.Graphics.GraphicsInterface.screen;
 import static phase3.Math.ADT.Vector2DConverter.convertVector;
 import static phase3.Math.ADT.Vector2DConverter.getScale;
-import static phase3.Math.Noise.WindNoiseCanvas.saveImage;
 
 public class PendulumScene extends Scene {
 
-    static int i = 0;
     static Vector3dInterface vx, vy, vx2, vy2;
-    private static double r1, r2, a1, a2, l1, l2;
+    private static double r1;
+    private static double r2;
     private final Color[] colors = new Color[]{
             new Color(255, 255, 255, 149),
             new Color(255, 55, 55),
-            new Color(113, 255, 115)
+            new Color(255, 99, 99, 195),
+            new Color(113, 255, 115),
+            new Color(135, 255, 136, 174)
     };
     private final Vector3dInterface origin = new Vector3D(0, 0, 0), p1 = new Vector3D(-100, -200, 0), p2 = new Vector3D(-100, -400, 0);
     private final SimulationScene.Bag[] trajectories = new SimulationScene.Bag[2];
@@ -56,10 +57,19 @@ public class PendulumScene extends Scene {
 
     @Override
     public void paintComponent(Graphics graphics) {
+        if (MAKE_GIF) {
+            BufferedImage image = new BufferedImage(screen.width, screen.height, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = image.createGraphics();
+            createImage(g);
+            saveImage("src/main/resources/Gifs/pendulum" + (GIF_INDEX) + ".png", image);
+            if (GIF_INDEX == END_GIF) System.exit(0);
+        } else {
+            Graphics2D g = (Graphics2D) graphics;
+            createImage(g);
+        }
+    }
 
-        Graphics2D g = (Graphics2D) graphics;
-        BufferedImage image = new BufferedImage(screen.width, screen.height, BufferedImage.TYPE_INT_ARGB);
-        g = image.createGraphics();
+    private void createImage(Graphics2D g) {
         g.setColor(Color.black);
         g.fill3DRect(0, 0, screen.width, screen.height, false);
         g.setColor(colors[0]);
@@ -74,25 +84,24 @@ public class PendulumScene extends Scene {
         g.draw(planetShape(po, 10 * getScale()));
         g.setColor(colors[1]);
         g.fill(planetShape(p1, r1 * getScale()));
-        drawTrajectories(g, 0, trajectories);
         g.setColor(colors[2]);
+        drawTrajectories(g, 0, trajectories);
+        g.setColor(colors[3]);
         g.fill(planetShape(p2, r2 * getScale()));
+        g.setColor(colors[4]);
         drawTrajectories(g, 1, trajectories);
-        saveImage("src/main/resources/Gifs/pendulum" + (i++) + ".png", image);
-        if (i == 200) System.exit(0);
     }
+
 
     @Override
     public void init() {
         for (int i = 0; i < 25; i++) Vector2DConverter.zoomOut();
         mouseSensitivity = 2;
-        TRAJECTORY_LENGTH = 2000;
+        TRAJECTORY_LENGTH = 600;
         this.state = simulation.getSystem().getState();
         this.trajectories[0] = new SimulationScene.Bag();
         this.trajectories[1] = new SimulationScene.Bag();
         updateBodies();
-
-
         vx = new Vector3D(1000, 0, 0);
         vx2 = new Vector3D(-1000, 0, 0);
         vy = new Vector3D(0, 1000, 0);
@@ -112,12 +121,12 @@ public class PendulumScene extends Scene {
     }
 
     protected void updateBodies() {
-        r1 = state.get()[0].getX();
-        r2 = state.get()[1].getX();
-        l1 = state.get()[0].getY();
-        l2 = state.get()[1].getY();
-        a1 = state.get()[0].getZ();
-        a2 = state.get()[1].getZ();
+        r1 = state.get()[0].getX() > 50 ? 50 : state.get()[0].getX();
+        r2 = state.get()[1].getX() > 50 ? 50 : state.get()[1].getX();
+        double l1 = state.get()[0].getY();
+        double l2 = state.get()[1].getY();
+        double a1 = state.get()[0].getZ();
+        double a2 = state.get()[1].getZ();
         p1.setX(l1 * sin(a1));
         p1.setY(l1 * cos(a1));
         p2.setX(p1.getX() + l2 * sin(a2));

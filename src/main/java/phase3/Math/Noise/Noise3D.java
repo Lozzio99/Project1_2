@@ -18,11 +18,11 @@ public class Noise3D extends Noise {
     private static final int SEED_NOISE_GEN = 1013;
     private static final int SHIFT_NOISE_GEN = 8;
 
-    private double perlinFreq = 0.006,
-            lacunarity = 0.254,
-            persistence = 0.35;
+    private double perlinFreq = 0.06,
+            lacunarity = 1e-4,
+            persistence = 0.04;
 
-    private int seed = 0, OCTAVE_COUNT = 3;
+    private int seed = -11, OCTAVE_COUNT = 30;
     private double sphereFreq = 0.002;
 
 
