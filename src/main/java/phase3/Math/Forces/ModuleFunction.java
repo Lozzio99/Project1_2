@@ -8,6 +8,8 @@ import phase3.System.State.StateInterface;
 
 import static java.lang.StrictMath.cos;
 import static java.lang.StrictMath.sin;
+import static phase3.Config.CONTROLLER;
+import static phase3.Config.CLOSED;
 
 /**
  * Module landing function, will
@@ -51,8 +53,10 @@ public final class ModuleFunction {
         // must implement function for (xVel, yVel, angleVel)
         // in theory should affect the y component only , or partially the x component
         final Vector3dInterface newRate = new Vector3D(0, 0, 0);
-        newRate.setX(sin(y.get()[0].getZ()) * CONTROLS[0]);  //must multiply by u and v then
-        newRate.setY((cos(y.get()[0].getZ()) * CONTROLS[0]) - G);
+        double factor = 1.0;
+        if (CONTROLLER == CLOSED) factor = Math.PI / 180;
+        newRate.setX(sin(y.get()[0].getZ() * factor) * CONTROLS[0]);  //must multiply by u and v then
+        newRate.setY((cos(y.get()[0].getZ() * factor) * CONTROLS[0]) - G);
         newRate.setZ(CONTROLS[1]);
 
         return newRate;

@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 
+import static phase3.Config.*;
+
 public class ModuleShape {
     private static final double ellipseWidth = 50;
     private static double prevTheta = 0;
@@ -42,7 +44,7 @@ public class ModuleShape {
     }
 
     public static BufferedImage createImage(double theta) {
-        if (theta == prevTheta) return image;
+        if (CONTROLLER == OPEN) theta*=(180.0/Math.PI);
         prevTheta = theta;
         final double rads = Math.toRadians(theta);
         final double sin = Math.abs(Math.sin(rads));

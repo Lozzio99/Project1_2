@@ -9,27 +9,17 @@ import phase3.System.State.StateInterface;
  */
 public class ClosedLoopController implements ControllerInterface {
 
-    private static boolean CONTROLLER_DEBUG = false;
-
     private final Vector3dInterface V;
     private StateInterface<Vector3dInterface> currentState;
-    // Modify for different behaviour:
-    private final static double turnSensitivity = 10;    // Higher value means faster turning
-    private final static double turnDampening = 90;      // Dampens the rotational acceleration to not overshoot the target angle
-    private final static double thrustFactor = 10;       // Factor for the amount of thrust applied
-    private final static double hoverThrust = 1.351;     // Required thrust to let the module hover
-    private final static double descentFactor = 10;      // Higher value means faster descent
-    private final static double posVelRatioFactor = 0.1; // Relation between vertical position and vertical velocity
 
-    private double u = 0.0;
-    private double v = 0.0;
-
+    private double u;
+    private double v;
 
     public ClosedLoopController() {
         V = new Vector3D(0, 0, 0);
     }
 
-    public void updateFunction(StateInterface<Vector3dInterface> y) {
+    private void updateControls(double t, StateInterface<Vector3dInterface> y) {
         // Variables
         this.currentState = y;
         double xVel = y.get()[1].getX();
@@ -38,16 +28,35 @@ public class ClosedLoopController implements ControllerInterface {
         double zPos = y.get()[0].getZ();
         double zVel = y.get()[1].getZ();
 
+        // Modify for different behaviour:
+        double turnSensitivity = 20;    // Higher value means faster turning
+        double turnDampening = 100;      // Dampens the rotational acceleration to not overshoot the target angle
+        double thrustFactor = 10;       // Factor for the amount of thrust applied
+        double hoverThrust = 1.351;     // Required thrust to let the module hover
+        double descentFactor = 5;      // Higher value means faster descent
+        double posVelRatioFactor = 0.1; // Relation between vertical position and vertical velocity
+
         // --- Calculate rotational acceleration ---
-        v = getRotationalAcceleration(xVel, yPos, yVel, zPos, zVel, turnSensitivity, turnDampening);
+        double rotationalAcceleration = getRotationalAcceleration(xVel, yPos, yVel, zPos, zVel, turnSensitivity, turnDampening);
+        Vector3D rotVector = new Vector3D(0, 0, rotationalAcceleration);
+        setV(rotationalAcceleration);
 
         // --- Calculate thrust ---
-        u = getBurnAmount(yPos, yVel, thrustFactor, hoverThrust, descentFactor, posVelRatioFactor);
+        double burnAmount = getBurnAmount(yPos, yVel, thrustFactor, hoverThrust, descentFactor, posVelRatioFactor);
+        Vector3D thrustVector = burn(burnAmount, y);
+        setU(burnAmount);
+    }
 
-        if (CONTROLLER_DEBUG) {
-            System.out.println("v = " + v);
-            System.out.println("u = " + u);
-        }
+    /**
+     * Ensures that a rocket is only able to burn in the direction that the thruster is pointing at.
+     * @param amount
+     * @param state
+     * @return
+     */
+    private Vector3D burn (double amount, StateInterface<Vector3dInterface> state) {
+        return  new Vector3D(amount * Math.sin(state.get()[0].getZ() * Math.PI / 180),
+                amount * Math.cos(state.get()[0].getZ() * Math.PI / 180),
+                0);
     }
 
     /**
@@ -97,29 +106,48 @@ public class ClosedLoopController implements ControllerInterface {
      * @return
      */
     private double getBurnAmount(double yPos, double yVel, double thrustFactor, double hoverThrust, double descentFactor, double posVelRatioFactor) {
+
         double targetDecentRate = Math.sqrt(descentFactor * yPos) * posVelRatioFactor;
         double burnAmount = ((-yVel - targetDecentRate) * thrustFactor) + (hoverThrust / (yPos + 1));
+
         // Main thruster restriction
-        double thrusterThreshold = 27.5;
+        double thrusterThreshold = 7.5;
+
         if (burnAmount > thrusterThreshold)
             burnAmount = thrusterThreshold;
+
         // Makes sure the thrust is not negative
         if (burnAmount < 0)
             burnAmount = 0;
+
         return burnAmount;
+    }
+
+    private boolean getUpdateCondition() {
+        //TODO: implement update condition
+        return false;
     }
 
     @Override
     public double[] controlFunction(double t, StateInterface<Vector3dInterface> y) {
-        updateFunction(y);
+        updateControls(t, y);
         return new double[]{getU(), getV()};
     }
 
-    private double getU() {
+    public double getU() {
         return u;
     }
 
-    private double getV() {
+    public double getV() {
         return v;
     }
+
+    public void setU(double u) {
+        this.u = u;
+    }
+
+    public void setV(double v) {
+        this.v = v;
+    }
 }
+

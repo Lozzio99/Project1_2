@@ -60,29 +60,23 @@ public class TitanSimRunner implements RunnerInterface {
         // draw graphics
         // update module gravityFunction
         StateInterface<Vector3dInterface> currentState = simulation.getSystem().getState();
-        System.out.println("###");
         if (currentState.get()[0].getY() < 0.0001) {
-            System.out.println("\nTime: " + CURRENT_TIME);
-            System.out.println("Position: " + currentState.get()[0]);
-            System.out.println("Velocity: " + currentState.get()[1]);
             System.exit(0);
         }
+        System.out.println("\nTime: " + CURRENT_TIME);
+        System.out.println("Position: " + currentState.get()[0]);
+        System.out.println("Velocity: " + currentState.get()[1]);
 
         simulation.getGraphics().start(currentState);
-        System.out.println("###");
         moduleFunction.setControls(moduleController.getControls(CURRENT_TIME, currentState));
 
-        System.out.println("###");
         StateInterface<Vector3dInterface> afterGravity = solver.step(gravityFunction, CURRENT_TIME, currentState, MODULE_STEP_SIZE);
-
-        System.out.println("###");
         if (WIND) {
             StateInterface<Vector3dInterface> afterWind = solver.step(windFunction, CURRENT_TIME, afterGravity, MODULE_STEP_SIZE);
             simulation.getSystem().updateState(afterWind);
         } else {
             simulation.getSystem().updateState(afterGravity);
         }
-        System.out.println("###");
         CURRENT_TIME += MODULE_STEP_SIZE;
 
         /*
