@@ -2,8 +2,6 @@ package phase3.Rocket.Controllers;
 
 import phase3.Math.ADT.Vector3D;
 import phase3.Math.ADT.Vector3dInterface;
-import phase3.Math.Functions.ODEFunctionInterface;
-import phase3.System.State.RateOfChange;
 import phase3.System.State.StateInterface;
 
 /**
@@ -67,7 +65,7 @@ public class ClosedLoopController implements ControllerInterface {
 
         double targetAngle;
         if (yPos < 10)
-            targetAngle = 90;
+            targetAngle = -90;
         else
             targetAngle = Math.atan2(yVel, xVel) * 180 / Math.PI; // module velocity
 
@@ -79,7 +77,7 @@ public class ClosedLoopController implements ControllerInterface {
         double rotationalAcceleration = (angleDifference * turnSensitivity) + (rotationalVelocity * turnDampening);
 
         // Rotational thruster restriction
-        double rotThrustLimit = 1.16;
+        double rotThrustLimit = 2.32;
 
         if (rotationalAcceleration > rotThrustLimit)
             rotationalAcceleration = rotThrustLimit;
