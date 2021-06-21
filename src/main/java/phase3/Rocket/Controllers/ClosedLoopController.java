@@ -11,6 +11,8 @@ import phase3.System.State.StateInterface;
  */
 public class ClosedLoopController implements ControllerInterface {
 
+    private static boolean CONTROLLER_DEBUG = false;
+
     private final Vector3dInterface V;
     private StateInterface<Vector3dInterface> currentState;
     // Modify for different behaviour:
@@ -43,6 +45,11 @@ public class ClosedLoopController implements ControllerInterface {
 
         // --- Calculate thrust ---
         u = getBurnAmount(yPos, yVel, thrustFactor, hoverThrust, descentFactor, posVelRatioFactor);
+
+        if (CONTROLLER_DEBUG) {
+            System.out.println("v = " + v);
+            System.out.println("u = " + u);
+        }
     }
 
     /**
@@ -95,7 +102,7 @@ public class ClosedLoopController implements ControllerInterface {
         double targetDecentRate = Math.sqrt(descentFactor * yPos) * posVelRatioFactor;
         double burnAmount = ((-yVel - targetDecentRate) * thrustFactor) + (hoverThrust / (yPos + 1));
         // Main thruster restriction
-        double thrusterThreshold = 7.5;
+        double thrusterThreshold = 27.5;
         if (burnAmount > thrusterThreshold)
             burnAmount = thrusterThreshold;
         // Makes sure the thrust is not negative

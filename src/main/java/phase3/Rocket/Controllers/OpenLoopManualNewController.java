@@ -10,6 +10,8 @@ import static phase3.Math.Forces.ModuleFunction.V_MAX;
 
 public class OpenLoopManualNewController implements ControllerInterface {
 
+    private static boolean CONTROLLER_DEBUG = false;
+
     private boolean ROTATION;
     private boolean HORIZONTAL;
     private boolean VERTICAL;
@@ -44,6 +46,12 @@ public class OpenLoopManualNewController implements ControllerInterface {
     public double[] controlFunction(double t, StateInterface<Vector3dInterface> y) {
         if (init) initBounds(y);
         updateControls(t);
+
+        if (CONTROLLER_DEBUG) {
+            System.out.println("v = " + v);
+            System.out.println("u = " + u);
+        }
+
         return new double[]{getU(), getV()};
     }
 

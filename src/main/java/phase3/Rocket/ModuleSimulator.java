@@ -19,7 +19,7 @@ public class ModuleSimulator extends RocketSimulator {
             this.setVectorLocation(new Vector3D(-5e2, 1e3, 0));
             this.setVectorVelocity(new Vector3D(30, 0.0, 0));
         } else if (CONTROLLER == CLOSED) {
-            this.setVectorLocation(new Vector3D(2800, 2800, 0));
+            this.setVectorLocation(new Vector3D(500, 500, 0));
             this.setVectorVelocity(new Vector3D(-40, 0, 0));
         }
 

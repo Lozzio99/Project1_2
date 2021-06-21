@@ -40,7 +40,7 @@ public class Config {
     public static final ErrorData.ErrorPrint OUT_ERROR = ErrorData.ErrorPrint.CONSOLE;
     public static final int OPEN = 0;
     public static final int CLOSED = 2;
-    public static int CONTROLLER = 0;
+    public static int CONTROLLER = 2;
     public static final ErrorData[] ORIGINAL_DATA = new ErrorData[13];
     /**
      * GRAPHICS SETTINGS
