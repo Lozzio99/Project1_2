@@ -34,7 +34,7 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
     /**
      * The Exhaust velocity.
      */
-    double exhaustVelocity = 2e4;
+    double exhaustVelocity = 4e3;
     /**
      * The Max thrust.
      */
@@ -156,8 +156,8 @@ public class RocketSimulator extends CelestialBody implements RocketInterface {
         this.setMASS(7.8e4);
         this.setRADIUS(1e2);
         this.setColour(Color.GREEN);
-        this.setVectorLocation(new Vector3D(-1.4717856245318698E11,-2.861154627637646E10,8032437.618829092)); //earth
-        this.setVectorVelocity(new Vector3D(0.0,0.0,0.0));
+        this.setVectorLocation(new Vector3D(-1.4717997633308847E11,-2.8613076980169685E10,7997661.955586711)); //earth
+        this.setVectorVelocity(new Vector3D(4747.143456035138,-43190.1097451657,-2408.185814993718));
         this.localAcceleration = new Vector3D();
         this.fuelMass = this.startFuel;
         this.totalMass = this.startFuel + this.getMASS();

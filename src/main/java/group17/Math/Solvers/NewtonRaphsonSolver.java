@@ -21,26 +21,30 @@ public class NewtonRaphsonSolver {
         CHECK_COLLISIONS = false;
     }
     public static double ERROR = 100.0;
+    public static final double FixedTime1 = 111153600;
+    public static final double FixedTime2 = 3261600;
+    public static final double FixedTime3 = 88106400;
+    public static final double FixedTime4 = 202521600;
 
     /**
      * Launching position for the Rocket from Earth (00:00:00 01/04/2020)
      */
-    public static Vector3D ROCKET_STARTING_POS = new Vector3D(-1.4717856245318698E11,-2.861154627637646E10,8032437.618829092);
+    public static Vector3D ROCKET_STARTING_POS = new Vector3D(-1.4717997633308847E11,-2.8613076980169685E10,7997661.955586711);
 
     /**
      * Intermediate point near Titan to move to Earth (06:00:00 16/11/2023)
      */
-    public static Vector3D INTERMEDIATE_START = new Vector3D(1.3585811106122769E12,-6.058172170455222E11,-4.8541143460416466E10);
+    public static Vector3D INTERMEDIATE_START = new Vector3D(1.6462483807746553E12,-1.193013886835716E12,-8.005022048196017E10);
 
     /**
      * Target point near the Earth (00:00:00 01/09/2026)
      */
-    public static Vector3D EARTH_TARGET = new Vector3D(1.403938718949137E11,-5.650895144135213E10,4.5059332345759265E7);
+    public static Vector3D EARTH_TARGET = new Vector3D(1.4004767983406122E11,-5.6658312390903404E10,1.695978809098317E7);
 
     /**
      * Target point near Titan (12:00:00 09/10/2023)
      */
-    public static Vector3D TITAN_TARGET = new Vector3D(1.3210462842514722E12,-6.208565760567329E11,-4.1402261326868645E10);
+    public static Vector3D TITAN_TARGET = new Vector3D(1.321046193397982E12,-6.208565394087167E11,-4.140225876440709E10);
 
     /**
      * The constant initPos.
@@ -120,23 +124,21 @@ public class NewtonRaphsonSolver {
      */
     public static void main(String[] args) {
 
+        //Vector3dInterface startOnEarth = findPointOnEarth(TITAN_TARGET);
+        //System.out.println(startOnEarth);
+
         //Vector3dInterface TitanOrbitTarget = findPointOnTitan(ROCKET_STARTING_POS);
         //System.out.println(TitanOrbitTarget);
 
         //### Approximation of rocket mission
 
-        double FixedTime1 = 111153600;
-        double FixedTime2 = 3261600;
-        double FixedTime3 = 88106400;
-        double FixedTime4 = 202521600;
-
         //### Path from Earth to Titan
         NewtonRaphsonSolver nrSolver = new NewtonRaphsonSolver(ROCKET_STARTING_POS, TITAN_TARGET, FixedTime1);
-        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5103.625210047158,-42679.20907496454,-2386.727992257258), new Vector3D(0.0, 0.0, 0.0), 1440);
+        Vector3dInterface aprxVel = nrSolver.NewtRhapSolution(new Vector3D(5191.599532674058,-42909.61842751581,-2339.0589597617895), new Vector3D(0.0, 0.0, 0.0), 1440);
 
         //### Path from Titan to Earth
         //NewtonRaphsonSolver nrSolver2 = new NewtonRaphsonSolver(INTERMEDIATE_START, EARTH_TARGET, FixedTime4,FixedTime1+FixedTime2);
-        //Vector3dInterface aprxVel2 = nrSolver2.NewtRhapSolution(new Vector3D(-8413.49799899527,3774.5102109077566,347.1890518838117), new Vector3D(0.0, 0.0, 0.0), 360.0);
+        //Vector3dInterface aprxVel2 = nrSolver2.NewtRhapSolution(new Vector3D(-13688.65223381166,10650.012579913151,777.3090024075764), new Vector3D(0.0, 0.0, 0.0), 1440/2.0);
 
     }
 
@@ -156,9 +158,9 @@ public class NewtonRaphsonSolver {
                 (v2.getZ()-v1.getZ())/disV1V2
         );
         Vector3D startV1 = new Vector3D(
-                v1.getX() + (6.371e6+1e6)*unitV.getX(),
-                v1.getY() + (6.371e6+1e6)*unitV.getY(),
-                v1.getZ() + (6.371e6+1e6)*unitV.getZ()
+                v1.getX() + (6.371e6+150)*unitV.getX(),
+                v1.getY() + (6.371e6+150)*unitV.getY(),
+                v1.getZ() + (6.371e6+150)*unitV.getZ()
         );
         return startV1;
     }
@@ -174,9 +176,9 @@ public class NewtonRaphsonSolver {
                 (v2.getZ()-v1.getZ())/disV1V2
         );
         Vector3D startV1 = new Vector3D(
-                v1.getX() + (2575.5e3 + 2e3)*unitV.getX(),
-                v1.getY() + (2575.5e3 + 2e3)*unitV.getY(),
-                v1.getZ() + (2575.5e3 + 2e3)*unitV.getZ()
+                v1.getX() + (2575.5e3 + 100e3)*unitV.getX(),
+                v1.getY() + (2575.5e3 + 100e3)*unitV.getY(),
+                v1.getZ() + (2575.5e3 + 100e3)*unitV.getZ()
         );
         return startV1;
     }

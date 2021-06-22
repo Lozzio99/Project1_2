@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import static group17.Utils.Config.ERROR_EVALUATION;
 
 /**
- * The type Rocket schedule.
+ * Schedules Shifts/Thrusts of Rocket based on Newton-Raphson
  */
 public class RocketSchedule {
 
@@ -29,7 +29,6 @@ public class RocketSchedule {
      */
     Map<Vector3dInterface, Vector3dInterface> shiftAtDistance;
 
-    Map<DecisionEvent, Vector3dInterface> shiftAtApproximatedState;
 
 
     /**
@@ -44,13 +43,20 @@ public class RocketSchedule {
     }
 
     /**
-     * Prepare.
+     * Preparing the scheduling in advance.
+     * Link to desired keys the corresponding vector decisions,
+     * which will be then applied, whenever one of these keys will
+     * be "present" in the system.
+     * Example: by linking a Clock with a specified date and time to
+     * a certain decision,it is then possible to retrieve this when the
+     * clock instance in the system will return true from the implemented
+     * equals(Object o) method.
      */
     public void prepare() {
         final boolean f = ERROR_EVALUATION;
         ERROR_EVALUATION = false; // avoid making error reports
-        //this.setPlan(new Clock().setLaunchDay(), new Vector3D(5000,5000,5000));
-        //this.setPlan(new Clock().setInitialTime(0,0,0).setInitialTime(0,0,0),new Vector3D(0,0,0));
+        //this.addToPlan(new Clock().setLaunchDay(), new Vector3D(5088.96749227992,-42683.62354900892,-2347.9074133259346));
+        //this.addToPlan(new Clock().setInitialDayAndTime(0, 0, 6, 16, 11, 2023), new Vector3D(-8466.431731294904, 3689.7962745433374, 363.6276188737569));
         ERROR_EVALUATION = f;
     }
 
@@ -63,8 +69,15 @@ public class RocketSchedule {
      */
     public Vector3dInterface shift(SystemInterface system) {
         return this.getDesiredVelocity(system.getClock()).
-                add(this.getDesiredVelocity(system.systemState())).
-                add(this.getDesiredVelocity(system.systemState().getPositions().get(8).absSub(system.systemState().getPositions().get(11))));
+                //see if there's something linked with the clock date key
+
+                        add(this.getDesiredVelocity(system.systemState())).
+                //see if there's something linked with this state key
+
+                        add(this.getDesiredVelocity(system.systemState().getPositions().get(8).absSub(system.systemState().getPositions().get(11))));
+        //see if there's something linked to this distance vector key
+
+
         //eventually everything null this will return a vector (0,0,0)
     }
 
@@ -145,6 +158,7 @@ public class RocketSchedule {
      */
     public void setPlan(Clock time, Vector3dInterface v) {
         if (time == null || v == null) return;
+        if (v.isZero()) v = new Vector3D(1e-300, 0, 0);
         Vector3dInterface vOld = this.shiftAtTime.remove(time);
         this.shiftAtTime.put(time, v);
     }
@@ -157,6 +171,7 @@ public class RocketSchedule {
      */
     public void setPlan(StateInterface s, Vector3dInterface v) {
         if (s == null || v == null) return;
+        if (v.isZero()) v = new Vector3D(1e-300, 0, 0);
         this.shiftAtLocation.put(s, v);
     }
 
@@ -168,6 +183,8 @@ public class RocketSchedule {
      */
     public void setPlan(Vector3dInterface d, Vector3dInterface v) {
         if (d == null || v == null) return;
+        if (v.isZero()) v = new Vector3D(1e-300, 0, 0);
         this.shiftAtDistance.put(d, v);
     }
 }
+

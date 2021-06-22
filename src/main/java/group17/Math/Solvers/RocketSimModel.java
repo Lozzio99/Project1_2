@@ -6,7 +6,7 @@ import group17.Simulation.Simulation;
 import group17.System.SolarSystem;
 
 import static group17.Main.simulation;
-import static group17.Math.Solvers.NewtonRaphsonSolver.ROCKET_STARTING_POS;
+import static group17.Math.Solvers.NewtonRaphsonSolver.*;
 import static group17.Utils.Config.*;
 
 /**
@@ -105,6 +105,7 @@ public class RocketSimModel {
         StateInterface[] solution = solver.solve(solver.getFunction(), initialState, timeFinal, STEP_SIZE);
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
+        //System.out.println("Velocity "+ solution[solution.length - 1].getRateOfChange().getVelocities().get(11));
         return solution[solution.length - 1].getPositions().get(11).clone();
     }
 
@@ -134,10 +135,11 @@ public class RocketSimModel {
 
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
+        //System.out.println("Velocity "+ solution[solution.length - 1].getRateOfChange().getVelocities().get(11));
         return solution[solution.length - 1].getPositions().get(11).clone();
     }
 
-    public static Vector3dInterface stateFxCelestialBodies(double timeFinal) {
+    public static Vector3dInterface stateFxCelestialBodies(double timeFinal, int id) {
         // init parameters
         SystemInterface system = createSystem(new Vector3D(0,0,0), new Vector3D(0,0,0));
         initialState = system.systemState().copy();
@@ -148,16 +150,26 @@ public class RocketSimModel {
 
         assert (simulation.getSystem().getCelestialBodies().size() > 10 &&
                 !simulation.getSystem().getCelestialBodies().get(11).isCollided());
-        return solution[solution.length - 1].getPositions().get(8).clone();
+
+        return solution[solution.length - 1].getPositions().get(id).clone();
     }
 
     public static void main(String[] args) {
-        Vector3dInterface res1 = stateFx(ROCKET_STARTING_POS, new Vector3D(5103.625210047158,-42679.20907496454,-2386.727992257258), 111153600);
-        Vector3dInterface res2 = stateFxCelestialBodies(111153600);
-        double distance = res2.dist(res1);
+        Vector3dInterface res1 = stateFx(ROCKET_STARTING_POS, new Vector3D(5088.96749227992,-42683.62354900892,-2347.9074133259346),  1);
+        //Vector3dInterface res2 = stateFxCelestialBodies(FixedTime1+FixedTime2, 8);
+        Vector3dInterface res4 = stateFxCelestialBodies(1, 3);
+        //Vector3dInterface res3 = res2.sub(res1);
+
+        double res5 = res1.dist(res4) - (6.371e6+1e6);
+
+        //double distance = res1.dist(res2);
         System.out.println(res1);
-        System.out.println(res2);
-        System.out.println(distance);
+        //System.out.println(res2);
+        //System.out.println(res3);
+        //System.out.println(distance-(2575.5e3));
+        System.out.println("Earth: "+res4);
+
+        System.out.println("Distance: "+res5);
     }
 
 }
